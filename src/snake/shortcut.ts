@@ -14,18 +14,21 @@ export class shortcut {
     this.event = event
     this.message = event.message as Message
   }
-  reply(text:string,more:any|undefined){
+  async reply(text:string,more:any|undefined){
     let msg = new message(this.message,this.event)
-    return new tele(this.client).sendMessage(this.message.chat.id,text,{
+    let [parseText,entities] = await this.client._parseMessageText(text,"markdown")
+    return new tele(this.client).sendMessage(this.message.chat.id,parseText,{
       replyToMsgId : msg.id,
+      entities : entities,
       ...more
     })
   }
-  replyHTML(text:string,more:any|undefined){
+  async replyHTML(text:string,more:any|undefined){
     let msg = new message(this.message,this.event)
-    return new tele(this.client).sendMessage(this.message.chat.id,text,{
+    let [parseText,entities] = await this.client._parseMessageText(text,"html")
+    return new tele(this.client).sendMessage(this.message.chat.id,parseText,{
       replyToMsgId : msg.id,
-      parseMode : "html",
+      entities : entities,
       ...more
     })
   }

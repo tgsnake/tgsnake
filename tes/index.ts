@@ -12,8 +12,8 @@ Snake.run()
 
 Snake.onNewMessage(async (bot:any,message:any)=>{
   if(message.chat.private){
-    console.log("BOT",bot,"MESSAGE",message)
+    //console.log("BOT",bot,"MESSAGE",message)
     bot.reply("**Hi!**")
-    bot.replyHTML("<strong>HI!</strong>")
+    bot.replyHTML("<code>HI!</code>")
   }
 })
