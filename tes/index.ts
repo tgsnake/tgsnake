@@ -10,7 +10,6 @@ const Snake = new snake({
 })
 
 Snake.run()
-
 Snake.onNewMessage(async (bot:any,message:any)=>{
   if(message.chat.private){
     //console.log("BOT",bot,"MESSAGE",message)

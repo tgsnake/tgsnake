@@ -17,6 +17,7 @@ export class snake {
   session:any
   bot_token:any
   telegram:any
+  logger:string
   connection_retries:number
   constructor(options:any){
     //default options
@@ -25,11 +26,11 @@ export class snake {
     this.session = ""
     this.bot_token = undefined
     this.connection_retries = 5
+    this.logger = "none"
     // custom options
     if(options.logger){
-      Logger.setLevel(options.logger)
-    }else{
-      Logger.setLevel("none")
+      this.logger = options.logger
+      Logger.setLevel(this.logger)
     }
     if(options.api_hash){
       this.api_hash = options.api_hash
@@ -48,8 +49,14 @@ export class snake {
     }
   }
   async run(){
+    console.log("🐍 Welcome To TGSNAKE.")
     if(!this.api_hash || !this.api_id){
-      throw "api_hash or api_id not found!."
+      if(!this.api_hash){
+        throw "🐍 ERROR: api_hash not found."
+      }
+      if(!this.api_id){
+        throw "🐍 ERROR: api_id not found."
+      }
     }else{
       this.client = new TelegramClient(
           new StringSession(this.session),
@@ -58,6 +65,7 @@ export class snake {
           { connectionRetries: this.connection_retries }
         )
       this.telegram = new tele(this.client)
+      console.log(`🐍 Setting Logger level to "${this.logger}"`)
       if(this.session == ""){
         if(!this.bot_token){
           await this.client.start({
@@ -67,13 +75,13 @@ export class snake {
             onError: (err:any) => { throw err },
           })
           this.session = await this.client.session.save()
-          console.log(`Your Sessions : ${this.session}`)
+          console.log(`🐍 Your string session : ${this.session}`)
         }else{
           await this.client.start({
             botAuthToken : this.bot_token
           })
           this.session = await this.client.session.save()
-          console.log(`Your Sessions : ${this.session}`)
+          console.log(`🐍 Your string session : ${this.session}`)
         }
       }else{
         await this.client.connect()
