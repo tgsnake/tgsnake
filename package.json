@@ -2,7 +2,7 @@
   "name": "tgsnake",
   "version": "0.0.1",
   "description": "Telegram MTProto framework base gram.js",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "scripts": {
     "dev": "nodemon ./tes/index.ts",
     "build": "tsc",
