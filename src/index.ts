@@ -42,7 +42,7 @@ export class snake {
   }
   async run(){
     if(!this.api_hash || !this.api_id){
-      throw "api_hash atau api_id tidak tersedia."
+      throw "api_hash or api_id not found!."
     }else{
       this.client = new TelegramClient(
           new StringSession(this.session),
@@ -53,18 +53,10 @@ export class snake {
       this.telegram = new tele(this.client)
       if(!this.bot_token){
         await this.client.start({
-          phoneNumber: async () => {
-            await input.text('number ?')
-          },
-          password: async () => {
-            await input.text('password?')
-          },
-          phoneCode: async () => {
-            await input.text('Code ?')
-          },
-          onError: (err:any) => {
-            throw err
-          }
+          phoneNumber: async () => await input.text('Input your number with country format'),
+          password: async () => await input.text('If you enable 2FA please input your password'),
+          phoneCode: async () => await input.text('Input Telegram verifications code'),
+          onError: (err:any) => { throw err },
         })
         console.log(`Your Sessions : ${await this.client.session.save()}`)
       }else{
