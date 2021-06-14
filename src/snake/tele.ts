@@ -13,14 +13,38 @@ export class tele {
     this.client = client
   }
   async sendMessage(chat_id:number|string,text:string,more:any|undefined){
-      let results:Api.Updates = await this.client.invoke(
+      let parseMode = "markdown"
+      if(more){
+        if(more.parseMode){
+          parseMode = more.parseMode.toLowerCase()
+          delete more.parseMode
+        }
+      }
+      let [parseText,entities] = await this.client._parseMessageText(text,parseMode)
+      return this.client.invoke(
           new Api.messages.SendMessage({
               peer : chat_id,
-              message : text,
+              message : parseText,
               randomId : BigInt(-Math.floor(Math.random() * 10000000000000)),
+              entities : entities,
               ...more
             })
         )
-      return results
     }
+  async deleteMessages(chat_id:number,message_id:number[]){
+    if(String(chat_id).match(/^\-100/)){
+      return this.client.invoke(
+        new Api.channels.DeleteMessages({
+          channel: chat_id,
+          id: message_id,
+        })
+      );
+    }else{
+      return this.client.invoke(
+        new Api.messages.DeleteMessages({
+         revoke: true,
+         id: message_id,
+       }));
+    }
+  }
 }

@@ -11,9 +11,15 @@ const Snake = new snake({
 
 Snake.run()
 Snake.onNewMessage(async (bot:any,message:any)=>{
-  if(message.chat.private){
+  if(message.text == "!snake"){
     //console.log("BOT",bot,"MESSAGE",message)
-    bot.reply("**Hi!**")
-    bot.replyHTML("<code>HI!</code>")
+    await bot.deleteMessages([message.id])
+    bot.reply("🐍 Hi, Iam Snake ...")
+    //bot.reply("**Hi!**") //markdown
+    //bot.replyHTML("<code>HI!</code>") //html
+    //Snake.telegram.sendMessage(message.chat.id,"hai")
+    //console.log(bot.event)
+    //console.log(message.chat.id)
+    //Snake.telegram.deleteMessages(message.chat.id,[message.id])
   }
 })

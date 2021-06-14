@@ -10,8 +10,12 @@ export class message {
   constructor(message:any,event:any){
     this.id = message.id || undefined
     this.text = message.text || undefined
+    let chatId = message.chat.id 
+    if(!event.isPrivate){
+      chatId = Number(`-100${message.chat.id}`)
+    }
     this.chat = {
-      id : message.chat.id || undefined,
+      id : chatId,
       title : message.chat.title || undefined,
       first_name : message.chat.firstName || undefined,
       last_name : message.chat.lastName || undefined,
