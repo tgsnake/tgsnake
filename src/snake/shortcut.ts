@@ -1,11 +1,11 @@
-import tele from "./tele"
+import {tele} from "./tele"
 import {NewMessage} from 'telegram/events';
 import {NewMessageEvent} from 'telegram/events/NewMessage';
 import {Message} from 'telegram/tl/custom/message';
 import {Api} from "telegram"
 import {message} from "./rewritejson"
 
-class shortcut {
+export class shortcut {
   client:any
   event:NewMessageEvent
   message:any
@@ -15,7 +15,6 @@ class shortcut {
     this.message = event.message as Message
   }
   reply(text:string,more:any|undefined){
-    this.client.setParseMode("markdown")
     let msg = new message(this.message,this.event)
     return new tele(this.client).sendMessage(this.message.chat.id,text,{
       replyToMsgId : msg.id,
@@ -23,13 +22,11 @@ class shortcut {
     })
   }
   replyHTML(text:string,more:any|undefined){
-    this.client.setParseMode("html")
     let msg = new message(this.message,this.event)
     return new tele(this.client).sendMessage(this.message.chat.id,text,{
       replyToMsgId : msg.id,
+      parseMode : "html",
       ...more
     })
   }
 }
-
-export default shortcut

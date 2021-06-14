@@ -7,7 +7,7 @@ import {Message} from 'telegram/tl/custom/message';
 import {Api} from "telegram"
 const BigInt = require("big-integer")
 
-class tele {
+export class tele {
   client:any
   constructor(client:any){
     this.client = client
@@ -23,6 +23,4 @@ class tele {
         )
       return results
     }
-  }
-
-export default tele
+}

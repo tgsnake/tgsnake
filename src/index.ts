@@ -4,13 +4,13 @@ import {StringSession} from 'telegram/sessions';
 import {NewMessage} from 'telegram/events';
 import {NewMessageEvent} from 'telegram/events/NewMessage';
 import {Message} from 'telegram/tl/custom/message';
-import tele from "./snake/tele"
-import shortcut from "./snake/shortcut"
+import {tele} from "./snake/tele"
+import {shortcut} from "./snake/shortcut"
 import {message} from "./snake/rewritejson"
 const input = require("input")
 
 
-class snake {
+export class snake {
   client:any
   api_hash:any
   api_id:any
@@ -82,5 +82,3 @@ class snake {
     },new NewMessage({}))
   }
 }
-
-export default snake

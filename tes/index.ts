@@ -1,5 +1,5 @@
 require("dotenv").config()
-import snake from "../src"
+import {snake} from "../src"
 
 const Snake = new snake({
   api_hash : String(process.env.api_hash),
@@ -10,10 +10,10 @@ const Snake = new snake({
 
 Snake.run()
 
-Snake.onNewMessage((bot:any,message:any)=>{
-  //if(message.chat.private){
+Snake.onNewMessage(async (bot:any,message:any)=>{
+  if(message.chat.private){
     console.log("BOT",bot,"MESSAGE",message)
-    bot.reply("Hi!")
-    bot.replyHTML("<b>HI!</b>")
-  //}
+    bot.reply("**Hi!**")
+    bot.replyHTML("<strong>HI!</strong>")
+  }
 })

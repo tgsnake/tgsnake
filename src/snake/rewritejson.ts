@@ -1,9 +1,12 @@
 
-export let message = class message {
+export class message {
   id:any
   chat:any
   from:any
   text:any
+  peer:any
+  entities:any
+  replyToMessageId:any
   constructor(message:any,event:any){
     this.id = message.id || undefined
     this.text = message.text || undefined
@@ -13,7 +16,8 @@ export let message = class message {
       first_name : message.chat.firstName || undefined,
       last_name : message.chat.lastName || undefined,
       username : message.chat.username || undefined,
-      "private" : event.isPrivate || false
+      "private" : event.isPrivate || false,
+      accessHash : message.chat.accessHash || undefined
     }
    this.from = {
       id : message.sender.id || undefined,
@@ -23,8 +27,17 @@ export let message = class message {
       deleted : message.sender.deleted || false,
       restricted : message.sender.restricted || false,
       lang : message.sender.langCode || undefined,
-      status : message.sender.status.className || undefined
+      status : message.sender.status.className || undefined,
+      accessHash : message.sender.accessHash || undefined
     }
-   
+   this.peer = {
+     chatPeer : message._chatPeer || undefined,
+     inputChat : message._inputChat || undefined
+   }
+   this.entities = message.entities || undefined
+   this.replyToMessageId = undefined
+   if(message.replyTo !== null){
+     this.replyToMessageId = message.replyTo.replyToMsgId || undefined
+   }
   }
 }

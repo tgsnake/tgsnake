@@ -4,10 +4,10 @@ Package ini terbuat berdasarkan gram.js.
 
 ### Example 
 
-`npm i tgsnake`
+`yarn add https://github.com/butthx/tgsnake`
 
 ```javascript
-const snake = require("tgsnake")
+const {snake} = require("tgsnake")
 const Snake = new snake({
   api_hash : "abcde",
   api_id : 123456,
