@@ -17,15 +17,19 @@ export class snake {
   session:any
   bot_token:any
   telegram:any
+  connection_retries:number
   constructor(options:any){
     //default options
     this.api_hash = undefined 
     this.api_id = undefined
     this.session = ""
     this.bot_token = undefined
+    this.connection_retries = 5
     // custom options
     if(options.logger){
       Logger.setLevel(options.logger)
+    }else{
+      Logger.setLevel("none")
     }
     if(options.api_hash){
       this.api_hash = options.api_hash
@@ -39,6 +43,9 @@ export class snake {
     if(options.bot_token){
       this.bot_token = options.bot_token
     }
+    if(options.connection_retries){
+      this.connection_retries = options.connection_retries
+    }
   }
   async run(){
     if(!this.api_hash || !this.api_id){
@@ -48,24 +55,34 @@ export class snake {
           new StringSession(this.session),
           Number(this.api_id),
           String(this.api_hash),
-          { connectionRetries: 5 }
+          { connectionRetries: this.connection_retries }
         )
       this.telegram = new tele(this.client)
-      if(!this.bot_token){
-        await this.client.start({
-          phoneNumber: async () => await input.text('Input your number with country format'),
-          password: async () => await input.text('If you enable 2FA please input your password'),
-          phoneCode: async () => await input.text('Input Telegram verifications code'),
-          onError: (err:any) => { throw err },
-        })
-        console.log(`Your Sessions : ${await this.client.session.save()}`)
+      if(this.session == ""){
+        if(!this.bot_token){
+          await this.client.start({
+            phoneNumber: async () => await input.text('Input your number with country format'),
+            password: async () => await input.text('Input your 2FA password'),
+            phoneCode: async () => await input.text('Input Telegram verifications code'),
+            onError: (err:any) => { throw err },
+          })
+          this.session = await this.client.session.save()
+          console.log(`Your Sessions : ${this.session}`)
+        }else{
+          await this.client.start({
+            botAuthToken : this.bot_token
+          })
+          this.session = await this.client.session.save()
+          console.log(`Your Sessions : ${this.session}`)
+        }
       }else{
-        await this.client.start({
-          botAuthToken : this.bot_token
-        })
-        console.log(`Your Sessions : ${await this.client.session.save()}`)
+        await this.client.connect()
       }
+      await this.client.getMe()
+      console.log("🐍 Running..")
     }
+    process.once('SIGINT', () => console.log("🐍 Killing.."))
+    process.once('SIGTERM', () => console.log("🐍 Killing.."))
   }
   async onNewMessage(next:any){
     this.client.addEventHandler((event:NewMessageEvent)=>{
