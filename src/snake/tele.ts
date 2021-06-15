@@ -47,4 +47,21 @@ export class tele {
        }));
     }
   }
+  async editMessage(chat_id:number,message_id:number,text:string,more:any|undefined){
+    let parseMode = "markdown"
+      if(more){
+        if(more.parseMode){
+          parseMode = more.parseMode.toLowerCase()
+          delete more.parseMode
+        }
+      }
+    let [parseText,entities] = await this.client._parseMessageText(text||"",parseMode)
+    return this.client.invoke(new Api.messages.EditMessage({
+      peer: chat_id,
+      id: message_id,
+      message: parseText,
+      entities : entities,
+      ...more
+    }))
+  }
 }

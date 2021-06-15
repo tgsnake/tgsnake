@@ -16,14 +16,14 @@ export class shortcut {
   }
   async reply(text:string,more:any|undefined){
     let msg = new message(this.message,this.event)
-    return new tele(this.client).sendMessage(this.message.chat.id,text,{
+    return new tele(this.client).sendMessage(msg.chat.id,text,{
       replyToMsgId : msg.id,
       ...more
     })
   }
   async replyHTML(text:string,more:any|undefined){
     let msg = new message(this.message,this.event)
-    return new tele(this.client).sendMessage(this.message.chat.id,text,{
+    return new tele(this.client).sendMessage(msg.chat.id,text,{
       replyToMsgId : msg.id,
       parseMode : "html",
       ...more
@@ -32,5 +32,9 @@ export class shortcut {
   async deleteMessages(message_id:number[]){
     let msg = new message(this.message,this.event)
     return new tele(this.client).deleteMessages(msg.chat.id,message_id)
+  }
+  async editMessage(message_id:number,text:string,more:any|undefined){
+    let msg = new message(this.message,this.event)
+    return new tele(this.client).editMessage(msg.chat.id,message_id,text,more)
   }
 }

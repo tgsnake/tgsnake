@@ -7,8 +7,8 @@ import {Message} from 'telegram/tl/custom/message';
 import {tele} from "./snake/tele"
 import {shortcut} from "./snake/shortcut"
 import {message} from "./snake/rewritejson"
+export {Api} from "telegram"
 const input = require("input")
-
 
 export class snake {
   client:any
