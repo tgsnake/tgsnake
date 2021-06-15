@@ -73,4 +73,23 @@ export class tele {
       ...more
     }))
   }
+  async getMessages(chat_id:number,message_id:any[]){
+    if(String(chat_id).match(/^\-100/)){
+      return this.client.invoke(new Api.channels.GetMessages({
+        channel : chat_id,
+        id : message_id
+      }))
+    }else{
+      return this.client.invoke(new Api.messages.GetMessages({
+        id : message_id
+      }))
+    }
+  }
+  async getMessagesViews(chat_id:number,message_id:number[],more:any|undefined){
+    return this.client.invoke(new Api.messages.GetMessagesViews({
+      peer : chat_id,
+      id : message_id,
+      ...more
+    }))
+  }
 }

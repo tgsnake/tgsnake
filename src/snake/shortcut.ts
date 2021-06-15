@@ -40,4 +40,12 @@ export class shortcut {
   async forwardMessages(chat_id:number,from_chat_id:number,message_id:number[],more:any|undefined){
     return new tele(this.client).forwardMessages(chat_id,from_chat_id,message_id,more)
   }
+  async getMessages(message_id:any[]){
+    let msg = new message(this.message,this.event)
+    return new tele(this.client).getMessages(msg.chat.id,message_id)
+  }
+  async getMessagesViews(message_id:number[],more:any|undefined){
+    let msg = new message(this.message,this.event)
+    return new tele(this.client).getMessagesViews(msg.chat.id,message_id,more)
+  }
 }

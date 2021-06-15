@@ -12,10 +12,10 @@ const input = require("input")
 
 export class snake {
   client:any
-  api_hash:any
-  api_id:any
-  session:any
-  bot_token:any
+  api_hash:string|undefined
+  api_id:number|undefined
+  session:string
+  bot_token:string|undefined
   telegram:any
   logger:string
   connection_retries:number
@@ -69,9 +69,9 @@ export class snake {
       if(this.session == ""){
         if(!this.bot_token){
           await this.client.start({
-            phoneNumber: async () => await input.text('Input your number with country format'),
-            password: async () => await input.text('Input your 2FA password'),
-            phoneCode: async () => await input.text('Input Telegram verifications code'),
+            phoneNumber: async () => await input.text('🐍 Input your number with country format'),
+            password: async () => await input.text('🐍 Input your 2FA password'),
+            phoneCode: async () => await input.text('🐍 Input Telegram verifications code'),
             onError: (err:any) => { throw err },
           })
           this.session = await this.client.session.save()
@@ -89,8 +89,12 @@ export class snake {
       await this.client.getEntity("me")
       console.log("🐍 Running..")
     }
-    process.once('SIGINT', () => console.log("🐍 Killing.."))
-    process.once('SIGTERM', () => console.log("🐍 Killing.."))
+    process.once('SIGINT', () =>{ 
+      return console.log("🐍 Killing..")
+    })
+    process.once('SIGTERM', () => { 
+      return console.log("🐍 Killing..")
+    })
   }
   async onNewMessage(next:any){
     this.client.addEventHandler((event:NewMessageEvent)=>{

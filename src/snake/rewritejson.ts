@@ -8,33 +8,11 @@ export class message {
   entities:any
   replyToMessageId:any
   constructor(message:any,event:any){
-    //console.log(message)
-    this.id = message.id || undefined
-    this.text = message.text || undefined
-    let chatId = message.chat?.id || message.senderId || undefined
-    if(!event.isPrivate){
-      chatId = Number(`-100${message.chat.id}`)
-    }
-    this.chat = {
-      id : chatId,
-      title : message.chat?.title || undefined,
-      first_name : message.chat?.firstName || undefined,
-      last_name : message.chat?.lastName || undefined,
-      username : message.chat?.username || undefined,
-      "private" : event.isPrivate || false,
-      accessHash : message.chat?.accessHash || undefined
-    }
-   this.from = {
-      id : message.sender?.id || message.senderId || undefined,
-      first_name : message.sender?.firstName || undefined,
-      last_name : message.sender?.lastName || undefined,
-      username : message.sender?.username || undefined,
-      deleted : message.sender?.deleted || false,
-      restricted : message.sender?.restricted || false,
-      lang : message.sender?.langCode || undefined,
-      status : message.sender?.status?.className || undefined,
-      accessHash : message.sender?.accessHash || undefined
-    }
+   //console.log(message)
+   this.id = message.id || undefined
+   this.text = message.text || undefined
+   this.chat = new chatClass(message,event)
+   this.from = new fromClass(message,event)
    this.peer = {
      chatPeer : message._chatPeer || undefined,
      inputChat : message._inputChat || undefined
@@ -44,5 +22,49 @@ export class message {
    if(message.replyTo !== null){
      this.replyToMessageId = message.replyTo.replyToMsgId || undefined
    }
+  }
+}
+export class chatClass {
+  id:number|undefined
+  title:string|undefined
+  first_name:string|undefined
+  last_name:string|undefined
+  username:string|undefined
+  accessHash:any|undefined
+  private:string|undefined
+  constructor(message:any,event:any){
+    let chatId = message.chat?.id || message.senderId || undefined
+    if(!event.isPrivate){
+      chatId = Number(`-100${message.chat.id}`)
+    }
+    this.id = chatId,
+    this.title = message.chat?.title || undefined,
+    this.first_name = message.chat?.firstName || undefined,
+    this.last_name = message.chat?.lastName || undefined,
+    this.username = message.chat?.username || undefined,
+    this.private = event.isPrivate || false,
+    this.accessHash = message.chat?.accessHash || undefined
+  }
+}
+export class fromClass {
+  id:number|undefined
+  first_name:string|undefined
+  last_name:string|undefined
+  username:string|undefined
+  deleted:boolean|undefined
+  restricted:boolean|undefined
+  lang:string|undefined
+  status:string|undefined
+  accessHash:any|undefined
+  constructor(message:any,event:any){
+    this.id = message.sender?.id || message.senderId || undefined,
+    this.first_name = message.sender?.firstName || undefined,
+    this.last_name = message.sender?.lastName || undefined,
+    this.username = message.sender?.username || undefined,
+    this.deleted = message.sender?.deleted || false,
+    this.restricted = message.sender?.restricted || false,
+    this.lang = message.sender?.langCode || undefined,
+    this.status = message.sender?.status?.className || undefined,
+    this.accessHash = message.sender?.accessHash || undefined
   }
 }

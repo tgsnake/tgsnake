@@ -11,10 +11,13 @@ const Snake = new snake({
 
 Snake.run()
 Snake.onNewMessage(async (bot:any,message:any)=>{
-  console.log(bot.message)
+  //console.log(message)
   if(message.text == "!snake"){
     //await bot.deleteMessages([message.id])
     let msg = await bot.reply("🐍 Hi, I am Snake from TGSNAKE.")
-    bot.forwardMessages(message.chat.id,message.chat.id,[message.id])
+    //console.log(await bot.getMessages([message.id]))
+    //bot.forwardMessages(message.chat.id,message.chat.id,[message.id])
+    /*let results = await Snake.telegram.getMessagesViews(message.chat.id,[message.id])
+    console.log(results)*/
   }
 })
