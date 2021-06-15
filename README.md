@@ -3,7 +3,9 @@
 Hi, **tgsnake** is a framework developed based on gram.js
 ### Example 
 
-`yarn add https://github.com/butthx/tgsnake`
+`yarn add https://github.com/butthx/tgsnake`   
+or 
+`yarn add tgsnake`  
 
 ```javascript
 const {snake} = require("tgsnake")
@@ -26,4 +28,4 @@ Snake.onNewMessage((bot,message)=>{ //handle new message event.
 MIT LICENSE
 
 ### Docs
-comming soon.
+Read [tgsnake wiki](https://github.com/butthx/tgsnake/wiki/)
