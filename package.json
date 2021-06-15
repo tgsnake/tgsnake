@@ -7,7 +7,7 @@
     "dev": "nodemon ./tes/index.ts",
     "build": "tsc",
     "start": "node ./lib/index.js",
-    "prepare": "npm run build"
+    "prepare": "echo \"🐍 Building Snacke Package.\" && tsc"
   },
   "repository": "https://github.com/butthx/tgsnake",
   "author": "butthx",
