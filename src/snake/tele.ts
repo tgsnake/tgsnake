@@ -64,4 +64,13 @@ export class tele {
       ...more
     }))
   }
+  async forwardMessages(chat_id:number,from_chat_id:number,message_id:number[],more:any|undefined){
+    return this.client.invoke(new Api.messages.ForwardMessages({
+      fromPeer : from_chat_id,
+      toPeer : chat_id,
+      id : message_id,
+      randomId : [BigInt(Math.floor(Math.random() * 10000000000000))],
+      ...more
+    }))
+  }
 }

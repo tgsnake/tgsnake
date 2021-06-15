@@ -37,4 +37,7 @@ export class shortcut {
     let msg = new message(this.message,this.event)
     return new tele(this.client).editMessage(msg.chat.id,message_id,text,more)
   }
+  async forwardMessages(chat_id:number,from_chat_id:number,message_id:number[],more:any|undefined){
+    return new tele(this.client).forwardMessages(chat_id,from_chat_id,message_id,more)
+  }
 }
