@@ -86,7 +86,7 @@ export class snake {
       }else{
         await this.client.connect()
       }
-      await this.client.getMe()
+      await this.client.getEntity("me")
       console.log("🐍 Running..")
     }
     process.once('SIGINT', () => console.log("🐍 Killing.."))
