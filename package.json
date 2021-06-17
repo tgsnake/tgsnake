@@ -9,9 +9,14 @@
     "start": "node ./lib/index.js",
     "prepare": "echo \"🐍 Building Snake Package.\" && tsc"
   },
-  "homepage":"https://github.com/butthx/tgsnake/wiki",
-  "keywords":["tgsnake","telegram","mtproto","gramjs"],
-  "bugs":"https://github.com/butthx/tgsnake/issues",
+  "homepage": "https://github.com/butthx/tgsnake/wiki",
+  "keywords": [
+    "tgsnake",
+    "telegram",
+    "mtproto",
+    "gramjs"
+  ],
+  "bugs": "https://github.com/butthx/tgsnake/issues",
   "repository": "https://github.com/butthx/tgsnake",
   "author": "butthx",
   "license": "MIT",

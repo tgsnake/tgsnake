@@ -7,12 +7,14 @@ export class message {
   peer:any
   entities:any
   replyToMessageId:any
+  date:Date|number|any
   constructor(message:any,event:any){
    //console.log(message)
    this.id = message.id || undefined
    this.text = message.text || undefined
    this.chat = new chatClass(message,event)
    this.from = new fromClass(message,event)
+   this.date = message.date || Date.now() / 1000
    this.peer = {
      chatPeer : message._chatPeer || undefined,
      inputChat : message._inputChat || undefined

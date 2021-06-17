@@ -7,99 +7,116 @@ import {Message} from 'telegram/tl/custom/message';
 import {tele} from "./snake/tele"
 import {shortcut} from "./snake/shortcut"
 import {message} from "./snake/rewritejson"
+import input from "input"
 export {Api} from "telegram"
-const input = require("input")
 
+let version = "0.0.3" //change this version according to what is in package.json
+
+let api_hash:string|undefined
+let api_id:number|undefined
+let session:string
+let bot_token:string|undefined
+let logger:string
+let connection_retries:number
 export class snake {
   client:any
-  api_hash:string|undefined
-  api_id:number|undefined
-  session:string
-  bot_token:string|undefined
   telegram:any
-  logger:string
-  connection_retries:number
-  constructor(options:any){
+  constructor(options?:any|undefined){
     //default options
-    this.api_hash = undefined 
-    this.api_id = undefined
-    this.session = ""
-    this.bot_token = undefined
-    this.connection_retries = 5
-    this.logger = "none"
+    api_hash = undefined 
+    api_id = undefined
+    session = ""
+    bot_token = undefined
+    connection_retries = 5
+    logger = "none"
     // custom options
-    if(options.logger){
-      this.logger = options.logger
-      Logger.setLevel(this.logger)
+    if(options){
+      if(options.logger){
+        logger = options.logger
+      }
+      if(options.api_hash){
+        api_hash = String(options.api_hash)
+      }
+      if(options.api_id){
+        api_id = Number(options.api_id)
+      }
+      if(options.session){
+        session = options.session
+      }
+      if(options.bot_token){
+        bot_token = options.bot_token
+      }
+      if(options.connection_retries){
+        connection_retries = options.connection_retries
+      }
     }
-    if(options.api_hash){
-      this.api_hash = options.api_hash
-    }
-    if(options.api_id){
-      this.api_id = options.api_id
-    }
-    if(options.session){
-      this.session = options.session
-    }
-    if(options.bot_token){
-      this.bot_token = options.bot_token
-    }
-    if(options.connection_retries){
-      this.connection_retries = options.connection_retries
-    }
+    Logger.setLevel(logger)
   }
   async run(){
-    console.log("🐍 Welcome To TGSNAKE.")
-    if(!this.api_hash || !this.api_id){
-      if(!this.api_hash){
-        throw "🐍 ERROR: api_hash not found."
-      }
-      if(!this.api_id){
-        throw "🐍 ERROR: api_id not found."
-      }
-    }else{
-      this.client = new TelegramClient(
-          new StringSession(this.session),
-          Number(this.api_id),
-          String(this.api_hash),
-          { connectionRetries: this.connection_retries }
-        )
-      this.telegram = new tele(this.client)
-      console.log(`🐍 Setting Logger level to "${this.logger}"`)
-      if(this.session == ""){
-        if(!this.bot_token){
+    console.log(`🐍 Welcome To TGSNAKE ${version}.`)
+    console.log(`🐍 Setting Logger level to "${logger}"`)
+    if(!api_hash){
+      api_hash = await input.text("🐍 Input your api_hash")
+    }
+    if(!api_id){
+      api_id = await input.text("🐍 Input your api_id")
+    }
+    this.client = new TelegramClient(
+        new StringSession(session),
+        Number(api_id),
+        String(api_hash),
+        { 
+          connectionRetries : connection_retries,
+          appVersion : version
+        }
+      )
+    this.telegram = new tele(this.client)
+    if(session == ""){
+      if(!bot_token){
+        let loginAsBot = await input.confirm("🐍 Login as bot?")
+        if(!loginAsBot){
           await this.client.start({
-            phoneNumber: async () => await input.text('🐍 Input your number with country format'),
+            phoneNumber: async () => await input.text('🐍 Input your international phone number'),
             password: async () => await input.text('🐍 Input your 2FA password'),
             phoneCode: async () => await input.text('🐍 Input Telegram verifications code'),
-            onError: (err:any) => { throw err },
-          })
-          this.session = await this.client.session.save()
-          console.log(`🐍 Your string session : ${this.session}`)
+            onError: (err:any) => console.log(`🐍 ${err}`),
+          }).catch((err:any)=> console.log(`🐍 ${err}`))
+          session = await this.client.session.save()
+          console.log(`🐍 Your string session : ${session}`)
         }else{
           await this.client.start({
-            botAuthToken : this.bot_token
-          })
-          this.session = await this.client.session.save()
-          console.log(`🐍 Your string session : ${this.session}`)
+            botAuthToken : await input.text("🐍 Input your bot_token")
+          }).catch((err:any)=> console.log(`🐍 ${err}`))
+          session = await this.client.session.save()
+          console.log(`🐍 Your string session : ${session}`)
         }
       }else{
-        await this.client.connect()
+        await this.client.start({
+          botAuthToken : bot_token
+        })
+        session = await this.client.session.save()
+        console.log(`🐍 Your string session : ${session}`)
       }
-      await this.client.getEntity("me")
-      console.log("🐍 Running..")
+    }else{
+      await this.client.connect()
     }
+      await this.client.getMe().catch((e:any)=>{})
+      console.log("🐍 Running..")
     process.once('SIGINT', () =>{ 
-      return console.log("🐍 Killing..")
+      console.log("🐍 Killing..")
+      process.exit(0)
     })
     process.once('SIGTERM', () => { 
-      return console.log("🐍 Killing..")
+      console.log("🐍 Killing..")
+      process.exit(0)
     })
   }
   async onNewMessage(next:any){
-    this.client.addEventHandler((event:NewMessageEvent)=>{
-      let cut = new shortcut(this.client,event)
-      return next(cut,new message(cut.message,event))
-    },new NewMessage({}))
+    if(this.client){
+      this.client.addEventHandler((event:NewMessageEvent)=>{
+        let cut = new shortcut(this.client,event)
+        return next(cut,cut.message)
+      },new NewMessage({}))
+    }
   }
 }
