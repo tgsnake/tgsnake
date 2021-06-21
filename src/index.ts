@@ -67,7 +67,7 @@ export class snake {
         String(api_hash),
         { 
           connectionRetries : connection_retries,
-          appVersion : version
+          appVersion : `🐍TGSNAKE(${version})`
         }
       )
     this.telegram = new tele(this.client)

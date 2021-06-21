@@ -13,13 +13,15 @@ const Snake = new snake({
 Snake.run()
 //console.log(Snake)
 Snake.onNewMessage(async (bot:any,message:any)=>{
-  //console.log(bot.event,bot.event.message)
+  console.log(message)
   if(message.text == "!snake" || message.text == ".snake"){
     let ping = ((Date.now() / 1000) - message.date).toFixed(3)
-    let msg = await bot.reply(`🐍 **Hi, I am Snake from TgSnake**\nPing : \`${ping} s\``)
-    //let fw = await bot.forwardMessages(message.chat.id,message.chat.id,[message.id,msg.id])
-    //console.log(fw)
-    //let edit = await bot.editMessage(msg.id,"hai")
-    //bot.reply(JSON.stringify(edit,null,2))
+    await bot.reply(`🐍 **Hi, I am Snake from TgSnake**\nPing : \`${ping} s\``)
+    await bot.deleteMessages([message.id])
+    //console.log(await Snake.client.getEntity(message.chat.id))
+    //console.log(await bot.reply(`Have A Nice Day!`))
   }
+  /*if(bot.event.message.media){
+    console.log(JSON.stringify(bot.event.message.media,null,2))
+  }*/
 })

@@ -6,7 +6,9 @@ export class ClassResultSendMessage {
   constructor(resultSendMessage:any){
     if(resultSendMessage.updates){
       this.id = resultSendMessage.updates[0]?.id || undefined
-      this.chatId = resultSendMessage.chats[0]?.id || undefined
+      if(resultSendMessage.chats[0]){
+        this.chatId = Number(`-100${resultSendMessage.chats[0]?.id}`) || undefined
+      }
     }else{
       this.id = resultSendMessage.id
     }
@@ -21,7 +23,7 @@ export class ClassResultEditMessage {
   constructor(resultEditMessage:any){
     this.id = resultEditMessage.updates[0]?.message.id || undefined
     if(resultEditMessage.chats.length > 0){
-      this.chatId = resultEditMessage.chats[0].id
+      this.chatId = Number(`-100${resultEditMessage.chats[0].id}`)
     }else{
       this.chatId = resultEditMessage.users[1].id
     }
