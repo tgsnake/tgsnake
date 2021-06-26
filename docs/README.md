@@ -1,14 +1,15 @@
-### Welcome
+### Welcome To TgSnake
 ![tgsnakeicon-flaticon](./tgsnake.jpg)  
 Hi, **tgsnake** is a framework developed based on gram.js  
+  
 [![github-repo](https://img.shields.io/badge/Github-butthx-blue.svg?style=for-the-badge&logo=github)](https://github.com/butthx/tgsnake)
 [![telegram-chat](https://img.shields.io/badge/Telegram-Chat-blue.svg?style=for-the-badge&logo=telegram)](https://t.me/tgsnakechat)
 [![telegram-channel](https://img.shields.io/badge/Telegram-Channel-blue.svg?style=for-the-badge&logo=telegram)](https://t.me/tgsnake)
-### Example   
+### Installation
 `yarn add https://github.com/butthx/tgsnake`   
 or   
 `yarn add tgsnake`  
-
+### Example   
 ```javascript
 const {snake} = require("tgsnake")
 // import {snake} from "tgsnake"
@@ -51,4 +52,4 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 ### Docs
-Read [tgsnake wiki](https://github.com/butthx/tgsnake/wiki/)
+Read [tgsnake docs](/docs)
