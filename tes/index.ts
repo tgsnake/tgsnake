@@ -9,19 +9,20 @@ const Snake = new snake({
   session : String(process.env.session),
   logger : "none"
 })
-
+//Snake.generateSession()
 Snake.run()
 //console.log(Snake)
+const {telegram} = Snake
+const tg = telegram
 Snake.onNewMessage(async (bot:any,message:any)=>{
-  console.log(message)
+  //console.log(bot.event.message)
   if(message.text == "!snake" || message.text == ".snake"){
     let ping = ((Date.now() / 1000) - message.date).toFixed(3)
-    await bot.reply(`🐍 **Hi, I am Snake from TgSnake**\nPing : \`${ping} s\``)
-    await bot.deleteMessages([message.id])
-    //console.log(await Snake.client.getEntity(message.chat.id))
-    //console.log(await bot.reply(`Have A Nice Day!`))
+    let msg = await bot.reply(`🐍 **Hi, I am Snake from TgSnake**\nPing : \`${ping} s\``)
+    if(message.replyToMessageId){
+      console.log(
+        JSON.stringify(await tg.getMessagesViews(message.chat.id,[message.replyToMessageId]),null,2)
+        )
+    }
   }
-  /*if(bot.event.message.media){
-    console.log(JSON.stringify(bot.event.message.media,null,2))
-  }*/
 })

@@ -8,6 +8,11 @@ export class message {
   entities:any
   replyToMessageId:any
   date:Date|number|any
+  media:any
+  /**
+   * rewrite json from incoming message. 
+   * original message can be found in bot.event.message.
+  */
   constructor(message:any,event:any){
     /**
      * message id from incoming new message
@@ -44,6 +49,12 @@ export class message {
    */
    if(message.message){
      this.text = message.message
+   } 
+   /**
+    * if user sending media this object will showing.
+   */
+   if(message.media){
+     this.media = message.media
    }
   }
 }
@@ -55,6 +66,9 @@ export class chatClass {
   username:string|undefined
   accessHash:any|undefined
   private:string|undefined
+  /**
+   * To generate new json from `message.chat`
+  */
   constructor(message:any,event:any){
     if(message.chat){
       /**
@@ -125,6 +139,9 @@ export class fromClass {
   lang:string|undefined
   status:string|undefined
   accessHash:any|undefined
+  /**
+   * To generate json from `message.sender`
+  */
   constructor(message:any,event:any){
     if(message.sender){
       /**

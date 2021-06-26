@@ -1,0 +1,15 @@
+# Basic set up for three package managers
+
+version: 2
+updates:
+
+  # Maintain dependencies for npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "npm dependencies"
+    commit-message:
+      prefix: "npm"
+    target-branch: "dev"
