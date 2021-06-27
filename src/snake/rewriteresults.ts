@@ -71,29 +71,6 @@ export class ClassResultEditMessage {
     this.date = resultEditMessage.date || Math.floor(Date.now()/1000)
   }
 }
-export class ClassResultDeleteMessage {
-  pts:number|undefined 
-  ptsCount:number|undefined 
-  /**
-   * Generate new class result from deleteMessages.
-  */
-  constructor(resultDeleteMessage:any){
-    if(resultDeleteMessage){
-      /**
-       * Generate pts // Event count after generation
-      */
-      if(resultDeleteMessage.pts){
-        this.pts = resultDeleteMessage.pts
-      }
-      /**
-       * Generate ptsCount // Number of events that were generated
-      */
-      if(resultDeleteMessage.ptsCount){
-        this.ptsCount = resultDeleteMessage.ptsCount
-      }
-    }
-  }
-}
 export class ClassResultForwardMessages { 
   id:number[]|undefined
   chatId:number|undefined 
@@ -371,5 +348,43 @@ class GetMessagesViewsClassViews {
         this.replies = getMessagesViews.replies
       }
     }
+  }
+}
+export class ClassResultAffectedMessages {
+  pts:number|undefined 
+  ptsCount:number|undefined 
+  offset:number|undefined  
+  date:Date|number|undefined
+  /**
+   * Generate new class result AffectedMessages.
+  */
+  constructor(resultReadHistory:any){
+    if(resultReadHistory){
+      /**
+       * Generate pts // Event count after generation
+      */
+      if(resultReadHistory.pts){
+        this.pts = resultReadHistory.pts
+      }else{
+        this.pts = 0
+      }
+      /**
+       * Generate ptsCount // Number of events that were generated
+      */
+      if(resultReadHistory.ptsCount){
+        this.ptsCount = resultReadHistory.ptsCount
+      }else{
+        this.ptsCount = 0
+      }
+      /**
+       * Generate offset (readMentions)
+      */
+      if(resultReadHistory.offset){
+        this.offset = resultReadHistory.offset
+      }else{
+        this.offset = 0
+      }
+    }
+    this.date = Math.floor(Date.now()/1000)
   }
 }

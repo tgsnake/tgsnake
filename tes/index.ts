@@ -16,13 +16,18 @@ const {telegram} = Snake
 const tg = telegram
 Snake.onNewMessage(async (bot:any,message:any)=>{
   //console.log(bot.event.message)
+  //console.log(message)
+  tg.readHistory(message.chat.id)
+  tg.readMentions(message.chat.id)
   if(message.text == "!snake" || message.text == ".snake"){
     let ping = ((Date.now() / 1000) - message.date).toFixed(3)
     let msg = await bot.reply(`🐍 **Hi, I am Snake from TgSnake**\nPing : \`${ping} s\``)
-    if(message.replyToMessageId){
-      console.log(
-        JSON.stringify(await tg.getMessagesViews(message.chat.id,[message.replyToMessageId]),null,2)
-        )
-    }
+    /*console.log(
+        JSON.stringify(
+            await tg.readMessageContents([message.replyToMessageId]),
+            null,
+            2
+          )
+      )*/
   }
 })

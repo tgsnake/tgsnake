@@ -10,7 +10,7 @@ import * as reResults from "./rewriteresults"
 import BigInt from "big-integer"
 import { computeCheck } from "telegram/Password";
 
-let client:any
+export let client:any
 
 export class tele {
   /**
@@ -65,12 +65,12 @@ export class tele {
    * chat_id : chat or Channel or groups id 
    * message_id : array of number message id to be deleted.
    * results :
-   * ClassResultDeleteMessage
+   * ClassResultAffectedMessages
   */
   async deleteMessages(chat_id:number|string,message_id:number[]){
     let type = await client.getEntity(chat_id)
     if(type.className == "Channel"){
-      return new reResults.ClassResultDeleteMessage(
+      return new reResults.ClassResultAffectedMessages(
          await client.invoke(
           new Api.channels.DeleteMessages({
             channel: chat_id,
@@ -79,7 +79,7 @@ export class tele {
         )
       )
     }else{
-      return new reResults.ClassResultDeleteMessage(
+      return new reResults.ClassResultAffectedMessages(
         await client.invoke(
           new Api.messages.DeleteMessages({
            revoke: true,
@@ -199,6 +199,13 @@ export class tele {
       }))
     )
   }
+  /**
+   * class getUserPhotos 
+   * Returns the list of user photos.
+   * parameters : 
+   * chat_id : chat or channel or groups id. 
+   * more : gramjs GetUserPhotos params.
+  */
   async getUserPhotos(chat_id:number|string,more?:any|undefined){
     return client.invoke(
         new Api.photos.GetUserPhotos({
@@ -207,81 +214,102 @@ export class tele {
         })
       )
   }
+  /**
+   * class readHistory 
+   * Mark channel/supergroup history as read 
+   * parameters : 
+   * chat_id : chat or channel or groups id.
+   * more : gramjs ReadHistory params.
+   * results : 
+   * ClassResultAffectedMessages
+  */
   async readHistory(chat_id:number|string,more?:any|undefined){
-    return client.invoke(
-        new Api.messages.ReadHistory({
-          peer : chat_id,
-          ...more
-        })
+    let type = await client.getEntity(chat_id)
+    if(type.className == "Channel"){
+      return new reResults.ClassResultAffectedMessages(
+          await client.invoke(
+              new Api.channels.ReadHistory({
+                channel : chat_id,
+                ...more
+              })
+            )
+        )
+    }else{
+      return new reResults.ClassResultAffectedMessages( 
+          await client.invoke(
+            new Api.messages.ReadHistory({
+              peer : chat_id,
+              ...more
+            })
+          )
       )
+    }
   }
+  /**
+   * class readMentions
+   * Get unread messages where we were mentioned
+   * parameters : 
+   * chat_id : chat or channel or groups id.
+   * results : 
+   * ClassResultAffectedMessages
+  */
   async readMentions(chat_id:number|string){
-    return client.invoke(
-        new Api.messages.ReadMentions({
-          peer : chat_id
-        })
+    return new reResults.ClassResultAffectedMessages(
+        await client.invoke(
+          new Api.messages.ReadMentions({
+            peer : chat_id
+          })
+        )
       )
   }
+  /**
+   * class readMessageContents
+   * Mark channel/supergroup message contents as read 
+   * parameters : 
+   * message_id : array of message id
+   * results : 
+   * ClassResultAffectedMessages
+  */
   async readMessageContents(message_id:number[]){
-    return client.invoke(
-        new Api.messages.ReadMessageContents({
-          id : message_id
-        })
+    return new reResults.ClassResultAffectedMessages(
+        await client.invoke(
+          new Api.messages.ReadMessageContents({
+            id : message_id
+          })
+        )
       )
   }
-  async receivedMessages(max_id:number){
-    return client.invoke(
-        new Api.messages.ReceivedMessages({
-          maxId : max_id
-        })
-      )
-  }
-  async search(chat_id:number|string,query:string,more?:any|undefined){
-    return client.invoke(
-        new Api.messages.Search({
-          peer : chat_id,
-          q : query,
-          ...more
-        })
-      )
-  }
-  async searchGlobal(query:string,more?:any|undefined){
-    return client.invoke(
-        new Api.messages.SearchGlobal({
-          q : query,
-          ...more
-        })
-      )
-  }
+  /**
+   * class unpinAllMessages
+   * Unpin all pinned messages 
+   * parameters : 
+   * chat_id : chat or channel or groups id.
+   * results : 
+   * ClassResultAffectedMessages
+  */
   async unpinAllMessages(chat_id:number|string){
-    return client.invoke(
-        new Api.messages.UnpinAllMessages({
-          peer : chat_id
-        })
+    return new reResults.ClassResultAffectedMessages(
+        await client.invoke(
+          new Api.messages.UnpinAllMessages({
+            peer : chat_id
+          })
+        )
       )
   }
+  /**
+   * class pinMessage 
+   * Pin a message 
+   * parameters : 
+   * chat_id : chat or channel or groups id.
+   * message_id : The message to pin or unpin 
+   * more : gramjs UpdatePinnedMessage params.
+  */
   async pinMessage(chat_id:number|string,message_id:number,more?:any|undefined){
     return client.invoke(
         new Api.messages.UpdatePinnedMessage({
           peer:chat_id,
           id:message_id,
           ...more
-        })
-      )
-  }
-  async createChannel(title:string,about:string,more?:any|undefined){
-    return client.invoke(
-        new Api.channels.CreateChannel({
-          title : title,
-          about : about,
-          ...more
-        })
-      )
-  }
-  async deleteChannel(chat_id:number|string){
-    return client.invoke(
-        new Api.channels.DeleteChannel({
-          channel : chat_id
         })
       )
   }
@@ -336,7 +364,7 @@ export class tele {
           channel : chat_id,
           userId : user_id,
           adminRights : new Api.ChatAdminRights(permissions),
-          rank : more?.rank || false
+          rank : more?.rank || ""
         })
       )
   }
@@ -369,25 +397,6 @@ export class tele {
           participant : user_id,
           bannedRights : new Api.ChatBannedRights(permissions)
         })
-      )
-  }
-  /**
-   * class editCreator 
-   * Transfer channel ownership.
-   * parameters : 
-   * chat_id : channel or groups id 
-   * user_id : New channel owner 
-   * password : 2fa password 
-  */
-  async editCreator(chat_id:number|string,user_id:number|string,password:string){
-    let pwd:Api.account.Password = await client.invoke(new Api.account.GetPassword())
-    let passSrp = await computeCheck(pwd,password)
-    return client.invoke(
-        new Api.channels.EditCreator({
-            channel : chat_id,
-            userId : user_id,
-            password : passSrp
-          })
       )
   }
 }
