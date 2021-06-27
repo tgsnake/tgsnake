@@ -388,3 +388,60 @@ export class ClassResultAffectedMessages {
     this.date = Math.floor(Date.now()/1000)
   }
 }
+export class ClassResultPinMessage {
+  chatId:number|undefined 
+  id:number|undefined 
+  date:Date|number|undefined 
+  messages:number[]|undefined
+  /**
+   * Generate new json resut from UpdatePinMessage
+  */
+  constructor(ResutPinMessage:any){
+    if(ResutPinMessage){
+      if(ResutPinMessage.updates.length > 0){
+        for(let i = 0; i< ResutPinMessage.updates.length; i++){
+          let msg = ResutPinMessage.updates[i]
+          /**
+           * Generate messages,chatId
+          */
+          if(msg.className == "UpdatePinnedChannelMessages"){
+            if(msg.messages){
+              this.messages = msg.messages
+            }
+            if(msg.channelId){
+              this.chatId = msg.channelId
+            }
+          }else{
+            if(msg.className == "UpdatePinnedMessages"){
+              if(msg.messages){
+                this.messages = msg.messages
+              }
+              if(msg.peer.userId){
+                this.chatId = msg.peer.userId
+              }
+            }
+          }
+          /**
+           * Generate service message id
+          */
+          if(msg.className == "UpdateNewChannelMessage"){
+            if(msg.message.action){
+              if(msg.message.action.className == "MessageActionPinMessage"){
+                this.id = msg.message.id
+              }
+            }
+          }else{
+            if(msg.className == "UpdateNewMessage"){
+              if(msg.message.action){
+                if(msg.message.action.className == "MessageActionPinMessage"){
+                  this.id = msg.message.id
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    this.date = Math.floor(Date.now()/1000)
+  }
+}

@@ -1,5 +1,6 @@
 require("dotenv").config()
 import {snake,Api} from "../src"
+import {Filters} from "../src/filters"
 import fs from "fs"
 
 const Snake = new snake({
@@ -15,19 +16,17 @@ Snake.run()
 const {telegram} = Snake
 const tg = telegram
 Snake.onNewMessage(async (bot:any,message:any)=>{
-  //console.log(bot.event.message)
-  //console.log(message)
+  let filter = new Filters(bot)
   tg.readHistory(message.chat.id)
   tg.readMentions(message.chat.id)
-  if(message.text == "!snake" || message.text == ".snake"){
+  // introduction filters
+  filter.cmd("ping",()=>{
+    bot.reply("pong!")
+  })
+  /*if(message.text == "!snake" || message.text == ".snake"){
     let ping = ((Date.now() / 1000) - message.date).toFixed(3)
     let msg = await bot.reply(`🐍 **Hi, I am Snake from TgSnake**\nPing : \`${ping} s\``)
-    /*console.log(
-        JSON.stringify(
-            await tg.readMessageContents([message.replyToMessageId]),
-            null,
-            2
-          )
-      )*/
-  }
+    //let me = await bot.event.client.getMe()
+    //console.log(me)
+  }*/
 })

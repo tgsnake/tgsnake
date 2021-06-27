@@ -303,14 +303,18 @@ export class tele {
    * chat_id : chat or channel or groups id.
    * message_id : The message to pin or unpin 
    * more : gramjs UpdatePinnedMessage params.
+   * results : 
+   * ClassResultPinMessage
   */
   async pinMessage(chat_id:number|string,message_id:number,more?:any|undefined){
-    return client.invoke(
-        new Api.messages.UpdatePinnedMessage({
-          peer:chat_id,
-          id:message_id,
-          ...more
-        })
+    return new reResults.ClassResultPinMessage(
+        await client.invoke(
+          new Api.messages.UpdatePinnedMessage({
+            peer:chat_id,
+            id:message_id,
+            ...more
+          })
+        )
       )
   }
   async deleteHistory(chat_id:number|string,more?:any|undefined){
