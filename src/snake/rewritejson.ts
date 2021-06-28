@@ -58,7 +58,7 @@ export class message {
    }
   }
 }
-export class chatClass {
+class chatClass {
   id:number|undefined
   title:string|undefined
   first_name:string|undefined
@@ -129,7 +129,7 @@ export class chatClass {
     this.private = event.isPrivate || false
   }
 }
-export class fromClass {
+class fromClass {
   id:number|undefined
   first_name:string|undefined
   last_name:string|undefined

@@ -19,14 +19,14 @@ Snake.onNewMessage(async (bot:any,message:any)=>{
   let filter = new Filters(bot)
   tg.readHistory(message.chat.id)
   tg.readMentions(message.chat.id)
-  // introduction filters
-  filter.cmd("ping",()=>{
-    bot.reply("pong!")
-  })
-  /*if(message.text == "!snake" || message.text == ".snake"){
+  if(
+    await filter.hears("^[!/]snake help",()=>{
+      return bot.reply("here you go!")
+    })
+  ) return
+
+  filter.cmd("snake",async (bot,message)=>{
     let ping = ((Date.now() / 1000) - message.date).toFixed(3)
-    let msg = await bot.reply(`🐍 **Hi, I am Snake from TgSnake**\nPing : \`${ping} s\``)
-    //let me = await bot.event.client.getMe()
-    //console.log(me)
-  }*/
+    return bot.reply(`🐍 **Hi, I am Snake from TgSnake**\nPing : \`${ping} s\``)
+  })
 })

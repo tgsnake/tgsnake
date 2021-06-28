@@ -70,11 +70,6 @@
     "forceConsistentCasingInFileNames": true,        /* Disallow inconsistently-cased references to the same file. */
   },
   "include":["src"],
-  "exclude": ["node_modules", "tes","lib"],
-  "typedocOptions": {
-    "entryPoints": ["src"],
-    "out": "docs",
-    "exclude" : ["node_modules", "tes","lib"]
-  },
+  "exclude": ["node_modules", "tes","lib","example"],
   "ignoreCompilerErrors" : true
 }

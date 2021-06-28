@@ -53,6 +53,14 @@ export class snake {
     Logger.setLevel(logger)
   }
   async run(){
+    process.once('SIGINT', () =>{ 
+      console.log("🐍 Killing..")
+      process.exit(0)
+    })
+    process.once('SIGTERM', () => { 
+      console.log("🐍 Killing..")
+      process.exit(0)
+    })
     console.log(`🐍 Welcome To TGSNAKE ${version}.`)
     console.log(`🐍 Setting Logger level to "${logger}"`)
     if(!api_hash){
@@ -100,15 +108,7 @@ export class snake {
     }
       await this.client.connect()
       await this.client.getMe().catch((e:any)=>{})
-      console.log("🐍 Running..")
-    process.once('SIGINT', () =>{ 
-      console.log("🐍 Killing..")
-      process.exit(0)
-    })
-    process.once('SIGTERM', () => { 
-      console.log("🐍 Killing..")
-      process.exit(0)
-    })
+      return console.log("🐍 Running..")
   }
   async onNewMessage(next:any){
     if(this.client){

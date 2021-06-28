@@ -9,7 +9,7 @@
     "start": "node ./lib/index.js",
     "prepare": "echo \"🐍 Building Snake Package.\" && tsc"
   },
-  "homepage": "https://github.com/butthx/tgsnake/wiki",
+  "homepage": "https://tgsnake.js.org",
   "keywords": [
     "tgsnake",
     "telegram",

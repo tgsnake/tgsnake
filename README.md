@@ -51,4 +51,4 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 ### Docs
-Read [tgsnake wiki](https://github.com/butthx/tgsnake/wiki/)
+Read [tgsnake docs](https://tgsnake.js.org)
