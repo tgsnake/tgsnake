@@ -317,6 +317,15 @@ export class tele {
         )
       )
   }
+  /**
+   * class deleteHistory 
+   * Delete the history of a supergroup
+   * parameters : 
+   * chat_id : Supergroup whose history must be deleted 
+   * more : gramjs DeleteHistory params.
+   * results : 
+   * boolean or ClassResultAffectedMessages
+  */
   async deleteHistory(chat_id:number|string,more?:any|undefined){
     let type = await client.getEntity(chat_id)
     if(type.className == "Channel"){
@@ -327,19 +336,32 @@ export class tele {
         })
       )
     }else{
-      return client.invoke(
-          new Api.messages.DeleteHistory({
-            peer : chat_id
-          })
+      return new reResults.ClassResultAffectedMessages(
+          await client.invoke(
+            new Api.messages.DeleteHistory({
+              peer : chat_id
+            })
+          )
         )
     }
   }
+  /**
+   * class deleteUserHistory 
+   * Delete all messages sent by a certain user in a supergroup 
+   * parameters : 
+   * chat_id : channel or groups id. 
+   * user_id : User whose messages should be deleted 
+   * results : 
+   * ClassResultAffectedMessages
+  */
   async deleteUserHistory(chat_id:number|string,user_id:number|string){
-    return client.invoke(
-        new Api.channels.DeleteUserHistory({
-          channel : chat_id,
-          userId : user_id
-        })
+    return new reResults.ClassResultAffectedMessages(
+        await client.invoke(
+          new Api.channels.DeleteUserHistory({
+            channel : chat_id,
+            userId : user_id
+          })
+        )
       )
   }
   /**
@@ -349,6 +371,8 @@ export class tele {
    * chat_id : channel or groups id 
    * user_id : id from user which will modify the admin rights
    * more : adminRights params and rank params.
+   * results : 
+   * ClassResultEditAdminOrBanned
   */
   async editAdmin(chat_id:number|string,user_id:number|string,more?:any|undefined){
     let permissions = {
@@ -363,13 +387,15 @@ export class tele {
       anonymous: more?.anonymous || false,
       manageCall: more?.manageCall ||true
     }
-    return client.invoke(
-        new Api.channels.EditAdmin({
-          channel : chat_id,
-          userId : user_id,
-          adminRights : new Api.ChatAdminRights(permissions),
-          rank : more?.rank || ""
-        })
+    return new reResults.ClassResultEditAdminOrBanned( 
+        await client.invoke(
+          new Api.channels.EditAdmin({
+            channel : chat_id,
+            userId : user_id,
+            adminRights : new Api.ChatAdminRights(permissions),
+            rank : more?.rank || ""
+          })
+        )
       )
   }
   /**
@@ -378,7 +404,9 @@ export class tele {
    * parameters : 
    * chat_id : channel or groups id 
    * user_id : id from user which will banned/kicked/unbanned 
-   * more : permissions given to the user
+   * more : permissions given to the user 
+   * results : 
+   * ClassResultEditAdminOrBanned
   */
   async editBanned(chat_id:number|string,user_id:number|string,more?:any|undefined){
     let permissions = {
@@ -395,12 +423,14 @@ export class tele {
       inviteUsers: more?.inviteUsers || true,
       pinMessages: more?.pinMessages || true
     }
-    return client.invoke(
-        new Api.channels.EditBanned({
-          channel : chat_id,
-          participant : user_id,
-          bannedRights : new Api.ChatBannedRights(permissions)
-        })
+    return new reResults.ClassResultEditAdminOrBanned(
+        await client.invoke(
+          new Api.channels.EditBanned({
+            channel : chat_id,
+            participant : user_id,
+            bannedRights : new Api.ChatBannedRights(permissions)
+          })
+        )
       )
   }
 }

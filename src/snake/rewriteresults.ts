@@ -445,3 +445,18 @@ export class ClassResultPinMessage {
     this.date = Math.floor(Date.now()/1000)
   }
 }
+export class ClassResultEditAdminOrBanned {
+  chatId:number|undefined 
+  date:Date|number|undefined 
+  /**
+   * Generate new json result from editAdmin or editBanned
+  */
+  constructor(resultEditAdminOrBanned:any){
+    if(resultEditAdminOrBanned){
+      if(resultEditAdminOrBanned.chats.length > 0){
+        this.chatId = resultEditAdminOrBanned.chats[0].id
+      }
+      this.date = resultEditAdminOrBanned.date || Math.floor(Date.now()/1000)
+    }
+  }
+}
