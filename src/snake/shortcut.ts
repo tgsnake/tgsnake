@@ -32,6 +32,9 @@ export class shortcut {
       ...more
     })
   }
+  async respond(text:string,more?:any|undefined){
+    return tg.sendMessage(this.message.chat.id,text,more)
+  }
   async deleteMessages(message_id:number[]){
     return tg.deleteMessages(this.message.chat.id,message_id)
   }
@@ -46,5 +49,40 @@ export class shortcut {
   }
   async getMessagesViews(message_id:number[],more?:any|undefined){
     return tg.getMessagesViews(this.message.chat.id,message_id,more)
+  }
+  async getUserPhotos(chat_id:number|string,more?:any|undefined){
+    return tg.getUserPhotos(chat_id,more)
+  }
+  async readHistory(more?:any|undefined){
+    return tg.readHistory(this.message.chat.id,more)
+  }
+  async readMentions(){
+    return tg.readMentions(this.message.chat.id)
+  }
+  async readMessageContents(message_id:number[]){
+    return tg.readMessageContents(message_id)
+  }
+  async unpinAllMessages(){
+    return tg.unpinAllMessages(this.message.chat.id)
+  }
+  async pinMessage(message_id:number,more?:any|undefined){
+    return tg.pinMessage(this.message.chat.id,Message,more)
+  }
+  async unpinMessage(message_id:number){
+    return tg.pinMessage(this.message.chat.id,message_id,{
+      unpin : true
+    })
+  }
+  async deleteHistory(more?:any|undefined){
+    return tg.deleteMessages(this.message.chat.id,more)
+  }
+  async deleteUserHistory(user_id:number|string){
+    return tg.deleteUserHistory(this.message.chat.id,user_id)
+  }
+  async editAdmin(user_id:number|string,more?:any|undefined){
+    return tg.editAdmin(this.message.chat.id,user_id,more)
+  }
+  async editBanned(user_id:number|string,more?:any|undefined){
+    return tg.editBanned(this.message.chat.id,user_id,more)
   }
 }

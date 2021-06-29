@@ -9,7 +9,7 @@
     "start": "node ./lib/index.js",
     "prepare": "echo \"🐍 Building Snake Package.\" && tsc"
   },
-  "homepage": "https://github.com/butthx/tgsnake/wiki",
+  "homepage": "https://tgsnake.js.org",
   "keywords": [
     "tgsnake",
     "telegram",
@@ -26,7 +26,7 @@
   ],
   "dependencies": {
     "big-integer": "^1.6.48",
-    "input": "^1.0.1",
+    "prompts": "^2.4.1",
     "telegram": "^1.7.5"
   },
   "devDependencies": {
@@ -34,7 +34,6 @@
     "dotenv": "^10.0.0",
     "nodemon": "^2.0.7",
     "ts-node": "^10.0.0",
-    "typedoc": "^0.21.0",
     "typescript": "^4.3.2"
   },
   "engines": {

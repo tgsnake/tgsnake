@@ -3,7 +3,14 @@
 Hi, **tgsnake** is a framework developed based on gram.js  
 [![github-repo](https://img.shields.io/badge/Github-butthx-blue.svg?style=for-the-badge&logo=github)](https://github.com/butthx/tgsnake)
 [![telegram-chat](https://img.shields.io/badge/Telegram-Chat-blue.svg?style=for-the-badge&logo=telegram)](https://t.me/tgsnakechat)
-[![telegram-channel](https://img.shields.io/badge/Telegram-Channel-blue.svg?style=for-the-badge&logo=telegram)](https://t.me/tgsnake)
+[![telegram-channel](https://img.shields.io/badge/Telegram-Channel-blue.svg?style=for-the-badge&logo=telegram)](https://t.me/tgsnake)  
+
+```text
+WARNING!
+Maybe your account will be banned if you login using this framework. I don't know what caused it to happen.
+I am not responsible if your account is banned!
+```
+
 ### Example   
 `yarn add https://github.com/butthx/tgsnake`   
 or   
@@ -51,4 +58,4 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 ### Docs
-Read [tgsnake wiki](https://github.com/butthx/tgsnake/wiki/)
+Read [tgsnake docs](https://tgsnake.js.org)

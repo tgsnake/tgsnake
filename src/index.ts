@@ -7,7 +7,7 @@ import {Message} from 'telegram/tl/custom/message';
 import {tele} from "./snake/tele"
 import {shortcut} from "./snake/shortcut"
 import {message} from "./snake/rewritejson"
-import input from "input"
+import prompts from "prompts"
 export {Api} from "telegram"
 
 let version = "0.0.4" //change this version according to what is in package.json
@@ -18,6 +18,7 @@ let session:string
 let bot_token:string|undefined
 let logger:string
 let connection_retries:number
+let appVersion:any
 export class snake {
   client:any
   telegram:any
@@ -49,17 +50,38 @@ export class snake {
       if(options.connection_retries){
         connection_retries = options.connection_retries
       }
+      if(options.appVersion){
+        appVersion = options.appVersion
+      }
     }
     Logger.setLevel(logger)
   }
   async run(){
+    process.once('SIGINT', () =>{ 
+      console.log("🐍 Killing..")
+      process.exit(0)
+    })
+    process.once('SIGTERM', () => { 
+      console.log("🐍 Killing..")
+      process.exit(0)
+    })
     console.log(`🐍 Welcome To TGSNAKE ${version}.`)
     console.log(`🐍 Setting Logger level to "${logger}"`)
     if(!api_hash){
-      api_hash = await input.text("🐍 Input your api_hash")
+      let input_api_hash = await prompts({
+        type : "text",
+        name : "value",
+        message : "🐍 Input your api_hash",
+      })
+      api_hash = input_api_hash.value
     }
     if(!api_id){
-      api_id = await input.text("🐍 Input your api_id")
+      let input_api_id = await prompts({
+        type : "text",
+        name : "value",
+        message : "🐍 Input your api_id",
+      })
+      api_id = input_api_id.value
     }
     this.client = new TelegramClient(
         new StringSession(session),
@@ -67,26 +89,61 @@ export class snake {
         String(api_hash),
         { 
           connectionRetries : connection_retries,
-          appVersion : `🐍TGSNAKE(${version})`
+          appVersion : appVersion || version
         }
       )
     this.telegram = new tele(this.client)
     if(session == ""){
       if(!bot_token){
-        let loginAsBot = await input.confirm("🐍 Login as bot?")
-        if(!loginAsBot){
+        let loginAsBot = await prompts({
+          type : "confirm",
+          name : "value",
+          initial : false,
+          message : "🐍 Login as bot?"
+        })
+        if(!loginAsBot.value){
           await this.client.start({
-            phoneNumber: async () => await input.text('🐍 Input your international phone number'),
-            password: async () => await input.text('🐍 Input your 2FA password'),
-            phoneCode: async () => await input.text('🐍 Input Telegram verifications code'),
-            onError: (err:any) => console.log(`🐍 ${err}`),
-          }).catch((err:any)=> console.log(`🐍 ${err}`))
+            phoneNumber: async () => {
+              let value = await prompts({
+                type : "text",
+                name : "value",
+                message : "🐍 Input your international phone number"
+              })
+              return value.value
+            },
+            password: async () => {
+              let value = await prompts({
+                type : "text",
+                name : "value",
+                message : "🐍 Input your 2FA password"
+              })
+              return value.value
+            },
+            phoneCode: async () => { 
+              let value = await prompts({
+                type : "text",
+                name : "value",
+                message : "🐍 Input Telegram verifications code"
+              })
+              return value.value
+            },
+            onError: (err:any) => { 
+              console.log(err)
+            },
+          })
           session = await this.client.session.save()
           console.log(`🐍 Your string session : ${session}`)
         }else{
           await this.client.start({
-            botAuthToken : await input.text("🐍 Input your bot_token")
-          }).catch((err:any)=> console.log(`🐍 ${err}`))
+            botAuthToken : async () => {
+              let value = await prompts({
+                type : "text",
+                name : "value",
+                message : "🐍 Input your bot_token"
+              })
+              return value.value
+            }
+          })
           session = await this.client.session.save()
           console.log(`🐍 Your string session : ${session}`)
         }
@@ -100,15 +157,7 @@ export class snake {
     }
       await this.client.connect()
       await this.client.getMe().catch((e:any)=>{})
-      console.log("🐍 Running..")
-    process.once('SIGINT', () =>{ 
-      console.log("🐍 Killing..")
-      process.exit(0)
-    })
-    process.once('SIGTERM', () => { 
-      console.log("🐍 Killing..")
-      process.exit(0)
-    })
+      return console.log("🐍 Running..")
   }
   async onNewMessage(next:any){
     if(this.client){
@@ -119,13 +168,31 @@ export class snake {
     }
   }
   async generateSession(){
+    process.once('SIGINT', () =>{ 
+      console.log("🐍 Killing..")
+      process.exit(0)
+    })
+    process.once('SIGTERM', () => { 
+      console.log("🐍 Killing..")
+      process.exit(0)
+    })
     console.log(`🐍 Welcome To TGSNAKE ${version}.`)
     console.log(`🐍 Setting Logger level to "${logger}"`)
     if(!api_hash){
-      api_hash = await input.text("🐍 Input your api_hash")
+      let input_api_hash = await prompts({
+        type : "text",
+        name : "value",
+        message : "🐍 Input your api_hash",
+      })
+      api_hash = input_api_hash.value
     }
     if(!api_id){
-      api_id = await input.text("🐍 Input your api_id")
+      let input_api_id = await prompts({
+        type : "text",
+        name : "value",
+        message : "🐍 Input your api_id",
+      })
+      api_id = input_api_id.value
     }
     this.client = new TelegramClient(
         new StringSession(session),
@@ -133,26 +200,61 @@ export class snake {
         String(api_hash),
         { 
           connectionRetries : connection_retries,
-          appVersion : `🐍TGSNAKE(${version})`
+          appVersion : appVersion || version
         }
       )
     this.telegram = new tele(this.client)
     if(session == ""){
       if(!bot_token){
-        let loginAsBot = await input.confirm("🐍 Login as bot?")
-        if(!loginAsBot){
+        let loginAsBot = await prompts({
+          type : "confirm",
+          name : "value",
+          initial : false,
+          message : "🐍 Login as bot?"
+        })
+        if(!loginAsBot.value){
           await this.client.start({
-            phoneNumber: async () => await input.text('🐍 Input your international phone number'),
-            password: async () => await input.text('🐍 Input your 2FA password'),
-            phoneCode: async () => await input.text('🐍 Input Telegram verifications code'),
-            onError: (err:any) => console.log(`🐍 ${err}`),
-          }).catch((err:any)=> console.log(`🐍 ${err}`))
+            phoneNumber: async () => {
+              let value = await prompts({
+                type : "text",
+                name : "value",
+                message : "🐍 Input your international phone number"
+              })
+              return value.value
+            },
+            password: async () => {
+              let value = await prompts({
+                type : "text",
+                name : "value",
+                message : "🐍 Input your 2FA password"
+              })
+              return value.value
+            },
+            phoneCode: async () => { 
+              let value = await prompts({
+                type : "text",
+                name : "value",
+                message : "🐍 Input Telegram verifications code"
+              })
+              return value.value
+            },
+            onError: (err:any) => { 
+              console.log(err)
+            },
+          })
           session = await this.client.session.save()
           console.log(`🐍 Your string session : ${session}`)
         }else{
           await this.client.start({
-            botAuthToken : await input.text("🐍 Input your bot_token")
-          }).catch((err:any)=> console.log(`🐍 ${err}`))
+            botAuthToken : async () => {
+              let value = await prompts({
+                type : "text",
+                name : "value",
+                message : "🐍 Input your bot_token"
+              })
+              return value.value
+            }
+          })
           session = await this.client.session.save()
           console.log(`🐍 Your string session : ${session}`)
         }
@@ -168,5 +270,10 @@ export class snake {
     }
     console.log(`🐍 Killing...`)
     process.exit(0)
+  }
+  async catchError(next:any){
+    process.on("unhandledRejection",(reason, promise)=>{
+      return next(reason,promise)
+    })
   }
 }

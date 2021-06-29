@@ -71,29 +71,6 @@ export class ClassResultEditMessage {
     this.date = resultEditMessage.date || Math.floor(Date.now()/1000)
   }
 }
-export class ClassResultDeleteMessage {
-  pts:number|undefined 
-  ptsCount:number|undefined 
-  /**
-   * Generate new class result from deleteMessages.
-  */
-  constructor(resultDeleteMessage:any){
-    if(resultDeleteMessage){
-      /**
-       * Generate pts // Event count after generation
-      */
-      if(resultDeleteMessage.pts){
-        this.pts = resultDeleteMessage.pts
-      }
-      /**
-       * Generate ptsCount // Number of events that were generated
-      */
-      if(resultDeleteMessage.ptsCount){
-        this.ptsCount = resultDeleteMessage.ptsCount
-      }
-    }
-  }
-}
 export class ClassResultForwardMessages { 
   id:number[]|undefined
   chatId:number|undefined 
@@ -370,6 +347,116 @@ class GetMessagesViewsClassViews {
       if(getMessagesViews.replies){
         this.replies = getMessagesViews.replies
       }
+    }
+  }
+}
+export class ClassResultAffectedMessages {
+  pts:number|undefined 
+  ptsCount:number|undefined 
+  offset:number|undefined  
+  date:Date|number|undefined
+  /**
+   * Generate new class result AffectedMessages.
+  */
+  constructor(resultReadHistory:any){
+    if(resultReadHistory){
+      /**
+       * Generate pts // Event count after generation
+      */
+      if(resultReadHistory.pts){
+        this.pts = resultReadHistory.pts
+      }else{
+        this.pts = 0
+      }
+      /**
+       * Generate ptsCount // Number of events that were generated
+      */
+      if(resultReadHistory.ptsCount){
+        this.ptsCount = resultReadHistory.ptsCount
+      }else{
+        this.ptsCount = 0
+      }
+      /**
+       * Generate offset (readMentions)
+      */
+      if(resultReadHistory.offset){
+        this.offset = resultReadHistory.offset
+      }else{
+        this.offset = 0
+      }
+    }
+    this.date = Math.floor(Date.now()/1000)
+  }
+}
+export class ClassResultPinMessage {
+  chatId:number|undefined 
+  id:number|undefined 
+  date:Date|number|undefined 
+  messages:number[]|undefined
+  /**
+   * Generate new json resut from UpdatePinMessage
+  */
+  constructor(ResutPinMessage:any){
+    if(ResutPinMessage){
+      if(ResutPinMessage.updates.length > 0){
+        for(let i = 0; i< ResutPinMessage.updates.length; i++){
+          let msg = ResutPinMessage.updates[i]
+          /**
+           * Generate messages,chatId
+          */
+          if(msg.className == "UpdatePinnedChannelMessages"){
+            if(msg.messages){
+              this.messages = msg.messages
+            }
+            if(msg.channelId){
+              this.chatId = msg.channelId
+            }
+          }else{
+            if(msg.className == "UpdatePinnedMessages"){
+              if(msg.messages){
+                this.messages = msg.messages
+              }
+              if(msg.peer.userId){
+                this.chatId = msg.peer.userId
+              }
+            }
+          }
+          /**
+           * Generate service message id
+          */
+          if(msg.className == "UpdateNewChannelMessage"){
+            if(msg.message.action){
+              if(msg.message.action.className == "MessageActionPinMessage"){
+                this.id = msg.message.id
+              }
+            }
+          }else{
+            if(msg.className == "UpdateNewMessage"){
+              if(msg.message.action){
+                if(msg.message.action.className == "MessageActionPinMessage"){
+                  this.id = msg.message.id
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    this.date = Math.floor(Date.now()/1000)
+  }
+}
+export class ClassResultEditAdminOrBanned {
+  chatId:number|undefined 
+  date:Date|number|undefined 
+  /**
+   * Generate new json result from editAdmin or editBanned
+  */
+  constructor(resultEditAdminOrBanned:any){
+    if(resultEditAdminOrBanned){
+      if(resultEditAdminOrBanned.chats.length > 0){
+        this.chatId = resultEditAdminOrBanned.chats[0].id
+      }
+      this.date = resultEditAdminOrBanned.date || Math.floor(Date.now()/1000)
     }
   }
 }
