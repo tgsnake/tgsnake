@@ -16,20 +16,32 @@ export class Filters {
       }
     }
   }
-  async cmd(command:string,next:any){
+  async cmd(command:string|string[],next:any){
     if(event){
       let me = await event.client.getMe()
       let username = ""
       if(me.username){
         username = me.username
       }
-      let regex = new RegExp(`(?<cmd>^[/!]${command.replace(/\s+/gmi,"")}(\@${username})?)$`,"")
-      if(msg.text){
-        let spl = msg.text.split(" ")[0]
-        let match = regex.exec(spl) as RegExpExecArray
-        if(match){
-          next(bots,msg)
-          return true
+      if(Array.isArray(command)){
+        let regex = new RegExp(`(?<cmd>^[/!](${command.join("|").replace(/\s+/gmi,"")})(\@${username})?)$`,"")
+        if(msg.text){
+          let spl = msg.text.split(" ")[0]
+          let match = regex.exec(spl) as RegExpExecArray
+          if(match){
+            next(bots,msg)
+            return true
+          }
+        }
+      }else{
+        let regex = new RegExp(`(?<cmd>^[/!]${command.replace(/\s+/gmi,"")}(\@${username})?)$`,"")
+        if(msg.text){
+          let spl = msg.text.split(" ")[0]
+          let match = regex.exec(spl) as RegExpExecArray
+          if(match){
+            next(bots,msg)
+            return true
+          }
         }
       }
     }

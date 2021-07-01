@@ -447,7 +447,9 @@ export class ClassResultPinMessage {
 }
 export class ClassResultEditAdminOrBanned {
   chatId:number|undefined 
+  fromId:number|undefined
   date:Date|number|undefined 
+  id:number|undefined
   /**
    * Generate new json result from editAdmin or editBanned
   */
@@ -455,6 +457,22 @@ export class ClassResultEditAdminOrBanned {
     if(resultEditAdminOrBanned){
       if(resultEditAdminOrBanned.chats.length > 0){
         this.chatId = resultEditAdminOrBanned.chats[0].id
+      }
+      if(resultEditAdminOrBanned.updates.length > 0){
+        for(let i = 0; i< resultEditAdminOrBanned.updates.length; i++){
+          if(resultEditAdminOrBanned.updates[i].className == "UpdateNewChannelMessage"){
+            this.id = resultEditAdminOrBanned.updates[i].message.id
+          }
+        }
+      }
+      if(resultEditAdminOrBanned.users.length > 0){
+        if(!this.fromId){
+          for(let i = 0; i< resultEditAdminOrBanned.users.length; i++){
+            if(!resultEditAdminOrBanned.users[i].self){
+              this.fromId = resultEditAdminOrBanned.users[i].id
+            }
+          }
+        }
       }
       this.date = resultEditAdminOrBanned.date || Math.floor(Date.now()/1000)
     }

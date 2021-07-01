@@ -8,7 +8,8 @@ const Snake = new snake({
   api_id : Number(process.env.api_id),
   //bot_token : String(process.env.bot_token),
   session : String(process.env.session),
-  logger : "none"
+  logger : "none",
+  tgSnakeLog : true
 })
 //Snake.generateSession()
 Snake.catchError((reason, promise)=>{
@@ -23,30 +24,29 @@ Snake.onNewMessage(async (bot:any,message:any)=>{
   let {cmd,hears} = filter
   tg.readHistory(message.chat.id)
   tg.readMentions(message.chat.id)
-  if(
-    await hears("^[!/]snake help",()=>{
-      return bot.reply("here you go!")
-    })
-  ) return
-
-  cmd("snake",async ()=>{
+  cmd(["snake","ping","start"],async ()=>{
     let ping = ((Date.now() / 1000) - message.date).toFixed(3)
-    return bot.reply(`🐍 **Hi, I am Snake from TgSnake**\nPing : \`${ping} s\``)
+    return bot.reply(`🐍 **Hi, I am Snake from TgSnake**\n🏓 Ping : \`${ping} s\``)
   })
-  cmd("deleteHistory",async ()=>{
-    return tg.deleteHistory(message.chat.id)
+  cmd("dme",async () => {
+    tg.deleteUserHistory(message.chat.id,message.from.id)
+    return bot.respond("Done!")
   })
-  cmd("deleteUserHistory",async () => {
-    return tg.deleteUserHistory(message.chat.id,message.from.id)
+  cmd("promote",async () => {
+    if(message.replyToMessageId){
+      let remsg = await tg.getMessages(message.chat.id,[message.replyToMessageId])
+      await tg.editAdmin(remsg.messages[0].chat.id,remsg.messages[0].from.id,{
+        rank : `@${remsg.messages[0].from.id}`
+      })
+      return bot.respond("Done!")
+    }
   })
-  cmd("editAdmin",async () => {
-    let remsg = await tg.getMessages(message.chat.id,[message.replyToMessageId])
-    return tg.editAdmin(remsg.messages[0].chat.id,remsg.messages[0].from.id)
-  })
-  cmd("editBanned",async () => {
-    let remsg = await tg.getMessages(message.chat.id,[message.replyToMessageId])
-    console.log(
+  cmd("dban",async () => {
+    if(message.replyToMessageId){
+      let remsg = await tg.getMessages(message.chat.id,[message.replyToMessageId])
+      bot.deleteMessages([message.replyToMessageId,message.id])
       await tg.editBanned(remsg.messages[0].chat.id,remsg.messages[0].from.id)
-      )
+      return bot.respond("Done!")
+    }
   })
 })

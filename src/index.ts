@@ -17,8 +17,16 @@ let api_id:number|undefined
 let session:string
 let bot_token:string|undefined
 let logger:string
+let tgsnakeLog:boolean = true
 let connection_retries:number
-let appVersion:any
+let appVersion:string
+
+function log(text){
+  if(tgsnakeLog){
+    return console.log(text)
+  }
+}
+
 export class snake {
   client:any
   telegram:any
@@ -53,20 +61,23 @@ export class snake {
       if(options.appVersion){
         appVersion = options.appVersion
       }
+      if(String(options.tgSnakeLog) == "false"){
+        tgsnakeLog = false
+      }
     }
     Logger.setLevel(logger)
   }
   async run(){
     process.once('SIGINT', () =>{ 
-      console.log("🐍 Killing..")
+      log("🐍 Killing..")
       process.exit(0)
     })
     process.once('SIGTERM', () => { 
-      console.log("🐍 Killing..")
+      log("🐍 Killing..")
       process.exit(0)
     })
-    console.log(`🐍 Welcome To TGSNAKE ${version}.`)
-    console.log(`🐍 Setting Logger level to "${logger}"`)
+    log(`🐍 Welcome To TGSNAKE ${version}.`)
+    log(`🐍 Setting Logger level to "${logger}"`)
     if(!api_hash){
       let input_api_hash = await prompts({
         type : "text",
@@ -132,7 +143,7 @@ export class snake {
             },
           })
           session = await this.client.session.save()
-          console.log(`🐍 Your string session : ${session}`)
+          log(`🐍 Your string session : ${session}`)
         }else{
           await this.client.start({
             botAuthToken : async () => {
@@ -145,19 +156,19 @@ export class snake {
             }
           })
           session = await this.client.session.save()
-          console.log(`🐍 Your string session : ${session}`)
+          log(`🐍 Your string session : ${session}`)
         }
       }else{
         await this.client.start({
           botAuthToken : bot_token
         })
         session = await this.client.session.save()
-        console.log(`🐍 Your string session : ${session}`)
+        log(`🐍 Your string session : ${session}`)
       }
     }
       await this.client.connect()
       await this.client.getMe().catch((e:any)=>{})
-      return console.log("🐍 Running..")
+      return log("🐍 Running..")
   }
   async onNewMessage(next:any){
     if(this.client){
@@ -169,15 +180,15 @@ export class snake {
   }
   async generateSession(){
     process.once('SIGINT', () =>{ 
-      console.log("🐍 Killing..")
+      log("🐍 Killing..")
       process.exit(0)
     })
     process.once('SIGTERM', () => { 
-      console.log("🐍 Killing..")
+      log("🐍 Killing..")
       process.exit(0)
     })
-    console.log(`🐍 Welcome To TGSNAKE ${version}.`)
-    console.log(`🐍 Setting Logger level to "${logger}"`)
+    log(`🐍 Welcome To TGSNAKE ${version}.`)
+    log(`🐍 Setting Logger level to "${logger}"`)
     if(!api_hash){
       let input_api_hash = await prompts({
         type : "text",
@@ -256,19 +267,19 @@ export class snake {
             }
           })
           session = await this.client.session.save()
-          console.log(`🐍 Your string session : ${session}`)
+          log(`🐍 Your string session : ${session}`)
         }
       }else{
         await this.client.start({
           botAuthToken : bot_token
         })
         session = await this.client.session.save()
-        console.log(`🐍 Your string session : ${session}`)
+        log(`🐍 Your string session : ${session}`)
       }
     }else{
-      console.log(`🐍 You should use the \`Snake.run()\`!`)
+      log(`🐍 You should use the \`Snake.run()\`!`)
     }
-    console.log(`🐍 Killing...`)
+    log(`🐍 Killing...`)
     process.exit(0)
   }
   async catchError(next:any){
