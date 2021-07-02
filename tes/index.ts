@@ -16,10 +16,10 @@ Snake.catchError((reason, promise)=>{
   console.log(reason,promise)
 })
 Snake.run()
-//console.log(Snake)
 const {telegram} = Snake
 const tg = telegram
 Snake.onNewMessage(async (bot:any,message:any)=>{
+//  console.log(bot.event)
   let filter = new Filters(bot)
   let {cmd,hears} = filter
   tg.readHistory(message.chat.id)
@@ -48,5 +48,16 @@ Snake.onNewMessage(async (bot:any,message:any)=>{
       await tg.editBanned(remsg.messages[0].chat.id,remsg.messages[0].from.id)
       return bot.respond("Done!")
     }
+  })
+  cmd("ambil",async () => {
+    if(message.replyToMessageId){
+      let remsg = await tg.getMessages(message.chat.id,[message.replyToMessageId])
+      let reply = remsg.messages[0]
+      bot.reply(`${message.from.first_name} ${message.from.last_name ? message.from.last_name : ""} mengambil ${message.text.replace(/^[!\/]ambil/i,"").trim()} dari ${reply.from.first_name} ${reply.from.last_name ? reply.from.last_name : ""}`)
+    }
+  })
+  cmd("editPhoto",async ()=> {
+    await tg.editPhoto(message.chat.id,"https://raw.githubusercontent.com/butthx/tgsnake/master/tgsnake.jpg")
+      
   })
 })

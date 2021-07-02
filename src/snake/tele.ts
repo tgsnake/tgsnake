@@ -9,6 +9,10 @@ import * as define from "telegram/define"
 import * as reResults from "./rewriteresults"
 import BigInt from "big-integer"
 import { computeCheck } from "telegram/Password";
+import {CustomFile} from "telegram/client/uploads"
+import path from "path"
+import fs from "fs"
+import axios from "axios"
 
 export let client:any
 
@@ -20,6 +24,10 @@ export class tele {
   */
   constructor(tgclient:any){
     client = tgclient
+  }
+  private async isChannel(chat_id:number|string):Promise<boolean>{
+    let type = await client.getEntity(chat_id) 
+    return Boolean(type.className == "Channel")
   }
   /**
    * class sendMessage 
@@ -432,5 +440,83 @@ export class tele {
           })
         )
       )
+  }
+  /**
+   * class editPhoto. 
+   * Change the photo of a channel/Supergroup 
+   * parameters : 
+   * chat_id : Channel/supergroup whose photo should be edited 
+   * photo : new photo. 
+  */
+  async editPhoto(chat_id:number|string,photo:string){
+    let toUpload
+    if(/^(\/|\.\.?\/|~\/)/i.exec(photo)){
+      toUpload = await this.uploadFile({
+        file : photo
+      })
+    }
+    if(/^http/i.exec(photo)){
+      toUpload = await this.uploadFile({
+        url : photo
+      })
+    }
+    if(await this.isChannel(chat_id)){
+      return client.invoke(
+        new Api.channels.EditPhoto({
+          channel : chat_id,
+          photo : toUpload
+        })
+      )
+    }else{
+      return client.invoke(
+        new Api.messages.EditChatPhoto({
+          photo : toUpload
+        })
+      )
+    }
+  }
+  async uploadFile(file:any){
+    if(file.file){
+      let toUpload = new CustomFile(
+          file.fileName || path.basename(file.file),
+          fs.statSync(file.file).size,
+          file.file
+        )
+      return client.uploadFile({
+        file : toUpload,
+        workers : file.workers || 1
+      })
+    }
+    if(file.buffer){
+      if(file.fileName){
+        throw new Error("fileName required if using buffer")
+      }
+      let toUpload = new CustomFile(
+          file.fileName,
+          Buffer.byteLength(file.buffer),
+          "",
+          file.buffer
+        )
+      return client.uploadFile({
+        file : toUpload,
+        workers : file.workers || 1
+      })
+    }
+    if(file.url){
+      let res = await axios.get(file.url,{
+        responseType: "arraybuffer"
+      })
+      let buffer = Buffer.from(res.data, "utf-8")
+      let toUpload = new CustomFile(
+          file.fileName || path.basename(file.url),
+          Buffer.byteLength(buffer),
+          "",
+          buffer
+        )
+      return client.uploadFile({
+        file : toUpload,
+        workers : file.workers || 1
+      })
+    }
   }
 }
