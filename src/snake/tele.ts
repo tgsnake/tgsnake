@@ -13,6 +13,7 @@ import {CustomFile} from "telegram/client/uploads"
 import path from "path"
 import fs from "fs"
 import axios from "axios"
+import FileType from "file-type"
 
 export let client:any
 
@@ -447,76 +448,89 @@ export class tele {
    * parameters : 
    * chat_id : Channel/supergroup whose photo should be edited 
    * photo : new photo. 
+   * results : 
+   * ClassResultEditPhoto
   */
-  async editPhoto(chat_id:number|string,photo:string){
-    let toUpload
-    if(/^(\/|\.\.?\/|~\/)/i.exec(photo)){
-      toUpload = await this.uploadFile({
-        file : photo
-      })
-    }
-    if(/^http/i.exec(photo)){
-      toUpload = await this.uploadFile({
-        url : photo
-      })
-    }
-    if(await this.isChannel(chat_id)){
-      return client.invoke(
+  async editPhoto(chat_id:number|string,photo:string|Buffer){
+    let toUpload = await this.uploadFile(photo)
+    return new reResults.ClassResultEditPhoto(
+      await client.invoke(
         new Api.channels.EditPhoto({
           channel : chat_id,
           photo : toUpload
         })
       )
-    }else{
-      return client.invoke(
-        new Api.messages.EditChatPhoto({
-          photo : toUpload
-        })
-      )
-    }
+    )
   }
-  async uploadFile(file:any){
-    if(file.file){
-      let toUpload = new CustomFile(
-          file.fileName || path.basename(file.file),
-          fs.statSync(file.file).size,
-          file.file
-        )
-      return client.uploadFile({
-        file : toUpload,
-        workers : file.workers || 1
-      })
-    }
-    if(file.buffer){
-      if(file.fileName){
-        throw new Error("fileName required if using buffer")
+  /**
+   * class uploadFile 
+   * upload file from url or buffer or file path 
+   * parameters : 
+   * file : file object 
+   * results : 
+   * original class uploadFile gramjs example results : ClassResultUploadFile
+  */
+  async uploadFile(file:string|Buffer,workers?:number|undefined,fileName?:string|undefined){
+    if(Buffer.isBuffer(file)){
+      let fileInfo = await FileType.fromBuffer(file)
+      if(fileInfo){
+        let file_name = fileName || `${Date.now()/1000}.${fileInfo.ext}`
+        let toUpload = new CustomFile(
+            file_name,
+            Buffer.byteLength(file),
+            "",
+            file
+          )
+        return client.uploadFile({
+          file : toUpload,
+          workers : workers || 1
+        })
       }
-      let toUpload = new CustomFile(
-          file.fileName,
-          Buffer.byteLength(file.buffer),
+    }else{
+      let basename = path.basename(file)
+      if(/^http/i.exec(file)){
+        let res = await axios.get(file,{
+          responseType: "arraybuffer"
+        })
+        let basebuffer = Buffer.from(res.data, "utf-8")
+        let file_name = fileName || basename
+        let match = /\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/gmi.exec(file_name)
+        if(!match){
+          let fileInfo = await FileType.fromBuffer(basebuffer)
+          if(fileInfo){
+            file_name = `${file_name}.${fileInfo.ext}`
+          }
+        }
+        let toUpload = new CustomFile(
+          file_name,
+          Buffer.byteLength(basebuffer),
           "",
-          file.buffer
+          basebuffer
         )
-      return client.uploadFile({
-        file : toUpload,
-        workers : file.workers || 1
-      })
-    }
-    if(file.url){
-      let res = await axios.get(file.url,{
-        responseType: "arraybuffer"
-      })
-      let buffer = Buffer.from(res.data, "utf-8")
-      let toUpload = new CustomFile(
-          file.fileName || path.basename(file.url),
-          Buffer.byteLength(buffer),
-          "",
-          buffer
+        return client.uploadFile({
+          file : toUpload,
+          workers : workers || 1
+        })
+      }
+      if(/^(\/|\.\.?\/|~\/)/i.exec(file)){
+        let file_name = fileName || basename
+        let match = /\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/gmi.exec(file_name)
+        if(!match){
+          let fileInfo = await FileType.fromFile(file)
+          if(fileInfo){
+            file_name = `${file_name}.${fileInfo.ext}`
+          }
+        }
+        let toUpload = new CustomFile(
+          file_name,
+          fs.statSync(file).size,
+          file
         )
-      return client.uploadFile({
-        file : toUpload,
-        workers : file.workers || 1
-      })
+        return client.uploadFile({
+          file : toUpload,
+          workers : workers || 1
+        })
+      }
     }
   }
 }

@@ -478,3 +478,51 @@ export class ClassResultEditAdminOrBanned {
     }
   }
 }
+export class ClassResultUploadFile {
+  id:any|undefined 
+  parts:number|undefined = 1
+  name:string|undefined
+  md5Checksum:string|undefined = ""
+  constructor(resultUploadFile:any){
+    if(resultUploadFile){
+      if(resultUploadFile.id){
+        this.id = resultUploadFile.id
+      }
+      if(resultUploadFile.parts){
+        this.parts = resultUploadFile.parts
+      }
+      if(resultUploadFile.name){
+        this.name = resultUploadFile.name
+      }
+      if(resultUploadFile.md5Checksum){
+        this.md5Checksum = resultUploadFile.md5Checksum
+      }
+    }
+  }
+}
+export class ClassResultEditPhoto {
+  id:number|undefined 
+  chatId:number|undefined 
+  date:Date|number|undefined
+  /**
+   * rewrite json result from editPhoto
+  */
+  constructor(resultEditPhoto:any){
+    if(resultEditPhoto){
+      if(resultEditPhoto.updates.length > 0){
+        for(let i = 0; i < resultEditPhoto.updates.length; i++){
+          if(resultEditPhoto.updates[i].className == "UpdateNewChannelMessage"){
+            this.id = resultEditPhoto.updates[i].message.id
+            this.date = resultEditPhoto.updates[i].message.date
+            if(resultEditPhoto.updates[i].message.peerId){
+              this.chatId = resultEditPhoto.updates[i].message.peerId.channelId
+            }
+          }
+        }
+      }
+    }
+    if(!this.date){
+      this.date = Math.floor(Date.now()/1000)
+    }
+  }
+}

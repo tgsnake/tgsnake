@@ -57,7 +57,6 @@ Snake.onNewMessage(async (bot:any,message:any)=>{
     }
   })
   cmd("editPhoto",async ()=> {
-    await tg.editPhoto(message.chat.id,"https://raw.githubusercontent.com/butthx/tgsnake/master/tgsnake.jpg")
-      
+    console.log(await tg.editPhoto(message.chat.id,fs.readFileSync("./tgsnake-compress-square.jpg")))
   })
 })

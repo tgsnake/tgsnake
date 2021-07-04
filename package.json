@@ -27,6 +27,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "big-integer": "^1.6.48",
+    "file-type": "^16.5.0",
     "prompts": "^2.4.1",
     "telegram": "^1.7.5"
   },
