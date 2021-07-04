@@ -287,4 +287,7 @@ export class snake {
       return next(reason,promise)
     })
   }
+  async on(event:any,next:any) {
+    return this.client.on(event,next)
+  }
 }
