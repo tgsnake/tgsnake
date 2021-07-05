@@ -655,4 +655,19 @@ export class tele {
         )
       )
   }
+  /**
+   * class getChannels 
+   * Get info about channels/supergroups 
+   * parameters : 
+   * chat_id : IDs of channels/supergroups to get info about 
+   * results : 
+   * gramjs messages.Chats
+  */
+  async getChannels(chat_id:number[]|string[]){
+    return client.invoke(
+        new Api.channels.GetChannels({
+          id : chat_id
+        })
+      )
+  }
 }

@@ -533,6 +533,7 @@ export class ClassResultGetAdminLog {
   */
   constructor(resultGetAdminLog:any){
     if(resultGetAdminLog){
+      console.log(JSON.stringify(resultGetAdminLog,null,2))
       if(resultGetAdminLog.events.length > 0){
         let tempLog:any = new Array() 
         for(let i = 0; i < resultGetAdminLog.events.length ; i++){
