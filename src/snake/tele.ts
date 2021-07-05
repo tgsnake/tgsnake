@@ -17,6 +17,16 @@ import FileType from "file-type"
 
 export let client:any
 
+async function getFinnalId(chat_id:number|string){
+  if(typeof(chat_id) == "string"){
+    let entity = await client.getEntity(chat_id)
+    return Number(entity.id)
+  }
+  if(typeof(chat_id) == "number"){
+    return Number(chat_id)
+  }
+}
+
 export class tele {
   /**
    * Generate simple method from raw api gramjs 
@@ -449,18 +459,27 @@ export class tele {
    * chat_id : Channel/supergroup whose photo should be edited 
    * photo : new photo. 
    * results : 
-   * ClassResultEditPhoto
+   * ClassResultEditPhotoOrTitle
   */
   async editPhoto(chat_id:number|string,photo:string|Buffer){
     let toUpload = await this.uploadFile(photo)
-    return new reResults.ClassResultEditPhoto(
-      await client.invoke(
-        new Api.channels.EditPhoto({
-          channel : chat_id,
-          photo : toUpload
-        })
+    if(await this.isChannel(chat_id)){
+      return new reResults.ClassResultEditPhotoOrTitle(
+        await client.invoke(
+          new Api.channels.EditPhoto({
+            channel : chat_id,
+            photo : toUpload
+          })
+        )
       )
-    )
+    }else{
+      return client.invoke(
+          new Api.messages.EditChatPhoto({
+            chatId : await getFinnalId(chat_id),
+            photo : toUpload
+          })
+        )
+    }
   }
   /**
    * class uploadFile 
@@ -531,6 +550,34 @@ export class tele {
           workers : workers || 1
         })
       }
+    }
+  }
+  /**
+   * class editTitle 
+   * Edit the name of a channel/supergroup 
+   * parameters : 
+   * chat_id : chat or channel or groups id.
+   * title : new title.
+   * results : 
+   * ClassResultEditPhotoOrTitle
+  */
+  async editTitle(chat_id:number|string,title:string){
+    if(await this.isChannel(chat_id)){
+      return new reResults.ClassResultEditPhotoOrTitle(
+          await client.invoke(
+              new Api.channels.EditTitle({
+                channel : chat_id,
+                title : title
+              })
+            )
+        )
+    }else{
+      return client.invoke(
+          new Api.messages.EditChatTitle({
+            chatId : await getFinnalId(chat_id),
+            title : title
+          })
+        )
     }
   }
 }

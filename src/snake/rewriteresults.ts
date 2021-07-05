@@ -500,12 +500,12 @@ export class ClassResultUploadFile {
     }
   }
 }
-export class ClassResultEditPhoto {
+export class ClassResultEditPhotoOrTitle {
   id:number|undefined 
   chatId:number|undefined 
   date:Date|number|undefined
   /**
-   * rewrite json result from editPhoto
+   * rewrite json result from editPhoto or editTitle
   */
   constructor(resultEditPhoto:any){
     if(resultEditPhoto){
