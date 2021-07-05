@@ -19,5 +19,3 @@ updates:
       - dependency-name: "ts-node" 
       - dependency-name: "nodemon" 
       - dependency-name: "dotenv" 
-      - dependency-name: "input" 
-      - dependency-name: "big-integer"

@@ -10,7 +10,7 @@ import {message} from "./snake/rewritejson"
 import prompts from "prompts"
 export {Api} from "telegram"
 
-let version = "0.0.4" //change this version according to what is in package.json
+let version = "0.0.5" //change this version according to what is in package.json
 
 let api_hash:string|undefined
 let api_id:number|undefined
