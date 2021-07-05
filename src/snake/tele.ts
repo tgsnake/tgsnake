@@ -580,4 +580,40 @@ export class tele {
         )
     }
   }
+  /**
+   * class exportMessageLink 
+   * Get link and embed info of a message in a channel/supergroup.
+   * parameters : 
+   * chat_id : chat or channel or groups id. 
+   * message_id : message id 
+   * more : gramjs ExportMessageLink params. 
+   * results : 
+   * gramjs ExportedMessageLink
+  */
+  async exportMessageLink(chat_id:number|string,message_id:number,more?:any|undefined){
+    return client.invoke(
+        new Api.channels.ExportMessageLink({
+          channel : chat_id,
+          id : message_id,
+          ...more
+        })
+      )
+  }
+  /**
+   * class getAdminedPublicChannels 
+   * Get channels/supergroups/geogroups we're admin in. Usually called when the user exceeds the limit for owned public channels/supergroups/geogroups, and the user is given the choice to remove one of his channels/supergroups/geogroups. 
+   * params : 
+   * by_location : Get geogroups 
+   * check_limit : If set and the user has reached the limit of owned public channels/supergroups/geogroups, instead of returning the channel list one of the specified errors will be returned. Useful to check if a new public channel can indeed be created, even before asking the user to enter a channel username to use in channels.checkUsername/channels.updateUsername. 
+   * results : 
+   * gramjs messages.Chats
+  */
+  async getAdminedPublicChannels(by_location:boolean=true,check_limit:boolean=true){
+    return client.invoke(
+        new Api.channels.GetAdminedPublicChannels({
+          byLocation : by_location,
+          checkLimit : check_limit
+        })
+      )
+  }
 }
