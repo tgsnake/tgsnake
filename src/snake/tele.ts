@@ -670,4 +670,27 @@ export class tele {
         })
       )
   }
+  /**
+   * class getFullChat 
+   * Get full info about a channel or chats 
+   * parameters : 
+   * chat_id : IDs of chat/channels/supergroups to get info about 
+   * results : 
+   * gramjs messages.ChatFull
+  */
+  async getFullChat(chat_id:number|string){
+    if(await this.isChannel(chat_id)){
+      return client.invoke(
+          new Api.channels.GetFullChannel({
+            channel : chat_id
+          })
+        )
+    }else{
+      return client.invoke(
+          new Api.messages.GetFullChat({
+            chatId : await getFinnalId(chat_id)
+          })
+        )
+    }
+  }
 }
