@@ -616,4 +616,43 @@ export class tele {
         })
       )
   }
+  /**
+   * class getAdminLog 
+   * Get the admin log of a channel/supergroup 
+   * params : 
+   * chat_id : chat or channel or groups id. 
+   * more : gramjs GetAdminLog param with little modification 
+   * results : 
+   * ClassResultGetAdminLog
+  */
+  async getAdminLog(chat_id:number|string,more?:any|undefined){
+    let filter = {
+      join: more?.join || true,
+      leave: more?.leave || true,
+      invite: more?.invite || true,
+      ban: more?.ban || true,
+      unban: more?.unban || true,
+      kick: more?.kick || true,
+      unkick: more?.unkick || true,
+      promote: more?.promote || true,
+      demote: more?.demote || true,
+      info: more?.info || true,
+      settings: more?.settings || true,
+      pinned: more?.pinned || true,
+      groupCall: more?.groupCall || true,
+      invites: more?.invites || true
+    }
+    return new reResults.ClassResultGetAdminLog(
+        await client.invoke(
+          new Api.channels.GetAdminLog({
+            channel : chat_id,
+            eventsFilter : new Api.ChannelAdminLogEventsFilter(filter),
+            q : more?.q || "",
+            maxId: more?.maxId || undefined,
+            minId: more?.minId || undefined,
+            limit: more?.limit || undefined
+          })
+        )
+      )
+  }
 }

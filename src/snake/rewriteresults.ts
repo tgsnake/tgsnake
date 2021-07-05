@@ -526,3 +526,43 @@ export class ClassResultEditPhotoOrTitle {
     }
   }
 }
+export class ClassResultGetAdminLog {
+  log:any[] = new Array()
+  /**
+   * Generate new json results from getAdminLog
+  */
+  constructor(resultGetAdminLog:any){
+    if(resultGetAdminLog){
+      if(resultGetAdminLog.events.length > 0){
+        let tempLog:any = new Array() 
+        for(let i = 0; i < resultGetAdminLog.events.length ; i++){
+          let event = resultGetAdminLog.events[i]
+          tempLog.push(new ClassLogGetAdminLog(event))
+        }
+        this.log = tempLog
+      }
+    }
+  }
+}
+class ClassLogGetAdminLog {
+  id:number|string|undefined 
+  date:Date|number|undefined 
+  action:any|undefined 
+  userId:number|undefined 
+  constructor(event){
+    if(event){
+      if(event.id) this.id = event.id 
+      if(event.date) this.date = event.date 
+      if(event.userId) this.userId = event.userId 
+      if(event.action) {
+        let tempAction = {...event.action}
+        delete tempAction.CONSTRUCTOR_ID
+        delete tempAction.SUBCLASS_OF_ID 
+        delete tempAction.classType 
+        tempAction.actionName = String(tempAction.className).replace(/^(ChannelAdminLogEventAction|AdminLogEventAction)/i,"") 
+        delete tempAction.className 
+        this.action = tempAction
+      }
+    }
+  }
+}

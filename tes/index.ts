@@ -26,7 +26,7 @@ Snake.onNewMessage(async (bot:any,message:any)=>{
   tg.readMentions(message.chat.id)
   cmd("snake",async () => {
     console.log(
-        await tg.getAdminedPublicChannels()
+        JSON.stringify(await tg.getAdminLog(message.chat.id),null,2)
       )
   })
 })
