@@ -2,12 +2,11 @@
   "name": "tgsnake",
   "version": "0.0.5",
   "description": "Telegram MTProto framework base gram.js",
-  "main": "./lib/index.js",
+  "main": "index.js",
   "scripts": {
     "dev": "nodemon ./tes/index.ts",
-    "build": "tsc",
-    "start": "node ./lib/index.js",
-    "prepare": "echo \"🐍 Building Snake Package.\" && tsc"
+    "deploy" : "sh publish.sh",
+    "build":"tsc"
   },
   "homepage": "https://tgsnake.js.org",
   "keywords": [
@@ -21,9 +20,6 @@
   "author": "butthx",
   "license": "MIT",
   "private": false,
-  "files": [
-    "lib/**/*"
-  ],
   "dependencies": {
     "axios": "^0.21.1",
     "big-integer": "^1.6.48",

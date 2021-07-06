@@ -485,7 +485,9 @@ export class tele {
    * class uploadFile 
    * upload file from url or buffer or file path 
    * parameters : 
-   * file : file object 
+   * file : file to uploaded 
+   * workers : workers
+   * fileName : custom file name
    * results : 
    * original class uploadFile gramjs example results : ClassResultUploadFile
   */
