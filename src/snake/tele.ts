@@ -695,4 +695,15 @@ export class tele {
         )
     }
   }
+  /**
+   * class getGroupsForDiscussion 
+   * Get all groups that can be used as discussion groups.
+   * parameters : 
+   * - 
+  */
+  async getGroupsForDiscussion(){
+    return client.invoke(
+        new Api.channels.GetGroupsForDiscussion()
+      )
+  }
 }

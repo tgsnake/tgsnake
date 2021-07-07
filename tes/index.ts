@@ -1,6 +1,5 @@
 require("dotenv").config()
-import {snake,Api} from "../src"
-import {Filters} from "../src/filters"
+import {snake,Filters} from "../src"
 import fs from "fs"
 
 const Snake = new snake({
@@ -8,7 +7,7 @@ const Snake = new snake({
   api_id : Number(process.env.api_id),
   //bot_token : String(process.env.bot_token),
   session : String(process.env.session),
-  logger : "debug",
+  logger : "none",
   tgSnakeLog : true
 })
 //Snake.generateSession()
@@ -20,12 +19,20 @@ const {telegram} = Snake
 const tg = telegram
 Snake.onNewMessage(async (bot:any,message:any)=>{
 //  console.log(bot.event)
-  console.log(message)
+  //console.log(message)
   let filter = new Filters(bot)
   let {cmd,hears} = filter
   tg.readHistory(message.chat.id)
   tg.readMentions(message.chat.id)
   cmd("snake",async () => {
-    tg.sendMessage(message.chat.id,String(message.chat.id))
+    console.log(JSON.stringify(
+        await tg.getGroupsForDiscussion(),
+        null,
+        2
+      ))
+  })
+  cmd("ping",async () => {
+    let msg = await bot.reply("Pong!")
+    bot.editMessage(msg.id,`Pong!\n${(Date.now()/1000 - msg.date).toFixed(3)}`)
   })
 })
