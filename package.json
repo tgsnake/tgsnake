@@ -28,7 +28,7 @@
     "big-integer": "^1.6.48",
     "file-type": "^16.5.0",
     "prompts": "^2.4.1",
-    "telegram": "1.7.5"
+    "telegram": "^1.7.5"
   },
   "devDependencies": {
     "@types/node": "^15.12.2",

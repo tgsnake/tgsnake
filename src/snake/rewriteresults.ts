@@ -567,3 +567,13 @@ class ClassLogGetAdminLog {
     }
   }
 }
+export class ClassResultMessageChat {
+  chats:any[] = new Array()
+  constructor(resultMessageChat:any){
+    if(resultMessageChat){
+      if(resultMessageChat.chats.length > 0){
+        this.chats = resultMessageChat.chats
+      }
+    }
+  }
+}

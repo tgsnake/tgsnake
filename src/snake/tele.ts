@@ -609,14 +609,16 @@ export class tele {
    * by_location : Get geogroups 
    * check_limit : If set and the user has reached the limit of owned public channels/supergroups/geogroups, instead of returning the channel list one of the specified errors will be returned. Useful to check if a new public channel can indeed be created, even before asking the user to enter a channel username to use in channels.checkUsername/channels.updateUsername. 
    * results : 
-   * gramjs messages.Chats
+   * ClassResultMessageChat
   */
   async getAdminedPublicChannels(by_location:boolean=true,check_limit:boolean=true){
-    return client.invoke(
-        new Api.channels.GetAdminedPublicChannels({
-          byLocation : by_location,
-          checkLimit : check_limit
-        })
+    return new reResults.ClassResultMessageChat(
+        await client.invoke(
+          new Api.channels.GetAdminedPublicChannels({
+            byLocation : by_location,
+            checkLimit : check_limit
+          })
+        )
       )
   }
   /**
@@ -664,13 +666,15 @@ export class tele {
    * parameters : 
    * chat_id : IDs of channels/supergroups to get info about 
    * results : 
-   * gramjs messages.Chats
+   * ClassResultMessageChat
   */
   async getChannels(chat_id:number[]|string[]){
-    return client.invoke(
-        new Api.channels.GetChannels({
-          id : chat_id
-        })
+    return new reResults.ClassResultMessageChat(
+        await client.invoke(
+          new Api.channels.GetChannels({
+            id : chat_id
+          })
+        )
       )
   }
   /**
@@ -701,10 +705,14 @@ export class tele {
    * Get all groups that can be used as discussion groups.
    * parameters : 
    * - 
+   * results : 
+   * ClassResultMessageChat
   */
   async getGroupsForDiscussion(){
-    return client.invoke(
-        new Api.channels.GetGroupsForDiscussion()
+    return new reResults.ClassResultMessageChat(
+        await client.invoke(
+          new Api.channels.GetGroupsForDiscussion()
+        )
       )
   }
 }

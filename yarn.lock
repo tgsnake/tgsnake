@@ -1057,10 +1057,10 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
-telegram@1.7.5:
-  version "1.7.5"
-  resolved "https://registry.yarnpkg.com/telegram/-/telegram-1.7.5.tgz#29aa2b89731a08f1dc09a52fd04faf0f96075765"
-  integrity sha512-gwmE1fCFAAivxfG1Tr3a4LJBvC6crKs0vsg0jsSY+SrFsW800tBWKgv0t4eT7v+l0vLpdakbaD6fDSIkeXuBOA==
+telegram@^1.7.5:
+  version "1.7.12"
+  resolved "https://registry.yarnpkg.com/telegram/-/telegram-1.7.12.tgz#3cdac4946915e2121d32c92a265aaba6e0993b48"
+  integrity sha512-uzDJB098orYdZuDYaAvTBsHCALtTd9JBcYkIWh68c2fBAvKXG1zhkrP3q/S0fSrmqIPQ/07JLbeC2Mlg4rNdsw==
   dependencies:
     "@cryptography/aes" "^0.1.1"
     async-mutex "^0.3.0"
