@@ -7,7 +7,7 @@ const Snake = new snake({
   api_id : Number(process.env.api_id),
   //bot_token : String(process.env.bot_token),
   session : String(process.env.session),
-  logger : "none",
+  logger : "debug",
   tgSnakeLog : true
 })
 //Snake.generateSession()
@@ -19,17 +19,14 @@ const {telegram} = Snake
 const tg = telegram
 Snake.onNewMessage(async (bot:any,message:any)=>{
 //  console.log(bot.event)
-  //console.log(message)
+  console.log(message)
   let filter = new Filters(bot)
   let {cmd,hears} = filter
   tg.readHistory(message.chat.id)
   tg.readMentions(message.chat.id)
   cmd("snake",async () => {
-    console.log(JSON.stringify(
-        await tg.getGroupsForDiscussion(),
-        null,
-        2
-      ))
+    bot.replyHTML("<b>BOLD - HTML</b>\n<code>CODE - HTML</code>")
+    bot.reply("**BOLD - MD**\n\`CODE - MD\`")
   })
   cmd("ping",async () => {
     let msg = await bot.reply("Pong!")

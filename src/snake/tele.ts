@@ -14,6 +14,7 @@ import path from "path"
 import fs from "fs"
 import axios from "axios"
 import FileType from "file-type"
+import {_parseMessageText} from "telegram/client/messageParse"
 
 export let client:any
 
@@ -58,7 +59,7 @@ export class tele {
           delete more.parseMode
         }
       }
-      let [parseText,entities] = await client._parseMessageText(text,parseMode)
+      let [parseText,entities] = await _parseMessageText(client,text,parseMode)
       if(more){
         if(more.entities){
           entities = more.entities
@@ -126,13 +127,13 @@ export class tele {
           delete more.parseMode
         }
       }
-    let [parseText,entities] = await client._parseMessageText(text||"",parseMode)
-    if(more){
-      if(more.entities){
-        entities = more.entities
-        parseText = text || ""
+      let [parseText,entities] = await _parseMessageText(client,text,parseMode)
+      if(more){
+        if(more.entities){
+          entities = more.entities
+          parseText = text
+        }
       }
-    }
     return new reResults.ClassResultEditMessage(
       await client.invoke(
         new Api.messages.EditMessage({
