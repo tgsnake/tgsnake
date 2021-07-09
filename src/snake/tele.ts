@@ -15,6 +15,7 @@ import fs from "fs"
 import axios from "axios"
 import FileType from "file-type"
 import {_parseMessageText} from "telegram/client/messageParse"
+import * as Interface from "./interface"
 
 export let client:any
 
@@ -47,11 +48,11 @@ export class tele {
    * parameters :
    * chat_id : chat or channel or groups id. 
    * text : text or message to send. 
-   * more : gramjs SendMessage params.
+   * more : Interface.sendMessageMoreParams
    * results : 
    * ClassResultSendMessage
   */
-  async sendMessage(chat_id:number|string,text:string,more?:any|undefined){
+  async sendMessage(chat_id:number|string,text:string,more?:Interface.sendMessageMoreParams){
       let parseMode = "markdown"
       if(more){
         if(more.parseMode){
@@ -115,11 +116,11 @@ export class tele {
    * chat_id : chat or channel or groups id. 
    * message_id : id from message to be edited.
    * text : new message if you need to edit media you can replace this with blank string ("")
-   * more : gramjs EditMessage params.
+   * more : Interface.editMessageMoreParams
    * results : 
    * ClassResultEditMessage
   */
-  async editMessage(chat_id:number|string,message_id:number,text:string,more?:any|undefined){
+  async editMessage(chat_id:number|string,message_id:number,text:string,more?:Interface.editMessageMoreParams){
     let parseMode = "markdown"
       if(more){
         if(more.parseMode){
@@ -153,11 +154,11 @@ export class tele {
    * chat_id : chat or channel or groups id to be sending forwardMessages (receiver).
    * from_chat_id : chat or channel or groups id which will forwarding messages  (sender).
    * message_id : array of number message id to be forward. 
-   * more : gramjs ForwardMessages params.
+   * more : Interface.forwardMessageMoreParams
    * results : 
    * ClassResultForwardMessages
   */
-  async forwardMessages(chat_id:number|string,from_chat_id:number|string,message_id:number[],more?:any|undefined){
+  async forwardMessages(chat_id:number|string,from_chat_id:number|string,message_id:number[],more?:Interface.forwardMessageMoreParams){
     let randomId:any = []
     for(let i = 0; i < message_id.length;i++){
       randomId.push(BigInt(Math.floor(Math.random() * 10000000000000)))
@@ -224,9 +225,9 @@ export class tele {
    * Returns the list of user photos.
    * parameters : 
    * chat_id : chat or channel or groups id. 
-   * more : gramjs GetUserPhotos params.
+   * more : Interface.getUserPhotosMoreParams.
   */
-  async getUserPhotos(chat_id:number|string,more?:any|undefined){
+  async getUserPhotos(chat_id:number|string,more?:Interface.getUserPhotosMoreParams){
     return client.invoke(
         new Api.photos.GetUserPhotos({
           userId : chat_id,
@@ -239,11 +240,11 @@ export class tele {
    * Mark channel/supergroup history as read 
    * parameters : 
    * chat_id : chat or channel or groups id.
-   * more : gramjs ReadHistory params.
+   * more : Interface.readHistoryMoreParams.
    * results : 
    * ClassResultAffectedMessages
   */
-  async readHistory(chat_id:number|string,more?:any|undefined){
+  async readHistory(chat_id:number|string,more?:Interface.readHistoryMoreParams){
     let type = await client.getEntity(chat_id)
     if(type.className == "Channel"){
       return new reResults.ClassResultAffectedMessages(
@@ -322,11 +323,11 @@ export class tele {
    * parameters : 
    * chat_id : chat or channel or groups id.
    * message_id : The message to pin or unpin 
-   * more : gramjs UpdatePinnedMessage params.
+   * more : Interface.pinMessageMoreParams.
    * results : 
    * ClassResultPinMessage
   */
-  async pinMessage(chat_id:number|string,message_id:number,more?:any|undefined){
+  async pinMessage(chat_id:number|string,message_id:number,more?:Interface.pinMessageMoreParams){
     return new reResults.ClassResultPinMessage(
         await client.invoke(
           new Api.messages.UpdatePinnedMessage({
@@ -342,11 +343,11 @@ export class tele {
    * Delete the history of a supergroup
    * parameters : 
    * chat_id : Supergroup whose history must be deleted 
-   * more : gramjs DeleteHistory params.
+   * more : Interface.deleteHistoryMoreParams
    * results : 
    * boolean or ClassResultAffectedMessages
   */
-  async deleteHistory(chat_id:number|string,more?:any|undefined){
+  async deleteHistory(chat_id:number|string,more?:Interface.deleteHistoryMoreParams){
     let type = await client.getEntity(chat_id)
     if(type.className == "Channel"){
       return client.invoke(
@@ -359,7 +360,8 @@ export class tele {
       return new reResults.ClassResultAffectedMessages(
           await client.invoke(
             new Api.messages.DeleteHistory({
-              peer : chat_id
+              peer : chat_id,
+              ...more
             })
           )
         )
@@ -390,11 +392,11 @@ export class tele {
    * parameters : 
    * chat_id : channel or groups id 
    * user_id : id from user which will modify the admin rights
-   * more : adminRights params and rank params.
+   * more : Interface.editAdminMoreParams
    * results : 
    * ClassResultEditAdminOrBanned
   */
-  async editAdmin(chat_id:number|string,user_id:number|string,more?:any|undefined){
+  async editAdmin(chat_id:number|string,user_id:number|string,more?:Interface.editAdminMoreParams){
     let permissions = {
       changeInfo: more?.changeInfo || true,
       postMessages: more?.postMessages || true,
@@ -424,11 +426,11 @@ export class tele {
    * parameters : 
    * chat_id : channel or groups id 
    * user_id : id from user which will banned/kicked/unbanned 
-   * more : permissions given to the user 
+   * more : 
    * results : 
    * ClassResultEditAdminOrBanned
   */
-  async editBanned(chat_id:number|string,user_id:number|string,more?:any|undefined){
+  async editBanned(chat_id:number|string,user_id:number|string,more?:Interface.editBannedMoreParams){
     let permissions = {
       untilDate: more?.untilDate || 0,
       viewMessages: more?.viewMessages || true,
@@ -441,7 +443,8 @@ export class tele {
       sendPolls: more?.sendPolls || true,
       changeInfo: more?.changeInfo || true,
       inviteUsers: more?.inviteUsers || true,
-      pinMessages: more?.pinMessages || true
+      pinMessages: more?.pinMessages || true,
+      embedLinks: more?.embedLinks || true
     }
     return new reResults.ClassResultEditAdminOrBanned(
         await client.invoke(
@@ -463,7 +466,8 @@ export class tele {
    * ClassResultEditPhotoOrTitle
   */
   async editPhoto(chat_id:number|string,photo:string|Buffer){
-    let toUpload = await this.uploadFile(photo)
+    let rr = await this.uploadFile(photo)
+    let toUpload = new Api.InputFile({...rr!})
     if(await this.isChannel(chat_id)){
       return new reResults.ClassResultEditPhotoOrTitle(
         await client.invoke(
@@ -490,7 +494,7 @@ export class tele {
    * workers : workers
    * fileName : custom file name
    * results : 
-   * original class uploadFile gramjs example results : ClassResultUploadFile
+   * ClassResultUploadFile
   */
   async uploadFile(file:string|Buffer,workers?:number|undefined,fileName?:string|undefined){
     if(Buffer.isBuffer(file)){
@@ -503,10 +507,12 @@ export class tele {
             "",
             file
           )
-        return client.uploadFile({
-          file : toUpload,
-          workers : workers || 1
-        })
+        return new reResults.ClassResultUploadFile(
+          await client.uploadFile({
+            file : toUpload,
+            workers : workers || 1
+          })
+        )
       }
     }else{
       let basename = path.basename(file)
@@ -529,10 +535,12 @@ export class tele {
           "",
           basebuffer
         )
-        return client.uploadFile({
-          file : toUpload,
-          workers : workers || 1
-        })
+        return new reResults.ClassResultUploadFile(
+          await client.uploadFile({
+            file : toUpload,
+            workers : workers || 1
+          })
+        )
       }
       if(/^(\/|\.\.?\/|~\/)/i.exec(file)){
         let file_name = fileName || basename
@@ -548,10 +556,12 @@ export class tele {
           fs.statSync(file).size,
           file
         )
-        return client.uploadFile({
-          file : toUpload,
-          workers : workers || 1
-        })
+        return new reResults.ClassResultUploadFile(
+          await client.uploadFile({
+            file : toUpload,
+            workers : workers || 1
+          })
+        )
       }
     }
   }
@@ -593,7 +603,7 @@ export class tele {
    * results : 
    * gramjs ExportedMessageLink
   */
-  async exportMessageLink(chat_id:number|string,message_id:number,more?:any|undefined){
+  async exportMessageLink(chat_id:number|string,message_id:number,more?:Interface.exportMessageLinkMoreParams){
     return client.invoke(
         new Api.channels.ExportMessageLink({
           channel : chat_id,
@@ -630,7 +640,7 @@ export class tele {
    * results : 
    * ClassResultGetAdminLog
   */
-  async getAdminLog(chat_id:number|string,more?:any|undefined){
+  async getAdminLog(chat_id:number|string,more?:Interface.getAdminLogMoreParams){
     let filter = {
       join: more?.join || true,
       leave: more?.leave || true,
@@ -645,7 +655,9 @@ export class tele {
       settings: more?.settings || true,
       pinned: more?.pinned || true,
       groupCall: more?.groupCall || true,
-      invites: more?.invites || true
+      invites: more?.invites || true,
+      edit:more?.edit || true,
+      "delete":more?.delete || true
     }
     return new reResults.ClassResultGetAdminLog(
         await client.invoke(

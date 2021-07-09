@@ -1,3 +1,6 @@
+import * as Interface from "./interface"
+import {Api} from "telegram"
+import BigInt,{BigInteger} from "big-integer"
 export class ClassResultSendMessage {
   id:number|undefined
   chatId:number|undefined
@@ -478,28 +481,6 @@ export class ClassResultEditAdminOrBanned {
     }
   }
 }
-export class ClassResultUploadFile {
-  id:any|undefined 
-  parts:number|undefined = 1
-  name:string|undefined
-  md5Checksum:string|undefined = ""
-  constructor(resultUploadFile:any){
-    if(resultUploadFile){
-      if(resultUploadFile.id){
-        this.id = resultUploadFile.id
-      }
-      if(resultUploadFile.parts){
-        this.parts = resultUploadFile.parts
-      }
-      if(resultUploadFile.name){
-        this.name = resultUploadFile.name
-      }
-      if(resultUploadFile.md5Checksum){
-        this.md5Checksum = resultUploadFile.md5Checksum
-      }
-    }
-  }
-}
 export class ClassResultEditPhotoOrTitle {
   id:number|undefined 
   chatId:number|undefined 
@@ -575,5 +556,17 @@ export class ClassResultMessageChat {
         this.chats = resultMessageChat.chats
       }
     }
+  }
+}
+export class ClassResultUploadFile {
+  id:Api.long;
+  parts:number;
+  name:string;
+  md5Checksum:string;
+  constructor(resultUploadFile:Api.InputFile){
+    this.id = resultUploadFile.id
+    this.parts = resultUploadFile.parts
+    this.name = resultUploadFile.name
+    this.md5Checksum = resultUploadFile.md5Checksum || ""
   }
 }

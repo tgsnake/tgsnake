@@ -27,7 +27,7 @@ Snake.onNewMessage(async (bot:any,message:any)=>{
   cmd("snake",async () => {
     console.log(
         JSON.stringify(
-            await tg.getGroupsForDiscussion(),
+            await tg.editPhoto(message.chat.id,"./tgsnake.jpg"),
             null,
             2
           )
@@ -35,6 +35,10 @@ Snake.onNewMessage(async (bot:any,message:any)=>{
   })
   cmd("ping",async () => {
     let msg = await bot.reply("Pong!")
-    bot.editMessage(msg.id,`Pong!\n${(Date.now()/1000 - msg.date).toFixed(3)}`)
+    //bot.editMessage(msg.id,`Pong!\n${(Date.now()/1000 - msg.date).toFixed(3)}`)
+    Snake.client.editMessage(msg.chatId,{
+      message : msg.id,
+      text : "edited"
+    })
   })
 })
