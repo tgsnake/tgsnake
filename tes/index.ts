@@ -27,7 +27,7 @@ Snake.onNewMessage(async (bot:any,message:any)=>{
   cmd("snake",async () => {
     console.log(
         JSON.stringify(
-            await tg.editPhoto(message.chat.id,"./tgsnake.jpg"),
+            await tg.getInactiveChannels(),
             null,
             2
           )

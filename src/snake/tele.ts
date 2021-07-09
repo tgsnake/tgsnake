@@ -727,4 +727,17 @@ export class tele {
         )
       )
   }
+  /**
+   * class getInactiveChannels 
+   * Get inactive channels and supergroups 
+   * parameters : 
+   * - 
+   * results : 
+   * 
+  */
+  async getInactiveChannels(){
+    return client.invoke(
+        new Api.channels.GetInactiveChannels()
+      )
+  }
 }
