@@ -426,7 +426,7 @@ export class tele {
    * parameters : 
    * chat_id : channel or groups id 
    * user_id : id from user which will banned/kicked/unbanned 
-   * more : 
+   * more : Interface.editBannedMoreParams
    * results : 
    * ClassResultEditAdminOrBanned
   */
@@ -599,7 +599,7 @@ export class tele {
    * parameters : 
    * chat_id : chat or channel or groups id. 
    * message_id : message id 
-   * more : gramjs ExportMessageLink params. 
+   * more : Interface.exportMessageLinkMoreParams
    * results : 
    * gramjs ExportedMessageLink
   */
@@ -740,4 +740,22 @@ export class tele {
         new Api.channels.GetInactiveChannels()
       )
   }
+  /**
+   * class getLeftChannels. 
+   * Get a list of channels/supergroups we left.
+   * parameters : 
+   * offset : Offset for pagination 
+   * results : 
+   * 
+  */
+  async getLeftChannels(offset:number = 0){
+    return client.invoke(
+        new Api.channels.GetLeftChannels({
+          offset : offset
+        })
+      )
+  }
+  /**
+   * 
+  */
 }
