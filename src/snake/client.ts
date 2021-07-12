@@ -8,25 +8,41 @@ import {shortcut} from "./shortcut"
 import {Message} from "./rewritejson"
 import prompts from "prompts"
 import {Api} from "telegram"
+import * as Interface from "./interface"
 
 let version = "0.0.5" //change this version according to what is in package.json
 
-let api_hash:string|undefined
-let api_id:number|undefined
+let api_hash:string
+let api_id:number
 let session:string
-let bot_token:string|undefined
+let bot_token:string
 let logger:string
+let tgSnakeLog:boolean|undefined = true
 let connection_retries:number
-let appVersion:any
+let appVersion:string
+function log(text:string){
+  if(tgSnakeLog){
+    console.log(text)
+  }
+}
 export class snake {
-  client:TelegramClient|undefined
-  telegram:tele|undefined
-  constructor(options?:any|undefined){
+  /**
+   * class Client. 
+   * This is a class of gramjs (TelegramClient)
+  */
+  client?:TelegramClient
+  /**
+   * class Telegram. 
+   * all method in here.
+  */
+  telegram?:tele 
+  /**
+   * options parameter : 
+   *   logger,api_hash,api_id,session,bot_token,connection_retries,appVersion,tgSnakeLog
+  */
+  constructor(options?:Interface.options){
     //default options
-    api_hash = undefined 
-    api_id = undefined
     session = ""
-    bot_token = undefined
     connection_retries = 5
     logger = "none"
     // custom options
@@ -52,20 +68,27 @@ export class snake {
       if(options.appVersion){
         appVersion = options.appVersion
       }
+      if(String(options.tgSnakeLog) == "false"){
+        tgSnakeLog = options.tgSnakeLog!
+      }
     }
     Logger.setLevel(logger)
   }
+  /** 
+   * class Run. 
+   * running snake...
+  */
   async run(){
     process.once('SIGINT', () =>{ 
-      console.log("🐍 Killing..")
+      log("🐍 Killing..")
       process.exit(0)
     })
     process.once('SIGTERM', () => { 
-      console.log("🐍 Killing..")
+      log("🐍 Killing..")
       process.exit(0)
     })
-    console.log(`🐍 Welcome To TGSNAKE ${version}.`)
-    console.log(`🐍 Setting Logger level to "${logger}"`)
+    log(`🐍 Welcome To TGSNAKE ${version}.`)
+    log(`🐍 Setting Logger level to "${logger}"`)
     if(!api_hash){
       let input_api_hash = await prompts({
         type : "text",
@@ -154,34 +177,48 @@ export class snake {
     }
       await this.client.connect()
       await this.client.getMe().catch((e:any)=>{})
-      return console.log("🐍 Running..")
+      return log("🐍 Running..")
   }
+  /**
+   * class OnNewMessage. 
+   * next : function. 
+   * this is a function to use handle new message.
+  */
   async onNewMessage(next:any){
     if(this.client){
       this.client.addEventHandler((event:NewMessageEvent)=>{
-        let cut = new shortcut(this.client,event)
-        return next(cut,cut.message)
+        let cut = new shortcut(this.client!,event!)
+        return next(cut as shortcut,cut.message as Interface.Message)
       },new NewMessage({}))
     }
   }
+  /**
+   * class OnNewEvent. 
+   * next : function. 
+   * This is a function to use handle new event.
+  */
   async onNewEvent(next:any){
     if(this.client){
       this.client.addEventHandler((update:Api.TypeUpdate)=>{
-        return next(update)
+        return next(update as Api.TypeUpdate)
       })
     }
   }
+  /**
+   * class GenerateSession. 
+   * only generate the string sesion.
+  */
   async generateSession(){
     process.once('SIGINT', () =>{ 
-      console.log("🐍 Killing..")
+      log("🐍 Killing..")
       process.exit(0)
     })
     process.once('SIGTERM', () => { 
-      console.log("🐍 Killing..")
+      log("🐍 Killing..")
       process.exit(0)
     })
-    console.log(`🐍 Welcome To TGSNAKE ${version}.`)
-    console.log(`🐍 Setting Logger level to "${logger}"`)
+    log(`🐍 Welcome To TGSNAKE ${version}.`)
+    log(`🐍 Setting Logger level to "${logger}"`)
     if(!api_hash){
       let input_api_hash = await prompts({
         type : "text",
@@ -247,8 +284,8 @@ export class snake {
             },
           })
           session = String(await this.client.session.save())
-          this.telegram.sendMessage("me",`🐍 Your string session : <code>${session}</code>`,{parseMode:"HTML"})
           console.log(`🐍 Your string session : ${session}`)
+          this.telegram.sendMessage("me",`🐍 Your string session : <code>${session}</code>`,{parseMode:"HTML"})
         }else{
           let value = await prompts({
             type : "text",
@@ -269,11 +306,15 @@ export class snake {
         console.log(`🐍 Your string session : ${session}`)
       }
     }else{
-      console.log(`🐍 You should use the \`Snake.run()\`!`)
+      log(`🐍 You should use the \`Snake.run()\`!`)
     }
-    console.log(`🐍 Killing...`)
+    log(`🐍 Killing...`)
     process.exit(0)
   }
+  /**
+   * class CatchError. 
+   * handle promise unhandledRejection.
+  */
   async catchError(next:any){
     process.on("unhandledRejection",(reason, promise)=>{
       return next(reason,promise)

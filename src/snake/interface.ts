@@ -1,6 +1,42 @@
 import type * as define from "telegram/define"
 import {Api} from "telegram"
 import {BigInteger} from "big-integer"
+// option 
+export interface options {
+  /**
+   * Set Logger level for gramjs. Default is "none".
+  */
+  logger?:string;
+  /**
+   * An api_hash got from my.telegram.org
+  */
+  api_hash?:string;
+  /**
+   * An api_id got from my.telegram.org
+  */
+  api_id?:number;
+  /**
+   * String sessions
+  */
+  session?:string;
+  /**
+   * Bot Token from botFather. If you need to login as bot this required
+  */
+  bot_token?:string;
+  /**
+   * Connection Retries for gramjs. Default is 5.
+  */
+  connection_retries?:number;
+  /**
+   * Your appVerion. Default tgsnake version.
+  */
+  appVersion?:string;
+  /**
+   * tgsnake console.log 
+   * If set, tgsnake will showing the message in console like welcome to tgsnake or anything.
+  */
+  tgSnakeLog?:boolean;
+}
 // event interface
 export interface Message {
   id?:number;
@@ -36,6 +72,17 @@ export interface ClassResultUploadFile {
   parts?:number;
   name?:string;
   md5Checksum?:string;
+}
+//shortcut interface
+export interface replyMoreParams {
+  noWebpage?:boolean; 
+  silent?:boolean; 
+  background?:boolean; 
+  clearDraft?:boolean; 
+  replyToMsgId?:define.MessageIDLike; 
+  replyMarkup?:Api.TypeReplyMarkup; 
+  entities?:Api.TypeMessageEntity[]; 
+  scheduleDate?:number; 
 }
 //method interface
 export interface sendMessageMoreParams {

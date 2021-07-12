@@ -35,7 +35,7 @@ export class tele {
    * parameters : 
    * tgclient : gramjs client
   */
-  constructor(tgclient:any){
+  constructor(tgclient:TelegramClient){
     client = tgclient
   }
   private async isChannel(chat_id:number|string):Promise<boolean>{

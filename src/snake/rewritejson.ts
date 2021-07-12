@@ -16,7 +16,6 @@ export class Message implements Interface.Message{
   */
   constructor(event?:any){
     let message = event.message
-    console.log(message,event)
     /**
      * message id from incoming new message
     */
