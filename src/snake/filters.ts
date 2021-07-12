@@ -1,6 +1,6 @@
 import {tele} from "./tele"
 import {shortcut} from "./shortcut"
-import {message} from "./rewritejson"
+import {Message} from "./rewritejson"
 let event:any 
 let msg:any 
 let bots:any
@@ -11,7 +11,7 @@ export class Filters {
       if(bot.event){
         event = bot.event
         if(bot.event.message){
-          msg = new message(bot.event.message,bot.event)
+          msg = new Message(bot.event)
         }
       }
     }

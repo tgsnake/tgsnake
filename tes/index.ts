@@ -3,21 +3,21 @@ import {snake,Filters} from "../src"
 import fs from "fs"
 
 const Snake = new snake({
-  api_hash : String(process.env.api_hash),
-  api_id : Number(process.env.api_id),
+  //api_hash : String(process.env.api_hash),
+  //api_id : Number(process.env.api_id),
   //bot_token : String(process.env.bot_token),
-  session : String(process.env.session),
+  //session : String(process.env.session),
   logger : "none",
   tgSnakeLog : true
 })
-//Snake.generateSession()
-Snake.catchError((reason, promise)=>{
-  console.log(reason,promise)
+Snake.generateSession()
+/*Snake.catchError((reason, promise)=>{
+  console.log(reason)
 })
 Snake.run()
 const {telegram} = Snake
-const tg = telegram
-Snake.onNewMessage(async (bot:any,message:any)=>{
+const tg = telegram*/
+/*Snake.onNewMessage(async (bot:any,message:any)=>{
 //  console.log(bot.event)
   console.log(message)
   let filter = new Filters(bot)
@@ -27,7 +27,7 @@ Snake.onNewMessage(async (bot:any,message:any)=>{
   cmd("snake",async () => {
     console.log(
         JSON.stringify(
-            await tg.getInactiveChannels(),
+            await Snake.client.getEntity(-1001182246595),//tg.getInactiveChannels(),
             null,
             2
           )
@@ -42,3 +42,6 @@ Snake.onNewMessage(async (bot:any,message:any)=>{
     })
   })
 })
+Snake.onNewEvent((update)=>{
+  console.log(`New Event`,update)
+})*/

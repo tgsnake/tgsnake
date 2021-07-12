@@ -1,19 +1,22 @@
-
-export class message {
-  id:any
-  chat:any
-  from:any
-  text:any
-  peer:any
-  entities:any
-  replyToMessageId:any
-  date:Date|number|any
-  media:any
+import * as Interface from "./interface"
+import {Api} from "telegram"
+import {BigInteger} from "big-integer"
+export class Message implements Interface.Message{
+  id?:number;
+  chat?:Chat;
+  from?:From;
+  text?:string;
+  entities?:Api.TypeMessageEntity;
+  replyToMessageId?:number;
+  date?:Date|number;
+  media?:any
   /**
    * rewrite json from incoming message. 
    * original message can be found in bot.event.message.
   */
-  constructor(message:any,event:any){
+  constructor(event?:any){
+    let message = event.message
+    console.log(message,event)
     /**
      * message id from incoming new message
     */
@@ -21,11 +24,11 @@ export class message {
    /**
     * class chatClass
    */
-   this.chat = new chatClass(message,event)
+   this.chat = new Chat(message,event)
    /**
     * class fromClass
    */
-   this.from = new fromClass(message,event)
+   this.from = new From(message,event)
    /**
     * date of sending message
    */
@@ -58,18 +61,17 @@ export class message {
    }
   }
 }
-class chatClass {
-  id:number|undefined
-  title:string|undefined
-  first_name:string|undefined
-  last_name:string|undefined
-  username:string|undefined
-  accessHash:any|undefined
-  private:string|undefined
+class Chat implements Interface.Chat {
+  id?:number;
+  title?:string;
+  first_name?:string;
+  last_name?:string;
+  username?:string;
+  private?:boolean|string;
   /**
    * To generate new json from `message.chat`
   */
-  constructor(message:any,event:any){
+  constructor(message?:any,event?:any){
     if(message.chat){
       /**
        * Generate chatId. 
@@ -107,13 +109,6 @@ class chatClass {
       if(message.chat.username){
         this.username = message.chat.username
       }
-      /**
-       * Generate Access Hash 
-       * Access hash (BigInt) to call some telegram api.
-      */
-      if(message.chat.accessHash){
-        this.accessHash = message.chat.accessHash
-      }
     }else{
       /**
        * if message.chat.id not found change with this
@@ -129,20 +124,19 @@ class chatClass {
     this.private = event.isPrivate || false
   }
 }
-class fromClass {
-  id:number|undefined
-  first_name:string|undefined
-  last_name:string|undefined
-  username:string|undefined
-  deleted:boolean|undefined
-  restricted:boolean|undefined
-  lang:string|undefined
-  status:string|undefined
-  accessHash:any|undefined
+class From implements Interface.From {
+  id?:number;
+  first_name?:string;
+  last_name?:string;
+  username?:string;
+  deleted?:boolean;
+  restricted?:boolean;
+  lang?:string;
+  status?:string;
   /**
    * To generate json from `message.sender`
   */
-  constructor(message:any,event:any){
+  constructor(message?:any,event?:any){
     if(message.sender){
       /**
        * Generate userId 
@@ -197,12 +191,6 @@ class fromClass {
         if(message.sender.status.className){
           this.status = message.sender.status.className
         }
-      }
-      /**
-       * Generate Access Hash
-      */
-      if(message.sender.accessHash){
-        this.accessHash = message.sender.accessHash
       }
     }else{
       /**

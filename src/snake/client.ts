@@ -3,12 +3,11 @@ import {TelegramClient} from 'telegram';
 import {StringSession} from 'telegram/sessions';
 import {NewMessage} from 'telegram/events';
 import {NewMessageEvent} from 'telegram/events/NewMessage';
-import {Message} from 'telegram/tl/custom/message';
 import {tele} from "./tele"
 import {shortcut} from "./shortcut"
-import {message} from "./rewritejson"
+import {Message} from "./rewritejson"
 import prompts from "prompts"
-export {Api} from "telegram"
+import {Api} from "telegram"
 
 let version = "0.0.5" //change this version according to what is in package.json
 
@@ -20,8 +19,8 @@ let logger:string
 let connection_retries:number
 let appVersion:any
 export class snake {
-  client:any
-  telegram:any
+  client:TelegramClient|undefined
+  telegram:tele|undefined
   constructor(options?:any|undefined){
     //default options
     api_hash = undefined 
@@ -131,27 +130,25 @@ export class snake {
               console.log(err)
             },
           })
-          session = await this.client.session.save()
+          session = String(await this.client.session.save())
           console.log(`🐍 Your string session : ${session}`)
         }else{
-          await this.client.start({
-            botAuthToken : async () => {
-              let value = await prompts({
-                type : "text",
-                name : "value",
-                message : "🐍 Input your bot_token"
-              })
-              return value.value
-            }
+          let value = await prompts({
+            type : "text",
+            name : "value",
+            message : "🐍 Input your bot_token"
           })
-          session = await this.client.session.save()
+          await this.client.start({
+            botAuthToken : value.value
+          })
+          session = String(await this.client.session.save())
           console.log(`🐍 Your string session : ${session}`)
         }
       }else{
         await this.client.start({
           botAuthToken : bot_token
         })
-        session = await this.client.session.save()
+        session = String(await this.client.session.save())
         console.log(`🐍 Your string session : ${session}`)
       }
     }
@@ -165,6 +162,13 @@ export class snake {
         let cut = new shortcut(this.client,event)
         return next(cut,cut.message)
       },new NewMessage({}))
+    }
+  }
+  async onNewEvent(next:any){
+    if(this.client){
+      this.client.addEventHandler((update:Api.TypeUpdate)=>{
+        return next(update)
+      })
     }
   }
   async generateSession(){
@@ -242,27 +246,26 @@ export class snake {
               console.log(err)
             },
           })
-          session = await this.client.session.save()
+          session = String(await this.client.session.save())
+          this.telegram.sendMessage("me",`🐍 Your string session : <code>${session}</code>`,{parseMode:"HTML"})
           console.log(`🐍 Your string session : ${session}`)
         }else{
-          await this.client.start({
-            botAuthToken : async () => {
-              let value = await prompts({
-                type : "text",
-                name : "value",
-                message : "🐍 Input your bot_token"
-              })
-              return value.value
-            }
+          let value = await prompts({
+            type : "text",
+            name : "value",
+            message : "🐍 Input your bot_token"
           })
-          session = await this.client.session.save()
+          await this.client.start({
+            botAuthToken : value.value
+          })
+          session = String(await this.client.session.save())
           console.log(`🐍 Your string session : ${session}`)
         }
       }else{
         await this.client.start({
           botAuthToken : bot_token
         })
-        session = await this.client.session.save()
+        session = String(await this.client.session.save())
         console.log(`🐍 Your string session : ${session}`)
       }
     }else{

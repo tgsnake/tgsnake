@@ -1,12 +1,41 @@
 import type * as define from "telegram/define"
 import {Api} from "telegram"
 import {BigInteger} from "big-integer"
+// event interface
+export interface Message {
+  id?:number;
+  chat?:Chat;
+  from?:From;
+  text?:string;
+  entities?:Api.TypeMessageEntity;
+  replyToMessageId?:number;
+  date?:Date|number;
+  media?:any
+}
+export interface Chat {
+  id?:number;
+  title?:string;
+  first_name?:string;
+  last_name?:string;
+  username?:string;
+  private?:boolean|string;
+}
+export interface From {
+  id?:number;
+  first_name?:string;
+  last_name?:string;
+  username?:string;
+  deleted?:boolean;
+  restricted?:boolean;
+  lang?:string;
+  status?:string;
+}
 // results interface
 export interface ClassResultUploadFile {
-  id:Api.long;
-  parts:number;
-  name:string
-  md5Checksum:string;
+  id?:Api.long;
+  parts?:number;
+  name?:string;
+  md5Checksum?:string;
 }
 //method interface
 export interface sendMessageMoreParams {
@@ -18,67 +47,67 @@ export interface sendMessageMoreParams {
   replyToMsgId?:define.MessageIDLike; 
   replyMarkup?:Api.TypeReplyMarkup; 
   entities?:Api.TypeMessageEntity[]; 
-  scheduleDate:number; 
+  scheduleDate?:number; 
 }
 export interface editMessageMoreParams {
   noWebpage?:boolean; 
   media?:Api.TypeInputMedia;
   replyMarkup?:Api.TypeReplyMarkup; 
   entities?:Api.TypeMessageEntity[]; 
-  scheduleDate:number; 
+  scheduleDate?:number; 
   parseMode?:string;
 }
 export interface forwardMessageMoreParams {
   /**
    * When forwarding games, whether to include your score in the game.
   */
-  withMyScore:boolean; 
+  withMyScore?:boolean; 
   /**
    * Whether to send messages silently (no notification will be triggered on the destination clients).
   */
-  silent:boolean; 
+  silent?:boolean; 
   /**
    * Whether to send the message in background.
   */
-  background:boolean; 
+  background?:boolean; 
   /**
    * Scheduled message date for scheduled messages.
   */
-  scheduleDate:number;
+  scheduleDate?:number;
 }
 export interface getUserPhotosMoreParams {
   /**
    * Number of list elements to be skipped
   */
-  offset:number;
+  offset?:number;
   /**
    * If a positive value was transferred, the method will return only photos with IDs less than the set one
   */
-  maxId:Api.long;
+  maxId?:Api.long;
   /**
    * Number of list elements to be returned
   */
-  limit:number;
+  limit?:number;
 }
 export interface readHistoryMoreParams {
   /**
    * ID of message up to which messages should be marked as read
   */
-  maxId : number;
+  maxId?: number;
 }
 export interface pinMessageMoreParams {
   /**
    * Pin the message silently, without triggering a notification
   */
-  silent:boolean; 
+  silent?:boolean; 
   /**
    * Whether the message should unpinned or pinned
   */
-  unpin:boolean;
+  unpin?:boolean;
   /**
    * Whether the message should only be pinned on the local side of a one-to-one chat
   */
-  pmOneside:boolean;
+  pmOneside?:boolean;
 }
 export interface deleteHistoryMoreParams {
   /**
@@ -270,13 +299,13 @@ export interface getAdminLogMoreParams {
   /**
    * Maximum ID of message to return (see pagination)
   */
-  maxId:BigInteger;
+  maxId?:BigInteger;
   /**
    * Minimum ID of message to return (see pagination)
   */
-  minId:BigInteger;
+  minId?:BigInteger;
   /**
    * Maximum number of results to return, see pagination
   */
-  limit:number;
+  limit?:number;
 }

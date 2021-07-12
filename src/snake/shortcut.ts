@@ -1,11 +1,9 @@
 import {tele} from "./tele"
 import {NewMessage} from 'telegram/events';
 import {NewMessageEvent} from 'telegram/events/NewMessage';
-import {Message} from 'telegram/tl/custom/message';
 import {Api} from "telegram"
-import {message} from "./rewritejson"
+import {Message} from "./rewritejson"
 
-let tgMessage:any
 let client:any
 let tg:any
 
@@ -16,8 +14,7 @@ export class shortcut {
     client = tgclient
     tg = new tele(tgclient)
     this.event = event
-    tgMessage = event.message as Message
-    this.message = new message(tgMessage,event)
+    this.message = new Message(event)
   }
   async reply(text:string,more?:any|undefined){
     return tg.sendMessage(this.message.chat.id,text,{
