@@ -1,7 +1,9 @@
 import type * as define from "telegram/define"
-import {Api} from "telegram"
+import {Api,TelegramClient} from "telegram"
 import {BigInteger} from "big-integer"
-// option 
+import {tele} from "./tele"
+import {shortcut} from "./shortcut"
+// option and client
 export interface options {
   /**
    * Set Logger level for gramjs. Default is "none".
@@ -36,6 +38,51 @@ export interface options {
    * If set, tgsnake will showing the message in console like welcome to tgsnake or anything.
   */
   tgSnakeLog?:boolean;
+}
+interface ctxParams { 
+  /**
+   * context : shortcut and event update 
+   * message : json message from context.message
+  */
+  (context:shortcut,message:Message)
+}
+export interface client {
+  /**
+   * class Client. 
+   * This is a class of gramjs (TelegramClient)
+  */
+  client?:TelegramClient
+  /**
+   * class Telegram. 
+   * all method in here.
+  */
+  telegram?:tele 
+  /** 
+   * class Run. 
+   * running snake...
+  */
+  run():Promise<void>
+  /**
+   * class OnNewMessage. 
+   * next : function. 
+   * this is a function to use handle new message.
+  */
+  onNewMessage(ctx:ctxParams):Promise<void>
+  /** 
+   * class Run. 
+   * running snake...
+  */
+  onNewEvent(event:Api.TypeUpdate):Promise<void>
+  /**
+   * class GenerateSession. 
+   * only generate the string sesion.
+  */
+  generateSession():Promise<void>
+  /**
+   * class CatchError. 
+   * handle promise unhandledRejection.
+  */
+  catchError(reason:any, promise:Promise<any>):Promise<void>
 }
 // event interface
 export interface Message {

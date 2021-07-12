@@ -24,8 +24,9 @@ function log(text:string){
   if(tgSnakeLog){
     console.log(text)
   }
-}
-export class snake {
+} 
+
+export class snake implements Interface.client {
   /**
    * class Client. 
    * This is a class of gramjs (TelegramClient)
@@ -78,7 +79,7 @@ export class snake {
    * class Run. 
    * running snake...
   */
-  async run(){
+  async run():Promise<void>{
     process.once('SIGINT', () =>{ 
       log("🐍 Killing..")
       process.exit(0)
@@ -184,11 +185,10 @@ export class snake {
    * next : function. 
    * this is a function to use handle new message.
   */
-  async onNewMessage(next:any){
+  async onNewMessage(next:any):Promise<void>{
     if(this.client){
       this.client.addEventHandler((event:NewMessageEvent)=>{
-        let cut = new shortcut(this.client!,event!)
-        return next(cut as shortcut,cut.message as Interface.Message)
+        return next(new shortcut(this.client!,event!),new Message(event!))
       },new NewMessage({}))
     }
   }
@@ -197,10 +197,10 @@ export class snake {
    * next : function. 
    * This is a function to use handle new event.
   */
-  async onNewEvent(next:any){
+  async onNewEvent(next:any):Promise<void>{
     if(this.client){
       this.client.addEventHandler((update:Api.TypeUpdate)=>{
-        return next(update as Api.TypeUpdate)
+        return next(update)
       })
     }
   }
@@ -208,7 +208,7 @@ export class snake {
    * class GenerateSession. 
    * only generate the string sesion.
   */
-  async generateSession(){
+  async generateSession():Promise<void>{
     process.once('SIGINT', () =>{ 
       log("🐍 Killing..")
       process.exit(0)
@@ -315,8 +315,8 @@ export class snake {
    * class CatchError. 
    * handle promise unhandledRejection.
   */
-  async catchError(next:any){
-    process.on("unhandledRejection",(reason, promise)=>{
+  async catchError(next:any):Promise<void>{
+    process.on("unhandledRejection",(reason:any, promise:Promise<any>)=>{
       return next(reason,promise)
     })
   }

@@ -28,8 +28,9 @@ Snake.onNewMessage(async (bot,message)=>{
     bot.reply("Hai, saya snake!")
   })
   cmd("ping",async () => {
+    let ping = Date.now() / 1000
     let msg = await bot.reply("Pong!")
-    bot.editMessage(msg.id,`Pong!\n${(Date.now()/1000 - msg.date).toFixed(3)}`)
+    bot.editMessage(msg.id,`Pong!\n${(Date.now()/1000 - ping).toFixed(3)}`)
     /*Snake.client.editMessage(msg.chatId,{
       message : msg.id,
       text : "edited"
