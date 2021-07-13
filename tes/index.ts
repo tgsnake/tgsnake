@@ -1,5 +1,5 @@
 require("dotenv").config()
-import {snake,Filters,generateResult, Interface} from "../src"
+import {snake,Filters,generateResult, Interface, shortcut, generateJson} from "../src"
 import fs from "fs"
 
 const Snake = new snake({
@@ -17,7 +17,7 @@ Snake.catchError((reason, promise)=>{
 Snake.run()
 const {telegram} = Snake
 const tg = telegram!
-Snake.onNewMessage(async (bot,message)=>{
+Snake.onNewMessage(async (bot:shortcut,message)=>{
 //  console.log(bot.event)
 //  console.log(bot.event,message)
   let filter = new Filters(bot)

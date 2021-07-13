@@ -26,7 +26,7 @@ function log(text:string){
   }
 } 
 
-export class snake implements Interface.client {
+export class snake implements Interface.Snake {
   /**
    * class Client. 
    * This is a class of gramjs (TelegramClient)

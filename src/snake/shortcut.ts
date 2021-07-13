@@ -5,8 +5,8 @@ import {Api} from "telegram"
 import {Message} from "./rewritejson"
 import {TelegramClient} from 'telegram';
 import * as Interface from "./interface"
-let client:any
-let tg:any
+let client:TelegramClient
+let tg:tele
 
 export class shortcut {
   event:NewMessageEvent
@@ -22,7 +22,7 @@ export class shortcut {
    * shortcut from telegram.sendMessage with replying message and markdown parse
   */
   async reply(text:string,more?:Interface.replyMoreParams){
-    return tg.sendMessage(this.message?.chat?.id,text,{
+    return tg.sendMessage(this.message.chat.id,text,{
       replyToMsgId : this.message.id,
       ...more
     })
@@ -32,7 +32,7 @@ export class shortcut {
    * shortcut from telegram.sendMessage with replying message and HTML parse
   */
   async replyHTML(text:string,more?:Interface.replyMoreParams){
-    return tg.sendMessage(this.message?.chat?.id,text,{
+    return tg.sendMessage(this.message.chat.id,text,{
       replyToMsgId : this.message.id,
       parseMode : "html",
       ...more
@@ -43,21 +43,21 @@ export class shortcut {
    * shortcut from telegram.sendMessage without replying message and parse mode. 
   */
   async respond(text:string,more?:Interface.sendMessageMoreParams){
-    return tg.sendMessage(this.message?.chat?.id,text,more)
+    return tg.sendMessage(this.message.chat.id,text,more)
   }
   /**
    * class deleteMessages 
    * shortcut from telegram.deleteMessages
   */
   async deleteMessages(message_id:number[]){
-    return tg.deleteMessages(this.message?.chat?.id,message_id)
+    return tg.deleteMessages(this.message.chat.id,message_id)
   }
   /**
    * class editMessage 
    * shortcut from telegram.editMessage
   */
   async editMessage(message_id:number,text:string,more?:Interface.editMessageMoreParams){
-    return tg.editMessage(this.message?.chat?.id,message_id,text,more)
+    return tg.editMessage(this.message.chat.id,message_id,text,more)
   }
   /**
    * class forwardMessages 
@@ -71,14 +71,14 @@ export class shortcut {
    * shortcut from telegram.getMessages
   */
   async getMessages(message_id:any[]){
-    return tg.getMessages(this.message?.chat?.id,message_id)
+    return tg.getMessages(this.message.chat.id,message_id)
   }
   /**
    * class getMessagesViews 
    * shortcut from telegram.getMessagesViews
   */
   async getMessagesViews(message_id:number[],increment:boolean=false){
-    return tg.getMessagesViews(this.message?.chat?.id,message_id,increment)
+    return tg.getMessagesViews(this.message.chat.id,message_id,increment)
   }
   /**
    * clase getUserPhotos 
@@ -92,14 +92,14 @@ export class shortcut {
    * shortcut from telegram.readHistory
   */
   async readHistory(more?:Interface.readHistoryMoreParams){
-    return tg.readHistory(this.message?.chat?.id,more)
+    return tg.readHistory(this.message.chat.id,more)
   }
   /**
    * class readMentions 
    * shortcut from telegram.readMentions
   */
   async readMentions(){
-    return tg.readMentions(this.message?.chat?.id)
+    return tg.readMentions(this.message.chat.id)
   }
   /**
    * class readMessageContents 
@@ -113,21 +113,21 @@ export class shortcut {
    * shortcut from telegram.unpinAllMessage
   */
   async unpinAllMessages(){
-    return tg.unpinAllMessages(this.message?.chat?.id)
+    return tg.unpinAllMessages(this.message.chat.id)
   }
   /**
    * class pinMessage 
    * shortcut from telegram.pinMessage
   */
   async pinMessage(message_id:number,more?:Interface.pinMessageMoreParams){
-    return tg.pinMessage(this.message?.chat?.id,message_id,more)
+    return tg.pinMessage(this.message.chat.id,message_id,more)
   }
   /**
    * class unpinMessage
    * to unpin message you can use this method. this class is shortcut from pinMessage
   */
   async unpinMessage(message_id:number){
-    return tg.pinMessage(this.message?.chat?.id,message_id,{
+    return tg.pinMessage(this.message.chat.id,message_id,{
       unpin : true
     })
   }
@@ -136,27 +136,27 @@ export class shortcut {
    * shortcut from telegram.deleteHistory
   */
   async deleteHistory(more?:Interface.deleteHistoryMoreParams){
-    return tg.deleteMessages(this.message?.chat?.id,more)
+    return tg.deleteHistory(this.message.chat.id,more)
   }
   /**
    * class deleteUserHistory 
    * shortcut from telegram.deleteUserHistory
   */
   async deleteUserHistory(user_id:number|string){
-    return tg.deleteUserHistory(this.message?.chat?.id,user_id)
+    return tg.deleteUserHistory(this.message.chat.id,user_id)
   }
   /**
    * class editAdmin 
    * shortcut from telegram.editAdmin
   */
   async editAdmin(user_id:number|string,more?:Interface.editAdminMoreParams){
-    return tg.editAdmin(this.message?.chat?.id,user_id,more)
+    return tg.editAdmin(this.message.chat.id,user_id,more)
   }
   /**
    * class editBanned 
    * shortcut from telegram.editBanned
   */
   async editBanned(user_id:number|string,more?:Interface.editBannedMoreParams){
-    return tg.editBanned(this.message?.chat?.id,user_id,more)
+    return tg.editBanned(this.message.chat.id,user_id,more)
   }
 }

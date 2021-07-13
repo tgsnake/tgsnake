@@ -46,7 +46,7 @@ interface ctxParams {
   */
   (context:shortcut,message:Message)
 }
-export interface client {
+export interface Snake {
   /**
    * class Client. 
    * This is a class of gramjs (TelegramClient)
@@ -86,17 +86,17 @@ export interface client {
 }
 // event interface
 export interface Message {
-  id?:number;
-  chat?:Chat;
-  from?:From;
+  id:number;
+  chat:Chat;
+  from:From;
   text?:string;
   entities?:Api.TypeMessageEntity;
   replyToMessageId?:number;
-  date?:Date|number;
+  date:Date|number;
   media?:any
 }
 export interface Chat {
-  id?:number;
+  id:number;
   title?:string;
   first_name?:string;
   last_name?:string;
@@ -104,7 +104,7 @@ export interface Chat {
   private?:boolean|string;
 }
 export interface From {
-  id?:number;
+  id:number;
   first_name?:string;
   last_name?:string;
   username?:string;
@@ -132,6 +132,17 @@ export interface replyMoreParams {
   scheduleDate?:number; 
 }
 //method interface
+interface onProgress {
+    // Float between 0 and 1.
+    (progress: number): void;
+
+    isCanceled?: boolean;
+}
+export interface uploadFileMoreParams {
+  fileName?:string;
+  workers?:number; 
+  onProgress?:onProgress;
+}
 export interface sendMessageMoreParams {
   noWebpage?:boolean; 
   silent?:boolean; 

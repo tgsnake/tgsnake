@@ -563,10 +563,13 @@ export class ClassResultUploadFile {
   parts:number;
   name:string;
   md5Checksum:string;
-  constructor(resultUploadFile:Api.InputFile){
+  constructor(resultUploadFile:Api.InputFile|Api.InputFileBig){
     this.id = resultUploadFile.id
     this.parts = resultUploadFile.parts
     this.name = resultUploadFile.name
-    this.md5Checksum = resultUploadFile.md5Checksum || ""
+    this.md5Checksum = ""
+    if(resultUploadFile instanceof Api.InputFile ){
+      this.md5Checksum = resultUploadFile.md5Checksum
+    }
   }
 }

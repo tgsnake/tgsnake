@@ -17,7 +17,7 @@ import FileType from "file-type"
 import {_parseMessageText} from "telegram/client/messageParse"
 import * as Interface from "./interface"
 
-export let client:any
+export let client:TelegramClient
 
 async function getFinnalId(chat_id:number|string){
   if(typeof(chat_id) == "string"){
@@ -491,16 +491,15 @@ export class tele {
    * upload file from url or buffer or file path 
    * parameters : 
    * file : file to uploaded 
-   * workers : workers
-   * fileName : custom file name
+   * more :Interface.uploadFileMoreParams
    * results : 
    * ClassResultUploadFile
   */
-  async uploadFile(file:string|Buffer,workers?:number|undefined,fileName?:string|undefined){
+  async uploadFile(file:string|Buffer,more?: Interface.uploadFileMoreParams){
     if(Buffer.isBuffer(file)){
       let fileInfo = await FileType.fromBuffer(file)
       if(fileInfo){
-        let file_name = fileName || `${Date.now()/1000}.${fileInfo.ext}`
+        let file_name = more?.fileName || `${Date.now()/1000}.${fileInfo.ext}`
         let toUpload = new CustomFile(
             file_name,
             Buffer.byteLength(file),
@@ -510,7 +509,8 @@ export class tele {
         return new reResults.ClassResultUploadFile(
           await client.uploadFile({
             file : toUpload,
-            workers : workers || 1
+            workers : more?.workers || 1,
+            onProgress : more?.onProgress
           })
         )
       }
@@ -521,7 +521,7 @@ export class tele {
           responseType: "arraybuffer"
         })
         let basebuffer = Buffer.from(res.data, "utf-8")
-        let file_name = fileName || basename
+        let file_name = more?.fileName || basename
         let match = /\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/gmi.exec(file_name)
         if(!match){
           let fileInfo = await FileType.fromBuffer(basebuffer)
@@ -538,12 +538,13 @@ export class tele {
         return new reResults.ClassResultUploadFile(
           await client.uploadFile({
             file : toUpload,
-            workers : workers || 1
+            workers : more?.workers || 1,
+            onProgress : more?.onProgress
           })
         )
       }
       if(/^(\/|\.\.?\/|~\/)/i.exec(file)){
-        let file_name = fileName || basename
+        let file_name = more?.fileName || basename
         let match = /\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/gmi.exec(file_name)
         if(!match){
           let fileInfo = await FileType.fromFile(file)
@@ -559,7 +560,8 @@ export class tele {
         return new reResults.ClassResultUploadFile(
           await client.uploadFile({
             file : toUpload,
-            workers : workers || 1
+            workers : more?.workers || 1,
+            onProgress : more?.onProgress
           })
         )
       }

@@ -2,13 +2,13 @@ import * as Interface from "./interface"
 import {Api} from "telegram"
 import {BigInteger} from "big-integer"
 export class Message implements Interface.Message{
-  id?:number;
-  chat?:Chat;
-  from?:From;
+  id!:number;
+  chat:Interface.Chat;
+  from:Interface.From;
   text?:string;
   entities?:Api.TypeMessageEntity;
   replyToMessageId?:number;
-  date?:Date|number;
+  date:Date|number;
   media?:any
   /**
    * rewrite json from incoming message. 
@@ -19,7 +19,7 @@ export class Message implements Interface.Message{
     /**
      * message id from incoming new message
     */
-   this.id = message.id || undefined
+   this.id = message.id
    /**
     * class chatClass
    */
@@ -61,7 +61,7 @@ export class Message implements Interface.Message{
   }
 }
 class Chat implements Interface.Chat {
-  id?:number;
+  id!:number;
   title?:string;
   first_name?:string;
   last_name?:string;
@@ -124,7 +124,7 @@ class Chat implements Interface.Chat {
   }
 }
 class From implements Interface.From {
-  id?:number;
+  id!:number;
   first_name?:string;
   last_name?:string;
   username?:string;
