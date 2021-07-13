@@ -30,6 +30,7 @@ async function getFinnalId(chat_id:number|string){
 }
 
 export class tele {
+  className:string = "telegram"
   /**
    * Generate simple method from raw api gramjs 
    * parameters : 

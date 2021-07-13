@@ -1,6 +1,7 @@
 require("dotenv").config()
 import {snake,Filters,generateResult, Interface, shortcut, generateJson} from "../src"
 import fs from "fs"
+import {StoreSession,StringSession} from "telegram/sessions"
 
 const Snake = new snake({
   api_hash : String(process.env.api_hash),
@@ -15,11 +16,12 @@ Snake.catchError((reason, promise)=>{
   console.log(reason)
 })
 Snake.run()
-const {telegram} = Snake
-const tg = telegram!
 Snake.onNewMessage(async (bot:shortcut,message)=>{
 //  console.log(bot.event)
-//  console.log(bot.event,message)
+//  console.log(Snake)
+  console.log(bot.event,message) 
+  let {telegram} = Snake
+  let tg = telegram
   let filter = new Filters(bot)
   let {cmd,hears} = filter
   tg.readHistory(message.chat.id)
@@ -27,16 +29,4 @@ Snake.onNewMessage(async (bot:shortcut,message)=>{
   cmd("snake",async () => {
     bot.reply("Hai, saya snake!")
   })
-  cmd("ping",async () => {
-    let ping = Date.now() / 1000
-    let msg = await bot.reply("Pong!")
-    bot.editMessage(msg.id,`Pong!\n${(Date.now()/1000 - ping).toFixed(3)}`)
-    /*Snake.client.editMessage(msg.chatId,{
-      message : msg.id,
-      text : "edited"
-    })*/
-  })
 })
-/*Snake.onNewEvent((update)=>{
-  console.log(`New Event`,update)
-})*/

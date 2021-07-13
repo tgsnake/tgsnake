@@ -105,3 +105,6 @@ dist
 
 # build
 /lib
+# tgsnake session 
+
+/tgsnake

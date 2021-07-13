@@ -38,59 +38,47 @@ export interface options {
    * If set, tgsnake will showing the message in console like welcome to tgsnake or anything.
   */
   tgSnakeLog?:boolean;
+  /**
+   * session name 
+   * required to save the string session.
+  */
+  sessionName?:string;
 }
-interface ctxParams { 
+export interface ctxParams { 
   /**
    * context : shortcut and event update 
    * message : json message from context.message
   */
   (context:shortcut,message:Message)
 }
-export interface Snake {
-  /**
-   * class Client. 
-   * This is a class of gramjs (TelegramClient)
-  */
-  client?:TelegramClient
-  /**
-   * class Telegram. 
-   * all method in here.
-  */
-  telegram?:tele 
-  /** 
-   * class Run. 
-   * running snake...
-  */
-  run():Promise<void>
-  /**
-   * class OnNewMessage. 
-   * next : function. 
-   * this is a function to use handle new message.
-  */
-  onNewMessage(ctx:ctxParams):Promise<void>
-  /** 
-   * class Run. 
-   * running snake...
-  */
-  onNewEvent(event:Api.TypeUpdate):Promise<void>
-  /**
-   * class GenerateSession. 
-   * only generate the string sesion.
-  */
-  generateSession():Promise<void>
-  /**
-   * class CatchError. 
-   * handle promise unhandledRejection.
-  */
-  catchError(reason:any, promise:Promise<any>):Promise<void>
+export interface ctxEvent {
+  (update:Api.TypeUpdate)
 }
 // event interface
 export interface Message {
+  /**
+   * unique id from telegram for message.
+  */
   id:number;
+  /**
+   * info about chat
+  */
   chat:Chat;
+  /**
+   * info about from (sender)
+  */
   from:From;
+  /**
+   * message text
+  */
   text?:string;
+  /**
+   * entities from message
+  */
   entities?:Api.TypeMessageEntity;
+  /**
+   * if user reply message this will showing the message from replying message.
+  */
   replyToMessageId?:number;
   date:Date|number;
   media?:any
@@ -139,8 +127,17 @@ interface onProgress {
     isCanceled?: boolean;
 }
 export interface uploadFileMoreParams {
+  /**
+   * custom file name.
+  */
   fileName?:string;
+  /**
+   * How many workers to use to upload the file. anything above 16 is unstable.
+  */
   workers?:number; 
+  /**
+   * a progress callback for the upload.
+  */
   onProgress?:onProgress;
 }
 export interface sendMessageMoreParams {

@@ -1,6 +1,6 @@
 import {Logger} from 'telegram/extensions';
 import {TelegramClient} from 'telegram';
-import {StringSession} from 'telegram/sessions';
+import {StringSession,StoreSession} from 'telegram/sessions';
 import {NewMessage} from 'telegram/events';
 import {NewMessageEvent} from 'telegram/events/NewMessage';
 import {tele} from "./tele"
@@ -9,6 +9,7 @@ import {Message} from "./rewritejson"
 import prompts from "prompts"
 import {Api} from "telegram"
 import * as Interface from "./interface"
+import fs from "fs"
 
 let version = "0.0.5" //change this version according to what is in package.json
 
@@ -20,27 +21,25 @@ let logger:string
 let tgSnakeLog:boolean|undefined = true
 let connection_retries:number
 let appVersion:string
+let sessionName:string = "tgsnake"
+let running:boolean = false
 function log(text:string){
   if(tgSnakeLog){
     console.log(text)
   }
 } 
 
-export class snake implements Interface.Snake {
+export class snake {
   /**
    * class Client. 
    * This is a class of gramjs (TelegramClient)
   */
-  client?:TelegramClient
+  client!:TelegramClient
   /**
    * class Telegram. 
    * all method in here.
   */
-  telegram?:tele 
-  /**
-   * options parameter : 
-   *   logger,api_hash,api_id,session,bot_token,connection_retries,appVersion,tgSnakeLog
-  */
+  telegram!:tele
   constructor(options?:Interface.options){
     //default options
     session = ""
@@ -72,14 +71,52 @@ export class snake implements Interface.Snake {
       if(String(options.tgSnakeLog) == "false"){
         tgSnakeLog = options.tgSnakeLog!
       }
+      if(options.sessionName){
+        sessionName = options.sessionName
+      }
     }
     Logger.setLevel(logger)
+  }
+  private async _convertString(){
+    let stringsession = new StringSession(session)
+    let storesession = new StoreSession(sessionName)
+    await stringsession.load()
+    storesession.setDC(
+        stringsession.dcId,
+        stringsession.serverAddress!,
+        stringsession.port!
+      )
+    storesession.setAuthKey(
+        stringsession.authKey
+      )
+    return storesession
+  }
+  private async _createClient(){
+    if(!api_hash){
+      throw new Error("api_hash required!");
+    }
+    if(!api_id){
+      throw new Error("api_id required!");
+    }
+    if(!bot_token && session == ""){
+      throw new Error("bot_token required if you login as bot, session required if you login as user. To get session run generateSession function.")
+    }
+    this.client = new TelegramClient(
+       await this._convertString(),
+       Number(api_id),
+       String(api_hash),
+       { 
+        connectionRetries : connection_retries,
+        appVersion : appVersion || version
+      }
+    )
+    return this.client
   }
   /** 
    * class Run. 
    * running snake...
   */
-  async run():Promise<void>{
+  async run(){
     process.once('SIGINT', () =>{ 
       log("🐍 Killing..")
       process.exit(0)
@@ -90,102 +127,23 @@ export class snake implements Interface.Snake {
     })
     log(`🐍 Welcome To TGSNAKE ${version}.`)
     log(`🐍 Setting Logger level to "${logger}"`)
-    if(!api_hash){
-      let input_api_hash = await prompts({
-        type : "text",
-        name : "value",
-        message : "🐍 Input your api_hash",
-      })
-      api_hash = input_api_hash.value
+    if(!this.client){
+      await this._createClient()
     }
-    if(!api_id){
-      let input_api_id = await prompts({
-        type : "text",
-        name : "value",
-        message : "🐍 Input your api_id",
-      })
-      api_id = input_api_id.value
-    }
-    this.client = new TelegramClient(
-        new StringSession(session),
-        Number(api_id),
-        String(api_hash),
-        { 
-          connectionRetries : connection_retries,
-          appVersion : appVersion || version
-        }
-      )
     this.telegram = new tele(this.client)
-    if(session == ""){
-      if(!bot_token){
-        let loginAsBot = await prompts({
-          type : "confirm",
-          name : "value",
-          initial : false,
-          message : "🐍 Login as bot?"
-        })
-        if(!loginAsBot.value){
-          await this.client.start({
-            phoneNumber: async () => {
-              let value = await prompts({
-                type : "text",
-                name : "value",
-                message : "🐍 Input your international phone number"
-              })
-              return value.value
-            },
-            password: async () => {
-              let value = await prompts({
-                type : "text",
-                name : "value",
-                message : "🐍 Input your 2FA password"
-              })
-              return value.value
-            },
-            phoneCode: async () => { 
-              let value = await prompts({
-                type : "text",
-                name : "value",
-                message : "🐍 Input Telegram verifications code"
-              })
-              return value.value
-            },
-            onError: (err:any) => { 
-              console.log(err)
-            },
-          })
-          session = String(await this.client.session.save())
-          console.log(`🐍 Your string session : ${session}`)
-        }else{
-          let value = await prompts({
-            type : "text",
-            name : "value",
-            message : "🐍 Input your bot_token"
-          })
-          await this.client.start({
-            botAuthToken : value.value
-          })
-          session = String(await this.client.session.save())
-          console.log(`🐍 Your string session : ${session}`)
-        }
-      }else{
-        await this.client.start({
-          botAuthToken : bot_token
-        })
-        session = String(await this.client.session.save())
-        console.log(`🐍 Your string session : ${session}`)
-      }
-    }
-      await this.client.connect()
-      await this.client.getMe().catch((e:any)=>{})
-      return log("🐍 Running..")
+    await this.client.connect()
+    await this.client.getMe().catch((e:any)=>{})
+    return log("🐍 Running..")
   }
   /**
    * class OnNewMessage. 
    * next : function. 
    * this is a function to use handle new message.
   */
-  async onNewMessage(next:any):Promise<void>{
+  async onNewMessage(next:Interface.ctxParams){
+    if(!this.client){
+      await this._createClient()
+    }
     if(this.client){
       this.client.addEventHandler((event:NewMessageEvent)=>{
         return next(new shortcut(this.client!,event!),new Message(event!))
@@ -197,7 +155,10 @@ export class snake implements Interface.Snake {
    * next : function. 
    * This is a function to use handle new event.
   */
-  async onNewEvent(next:any):Promise<void>{
+  async onNewEvent(next:Interface.ctxEvent){
+    if(!this.client){
+      await this._createClient()
+    }
     if(this.client){
       this.client.addEventHandler((update:Api.TypeUpdate)=>{
         return next(update)
@@ -308,7 +269,7 @@ export class snake implements Interface.Snake {
     }else{
       log(`🐍 You should use the \`Snake.run()\`!`)
     }
-    log(`🐍 Killing...`)
+    log("🐍 Killing...")
     process.exit(0)
   }
   /**
