@@ -1,5 +1,5 @@
 ### Welcome
-![tgsnakeicon-flaticon](./tgsnake.jpg)  
+![tgsnakeicon-flaticon](https://raw.githubusercontent.com/butthx/tgsnake/master/tgsnake.jpg)  
 Hi, **tgsnake** is a framework developed based on gram.js  
 [![github-repo](https://img.shields.io/badge/Github-butthx-blue.svg?style=for-the-badge&logo=github)](https://github.com/butthx/tgsnake)
 [![telegram-chat](https://img.shields.io/badge/Telegram-Chat-blue.svg?style=for-the-badge&logo=telegram)](https://t.me/tgsnakechat)  
@@ -18,19 +18,23 @@ or
 `yarn add tgsnake`  
 
 ```javascript
-const {snake} = require("tgsnake")
-// import {snake} from "tgsnake"
-const Snake = new snake({
+const {Snake} = require("tgsnake")
+// import {Snake} from "tgsnake"
+const bot = new Snake({
   api_hash : "abcde", //your api hash
   api_id : 123456, // your api id
   bot_token : "123457890:abcd", // bot token. if you login using number delete this.
   logger:"none" // gramjs logger
 })
+/**
+ * if you login as user, you must generateSession first! 
+ * bot.generateSession()
+ * disable bot.run() to generate session!
+*/
+bot.run() //snake running
 
-Snake.run() //snake running
-
-Snake.onNewMessage((bot,message)=>{ //handle new message event.
-  bot.reply("hai") // reply with "hai"
+bot.onNewMessage((ctx,message)=>{ //handle new message event.
+  ctx.reply("hai") // reply with "hai"
   //console.log(message) // see json of message.
 })
 ```

@@ -11,10 +11,11 @@ Snake.catchError((reason, promise)=>{
 Snake.run()
 Snake.onNewMessage(async (bot:shortcut,message)=>{
 //  console.log(bot.event)
-  console.log(Snake)
+//  console.log(Snake)
   console.log(bot.event,message) 
   let {telegram} = Snake
-  let tg = telegram
+  let tg = telegram 
+  console.log(await Snake.client.getMe())
   let filter = new Filters(bot)
   let {cmd,hears} = filter
   tg.readHistory(message.chat.id)
