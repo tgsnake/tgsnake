@@ -1,16 +1,9 @@
-require("dotenv").config()
+
 import {snake,Filters,generateResult, Interface, shortcut, generateJson} from "../src"
 import fs from "fs"
 import {StoreSession,StringSession} from "telegram/sessions"
 
-const Snake = new snake({
-  api_hash : String(process.env.api_hash),
-  api_id : Number(process.env.api_id),
-  //bot_token : String(process.env.bot_token),
-  session : String(process.env.session),
-  logger : "none",
-  tgSnakeLog : true
-})
+const Snake = new snake()
 //Snake.generateSession()
 Snake.catchError((reason, promise)=>{
   console.log(reason)

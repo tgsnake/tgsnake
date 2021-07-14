@@ -41,6 +41,13 @@ export class snake {
   */
   telegram!:tele
   constructor(options?:Interface.options){
+    if(!options){
+      let dir = fs.readdirSync(process.cwd())
+      if(dir.includes("tgsnake.config.js")){
+        let config = require(`${process.cwd()}/tgsnake.config.js`)
+        options = config
+      }
+    }
     //default options
     session = ""
     connection_retries = 5

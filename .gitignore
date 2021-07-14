@@ -106,5 +106,6 @@ dist
 # build
 /lib
 # tgsnake session 
-
 /tgsnake
+# tgsnake config 
+tgsnake.config.js
