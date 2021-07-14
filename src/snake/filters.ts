@@ -1,9 +1,13 @@
-import {tele} from "./tele"
-import {shortcut} from "./shortcut"
+import {Telegram} from "./tele"
+import {Shortcut} from "./shortcut"
 import {Message} from "./rewritejson"
 let event:any 
 let msg:any 
 let bots:any
+/**
+ * This class to filter new message text. 
+ * This class is beta!
+*/
 export class Filters {
   constructor(bot?:any){
     if(bot){
@@ -17,10 +21,21 @@ export class Filters {
     }
   }
   /**
-   * class cmd or command
-   * handle new message (text) with specific text. 
+   * handle new message (text) with specific text. <br/> 
+   * prefix : !/ <br/> 
+   * @param key - some key like array of text or text 
+   * @param next - a callbacm function when message match with key
+   * @example 
+   * ```ts 
+   * import {Filters} from "tgsnake" 
+   * // onNewMessage 
+   * const filter = new Filters(ctx) 
+   * filter.cmd("hi",(match)=>{
+      ctx.reply("Hi!")
+    })
+   * ```
   */
-  async cmd(command:string|string[],next:any){
+  async cmd(command:string|string[],next:{(math:RegExpExecArray):void}){
     if(event){
       let me = await event.client.getMe()
       let username = ""
@@ -52,10 +67,23 @@ export class Filters {
     return false
   }
   /**
-   * class cmd or command
-   * handle new message (text) with specific text. 
+   * handle new message (text) with specific text.
+   * @param key - some key like regex or string. 
+   * @param next - a callbacm function when message match with key.
+   * @example 
+   * ```ts 
+   * import {Filters} from "tgsnake" 
+   * // onNewMessage 
+   * const filter = new Filters(ctx) 
+   * filter.hears("hi",(match)=>{
+      ctx.reply("Hi!")
+    })
+     filter.hears(/hello/i,(match)=>{
+       ctx.reply("Oh Hi!")
+     })
+   * ```
   */
-  async hears(key:string|RegExp,next:any){
+  async hears(key:string|RegExp,next:{(math:RegExpExecArray):void}){
     if(event){
       if(key instanceof RegExp){
         if(msg){

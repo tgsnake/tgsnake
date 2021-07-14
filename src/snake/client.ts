@@ -3,8 +3,8 @@ import {TelegramClient} from 'telegram';
 import {StringSession,StoreSession} from 'telegram/sessions';
 import {NewMessage} from 'telegram/events';
 import {NewMessageEvent} from 'telegram/events/NewMessage';
-import {tele} from "./tele"
-import {shortcut} from "./shortcut"
+import {Telegram} from "./tele"
+import {Shortcut} from "./shortcut"
 import {Message} from "./rewritejson"
 import prompts from "prompts"
 import {Api} from "telegram"
@@ -28,8 +28,11 @@ function log(text:string){
     console.log(text)
   }
 } 
-
-export class snake {
+/**
+ * Class Snake. 
+ * This class functions as a client of gramjs.
+*/
+export class Snake {
   /**
    * class Client. 
    * This is a class of gramjs (TelegramClient)
@@ -39,7 +42,7 @@ export class snake {
    * class Telegram. 
    * all method in here.
   */
-  telegram!:tele
+  telegram!:Telegram
   constructor(options?:Interface.options){
     if(!options){
       let dir = fs.readdirSync(process.cwd())
@@ -87,6 +90,7 @@ export class snake {
     }
     Logger.setLevel(logger)
   }
+  /** @hidden */
   private async _convertString(){
     let stringsession = new StringSession(session)
     if(storeSession){
@@ -105,6 +109,7 @@ export class snake {
       return stringsession
     }
   }
+  /** @hidden */
   private async _createClient(){
     if(!api_hash){
       throw new Error("api_hash required!");
@@ -127,8 +132,14 @@ export class snake {
     return this.client
   }
   /** 
-   * class Run. 
-   * running snake...
+   * running the client. 
+   * @example 
+   * ```ts 
+   * import {Snake} from "tgsnake" 
+   * const bot = new Snake({...options}) // you can found the options list on Interface.Options. 
+   * // you can create the tgsnake.config.js to save this config. 
+   * Snake.run() // now the client running.
+   * ```
   */
   async run(){
     process.once('SIGINT', () =>{ 
@@ -144,15 +155,20 @@ export class snake {
     if(!this.client){
       await this._createClient()
     }
-    this.telegram = new tele(this.client)
+    this.telegram = new Telegram(this.client)
     await this.client.connect()
     await this.client.getMe().catch((e:any)=>{})
     return log("🐍 Running..")
   }
   /**
-   * class OnNewMessage. 
-   * next : function. 
-   * this is a function to use handle new message.
+   * @param next - a callback function to handle new message.
+   * This is a function to use handle new message.
+   * @example 
+   * ```ts 
+   * Snake.onNewMessage((ctx,message)=>{
+      ctx.reply("new message")
+    })
+   * ```
   */
   async onNewMessage(next:Interface.ctxParams){
     if(!this.client){
@@ -160,14 +176,19 @@ export class snake {
     }
     if(this.client){
       this.client.addEventHandler((event:NewMessageEvent)=>{
-        return next(new shortcut(this.client!,event!),new Message(event!))
+        return next(new Shortcut(this.client!,event!),new Message(event!))
       },new NewMessage({}))
     }
   }
   /**
-   * class OnNewEvent. 
-   * next : function. 
+   * @param next - a callback function to handle new event.
    * This is a function to use handle new event.
+   * @example 
+   * ```ts 
+   * Snake.onNewEvent((update)=>{
+      console.log(update)
+    })
+   * ```
   */
   async onNewEvent(next:Interface.ctxEvent){
     if(!this.client){
@@ -180,10 +201,14 @@ export class snake {
     }
   }
   /**
-   * class GenerateSession. 
-   * only generate the string sesion.
+   * Generate the stringSession for user or bot. 
+   * Please remove the run function if you using this function.
+   * @example 
+   * ```ts 
+   * Snake.generateSession()
+   * ```
   */
-  async generateSession():Promise<void>{
+  async generateSession(){
     process.once('SIGINT', () =>{ 
       log("🐍 Killing..")
       process.exit(0)
@@ -219,7 +244,7 @@ export class snake {
           appVersion : appVersion || version
         }
       )
-    this.telegram = new tele(this.client)
+    this.telegram = new Telegram(this.client)
     if(session == ""){
       if(!bot_token){
         let loginAsBot = await prompts({
@@ -287,10 +312,16 @@ export class snake {
     process.exit(0)
   }
   /**
-   * class CatchError. 
-   * handle promise unhandledRejection.
+   * Handle promise unhandledRejection. 
+   * @param - next a callback function to handle error.
+   * @example 
+   * ```ts 
+   * Snake.catch((error)=>{
+      console.log(error)
+    })
+   * ```
   */
-  async catchError(next:any):Promise<void>{
+  async catchError(next:Interface.catchError){
     process.on("unhandledRejection",(reason:any, promise:Promise<any>)=>{
       return next(reason,promise)
     })

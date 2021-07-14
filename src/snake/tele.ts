@@ -29,29 +29,45 @@ async function getFinnalId(chat_id:number|string){
   }
 }
 
-export class tele {
+export class Telegram {
   className:string = "telegram"
   /**
    * Generate simple method from raw api gramjs 
    * parameters : 
-   * tgclient : gramjs client
+   * @param tgclient - gramjs client 
+   * @example 
+   * ```ts 
+   * import {Telegram} from "tgsnake"
+   * import {TelegramClient} from "telegram" 
+   * import {StringSession} from "telegram/sessions"
+   * let client = new TelegramClient(
+   *  new StringSession(""),
+   *  api_id,
+   *  api_hash,
+   *  {
+        connection_retries : 5
+      }
+   * )
+   * let method = new Telegram(
+   *  client
+   * )
+   * ``` 
+   * now you can use this class with gramjs.
   */
   constructor(tgclient:TelegramClient){
     client = tgclient
   }
+  /** @hidden */
   private async isChannel(chat_id:number|string):Promise<boolean>{
     let type = await client.getEntity(chat_id) 
     return Boolean(type.className == "Channel")
   }
   /**
-   * class sendMessage 
-   * Sends a message to a chat 
-   * parameters :
-   * chat_id : chat or channel or groups id. 
-   * text : text or message to send. 
-   * more : Interface.sendMessageMoreParams
-   * results : 
-   * ClassResultSendMessage
+   * Sends a message to a chat.
+   * @param chat_id - chat or channel or groups id.
+   * @param text - text or message to send. 
+   * @param more - Interface.sendMessageMoreParams
+   * @return ClassResultSendMessage
   */
   async sendMessage(chat_id:number|string,text:string,more?:Interface.sendMessageMoreParams){
       let parseMode = "markdown"
@@ -81,13 +97,10 @@ export class tele {
        )
     }
   /**
-   * class deleteMessages 
    * Delete messages in a chat/channel/supergroup 
-   * parameters :
-   * chat_id : chat or Channel or groups id 
-   * message_id : array of number message id to be deleted.
-   * results :
-   * ClassResultAffectedMessages
+   * @param chat_id - chat or Channel or groups id 
+   * @param message_id - array of number message id to be deleted.
+   * @return ClassResultAffectedMessages
   */
   async deleteMessages(chat_id:number|string,message_id:number[]){
     let type = await client.getEntity(chat_id)
@@ -112,14 +125,12 @@ export class tele {
     }
   }
   /**
-   * class editMessage 
    * Edit message 
-   * chat_id : chat or channel or groups id. 
-   * message_id : id from message to be edited.
-   * text : new message if you need to edit media you can replace this with blank string ("")
-   * more : Interface.editMessageMoreParams
-   * results : 
-   * ClassResultEditMessage
+   * @param chat_id - chat or channel or groups id. 
+   * @param message_id - id from message to be edited.
+   * @param text - new message if you need to edit media you can replace this with blank string ("")
+   * @param more - Interface.editMessageMoreParams
+   * @return ClassResultEditMessage
   */
   async editMessage(chat_id:number|string,message_id:number,text:string,more?:Interface.editMessageMoreParams){
     let parseMode = "markdown"
@@ -149,15 +160,12 @@ export class tele {
     )
   }
   /**
-   * class forwardMessages.
    * Forwards messages by their IDs.
-   * parameters : 
-   * chat_id : chat or channel or groups id to be sending forwardMessages (receiver).
-   * from_chat_id : chat or channel or groups id which will forwarding messages  (sender).
-   * message_id : array of number message id to be forward. 
-   * more : Interface.forwardMessageMoreParams
-   * results : 
-   * ClassResultForwardMessages
+   * @param chat_id - chat or channel or groups id to be sending forwardMessages (receiver).
+   * @param from_chat_id -  chat or channel or groups id which will forwarding messages  (sender).
+   * @param message_id - array of number message id to be forward. 
+   * @param more - Interface.forwardMessageMoreParams
+   * @return ClassResultForwardMessages
   */
   async forwardMessages(chat_id:number|string,from_chat_id:number|string,message_id:number[],more?:Interface.forwardMessageMoreParams){
     let randomId:any = []
@@ -177,13 +185,10 @@ export class tele {
     )
   }
   /**
-   * class getMessages 
    * Get chat/channel/supergroup messages.
-   * parameters :
-   * chat_id : chat or channel or groups id.
-   * message_id : array of number message id. 
-   * results : 
-   * ClassResultGetMessages
+   * @param chat_id - chat or channel or groups id.
+   * @param message_id - array of number message id. 
+   * @return ClassResultGetMessages
   */
   async getMessages(chat_id:number|string,message_id:any[]){
     let type = await client.getEntity(chat_id)
@@ -203,14 +208,11 @@ export class tele {
     }
   }
   /**
-   * class getMessagesViews. 
    * Get and increase the view counter of a message sent or forwarded from a channel.
-   * parameters : 
-   * chat_id : channel id.
-   * message_id : array of message id. 
-   * increment : Whether to mark the message as viewed and increment the view counter.
-   * results : 
-   * ClassResultGetMessagesViews
+   * @param chat_id - channel id.
+   * @param message_id - array of message id. 
+   * @param increment - Whether to mark the message as viewed and increment the view counter.
+   * @return ClassResultGetMessagesViews
   */
   async getMessagesViews(chat_id:number|string,message_id:number[],increment:boolean=false){
     return new reResults.ClassResultGetMessagesViews(
@@ -222,11 +224,9 @@ export class tele {
     )
   }
   /**
-   * class getUserPhotos 
    * Returns the list of user photos.
-   * parameters : 
-   * chat_id : chat or channel or groups id. 
-   * more : Interface.getUserPhotosMoreParams.
+   * @param chat_id - chat or channel or groups id.
+   * @param more - Interface.getUserPhotosMoreParams.
   */
   async getUserPhotos(chat_id:number|string,more?:Interface.getUserPhotosMoreParams){
     return client.invoke(
@@ -237,13 +237,10 @@ export class tele {
       )
   }
   /**
-   * class readHistory 
    * Mark channel/supergroup history as read 
-   * parameters : 
-   * chat_id : chat or channel or groups id.
-   * more : Interface.readHistoryMoreParams.
-   * results : 
-   * ClassResultAffectedMessages
+   * @param chat_id - chat or channel or groups id.
+   * @param more - Interface.readHistoryMoreParams.
+   * @return ClassResultAffectedMessages
   */
   async readHistory(chat_id:number|string,more?:Interface.readHistoryMoreParams){
     let type = await client.getEntity(chat_id)
@@ -268,12 +265,9 @@ export class tele {
     }
   }
   /**
-   * class readMentions
    * Get unread messages where we were mentioned
-   * parameters : 
-   * chat_id : chat or channel or groups id.
-   * results : 
-   * ClassResultAffectedMessages
+   * @param chat_id - chat or channel or groups id.
+   * @return ClassResultAffectedMessages
   */
   async readMentions(chat_id:number|string){
     return new reResults.ClassResultAffectedMessages(
@@ -285,12 +279,9 @@ export class tele {
       )
   }
   /**
-   * class readMessageContents
    * Mark channel/supergroup message contents as read 
-   * parameters : 
-   * message_id : array of message id
-   * results : 
-   * ClassResultAffectedMessages
+   * @param message_id - array of message id
+   * @return ClassResultAffectedMessages
   */
   async readMessageContents(message_id:number[]){
     return new reResults.ClassResultAffectedMessages(
@@ -302,12 +293,9 @@ export class tele {
       )
   }
   /**
-   * class unpinAllMessages
    * Unpin all pinned messages 
-   * parameters : 
-   * chat_id : chat or channel or groups id.
-   * results : 
-   * ClassResultAffectedMessages
+   * @param chat_id - chat or channel or groups id.
+   * @return ClassResultAffectedMessages
   */
   async unpinAllMessages(chat_id:number|string){
     return new reResults.ClassResultAffectedMessages(
@@ -340,13 +328,10 @@ export class tele {
       )
   }
   /**
-   * class deleteHistory 
    * Delete the history of a supergroup
-   * parameters : 
-   * chat_id : Supergroup whose history must be deleted 
-   * more : Interface.deleteHistoryMoreParams
-   * results : 
-   * boolean or ClassResultAffectedMessages
+   * @param chat_id - Supergroup whose history must be deleted 
+   * @param more - Interface.deleteHistoryMoreParams
+   * @return boolean or ClassResultAffectedMessages
   */
   async deleteHistory(chat_id:number|string,more?:Interface.deleteHistoryMoreParams){
     let type = await client.getEntity(chat_id)
@@ -369,13 +354,10 @@ export class tele {
     }
   }
   /**
-   * class deleteUserHistory 
    * Delete all messages sent by a certain user in a supergroup 
-   * parameters : 
-   * chat_id : channel or groups id. 
-   * user_id : User whose messages should be deleted 
-   * results : 
-   * ClassResultAffectedMessages
+   * @param chat_id - channel or groups id. 
+   * @param user_id - User whose messages should be deleted 
+   * @return ClassResultAffectedMessages
   */
   async deleteUserHistory(chat_id:number|string,user_id:number|string){
     return new reResults.ClassResultAffectedMessages(
@@ -388,14 +370,11 @@ export class tele {
       )
   }
   /**
-   * class editAdmin 
    * Modify the admin rights of a user in a supergroup/channel.
-   * parameters : 
-   * chat_id : channel or groups id 
-   * user_id : id from user which will modify the admin rights
-   * more : Interface.editAdminMoreParams
-   * results : 
-   * ClassResultEditAdminOrBanned
+   * @param chat_id - channel or groups id 
+   * @param user_id - id from user which will modify the admin rights
+   * @param more - Interface.editAdminMoreParams
+   * @return ClassResultEditAdminOrBanned
   */
   async editAdmin(chat_id:number|string,user_id:number|string,more?:Interface.editAdminMoreParams){
     let permissions = {
@@ -422,14 +401,11 @@ export class tele {
       )
   }
   /**
-   * class editBanned
    * Ban/unban/kick a user in a supergroup/channel.
-   * parameters : 
-   * chat_id : channel or groups id 
-   * user_id : id from user which will banned/kicked/unbanned 
-   * more : Interface.editBannedMoreParams
-   * results : 
-   * ClassResultEditAdminOrBanned
+   * @param chat_id - channel or groups id 
+   * @param user_id - id from user which will banned/kicked/unbanned 
+   * @param more - Interface.editBannedMoreParams
+   * @return ClassResultEditAdminOrBanned
   */
   async editBanned(chat_id:number|string,user_id:number|string,more?:Interface.editBannedMoreParams){
     let permissions = {
@@ -458,13 +434,10 @@ export class tele {
       )
   }
   /**
-   * class editPhoto. 
    * Change the photo of a channel/Supergroup 
-   * parameters : 
-   * chat_id : Channel/supergroup whose photo should be edited 
-   * photo : new photo. 
-   * results : 
-   * ClassResultEditPhotoOrTitle
+   * @param chat_id - Channel/supergroup whose photo should be edited 
+   * @param photo - new photo. 
+   * @return ClassResultEditPhotoOrTitle
   */
   async editPhoto(chat_id:number|string,photo:string|Buffer){
     let rr = await this.uploadFile(photo)
@@ -488,13 +461,10 @@ export class tele {
     }
   }
   /**
-   * class uploadFile 
    * upload file from url or buffer or file path 
-   * parameters : 
-   * file : file to uploaded 
-   * more :Interface.uploadFileMoreParams
-   * results : 
-   * ClassResultUploadFile
+   * @param file - file to uploaded 
+   * @param more - Interface.uploadFileMoreParams
+   * @return ClassResultUploadFile
   */
   async uploadFile(file:string|Buffer,more?: Interface.uploadFileMoreParams){
     if(Buffer.isBuffer(file)){
@@ -569,12 +539,9 @@ export class tele {
     }
   }
   /**
-   * class editTitle 
    * Edit the name of a channel/supergroup 
-   * parameters : 
-   * chat_id : chat or channel or groups id.
-   * title : new title.
-   * results : 
+   * @param chat_id - chat or channel or groups id.
+   * @param title - new title.
    * ClassResultEditPhotoOrTitle
   */
   async editTitle(chat_id:number|string,title:string){
@@ -597,14 +564,11 @@ export class tele {
     }
   }
   /**
-   * class exportMessageLink 
    * Get link and embed info of a message in a channel/supergroup.
-   * parameters : 
-   * chat_id : chat or channel or groups id. 
-   * message_id : message id 
-   * more : Interface.exportMessageLinkMoreParams
-   * results : 
-   * gramjs ExportedMessageLink
+   * @param chat_id - chat or channel or groups id. 
+   * @param message_id - message id 
+   * @param more - Interface.exportMessageLinkMoreParams
+   * @return gramjs ExportedMessageLink
   */
   async exportMessageLink(chat_id:number|string,message_id:number,more?:Interface.exportMessageLinkMoreParams){
     return client.invoke(
@@ -616,13 +580,10 @@ export class tele {
       )
   }
   /**
-   * class getAdminedPublicChannels 
    * Get channels/supergroups/geogroups we're admin in. Usually called when the user exceeds the limit for owned public channels/supergroups/geogroups, and the user is given the choice to remove one of his channels/supergroups/geogroups. 
-   * params : 
-   * by_location : Get geogroups 
-   * check_limit : If set and the user has reached the limit of owned public channels/supergroups/geogroups, instead of returning the channel list one of the specified errors will be returned. Useful to check if a new public channel can indeed be created, even before asking the user to enter a channel username to use in channels.checkUsername/channels.updateUsername. 
-   * results : 
-   * ClassResultMessageChat
+   * @param by_location - Get geogroups 
+   * @patam check_limit - If set and the user has reached the limit of owned public channels/supergroups/geogroups, instead of returning the channel list one of the specified errors will be returned. Useful to check if a new public channel can indeed be created, even before asking the user to enter a channel username to use in channels.checkUsername/channels.updateUsername. 
+   * @return ClassResultMessageChat
   */
   async getAdminedPublicChannels(by_location:boolean=true,check_limit:boolean=true){
     return new reResults.ClassResultMessageChat(
@@ -635,13 +596,10 @@ export class tele {
       )
   }
   /**
-   * class getAdminLog 
    * Get the admin log of a channel/supergroup 
-   * params : 
-   * chat_id : chat or channel or groups id. 
-   * more : gramjs GetAdminLog param with little modification 
-   * results : 
-   * ClassResultGetAdminLog
+   * @param chat_id - chat or channel or groups id. 
+   * @param more - Interface.getAdminLogMoreParams
+   * @return ClassResultGetAdminLog
   */
   async getAdminLog(chat_id:number|string,more?:Interface.getAdminLogMoreParams){
     let filter = {
@@ -676,12 +634,9 @@ export class tele {
       )
   }
   /**
-   * class getChannels 
    * Get info about channels/supergroups 
-   * parameters : 
-   * chat_id : IDs of channels/supergroups to get info about 
-   * results : 
-   * ClassResultMessageChat
+   * @param chat_id - IDs of channels/supergroups to get info about 
+   * @return ClassResultMessageChat
   */
   async getChannels(chat_id:number[]|string[]){
     return new reResults.ClassResultMessageChat(
@@ -693,12 +648,10 @@ export class tele {
       )
   }
   /**
-   * class getFullChat 
    * Get full info about a channel or chats 
    * parameters : 
-   * chat_id : IDs of chat/channels/supergroups to get info about 
-   * results : 
-   * gramjs messages.ChatFull
+   * @param chat_id - IDs of chat/channels/supergroups to get info about 
+   * @return gramjs messages.ChatFull
   */
   async getFullChat(chat_id:number|string){
     if(await this.isChannel(chat_id)){
@@ -716,12 +669,8 @@ export class tele {
     }
   }
   /**
-   * class getGroupsForDiscussion 
    * Get all groups that can be used as discussion groups.
-   * parameters : 
-   * - 
-   * results : 
-   * ClassResultMessageChat
+   * @return ClassResultMessageChat
   */
   async getGroupsForDiscussion(){
     return new reResults.ClassResultMessageChat(
@@ -731,12 +680,7 @@ export class tele {
       )
   }
   /**
-   * class getInactiveChannels 
    * Get inactive channels and supergroups 
-   * parameters : 
-   * - 
-   * results : 
-   * 
   */
   async getInactiveChannels(){
     return client.invoke(
@@ -744,12 +688,8 @@ export class tele {
       )
   }
   /**
-   * class getLeftChannels. 
    * Get a list of channels/supergroups we left.
-   * parameters : 
-   * offset : Offset for pagination 
-   * results : 
-   * 
+   * @param offset - Offset for pagination 
   */
   async getLeftChannels(offset:number = 0){
     return client.invoke(

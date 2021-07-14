@@ -1,4 +1,4 @@
-import {tele} from "./tele"
+import {Telegram} from "./tele"
 import {NewMessage} from 'telegram/events';
 import {NewMessageEvent} from 'telegram/events/NewMessage';
 import {Api} from "telegram"
@@ -6,14 +6,14 @@ import {Message} from "./rewritejson"
 import {TelegramClient} from 'telegram';
 import * as Interface from "./interface"
 let client:TelegramClient
-let tg:tele
+let tg:Telegram
 
-export class shortcut {
+export class Shortcut {
   event:NewMessageEvent
   message:Interface.Message
   constructor(tgclient:TelegramClient,event:NewMessageEvent){
     client = tgclient
-    tg = new tele(tgclient)
+    tg = new Telegram(tgclient)
     this.event = event
     this.message = new Message(event)
   }

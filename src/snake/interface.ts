@@ -1,8 +1,8 @@
 import type * as define from "telegram/define"
 import {Api,TelegramClient} from "telegram"
 import {BigInteger} from "big-integer"
-import {tele} from "./tele"
-import {shortcut} from "./shortcut"
+import {Telegram} from "./tele"
+import {Shortcut} from "./shortcut"
 // option and client
 export interface options {
   /**
@@ -51,13 +51,16 @@ export interface options {
 }
 export interface ctxParams { 
   /**
-   * context : shortcut and event update 
-   * message : json message from context.message
+   * context - Shortcut and event update <br/>
+   * message - json message from context.message
   */
-  (context:shortcut,message:Message)
+  (context:Shortcut,message:Message)
 }
 export interface ctxEvent {
   (update:Api.TypeUpdate)
+}
+export interface catchError {
+  (reason:any, promise:Promise<any>)
 }
 // event interface
 export interface Message {
@@ -85,50 +88,97 @@ export interface Message {
    * if user reply message this will showing the message from replying message.
   */
   replyToMessageId?:number;
-  date:Date|number;
+  /**
+   * Date when message sending.
+  */
+  date:Date|number; 
+  /**
+   * Document/photo/anything in here.
+  */
   media?:any
 }
 export interface Chat {
+  /** chatId */
   id:number;
+  /** title of chat*/
   title?:string;
+  /** first name*/
   first_name?:string;
+  /** last name*/
   last_name?:string;
+  /** username */
   username?:string;
+  /** private chat*/
   private?:boolean|string;
 }
 export interface From {
-  id:number;
-  first_name?:string;
+  /** sender id*/
+  id:number; 
+  /** sender first name*/
+  first_name?:string; 
+  /** sender last name */
   last_name?:string;
+  /** sender username*/
   username?:string;
+  /** sender is deleted account */
   deleted?:boolean;
+  /** sender is restricted */
   restricted?:boolean;
+  /** sender language */
   lang?:string;
+  /** sender lastseen*/
   status?:string;
 }
 // results interface
 export interface ClassResultUploadFile {
+  /** id */
   id?:Api.long;
-  parts?:number;
+  /** parts */
+  parts?:number; 
+  /** file name */
   name?:string;
+  /** md5Checksum hash */
   md5Checksum?:string;
 }
 //shortcut interface
 export interface replyMoreParams {
+  /**
+   * Set this flag to disable generation of the webpage preview
+  */
   noWebpage?:boolean; 
+  /**
+   * Send this message silently (no notifications for the receivers)
+  */
   silent?:boolean; 
+  /**
+   * Send this message as background message
+  */
   background?:boolean; 
+  /**
+   * send message with parse mode.
+  */
   clearDraft?:boolean; 
+  /**
+   * The message ID to which this message will reply to
+  */
   replyToMsgId?:define.MessageIDLike; 
-  replyMarkup?:Api.TypeReplyMarkup; 
+  /**
+   * Reply markup for sending bot buttons
+  */
+  replyMarkup?:Api.TypeReplyMarkup;
+  /**
+   * Message entities for sending styled text. 
+  */
   entities?:Api.TypeMessageEntity[]; 
+  /**
+   * Scheduled message date for scheduled messages.
+  */
   scheduleDate?:number; 
 }
 //method interface
 interface onProgress {
-    // Float between 0 and 1.
+    /** Float between 0 and 1.*/
     (progress: number): void;
-
     isCanceled?: boolean;
 }
 export interface uploadFileMoreParams {
@@ -146,22 +196,69 @@ export interface uploadFileMoreParams {
   onProgress?:onProgress;
 }
 export interface sendMessageMoreParams {
+  /**
+   * Set this flag to disable generation of the webpage preview
+  */
   noWebpage?:boolean; 
+  /**
+   * Send this message silently (no notifications for the receivers)
+  */
   silent?:boolean; 
+  /**
+   * Send this message as background message
+  */
   background?:boolean; 
+  /**
+   * send message with parse mode.
+  */
   parseMode?:string;
+  /**
+   * Clear the draft field
+  */
   clearDraft?:boolean; 
+  /**
+   * The message ID to which this message will reply to
+  */
   replyToMsgId?:define.MessageIDLike; 
-  replyMarkup?:Api.TypeReplyMarkup; 
+  /**
+   * Reply markup for sending bot buttons
+  */
+  replyMarkup?:Api.TypeReplyMarkup;
+  /**
+   * Message entities for sending styled text. 
+   * if you set parse mode don't set this.
+  */
   entities?:Api.TypeMessageEntity[]; 
+  /**
+   * Scheduled message date for scheduled messages.
+  */
   scheduleDate?:number; 
 }
 export interface editMessageMoreParams {
+  /**
+   * Set this flag to disable generation of the webpage preview
+  */
   noWebpage?:boolean; 
+  /**
+   * New attached media
+  */
   media?:Api.TypeInputMedia;
+  /**
+   * Reply markup for sending bot buttons
+  */
   replyMarkup?:Api.TypeReplyMarkup; 
-  entities?:Api.TypeMessageEntity[]; 
+  /**
+   * Message entities for sending styled text. 
+   * if you set parse mode don't set this.
+  */
+  entities?:Api.TypeMessageEntity[];
+  /**
+   * Scheduled message date for scheduled messages.
+  */
   scheduleDate?:number; 
+  /**
+   * send message with parse mode.
+  */
   parseMode?:string;
 }
 export interface forwardMessageMoreParams {
