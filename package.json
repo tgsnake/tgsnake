@@ -1,13 +1,12 @@
 {
   "name": "tgsnake",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Telegram MTProto framework base gram.js",
   "main": "./lib/index.js",
   "scripts": {
     "dev": "nodemon ./tes/index.ts",
-    "build": "tsc",
-    "start": "node ./lib/index.js",
-    "prepare": "echo \"🐍 Building Snake Package.\" && tsc"
+    "prepare": "echo \"🐍 Building snake package.\" && tsc",
+    "build": "tsc"
   },
   "homepage": "https://tgsnake.js.org",
   "keywords": [
@@ -20,23 +19,25 @@
   "repository": "https://github.com/butthx/tgsnake",
   "author": "butthx",
   "license": "MIT",
-  "private": false,
   "files": [
     "lib/**/*"
   ],
+  "private": false,
   "dependencies": {
+    "axios": "^0.21.1",
     "big-integer": "^1.6.48",
+    "file-type": "^16.5.0",
     "prompts": "^2.4.1",
     "telegram": "^1.7.5"
   },
   "devDependencies": {
-    "@types/node": "^15.12.2",
+    "@types/node": "^16.3.1",
     "dotenv": "^10.0.0",
     "nodemon": "^2.0.7",
     "ts-node": "^10.0.0",
     "typescript": "^4.3.2"
   },
   "engines": {
-    "node": ">=10.x"
+    "node": ">=12"
   }
 }

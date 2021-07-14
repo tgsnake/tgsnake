@@ -2,8 +2,9 @@
 ![tgsnakeicon-flaticon](./tgsnake.jpg)  
 Hi, **tgsnake** is a framework developed based on gram.js  
 [![github-repo](https://img.shields.io/badge/Github-butthx-blue.svg?style=for-the-badge&logo=github)](https://github.com/butthx/tgsnake)
-[![telegram-chat](https://img.shields.io/badge/Telegram-Chat-blue.svg?style=for-the-badge&logo=telegram)](https://t.me/tgsnakechat)
-[![telegram-channel](https://img.shields.io/badge/Telegram-Channel-blue.svg?style=for-the-badge&logo=telegram)](https://t.me/tgsnake)  
+[![telegram-chat](https://img.shields.io/badge/Telegram-Chat-blue.svg?style=for-the-badge&logo=telegram)](https://t.me/tgsnakechat)  
+[![telegram-channel](https://img.shields.io/badge/Telegram-Channel-blue.svg?style=for-the-badge&logo=telegram)](https://t.me/tgsnake)
+[![generate-session](https://img.shields.io/badge/Generate-Session-blue.svg?style=for-the-badge&logo=replit)](https://replit.com/@butthx/TgSnakeGenerateSessions)  
 
 ```text
 WARNING!

@@ -1,3 +1,6 @@
+import * as Interface from "./interface"
+import {Api} from "telegram"
+import BigInt,{BigInteger} from "big-integer"
 export class ClassResultSendMessage {
   id:number|undefined
   chatId:number|undefined
@@ -447,7 +450,9 @@ export class ClassResultPinMessage {
 }
 export class ClassResultEditAdminOrBanned {
   chatId:number|undefined 
+  fromId:number|undefined
   date:Date|number|undefined 
+  id:number|undefined
   /**
    * Generate new json result from editAdmin or editBanned
   */
@@ -456,7 +461,115 @@ export class ClassResultEditAdminOrBanned {
       if(resultEditAdminOrBanned.chats.length > 0){
         this.chatId = resultEditAdminOrBanned.chats[0].id
       }
+      if(resultEditAdminOrBanned.updates.length > 0){
+        for(let i = 0; i< resultEditAdminOrBanned.updates.length; i++){
+          if(resultEditAdminOrBanned.updates[i].className == "UpdateNewChannelMessage"){
+            this.id = resultEditAdminOrBanned.updates[i].message.id
+          }
+        }
+      }
+      if(resultEditAdminOrBanned.users.length > 0){
+        if(!this.fromId){
+          for(let i = 0; i< resultEditAdminOrBanned.users.length; i++){
+            if(!resultEditAdminOrBanned.users[i].self){
+              this.fromId = resultEditAdminOrBanned.users[i].id
+            }
+          }
+        }
+      }
       this.date = resultEditAdminOrBanned.date || Math.floor(Date.now()/1000)
+    }
+  }
+}
+export class ClassResultEditPhotoOrTitle {
+  id:number|undefined 
+  chatId:number|undefined 
+  date:Date|number|undefined
+  /**
+   * rewrite json result from editPhoto or editTitle
+  */
+  constructor(resultEditPhoto:any){
+    if(resultEditPhoto){
+      if(resultEditPhoto.updates.length > 0){
+        for(let i = 0; i < resultEditPhoto.updates.length; i++){
+          if(resultEditPhoto.updates[i].className == "UpdateNewChannelMessage"){
+            this.id = resultEditPhoto.updates[i].message.id
+            this.date = resultEditPhoto.updates[i].message.date
+            if(resultEditPhoto.updates[i].message.peerId){
+              this.chatId = resultEditPhoto.updates[i].message.peerId.channelId
+            }
+          }
+        }
+      }
+    }
+    if(!this.date){
+      this.date = Math.floor(Date.now()/1000)
+    }
+  }
+}
+export class ClassResultGetAdminLog {
+  log:any[] = new Array()
+  /**
+   * Generate new json results from getAdminLog
+  */
+  constructor(resultGetAdminLog:any){
+    if(resultGetAdminLog){
+      console.log(JSON.stringify(resultGetAdminLog,null,2))
+      if(resultGetAdminLog.events.length > 0){
+        let tempLog:any = new Array() 
+        for(let i = 0; i < resultGetAdminLog.events.length ; i++){
+          let event = resultGetAdminLog.events[i]
+          tempLog.push(new ClassLogGetAdminLog(event))
+        }
+        this.log = tempLog
+      }
+    }
+  }
+}
+class ClassLogGetAdminLog {
+  id:number|string|undefined 
+  date:Date|number|undefined 
+  action:any|undefined 
+  userId:number|undefined 
+  constructor(event){
+    if(event){
+      if(event.id) this.id = event.id 
+      if(event.date) this.date = event.date 
+      if(event.userId) this.userId = event.userId 
+      if(event.action) {
+        let tempAction = {...event.action}
+        delete tempAction.CONSTRUCTOR_ID
+        delete tempAction.SUBCLASS_OF_ID 
+        delete tempAction.classType 
+        tempAction.actionName = String(tempAction.className).replace(/^(ChannelAdminLogEventAction|AdminLogEventAction)/i,"") 
+        delete tempAction.className 
+        this.action = tempAction
+      }
+    }
+  }
+}
+export class ClassResultMessageChat {
+  chats:any[] = new Array()
+  constructor(resultMessageChat:any){
+    if(resultMessageChat){
+      if(resultMessageChat.chats.length > 0){
+        this.chats = resultMessageChat.chats
+      }
+    }
+  }
+}
+export class ClassResultUploadFile {
+  id:Api.long;
+  parts:number;
+  name:string;
+  md5Checksum:string;
+  constructor(resultUploadFile:Api.InputFile|Api.InputFileBig){
+    this.id = resultUploadFile.id
+    this.parts = resultUploadFile.parts
+    this.name = resultUploadFile.name
+    this.md5Checksum = ""
+    if(resultUploadFile instanceof Api.InputFile ){
+      this.md5Checksum = resultUploadFile.md5Checksum
     }
   }
 }
