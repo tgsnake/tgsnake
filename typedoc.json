@@ -1,0 +1,9 @@
+{
+  "entryPoints": ["src/index.ts"],
+  "out": "docs",
+  "cname" : "tgsnake.js.org",
+  "media" : "./media",
+  "name" : "tgsnake",
+  "includeVersion" : true,
+  "hideGenerator": true
+}
