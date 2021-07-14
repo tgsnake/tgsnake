@@ -29,7 +29,7 @@ function log(text:string){
   }
 } 
 
-export class snake {
+export class Snake {
   /**
    * class Client. 
    * This is a class of gramjs (TelegramClient)
