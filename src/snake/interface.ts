@@ -43,6 +43,11 @@ export interface options {
    * required to save the string session.
   */
   sessionName?:string;
+  /**
+   * storeSession 
+   * required to save the session in storage.
+  */
+  storeSession?:boolean
 }
 export interface ctxParams { 
   /**

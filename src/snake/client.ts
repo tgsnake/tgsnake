@@ -22,7 +22,7 @@ let tgSnakeLog:boolean|undefined = true
 let connection_retries:number
 let appVersion:string
 let sessionName:string = "tgsnake"
-let running:boolean = false
+let storeSession:boolean = false
 function log(text:string){
   if(tgSnakeLog){
     console.log(text)
@@ -76,27 +76,34 @@ export class snake {
         appVersion = options.appVersion
       }
       if(String(options.tgSnakeLog) == "false"){
-        tgSnakeLog = options.tgSnakeLog!
+        tgSnakeLog = Boolean(options.tgSnakeLog)
       }
       if(options.sessionName){
         sessionName = options.sessionName
+      }
+      if(options.storeSession){
+        storeSession = Boolean(options.storeSession)
       }
     }
     Logger.setLevel(logger)
   }
   private async _convertString(){
     let stringsession = new StringSession(session)
-    let storesession = new StoreSession(sessionName)
-    await stringsession.load()
-    storesession.setDC(
-        stringsession.dcId,
-        stringsession.serverAddress!,
-        stringsession.port!
-      )
-    storesession.setAuthKey(
-        stringsession.authKey
-      )
-    return storesession
+    if(storeSession){
+      let storesession = new StoreSession(sessionName)
+      await stringsession.load()
+      storesession.setDC(
+          stringsession.dcId,
+          stringsession.serverAddress!,
+          stringsession.port!
+        )
+      storesession.setAuthKey(
+          stringsession.authKey
+        )
+      return storesession
+    }else{
+      return stringsession
+    }
   }
   private async _createClient(){
     if(!api_hash){
