@@ -1,5 +1,5 @@
 ### Welcome
-![tgsnakeicon-flaticon](https://raw.githubusercontent.com/butthx/tgsnake/master/tgsnake.jpg)  
+![tgsnakeicon-flaticon](./media/tgsnake.jpg)  
 Hi, **tgsnake** is a framework developed based on gram.js  
 [![github-repo](https://img.shields.io/badge/Github-butthx-blue.svg?style=for-the-badge&logo=github)](https://github.com/butthx/tgsnake)
 [![telegram-chat](https://img.shields.io/badge/Telegram-Chat-blue.svg?style=for-the-badge&logo=telegram)](https://t.me/tgsnakechat)  

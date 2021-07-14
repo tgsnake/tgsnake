@@ -1149,7 +1149,7 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
-telegram@^1.7.5:
+telegram@^1.7.15:
   version "1.7.15"
   resolved "https://registry.yarnpkg.com/telegram/-/telegram-1.7.15.tgz#03799bdadce7cb46a7fa1f622c55606a2e1db823"
   integrity sha512-gbOxGtLRNQr/eoq5acK/CQOi0p4nmnDwOuPmmo7FTWfEHeeVM6lccN6wbSCsrMfVDo7x9CFyK0YtA+byTokx1w==
@@ -1254,6 +1254,11 @@ typedoc-default-themes@^0.12.10:
   version "0.12.10"
   resolved "https://registry.yarnpkg.com/typedoc-default-themes/-/typedoc-default-themes-0.12.10.tgz#614c4222fe642657f37693ea62cad4dafeddf843"
   integrity sha512-fIS001cAYHkyQPidWXmHuhs8usjP5XVJjWB8oZGqkTowZaz3v7g3KDZeeqE82FBrmkAnIBOY3jgy7lnPnqATbA==
+
+typedoc-plugin-cname@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/typedoc-plugin-cname/-/typedoc-plugin-cname-1.0.1.tgz#b555c4e79317f86521f2eec887db8d65b247408b"
+  integrity sha512-f97SS5RzDCVBa7Frg1VketIMAkEl3OTvBs9wM8lLEkJVWCIG2yXnszglA82on39gFwQ1tyq8tiuxRgb4569GpA==
 
 typedoc@^0.21.4:
   version "0.21.4"
