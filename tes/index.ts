@@ -1,26 +1,27 @@
 
-import {snake,Filters,generateResult, Interface, shortcut, generateJson} from "../src"
+import {Snake,Filters,GenerateResult, Interface, Shortcut, GenerateJson} from "../src"
 import fs from "fs"
 import {StoreSession,StringSession} from "telegram/sessions"
 
-const Snake = new snake()
+const bot = new Snake()
 //Snake.generateSession()
-Snake.catchError((reason, promise)=>{
+bot.catchError((reason, promise)=>{
   console.log(reason)
 })
-Snake.run()
-Snake.onNewMessage(async (bot:shortcut,message)=>{
-//  console.log(bot.event)
+bot.run()
+bot.onNewMessage(async (ctx:Shortcut,message)=>{
+ console.log(ctx.event)
 //  console.log(Snake)
-  console.log(bot.event,message) 
-  let {telegram} = Snake
+  console.log(message) 
+  console.log(await ctx.event.message.getSender())
+  let {telegram} = bot
   let tg = telegram 
-  console.log(await Snake.client.getMe())
-  let filter = new Filters(bot)
+//  console.log(await Snake.client.getMe())
+  let filter = new Filters(ctx)
   let {cmd,hears} = filter
   tg.readHistory(message.chat.id)
   tg.readMentions(message.chat.id)
   cmd("snake",async () => {
-    bot.reply("Hai, saya snake!")
+    ctx.reply("Hai, saya snake!")
   })
 })
