@@ -1,8 +1,7 @@
 
-import {Snake,Filters,GenerateResult, Interface, Shortcut, GenerateJson} from "../src"
+import {Snake,Filters,GenerateResult, Interface, Shortcut, GramJs} from "../src"
 import fs from "fs"
 import {StoreSession,StringSession} from "telegram/sessions"
-
 const bot = new Snake()
 //Snake.generateSession()
 bot.catchError((reason, promise)=>{

@@ -12,13 +12,11 @@ import * as Helpers from "telegram/Helpers"
 import * as Password from "telegram/Password"
 import * as Utils from "telegram/Utils"
 import * as EntityCache from "telegram/entityCache"
-import * as Define from "telegram/define" 
 import * as Version from "telegram/Version"
 import * as TelegramClient from "telegram/client/TelegramClient"
 import * as Uploads from "telegram/client/uploads"
 import * as MessageParse from "telegram/client/messageParse"
-/** @hidden */
 export let GramJs = {
-  Api,Tl,Helpers,Password,Utils,Define,Version,
+  Api,Tl,Helpers,Password,Utils,Version,
   TelegramClient,Uploads,MessageParse
 }
