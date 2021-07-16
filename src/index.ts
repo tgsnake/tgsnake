@@ -19,7 +19,6 @@ import * as Uploads from "telegram/client/uploads"
 import * as MessageParse from "telegram/client/messageParse"
 /** @hidden */
 export let GramJs = {
-  Utils,
   Api,Tl,Helpers,Password,Utils,Define,Version,
   TelegramClient,Uploads,MessageParse
 }
