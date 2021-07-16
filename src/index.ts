@@ -5,19 +5,21 @@ export {Telegram} from "./snake/tele";
 export * as GenerateResult from "./snake/rewriteresults";
 export * as GenerateJson from "./snake/rewritejson";
 export * as Interface from "./snake/interface"
+// importing gramjs
+import {Api} from "telegram/tl"
+import * as Tl from "telegram/tl"
+import * as Helpers from "telegram/Helpers"
+import * as Password from "telegram/Password"
+import * as Utils from "telegram/Utils"
+import * as EntityCache from "telegram/entityCache"
+import * as Define from "telegram/define" 
+import * as Version from "telegram/Version"
+import * as TelegramClient from "telegram/client/TelegramClient"
+import * as Uploads from "telegram/client/uploads"
+import * as MessageParse from "telegram/client/messageParse"
 /** @hidden */
-export * as Uploads from "telegram/client/uploads"
-import * as Utils from "telegram/Utils";
-import * as Errors from "telegram/errors";
-import * as Sessions from "telegram/sessions";
-import * as Extensions from "telegram/extensions";
-import * as Helpers from "telegram/Helpers";
-import * as Tl from "telegram/tl"; 
-/** @hidden */
-export { TelegramClient } from "telegram/client/TelegramClient";
-/** @hidden */
-export { Connection } from "telegram/network";
-/** @hidden */
-export { Api } from "telegram/tl";
-/** @hidden */
-export {Utils,Errors,Sessions,Extensions,Helpers,Tl}
+export let GramJs = {
+  Utils,
+  Api,Tl,Helpers,Password,Utils,Define,Version,
+  TelegramClient,Uploads,MessageParse
+}

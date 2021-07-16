@@ -129,17 +129,6 @@ export interface From {
   /** sender lastseen*/
   status?:string;
 }
-// results interface
-export interface ClassResultUploadFile {
-  /** id */
-  id?:Api.long;
-  /** parts */
-  parts?:number; 
-  /** file name */
-  name?:string;
-  /** md5Checksum hash */
-  md5Checksum?:string;
-}
 //shortcut interface
 export interface replyMoreParams {
   /**

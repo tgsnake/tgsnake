@@ -1,5 +1,5 @@
 /**
- * example config file. 
+ * example config file. (tgsnake.config.js)
  * You don't have to create this file. You can put options in ``new Snake({options})``
 */
 module.exports = {
