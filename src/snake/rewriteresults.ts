@@ -5,21 +5,21 @@ export class ClassResultSendMessage {
   /**
    * Message Id where message successfully sent.
   */
-  id?:number|undefined 
+  id?:number
   /**
-   * ChatId where message sent
+   * ChatId where message sent. 
+   * ChatId only show where message sent to channel/supergroups.
   */
-  chatId?:number|undefined 
+  chatId?:number
   /**
    * Date the message sending.
   */
-  date:Date|number|undefined = Math.floor(Date.now()/1000)
+  date:Date|number = Math.floor(Date.now()/1000)
   /**
    * Original JSON Update from telegram where typeof not match with Api.UpdateShortSentMessage or Api.Updates
   */
   original?:Api.TypeUpdates
   constructor(resultSendMessage:Api.TypeUpdates){
-    console.log("resultSendMessage",resultSendMessage)
     if(resultSendMessage instanceof Api.UpdateShortSentMessage){
       this.id = resultSendMessage.id
       this.date = resultSendMessage.date
@@ -41,56 +41,54 @@ export class ClassResultSendMessage {
   }
 }
 export class ClassResultEditMessage {
-  id:number|undefined
-  chatId:number|undefined
-  date:Date|number|undefined
-  /**
-   * Generate new class result from editMessage 
+  /** 
+   * The message id where message successfully edited.
   */
-  constructor(resultEditMessage:any){
-    /**
-     * Generate Message Id.
-    */
-    if(resultEditMessage.updates){
-      if(resultEditMessage.updates[0] && resultEditMessage.updates[0].message.id){
-        this.id = resultEditMessage.updates[0].message.id
-      }
-    }
-    /**
-     * Generate Chat Id.
-    */
-    if(resultEditMessage.chats.length > 0){
-      if(resultEditMessage.chats[0] && resultEditMessage.chats[0].id){
-        this.chatId = resultEditMessage.chats[0].id
-      }
-    }else{
-      if(resultEditMessage.users.length > 0){
-        let index = 1 
-        for(let i = 0; i< resultEditMessage.users.length; i++){
-          if(resultEditMessage.users[i].self){
-            index = i
+  id?:number 
+  /**
+   * ChatId where message successfully edited. <br/>
+   * ChatId only show where message edited in channel/supergroups
+  */
+  chatId?:number 
+  /**
+   * Date message edited
+  */
+  date:Date|number = Math.floor(Date.now()/1000) 
+  /**
+   * Original JSON Update.
+  */
+  original?:Api.TypeUpdates
+  constructor(resultEditMessage:Api.TypeUpdates){
+    if(resultEditMessage instanceof Api.Updates){
+      if(resultEditMessage.updates?.length > 0){
+        for(let i = 0; i < resultEditMessage.updates.length; i++){
+          if(resultEditMessage.updates[i].className == "UpdateEditChannelMessage"){
+            let js = resultEditMessage.updates[i] as Api.UpdateEditChannelMessage
+            this.id = js.message.id
+            this.date = js.message.date
+          }else{
+            if(resultEditMessage.updates[i].className == "UpdateEditMessage"){
+              let js = resultEditMessage.updates[i] as Api.UpdateEditMessage
+              this.id = js.message.id
+              this.date = js.message.date
+            }
           }
         }
-        this.chatId = resultEditMessage.users[index].id
       }
+      if(resultEditMessage.chats.length > 0){
+        let chats = resultEditMessage.chats[0] as Api.Chat
+        this.chatId = chats?.id
+      }
+    }else{
+      this.original = resultEditMessage
     }
-    /**
-     * Generate Date
-    */
-    this.date = resultEditMessage.date || Math.floor(Date.now()/1000)
   }
 }
 export class ClassResultForwardMessages { 
   id:number[]|undefined
   chatId:number|undefined 
   date:Date|number|undefined
-  /**
-   * Generate new class result from forwardMessages
-  */
   constructor(resultForwardMessages:any){
-    /**
-     * Generate message id
-    */
     if(resultForwardMessages.updates){
       let tempId:any = new Array()
       for(let i = 0; i< resultForwardMessages.updates.length; i++){
@@ -112,22 +110,13 @@ export class ClassResultForwardMessages {
       }
      this.id = tempId
     }
-    /**
-     * Generate Date.
-    */
     this.date = resultForwardMessages.date || Math.floor(Date.now()/1000)
   }
 }
 export class ClassResultGetMessages {
   messages:any[]|undefined 
   date:Date|number|undefined 
-  /**
-   * Generate new json result from getMessages
-  */
   constructor(resultGetMessages:any){
-    /**
-     * Generate message list
-    */
     if(resultGetMessages){
       let tempMessages:any = new Array()
       if(resultGetMessages.messages){
@@ -140,9 +129,6 @@ export class ClassResultGetMessages {
       }
       this.messages = tempMessages
     }
-    /**
-     * Generate new Date.
-    */
     this.date = Math.floor(Date.now()/1000)
   }
 }
@@ -364,30 +350,18 @@ export class ClassResultAffectedMessages {
   ptsCount:number|undefined 
   offset:number|undefined  
   date:Date|number|undefined
-  /**
-   * Generate new class result AffectedMessages.
-  */
   constructor(resultReadHistory:any){
     if(resultReadHistory){
-      /**
-       * Generate pts // Event count after generation
-      */
       if(resultReadHistory.pts){
         this.pts = resultReadHistory.pts
       }else{
         this.pts = 0
       }
-      /**
-       * Generate ptsCount // Number of events that were generated
-      */
       if(resultReadHistory.ptsCount){
         this.ptsCount = resultReadHistory.ptsCount
       }else{
         this.ptsCount = 0
       }
-      /**
-       * Generate offset (readMentions)
-      */
       if(resultReadHistory.offset){
         this.offset = resultReadHistory.offset
       }else{
@@ -402,17 +376,11 @@ export class ClassResultPinMessage {
   id:number|undefined 
   date:Date|number|undefined 
   messages:number[]|undefined
-  /**
-   * Generate new json resut from UpdatePinMessage
-  */
   constructor(ResutPinMessage:any){
     if(ResutPinMessage){
       if(ResutPinMessage.updates.length > 0){
         for(let i = 0; i< ResutPinMessage.updates.length; i++){
           let msg = ResutPinMessage.updates[i]
-          /**
-           * Generate messages,chatId
-          */
           if(msg.className == "UpdatePinnedChannelMessages"){
             if(msg.messages){
               this.messages = msg.messages
@@ -430,9 +398,6 @@ export class ClassResultPinMessage {
               }
             }
           }
-          /**
-           * Generate service message id
-          */
           if(msg.className == "UpdateNewChannelMessage"){
             if(msg.message.action){
               if(msg.message.action.className == "MessageActionPinMessage"){
@@ -459,9 +424,6 @@ export class ClassResultEditAdminOrBanned {
   fromId:number|undefined
   date:Date|number|undefined 
   id:number|undefined
-  /**
-   * Generate new json result from editAdmin or editBanned
-  */
   constructor(resultEditAdminOrBanned:any){
     if(resultEditAdminOrBanned){
       if(resultEditAdminOrBanned.chats.length > 0){
@@ -491,9 +453,6 @@ export class ClassResultEditPhotoOrTitle {
   id:number|undefined 
   chatId:number|undefined 
   date:Date|number|undefined
-  /**
-   * rewrite json result from editPhoto or editTitle
-  */
   constructor(resultEditPhoto:any){
     if(resultEditPhoto){
       if(resultEditPhoto.updates.length > 0){
@@ -515,9 +474,6 @@ export class ClassResultEditPhotoOrTitle {
 }
 export class ClassResultGetAdminLog {
   log:any[] = new Array()
-  /**
-   * Generate new json results from getAdminLog
-  */
   constructor(resultGetAdminLog:any){
     if(resultGetAdminLog){
       console.log(JSON.stringify(resultGetAdminLog,null,2))

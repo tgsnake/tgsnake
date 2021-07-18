@@ -22,6 +22,11 @@ bot.onNewMessage(async (ctx:Shortcut,message)=>{
   tg.readMentions(message.chat.id)
   cmd("snake",async () => {
     let msg = await ctx.reply("Hai, saya snake!")
-    console.log(msg)
+    let edit = await ctx.editMessage(msg.id!,"Ho Ho Ho.")
+    console.log(msg,edit,message.chat.id)
+  })
+  cmd("ping",async () => {
+    let d = ((Date.now() / 1000) - Number(message.date)).toFixed(3)
+    ctx.reply(`🏓 **Pong!**\n\`${d} s\``)
   })
 })
