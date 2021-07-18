@@ -9,10 +9,10 @@ bot.catchError((reason, promise)=>{
 })
 bot.run()
 bot.onNewMessage(async (ctx:Shortcut,message)=>{
- console.log(ctx.event)
+//console.log(ctx.event)
 //  console.log(Snake)
-  console.log(message) 
-  console.log(await ctx.event.message.getSender())
+ // console.log(message) 
+  //console.log(await ctx.event.message.getSender())
   let {telegram} = bot
   let tg = telegram 
 //  console.log(await Snake.client.getMe())
@@ -21,6 +21,7 @@ bot.onNewMessage(async (ctx:Shortcut,message)=>{
   tg.readHistory(message.chat.id)
   tg.readMentions(message.chat.id)
   cmd("snake",async () => {
-    ctx.reply("Hai, saya snake!")
+    let msg = await ctx.reply("Hai, saya snake!")
+    console.log(msg)
   })
 })

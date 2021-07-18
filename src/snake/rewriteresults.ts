@@ -2,36 +2,42 @@ import * as Interface from "./interface"
 import {Api} from "telegram"
 import BigInt,{BigInteger} from "big-integer"
 export class ClassResultSendMessage {
-  id:number|undefined
-  chatId:number|undefined
-  date:Date|number|undefined
   /**
-   * Generate new class result from sendMessage
+   * Message Id where message successfully sent.
   */
-  constructor(resultSendMessage:any){
-    if(resultSendMessage.updates){
-      /**
-       * Generate Message Id
-      */
-      if(resultSendMessage.updates[0] && resultSendMessage.updates[0].id){
-        this.id = resultSendMessage.updates[0].id 
+  id?:number|undefined 
+  /**
+   * ChatId where message sent
+  */
+  chatId?:number|undefined 
+  /**
+   * Date the message sending.
+  */
+  date:Date|number|undefined = Math.floor(Date.now()/1000)
+  /**
+   * Original JSON Update from telegram where typeof not match with Api.UpdateShortSentMessage or Api.Updates
+  */
+  original?:Api.TypeUpdates
+  constructor(resultSendMessage:Api.TypeUpdates){
+    console.log("resultSendMessage",resultSendMessage)
+    if(resultSendMessage instanceof Api.UpdateShortSentMessage){
+      this.id = resultSendMessage.id
+      this.date = resultSendMessage.date
+    }else if(resultSendMessage instanceof Api.Updates){
+      if(resultSendMessage.updates?.length > 0){
+        for(let i = 0; i< resultSendMessage.updates.length; i++){
+          if(resultSendMessage.updates[i].className == "UpdateMessageID"){
+            let js = resultSendMessage.updates[i] as Api.UpdateMessageID 
+            this.id = js.id
+          }
+        }
       }
-      /**
-       * Generate Chat Id
-      */
-      if(resultSendMessage.chats[0]){
+      if(resultSendMessage.chats[0]?.id){
         this.chatId = resultSendMessage.chats[0].id
       }
     }else{
-      /**
-       * Generate Message id
-      */
-      this.id = resultSendMessage.id
+      this.original = resultSendMessage
     }
-    /**
-     * Generate Date.
-    */
-    this.date = resultSendMessage.date || Math.floor(Date.now()/1000)
   }
 }
 export class ClassResultEditMessage {
