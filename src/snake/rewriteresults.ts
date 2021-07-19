@@ -165,35 +165,83 @@ export class ClassResultForwardMessages {
   }
 }
 export class ClassResultGetMessages {
-  messages:any[]|undefined 
-  date:Date|number|undefined 
-  constructor(resultGetMessages:any){
-    if(resultGetMessages){
-      let tempMessages:any = new Array()
-      if(resultGetMessages.messages){
-        let msg = resultGetMessages.messages
-        for(let i = 0; i< msg.length; i++){
-          tempMessages.push(
-              new GetMessagesClassMessages(msg[i],resultGetMessages)
-            )
-        }
+  /**
+   * Array from message.
+  */
+  messages?:GetMessagesClassMessages[]
+  /**
+   * Date where results created.
+  */
+  date:Date|number = Math.floor(Date.now()/1000)
+  /**
+   * Original JSON from gramjs.
+  */
+  original?:Api.messages.TypeMessages
+  constructor(resultGetMessages:Api.messages.TypeMessages){
+    let tempMessages:any = new Array()
+    if(resultGetMessages instanceof Api.messages.ChannelMessages){
+      for(let i = 0; i < resultGetMessages.messages.length; i++){
+        let msg = resultGetMessages.messages[i] as Api.Message 
+        tempMessages.push(
+            new GetMessagesClassMessages(
+                msg,
+                resultGetMessages
+              )
+          )
       }
-      this.messages = tempMessages
     }
-    this.date = Math.floor(Date.now()/1000)
+    if(resultGetMessages instanceof Api.messages.Messages){
+      for(let i = 0; i < resultGetMessages.messages.length; i++){
+        let msg = resultGetMessages.messages[i] as Api.Message 
+        tempMessages.push(
+            new GetMessagesClassMessages(
+                msg,
+                resultGetMessages
+              )
+          )
+      }
+    }
+    this.messages = tempMessages
   }
 }
 class GetMessagesClassMessages {
-  id:number|undefined 
-  fwdFrom:any|undefined 
-  date:Date|number|undefined 
-  text:string|undefined 
-  replyToMessageId:number|undefined 
-  entities:any[]|undefined 
-  media:any|undefined 
-  from:any|undefined 
-  chat:any|undefined 
-  constructor(message:any,resultGetMessages:any){
+  /**
+   * Message Id
+  */
+  id!:number 
+  /**
+   * MessageFwdHeader
+  */
+  fwdFrom?:Api.MessageFwdHeader
+  /**
+   * Date from message
+  */
+  date:Date|number = Math.floor(Date.now()/1000) 
+  /**
+   * Text
+  */
+  text?:string|undefined 
+  /**
+   * replyToMessageId
+  */
+  replyToMessageId?:number 
+  /**
+   * Messahe Entities
+  */
+  entities?:Api.TypeMessageEntity[] 
+  /**
+   * Message Media
+  */
+  media?:Api.TypeMessageMedia 
+  /**
+   * GetMessagesClassFrom
+  */
+  from?:GetMessagesClassFrom 
+  /**
+   * GetMessagesClassChat
+  */
+  chat?:GetMessagesClassChat
+  constructor(message:Api.Message,resultGetMessages:Api.messages.ChannelMessages|Api.messages.Messages){
     if(message){
       this.from = new GetMessagesClassFrom(message,resultGetMessages)
       this.chat = new GetMessagesClassChat(message,resultGetMessages)
@@ -217,74 +265,126 @@ class GetMessagesClassMessages {
         this.replyToMessageId = message.replyTo.replyToMsgId
        }
      }
+     if(message.date){
+       this.date = message.date
+     }
     }
-    this.date = message.date || Math.floor(Date.now()/1000)
   }
 }
 class GetMessagesClassChat {
-  id:number|undefined 
-  title:string|undefined 
-  username:string|undefined 
-  first_name:string|undefined 
-  last_name:string|undefined
-  constructor(message:any,resultGetMessages:any){
-    if(message){
-      if(message._chatPeer){
-        if(message._chatPeer.channelId){
-          this.id = message._chatPeer.channelId
-        }else{
-          if(message._chatPeer.userId){
-            this.id = message._chatPeer.userId
+  /**
+   * ChatId
+  */
+  id!:number 
+  /**
+   * Chat Title
+  */
+  title?:string 
+  /**
+   * Chat Username
+  */
+  username?:string 
+  /**
+   * Chat FirstName
+  */
+  first_name?:string 
+  /**
+   * Chat LastName
+  */
+  last_name?:string 
+  /**
+   * Is PrivateChat
+  */
+  private?:boolean
+  constructor(message:Api.Message,resultGetMessages:Api.messages.ChannelMessages|Api.messages.Messages){
+    if((message.peerId) instanceof Api.PeerChannel){
+      let peer = (message.peerId) as Api.PeerChannel 
+      this.id = peer.channelId
+    }
+    if((message.peerId) instanceof Api.PeerChat){
+      let peer = (message.peerId) as Api.PeerChat
+      this.id = peer.chatId 
+    }
+    if((message.peerId) instanceof Api.PeerUser){
+      let peer = (message.peerId) as Api.PeerUser 
+      this.id = peer.userId
+    }
+    if(resultGetMessages.chats?.length > 0){
+      for(let i = 0; i < resultGetMessages.chats.length; i++){
+        if(resultGetMessages.chats[i] instanceof Api.Channel){
+          let chat = resultGetMessages.chats[i] as Api.Channel 
+          if(chat.id == this.id){
+            if(chat.title){
+              this.title = chat.title 
+            }
+            if(chat.username){
+              this.username = chat.username 
+            }
+            this.private = false
           }
         }
-      }else{
-        if(message.peerId){
-          if(message.peerId.channelId){
-            this.id = message.peerId.channelId
-          }else{
-            if(message.peerId.userId){
-              this.id = message.peerId.channelId
+        if(resultGetMessages.chats[i] instanceof Api.Chat){
+          let chat = resultGetMessages.chats[i] as Api.Chat 
+          if(chat.id == this.id){
+            if(chat.title){
+              this.title = chat.title 
             }
+            this.private = false
+          }
+        }
+        if(resultGetMessages.chats[i] instanceof Api.User){
+          let chat = resultGetMessages.chats[i] as Api.User 
+          if(chat.id == this.id){
+            if(chat.username){
+              this.username = chat.username 
+            }
+            if(chat.firstName){
+              this.first_name = chat.firstName
+            }
+            if(chat.lastName){
+              this.last_name = chat.lastName
+            }
+            this.private = true
           }
         }
       }
-    }
-    if(resultGetMessages){
-      if(resultGetMessages.chats.length > 0){
-        for(let i = 0; i < resultGetMessages.chats.length; i++){
-          if(resultGetMessages.chats[i].id == this.id){
-            let sc = resultGetMessages.chats[i]
-            if(sc.title){
-              this.title = sc.title
-            }
-            if(sc.firstName){
-              this.first_name = sc.firstName
-            }
-            if(sc.lastName){
-              this.last_name = sc.lastName
-            }
-            if(sc.username){
-              this.username = sc.username
+    }else{
+      if(resultGetMessages.users?.length > 0){
+        for(let i = 0; i < resultGetMessages.users.length; i++){
+          if(resultGetMessages.users[i] instanceof Api.Channel){
+            let chat = resultGetMessages.users[i] as Api.Channel 
+            if(chat.id == this.id){
+              if(chat.title){
+                this.title = chat.title 
+              }
+              if(chat.username){
+                this.username = chat.username 
+              }
+              this.private = false
             }
           }
-        }
-      }else{
-        if(resultGetMessages.users.length > 0){
-          for(let i = 0; i < resultGetMessages.users.length; i++){
-            if(resultGetMessages.users[i].id == this.id){
-              let sc = resultGetMessages.users[i]
-              if(sc.title){
-                this.title = sc.title
+          if(resultGetMessages.users[i] instanceof Api.Chat){
+            let chat = resultGetMessages.users[i] as Api.Chat 
+            if(chat.id == this.id){
+              if(chat.title){
+                this.title = chat.title 
               }
-              if(sc.firstName){
-                this.first_name = sc.firstName
+              this.private = false
+            }
+          }
+          if(resultGetMessages.users[i] instanceof Api.User){
+            let chat = resultGetMessages.users[i] as Api.User 
+            if(chat.id == this.id){
+              if(chat.username){
+                this.username = chat.username 
               }
-              if(sc.lastName){
-                this.last_name = sc.lastName
+              if(chat.firstName){
+                this.first_name = chat.firstName
               }
-              if(sc.username){
-                this.username = sc.username
+              if(chat.lastName){
+                this.last_name = chat.lastName
               }
+              this.private = true
             }
           }
         }
@@ -292,62 +392,135 @@ class GetMessagesClassChat {
     }
   }
 }
-class GetMessagesClassFrom {
-  id:number|undefined 
-  title:string|undefined 
-  username:string|undefined 
-  first_name:string|undefined 
-  last_name:string|undefined
-  constructor(message:any,resultGetMessages:any){
-    if(message){
-      if(message.fromId){
-        if(message.fromId.channelId){
-          this.id = message.fromId.channelId
-        }else{
-          if(message.fromId.userId){
-            this.id = message.fromId.userId
-          }
-        }
-      }else{
-        this.id = message._senderId
+class GetMessagesClassFrom { 
+  /** 
+   * User Id
+  */
+  id!:number 
+  /**
+   * User Title
+  */
+  title?:string 
+  /**
+   * UserName
+  */
+  username?:string 
+  /**
+   * User FirstName
+  */
+  first_name?:string 
+  /**
+   * User LastName
+  */
+  last_name?:string 
+  /**
+   * Is PrivateChat
+  */
+  private?:boolean
+  constructor(message:Api.Message,resultGetMessages:Api.messages.ChannelMessages|Api.messages.Messages){
+    if(message.fromId !== null){
+      if((message.fromId) instanceof Api.PeerChannel){
+        let peer = (message.fromId) as Api.PeerChannel 
+        this.id = peer.channelId
+      }
+      if((message.fromId) instanceof Api.PeerChat){
+        let peer = (message.fromId) as Api.PeerChat
+        this.id = peer.chatId 
+      }
+      if((message.fromId) instanceof Api.PeerUser){
+        let peer = (message.fromId) as Api.PeerUser 
+        this.id = peer.userId
+      }
+    }else{
+      if((message.peerId) instanceof Api.PeerChannel){
+        let peer = (message.peerId) as Api.PeerChannel 
+        this.id = peer.channelId
+      }
+      if((message.peerId) instanceof Api.PeerChat){
+        let peer = (message.peerId) as Api.PeerChat
+        this.id = peer.chatId 
+      }
+      if((message.peerId) instanceof Api.PeerUser){
+        let peer = (message.peerId) as Api.PeerUser
+        this.id = peer.userId
       }
     }
-    if(resultGetMessages){
-      if(resultGetMessages.users.length > 0){
-        for(let i = 0; i < resultGetMessages.users.length; i++){
-          if(resultGetMessages.users[i].id == this.id){
-            let sc = resultGetMessages.users[i]
-            if(sc.title){
-              this.title = sc.title
+    if(resultGetMessages.users?.length > 0){
+      for(let i = 0; i < resultGetMessages.users.length; i++){
+        if(resultGetMessages.users[i] instanceof Api.Channel){
+          let chat = resultGetMessages.users[i] as Api.Channel 
+          if(chat.id == this.id){
+            if(chat.title){
+              this.title = chat.title 
             }
-            if(sc.firstName){
-              this.first_name = sc.firstName
+            if(chat.username){
+              this.username = chat.username 
             }
-            if(sc.lastName){
-              this.last_name = sc.lastName
-            }
-            if(sc.username){
-              this.username = sc.username
-            }
+            this.private = false
           }
         }
-      }else{
-        if(resultGetMessages.chats.length > 0){
-          for(let i = 0; i < resultGetMessages.chats.length; i++){
-            if(resultGetMessages.chats[i].id == this.id){
-              let sc = resultGetMessages.chats[i]
-              if(sc.title){
-                this.title = sc.title
+        if(resultGetMessages.users[i] instanceof Api.Chat){
+          let chat = resultGetMessages.users[i] as Api.Chat 
+          if(chat.id == this.id){
+            if(chat.title){
+              this.title = chat.title 
+            }
+            this.private = false
+          }
+        }
+        if(resultGetMessages.users[i] instanceof Api.User){
+          let chat = resultGetMessages.users[i] as Api.User 
+          if(chat.id == this.id){
+            if(chat.username){
+              this.username = chat.username 
+            }
+            if(chat.firstName){
+              this.first_name = chat.firstName
+            }
+            if(chat.lastName){
+              this.last_name = chat.lastName
+            }
+            this.private = true
+          }
+        }
+      }
+    }else{
+      if(resultGetMessages.chats?.length > 0){
+        for(let i = 0; i < resultGetMessages.chats.length; i++){
+          if(resultGetMessages.chats[i] instanceof Api.Channel){
+            let chat = resultGetMessages.chats[i] as Api.Channel 
+            if(chat.id == this.id){
+              if(chat.title){
+                this.title = chat.title 
               }
-              if(sc.firstName){
-                this.first_name = sc.firstName
+              if(chat.username){
+                this.username = chat.username 
               }
-              if(sc.lastName){
-                this.last_name = sc.lastName
+              this.private = false
+            }
+          }
+          if(resultGetMessages.chats[i] instanceof Api.Chat){
+            let chat = resultGetMessages.chats[i] as Api.Chat 
+            if(chat.id == this.id){
+              if(chat.title){
+                this.title = chat.title 
               }
-              if(sc.username){
-                this.username = sc.username
+              this.private = false
+            }
+          }
+          if(resultGetMessages.chats[i] instanceof Api.User){
+            let chat = resultGetMessages.chats[i] as Api.User 
+            if(chat.id == this.id){
+              if(chat.username){
+                this.username = chat.username 
               }
+              if(chat.firstName){
+                this.first_name = chat.firstName
+              }
+              if(chat.lastName){
+                this.last_name = chat.lastName
+              }
+              this.private = true
             }
           }
         }

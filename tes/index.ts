@@ -22,8 +22,12 @@ bot.onNewMessage(async (ctx:Shortcut,message)=>{
   tg.readMentions(message.chat.id)
   cmd("snake",async () => {
     let msg = await ctx.reply("Hai, saya snake!")
-    let fw = await ctx.forwardMessages(message.chat.id,message.chat.id,[message.id,msg.id])
-    console.log(fw)
+    let gms = await ctx.getMessages([message.id,msg.id])
+    console.log(
+        JSON.stringify(gms,null,2)
+      )
+    //let fw = await ctx.forwardMessages(message.chat.id,message.chat.id,[message.id,msg.id])
+    //console.log(fw)
     //let edit = await ctx.editMessage(msg.id,"Ho Ho Ho.")
     //console.log(msg,edit,message.chat.id)
   })

@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ClassResultForwardMessages | tgsnake - v0.0.5</title>
-	<meta name="description" content="Documentation for tgsnake - v0.0.5">
+	<title>ClassResultForwardMessages | tgsnake - v1.0.0</title>
+	<meta name="description" content="Documentation for tgsnake - v1.0.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<script async src="../assets/js/search.js" id="search-script"></script>
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">tgsnake - v0.0.5</a>
+					<a href="../index.html" class="title">tgsnake - v1.0.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -52,7 +52,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../modules.html">tgsnake - v0.0.5</a>
+					<a href="../modules.html">tgsnake - v1.0.0</a>
 				</li>
 				<li>
 					<a href="../modules/GenerateResult.html">GenerateResult</a>
@@ -92,6 +92,7 @@
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="GenerateResult.ClassResultForwardMessages.html#chatId" class="tsd-kind-icon">chat<wbr>Id</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="GenerateResult.ClassResultForwardMessages.html#date" class="tsd-kind-icon">date</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class"><a href="GenerateResult.ClassResultForwardMessages.html#id" class="tsd-kind-icon">id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="GenerateResult.ClassResultForwardMessages.html#original" class="tsd-kind-icon">original</a></li>
 							</ul>
 						</section>
 					</div>
@@ -103,24 +104,19 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Class<wbr>Result<wbr>Forward<wbr>Messages<span class="tsd-signature-symbol">(</span>resultForwardMessages<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="GenerateResult.ClassResultForwardMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultForwardMessages</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Class<wbr>Result<wbr>Forward<wbr>Messages<span class="tsd-signature-symbol">(</span>resultForwardMessages<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TypeUpdates</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="GenerateResult.ClassResultForwardMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultForwardMessages</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/d0d7917/src/snake/rewriteresults.ts#L90">snake/rewriteresults.ts:90</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/af44d55/src/snake/rewriteresults.ts#L130">snake/rewriteresults.ts:130</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Generate new class result from forwardMessages</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>resultForwardMessages: <span class="tsd-signature-type">any</span></h5>
+									<h5>resultForwardMessages: <span class="tsd-signature-type">TypeUpdates</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="GenerateResult.ClassResultForwardMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultForwardMessages</a></h4>
@@ -133,32 +129,62 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="chatId" class="tsd-anchor"></a>
 					<h3>chat<wbr>Id</h3>
-					<div class="tsd-signature tsd-kind-icon">chat<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
+					<div class="tsd-signature tsd-kind-icon">chat<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/d0d7917/src/snake/rewriteresults.ts#L85">snake/rewriteresults.ts:85</a></li>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/af44d55/src/snake/rewriteresults.ts#L121">snake/rewriteresults.ts:121</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>ChatId where message forwarded.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="date" class="tsd-anchor"></a>
 					<h3>date</h3>
-					<div class="tsd-signature tsd-kind-icon">date<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Date</span></div>
+					<div class="tsd-signature tsd-kind-icon">date<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/d0d7917/src/snake/rewriteresults.ts#L86">snake/rewriteresults.ts:86</a></li>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/af44d55/src/snake/rewriteresults.ts#L125">snake/rewriteresults.ts:125</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Date where message forwarded.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="id" class="tsd-anchor"></a>
 					<h3>id</h3>
-					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></div>
+					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/d0d7917/src/snake/rewriteresults.ts#L84">snake/rewriteresults.ts:84</a></li>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/af44d55/src/snake/rewriteresults.ts#L117">snake/rewriteresults.ts:117</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Array of message id where message successfully forwarded.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="original" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> original</h3>
+					<div class="tsd-signature tsd-kind-icon">original<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">TypeUpdates</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/af44d55/src/snake/rewriteresults.ts#L129">snake/rewriteresults.ts:129</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Original Json from gramjs</p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -209,6 +235,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
 								<a href="GenerateResult.ClassResultForwardMessages.html#id" class="tsd-kind-icon">id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="GenerateResult.ClassResultForwardMessages.html#original" class="tsd-kind-icon">original</a>
 							</li>
 						</ul>
 					</li>
