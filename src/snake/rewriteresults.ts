@@ -5,12 +5,12 @@ export class ClassResultSendMessage {
   /**
    * Message Id where message successfully sent.
   */
-  id?:number
+  id!:number
   /**
    * ChatId where message sent. 
-   * ChatId only show where message sent to channel/supergroups.
+   * ``ChatId`` only showing where sending message in channel/supergroups.
   */
-  chatId?:number
+  chatId!:number
   /**
    * Date the message sending.
   */
@@ -26,14 +26,31 @@ export class ClassResultSendMessage {
     }else if(resultSendMessage instanceof Api.Updates){
       if(resultSendMessage.updates?.length > 0){
         for(let i = 0; i< resultSendMessage.updates.length; i++){
-          if(resultSendMessage.updates[i].className == "UpdateMessageID"){
-            let js = resultSendMessage.updates[i] as Api.UpdateMessageID 
-            this.id = js.id
+          if(resultSendMessage.updates[i].className == "UpdateNewChannelMessage"){
+            let js = resultSendMessage.updates[i] as Api.UpdateNewChannelMessage
+            let msg = (js.message) as Api.Message 
+            this.id = msg.id 
+            this.date = msg.date
+            if((msg.peerId) instanceof Api.PeerChannel){
+              let peer = (msg.peerId) as Api.PeerChannel
+              this.chatId = peer.channelId
+            }
+          }
+          if(resultSendMessage.updates[i].className == "UpdateNewMessage"){
+            let js = resultSendMessage.updates[i] as Api.UpdateNewMessage
+            let msg = (js.message) as Api.Message 
+            this.id = msg.id 
+            this.date = msg.date
+            if((msg.peerId) instanceof Api.PeerUser){
+              let peer = (msg.peerId) as Api.PeerUser
+              this.chatId = peer.userId
+            }
+            if((msg.peerId) instanceof Api.PeerChat){
+              let peer = (msg.peerId) as Api.PeerChat 
+              this.chatId = peer.chatId 
+            }
           }
         }
-      }
-      if(resultSendMessage.chats[0]?.id){
-        this.chatId = resultSendMessage.chats[0].id
       }
     }else{
       this.original = resultSendMessage
@@ -44,12 +61,11 @@ export class ClassResultEditMessage {
   /** 
    * The message id where message successfully edited.
   */
-  id?:number 
+  id!:number 
   /**
-   * ChatId where message successfully edited. <br/>
-   * ChatId only show where message edited in channel/supergroups
+   * ChatId where message successfully edited. 
   */
-  chatId?:number 
+  chatId!:number 
   /**
    * Date message edited
   */
@@ -64,20 +80,30 @@ export class ClassResultEditMessage {
         for(let i = 0; i < resultEditMessage.updates.length; i++){
           if(resultEditMessage.updates[i].className == "UpdateEditChannelMessage"){
             let js = resultEditMessage.updates[i] as Api.UpdateEditChannelMessage
-            this.id = js.message.id
-            this.date = js.message.date
+            let msg = (js.message) as Api.Message
+            this.id = msg.id
+            this.date = msg.date
+            if((msg.peerId) instanceof Api.PeerChannel){
+              let peer = (msg.peerId) as Api.PeerChannel 
+              this.chatId = peer.channelId
+            }
           }else{
             if(resultEditMessage.updates[i].className == "UpdateEditMessage"){
               let js = resultEditMessage.updates[i] as Api.UpdateEditMessage
-              this.id = js.message.id
-              this.date = js.message.date
+              let msg = (js.message) as Api.Message
+              this.id = msg.id
+              this.date = msg.date
+              if((msg.peerId) instanceof Api.PeerUser){
+                let peer = (msg.peerId) as Api.PeerUser 
+                this.chatId = peer.userId
+              }
+              if((msg.peerId) instanceof Api.PeerChat){
+                let peer = (msg.peerId) as Api.PeerChat 
+                this.chatId = peer.chatId
+              }
             }
           }
         }
-      }
-      if(resultEditMessage.chats.length > 0){
-        let chats = resultEditMessage.chats[0] as Api.Chat
-        this.chatId = chats?.id
       }
     }else{
       this.original = resultEditMessage
@@ -85,32 +111,57 @@ export class ClassResultEditMessage {
   }
 }
 export class ClassResultForwardMessages { 
-  id:number[]|undefined
-  chatId:number|undefined 
-  date:Date|number|undefined
-  constructor(resultForwardMessages:any){
-    if(resultForwardMessages.updates){
-      let tempId:any = new Array()
-      for(let i = 0; i< resultForwardMessages.updates.length; i++){
-        let msg = resultForwardMessages.updates[i]
-        if(msg.className == "UpdateNewChannelMessage" || msg.className == "UpdateNewMessage"){
-          if(msg.message){
-            tempId.push(msg.message.id)
-            if(msg.message.peerId){
-              if(msg.message.peerId.channelId){
-                this.chatId = msg.message.peerId.channelId
-              }else{
-                if(msg.message.peerId.userId){
-                  this.chatId = msg.message.peerId.userId
-                }
-              }
+  /**
+   * Array of message id where message successfully forwarded.
+  */
+  id!:number[]
+  /**
+   * ChatId where message forwarded.
+  */
+  chatId!:number 
+  /**
+   * Date where message forwarded.
+  */
+  date:Date|number = Math.floor(Date.now()/1000)
+  /**
+   * Original Json from gramjs
+  */
+  original?:Api.TypeUpdates
+  constructor(resultForwardMessages:Api.TypeUpdates){
+    if(resultForwardMessages instanceof Api.Updates){
+      if(resultForwardMessages?.updates.length > 0){
+        let tempId:any = new Array()
+        for(let i = 0; i< resultForwardMessages.updates.length; i++){
+          if(resultForwardMessages.updates[i] instanceof Api.UpdateNewChannelMessage){
+            let js = resultForwardMessages.updates[i] as Api.UpdateNewChannelMessage 
+            let msg = (js.message) as Api.Message 
+            tempId.push(msg.id)
+            this.date = msg.date
+            if((msg.peerId) instanceof Api.PeerChannel){
+              let peer = (msg.peerId) as Api.PeerChannel 
+              this.chatId = peer.channelId 
+            }
+          }
+          if(resultForwardMessages.updates[i] instanceof Api.UpdateNewMessage){
+            let js = resultForwardMessages.updates[i] as Api.UpdateNewMessage 
+            let msg = (js.message) as Api.Message 
+            tempId.push(msg.id) 
+            this.date = msg.date
+            if((msg.peerId) instanceof Api.PeerUser){
+              let peer = (msg.peerId) as Api.PeerUser 
+              this.chatId = peer.userId 
+            }
+            if((msg.peerId) instanceof Api.PeerChat){
+              let peer = (msg.peerId) as Api.PeerChat
+              this.chatId = peer.chatId 
             }
           }
         }
+       this.id = tempId
       }
-     this.id = tempId
+    }else{
+      this.original = resultForwardMessages
     }
-    this.date = resultForwardMessages.date || Math.floor(Date.now()/1000)
   }
 }
 export class ClassResultGetMessages {

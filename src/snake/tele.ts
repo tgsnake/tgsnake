@@ -67,7 +67,6 @@ export class Telegram {
    * @param chat_id - chat or channel or groups id.
    * @param text - text or message to send. 
    * @param more - Interface.sendMessageMoreParams
-   * @return ClassResultSendMessage
   */
   async sendMessage(chat_id:number|string,text:string,more?:Interface.sendMessageMoreParams){
       let parseMode = "markdown"
@@ -100,7 +99,6 @@ export class Telegram {
    * Delete messages in a chat/channel/supergroup 
    * @param chat_id - chat or Channel or groups id 
    * @param message_id - array of number message id to be deleted.
-   * @return ClassResultAffectedMessages
   */
   async deleteMessages(chat_id:number|string,message_id:number[]){
     let type = await client.getEntity(chat_id)
@@ -130,7 +128,6 @@ export class Telegram {
    * @param message_id - id from message to be edited.
    * @param text - new message if you need to edit media you can replace this with blank string ("")
    * @param more - Interface.editMessageMoreParams
-   * @return ClassResultEditMessage
   */
   async editMessage(chat_id:number|string,message_id:number,text:string,more?:Interface.editMessageMoreParams){
     let parseMode = "markdown"
@@ -165,7 +162,6 @@ export class Telegram {
    * @param from_chat_id -  chat or channel or groups id which will forwarding messages  (sender).
    * @param message_id - array of number message id to be forward. 
    * @param more - Interface.forwardMessageMoreParams
-   * @return ClassResultForwardMessages
   */
   async forwardMessages(chat_id:number|string,from_chat_id:number|string,message_id:number[],more?:Interface.forwardMessageMoreParams){
     let randomId:any = []
@@ -188,7 +184,6 @@ export class Telegram {
    * Get chat/channel/supergroup messages.
    * @param chat_id - chat or channel or groups id.
    * @param message_id - array of number message id. 
-   * @return ClassResultGetMessages
   */
   async getMessages(chat_id:number|string,message_id:any[]){
     let type = await client.getEntity(chat_id)
@@ -212,7 +207,6 @@ export class Telegram {
    * @param chat_id - channel id.
    * @param message_id - array of message id. 
    * @param increment - Whether to mark the message as viewed and increment the view counter.
-   * @return ClassResultGetMessagesViews
   */
   async getMessagesViews(chat_id:number|string,message_id:number[],increment:boolean=false){
     return new reResults.ClassResultGetMessagesViews(
@@ -240,7 +234,6 @@ export class Telegram {
    * Mark channel/supergroup history as read 
    * @param chat_id - chat or channel or groups id.
    * @param more - Interface.readHistoryMoreParams.
-   * @return ClassResultAffectedMessages
   */
   async readHistory(chat_id:number|string,more?:Interface.readHistoryMoreParams){
     let type = await client.getEntity(chat_id)
@@ -267,7 +260,6 @@ export class Telegram {
   /**
    * Get unread messages where we were mentioned
    * @param chat_id - chat or channel or groups id.
-   * @return ClassResultAffectedMessages
   */
   async readMentions(chat_id:number|string){
     return new reResults.ClassResultAffectedMessages(
@@ -281,7 +273,6 @@ export class Telegram {
   /**
    * Mark channel/supergroup message contents as read 
    * @param message_id - array of message id
-   * @return ClassResultAffectedMessages
   */
   async readMessageContents(message_id:number[]){
     return new reResults.ClassResultAffectedMessages(
@@ -295,7 +286,6 @@ export class Telegram {
   /**
    * Unpin all pinned messages 
    * @param chat_id - chat or channel or groups id.
-   * @return ClassResultAffectedMessages
   */
   async unpinAllMessages(chat_id:number|string){
     return new reResults.ClassResultAffectedMessages(
@@ -307,14 +297,10 @@ export class Telegram {
       )
   }
   /**
-   * class pinMessage 
    * Pin a message 
-   * parameters : 
-   * chat_id : chat or channel or groups id.
-   * message_id : The message to pin or unpin 
-   * more : Interface.pinMessageMoreParams.
-   * results : 
-   * ClassResultPinMessage
+   * @param chat_id - chat or channel or groups id.
+   * @param message_id - The message to pin or unpin 
+   * @param more - Interface.pinMessageMoreParams.
   */
   async pinMessage(chat_id:number|string,message_id:number,more?:Interface.pinMessageMoreParams){
     return new reResults.ClassResultPinMessage(
@@ -331,7 +317,6 @@ export class Telegram {
    * Delete the history of a supergroup
    * @param chat_id - Supergroup whose history must be deleted 
    * @param more - Interface.deleteHistoryMoreParams
-   * @return boolean or ClassResultAffectedMessages
   */
   async deleteHistory(chat_id:number|string,more?:Interface.deleteHistoryMoreParams){
     let type = await client.getEntity(chat_id)
@@ -357,7 +342,6 @@ export class Telegram {
    * Delete all messages sent by a certain user in a supergroup 
    * @param chat_id - channel or groups id. 
    * @param user_id - User whose messages should be deleted 
-   * @return ClassResultAffectedMessages
   */
   async deleteUserHistory(chat_id:number|string,user_id:number|string){
     return new reResults.ClassResultAffectedMessages(
@@ -374,7 +358,6 @@ export class Telegram {
    * @param chat_id - channel or groups id 
    * @param user_id - id from user which will modify the admin rights
    * @param more - Interface.editAdminMoreParams
-   * @return ClassResultEditAdminOrBanned
   */
   async editAdmin(chat_id:number|string,user_id:number|string,more?:Interface.editAdminMoreParams){
     let permissions = {
@@ -405,7 +388,6 @@ export class Telegram {
    * @param chat_id - channel or groups id 
    * @param user_id - id from user which will banned/kicked/unbanned 
    * @param more - Interface.editBannedMoreParams
-   * @return ClassResultEditAdminOrBanned
   */
   async editBanned(chat_id:number|string,user_id:number|string,more?:Interface.editBannedMoreParams){
     let permissions = {
@@ -437,7 +419,6 @@ export class Telegram {
    * Change the photo of a channel/Supergroup 
    * @param chat_id - Channel/supergroup whose photo should be edited 
    * @param photo - new photo. 
-   * @return ClassResultEditPhotoOrTitle
   */
   async editPhoto(chat_id:number|string,photo:string|Buffer){
     let rr = await this.uploadFile(photo)
@@ -464,7 +445,6 @@ export class Telegram {
    * upload file from url or buffer or file path 
    * @param file - file to uploaded 
    * @param more - Interface.uploadFileMoreParams
-   * @return ClassResultUploadFile
   */
   async uploadFile(file:string|Buffer,more?: Interface.uploadFileMoreParams){
     if(Buffer.isBuffer(file)){
@@ -542,7 +522,6 @@ export class Telegram {
    * Edit the name of a channel/supergroup 
    * @param chat_id - chat or channel or groups id.
    * @param title - new title.
-   * ClassResultEditPhotoOrTitle
   */
   async editTitle(chat_id:number|string,title:string){
     if(await this.isChannel(chat_id)){
@@ -568,7 +547,6 @@ export class Telegram {
    * @param chat_id - chat or channel or groups id. 
    * @param message_id - message id 
    * @param more - Interface.exportMessageLinkMoreParams
-   * @return gramjs ExportedMessageLink
   */
   async exportMessageLink(chat_id:number|string,message_id:number,more?:Interface.exportMessageLinkMoreParams){
     return client.invoke(
@@ -583,7 +561,6 @@ export class Telegram {
    * Get channels/supergroups/geogroups we're admin in. Usually called when the user exceeds the limit for owned public channels/supergroups/geogroups, and the user is given the choice to remove one of his channels/supergroups/geogroups. 
    * @param by_location - Get geogroups 
    * @patam check_limit - If set and the user has reached the limit of owned public channels/supergroups/geogroups, instead of returning the channel list one of the specified errors will be returned. Useful to check if a new public channel can indeed be created, even before asking the user to enter a channel username to use in channels.checkUsername/channels.updateUsername. 
-   * @return ClassResultMessageChat
   */
   async getAdminedPublicChannels(by_location:boolean=true,check_limit:boolean=true){
     return new reResults.ClassResultMessageChat(
@@ -599,7 +576,6 @@ export class Telegram {
    * Get the admin log of a channel/supergroup 
    * @param chat_id - chat or channel or groups id. 
    * @param more - Interface.getAdminLogMoreParams
-   * @return ClassResultGetAdminLog
   */
   async getAdminLog(chat_id:number|string,more?:Interface.getAdminLogMoreParams){
     let filter = {
@@ -636,7 +612,6 @@ export class Telegram {
   /**
    * Get info about channels/supergroups 
    * @param chat_id - IDs of channels/supergroups to get info about 
-   * @return ClassResultMessageChat
   */
   async getChannels(chat_id:number[]|string[]){
     return new reResults.ClassResultMessageChat(
@@ -651,7 +626,6 @@ export class Telegram {
    * Get full info about a channel or chats 
    * parameters : 
    * @param chat_id - IDs of chat/channels/supergroups to get info about 
-   * @return gramjs messages.ChatFull
   */
   async getFullChat(chat_id:number|string){
     if(await this.isChannel(chat_id)){
@@ -670,7 +644,6 @@ export class Telegram {
   }
   /**
    * Get all groups that can be used as discussion groups.
-   * @return ClassResultMessageChat
   */
   async getGroupsForDiscussion(){
     return new reResults.ClassResultMessageChat(
@@ -698,7 +671,4 @@ export class Telegram {
         })
       )
   }
-  /**
-   * 
-  */
 }
