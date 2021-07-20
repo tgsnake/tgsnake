@@ -529,70 +529,79 @@ class GetMessagesClassFrom {
   }
 }
 export class ClassResultGetMessagesViews {
-  views:any[]|undefined 
-  date:Date|number|undefined 
   /**
-   * Generate new json result from getMessagesViews.
+   * Array from GetMessagesViewsClassViews
   */
-  constructor(resultGetMessagesViews:any){
-    if(resultGetMessagesViews){
-      if(resultGetMessagesViews.views){
-        let tempViews:any = new Array()
-        for(let i = 0; i< resultGetMessagesViews.views.length; i++){
-          tempViews.push(new GetMessagesViewsClassViews(resultGetMessagesViews.views[i]))
-        }
-        this.views = tempViews
+  views?:GetMessagesViewsClassViews[] 
+  /**
+   * Date the Result create.
+  */
+  date:Date|number = Math.floor(Date.now()/1000)
+  constructor(resultGetMessagesViews:Api.messages.MessageViews){
+    if(resultGetMessagesViews?.views.length > 0){
+      let tempViews:any = new Array()
+      for(let i = 0; i< resultGetMessagesViews.views.length; i++){
+        let msg = resultGetMessagesViews.views[i] as Api.MessageViews
+        tempViews.push(
+          new GetMessagesViewsClassViews(msg)
+        )
       }
+      this.views = tempViews
     }
-    this.date = Math.floor(Date.now()/1000)
   }
 }
 class GetMessagesViewsClassViews {
-  views:number|undefined 
-  forwards:any|undefined 
-  replies:any|undefined 
-  flags:number|undefined 
-  constructor(getMessagesViews:any){
-    if(getMessagesViews){
-      if(getMessagesViews.flags){
-        this.flags = getMessagesViews.flags
-      }
-      if(getMessagesViews.views){
-        this.views = getMessagesViews.views
-      }
-      if(getMessagesViews.forwards){
-        this.forwards = getMessagesViews.forwards
-      }
-      if(getMessagesViews.replies){
-        this.replies = getMessagesViews.replies
-      }
+  /**
+   * Message Views
+  */
+  views?:number  
+  /**
+   * forwarded
+  */
+  forwards?:number 
+  /**
+   * MessageReplies
+  */
+  replies?:Api.MessageReplies
+  constructor(getMessagesViews:Api.MessageViews){
+    if(getMessagesViews.views){
+      this.views = getMessagesViews.views
+    }
+    if(getMessagesViews.forwards){
+      this.forwards = getMessagesViews.forwards
+    }
+    if(getMessagesViews.replies){
+      this.replies = getMessagesViews.replies
     }
   }
 }
 export class ClassResultAffectedMessages {
-  pts:number|undefined 
-  ptsCount:number|undefined 
-  offset:number|undefined  
-  date:Date|number|undefined
-  constructor(resultReadHistory:any){
-    if(resultReadHistory){
-      if(resultReadHistory.pts){
-        this.pts = resultReadHistory.pts
-      }else{
-        this.pts = 0
-      }
-      if(resultReadHistory.ptsCount){
-        this.ptsCount = resultReadHistory.ptsCount
-      }else{
-        this.ptsCount = 0
-      }
-      if(resultReadHistory.offset){
-        this.offset = resultReadHistory.offset
-      }else{
-        this.offset = 0
-      }
+  /**
+   * Number of events occured in a text box
+  */
+  pts?:number = 0 
+  /**
+   * Number of affected events
+  */
+  ptsCount?:number = 0  
+  /**
+   * If a parameter contains positive value, it is necessary to repeat the method call using the given value; during the proceeding of all the history the value itself shall gradually decrease
+  */
+  offset?:number 
+  /**
+   * Date result created.
+  */
+  date:Date|number = Math.floor(Date.now()/1000)
+  constructor(resultReadHistory:Api.messages.AffectedMessages|Api.messages.AffectedHistory|boolean){
+    if(resultReadHistory instanceof Api.messages.AffectedMessages){
+      if(resultReadHistory.pts) this.pts = resultReadHistory.pts 
+      if(resultReadHistory.ptsCount) this.ptsCount = resultReadHistory.ptsCount
     }
-    this.date = Math.floor(Date.now()/1000)
+    if(resultReadHistory instanceof Api.messages.AffectedHistory){
+      if(resultReadHistory.pts) this.pts = resultReadHistory.pts 
+      if(resultReadHistory.ptsCount) this.ptsCount = resultReadHistory.ptsCount
+      if(resultReadHistory.offset) this.offset = resultReadHistory.offset
+    }
   }
 }
 export class ClassResultPinMessage {
