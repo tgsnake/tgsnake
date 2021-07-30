@@ -1,9 +1,20 @@
+// Tgsnake - Telegram MTProto framework developed based on gram.js.
+// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// 
+// This file is part of Tgsnake
+// 
+// Tgsnake is a free software : you can redistribute it and/or modify
+// it under the terms of the MIT License as published.
 
-import {Snake,Filters,GenerateResult, Interface, Shortcut, GramJs} from "../src"
+import {Snake,Filters,GenerateResult, Interface, Shortcut, GramJs,GenerateJson} from "../src"
+const {Api} = GramJs
 import fs from "fs"
-import {StoreSession,StringSession} from "telegram/sessions"
+import {StoreSession,StringSession} from "telegram/sessions" 
+import BigInt from "big-integer"
+import {decodeFileId} from "tg-file-id" 
+
 const bot = new Snake()
-//Snake.generateSession()
+//bot.generateSession()
 bot.catchError((reason, promise)=>{
   console.log(reason.message)
 })
@@ -53,4 +64,18 @@ bot.onNewMessage(async (ctx:Shortcut,message)=>{
       }
     }
   })
+  if(message.media){
+    console.log(message.media)
+    if(message.media.photo){
+      tg.sendPhoto(message.chat.id,message.media,{
+        caption : "ini text",
+        parseMode : "markdown"
+      })
+    }
+    if(message.media.document){
+      tg.sendDocument(message.chat.id,message.media,{
+        caption : "ini text"
+      })
+    }
+  }
 })

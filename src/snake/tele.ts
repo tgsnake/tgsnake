@@ -1,3 +1,11 @@
+// Tgsnake - Telegram MTProto framework developed based on gram.js.
+// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// 
+// This file is part of Tgsnake
+// 
+// Tgsnake is a free software : you can redistribute it and/or modify
+//  it under the terms of the MIT License as published.
+
 import {Logger} from 'telegram/extensions';
 import {TelegramClient} from 'telegram';
 import {StringSession} from 'telegram/sessions';
@@ -16,6 +24,7 @@ import axios from "axios"
 import FileType from "file-type"
 import {_parseMessageText} from "telegram/client/messageParse"
 import * as Interface from "./interface"
+import {FileId,decodeFileId} from "tg-file-id"
 
 export let client:TelegramClient
 
@@ -69,7 +78,7 @@ export class Telegram {
    * @param more - Interface.sendMessageMoreParams
   */
   async sendMessage(chat_id:number|string,text:string,more?:Interface.sendMessageMoreParams){
-      let parseMode = "markdown"
+      let parseMode = ""
       if(more){
         if(more.parseMode){
           parseMode = more.parseMode.toLowerCase()
@@ -130,7 +139,7 @@ export class Telegram {
    * @param more - Interface.editMessageMoreParams
   */
   async editMessage(chat_id:number|string,message_id:number,text:string,more?:Interface.editMessageMoreParams){
-    let parseMode = "markdown"
+    let parseMode = ""
       if(more){
         if(more.parseMode){
           parseMode = more.parseMode.toLowerCase()
@@ -670,5 +679,99 @@ export class Telegram {
           offset : offset
         })
       )
+  }
+  /**
+   * Sending Photo with fileId or PathFile or buffer or message.media 
+   * @param chat_id - Destination 
+   * @param fileId - Attached media 
+   * @param more - Interface.sendMediaMoreParams
+  */
+  async sendPhoto(chat_id:number|string,fileId:string|Buffer|Api.MessageMediaPhoto|Api.Photo,more?:Interface.sendMediaMoreParams){
+    let final:any 
+    if(fileId instanceof Api.MessageMediaPhoto){
+      final = fileId as Api.MessageMediaPhoto
+    }
+    if(fileId instanceof Api.Photo){
+      final = fileId as Api.Photo
+    }
+    if(typeof fileId == "string"){
+      if((Buffer.isBuffer(fileId)) || (/^http/i.exec(String(fileId))) || (/^(\/|\.\.?\/|~\/)/i.exec(String(fileId))) ){
+        let file = await this.uploadFile(fileId) 
+        final = new Api.InputMediaUploadedPhoto({
+          file : new Api.InputFile({...file!})
+        })
+      }
+    }
+    return this.sendMedia(
+      chat_id,
+      final,
+      more
+    )
+  }
+  /**
+   * Sending Document with fileId or PathFile or buffer or message.media 
+   * @param chat_id - Destination 
+   * @param fileId - Attached media 
+   * @param more - Interface.sendMediaMoreParams
+  */
+  async sendDocument(chat_id:number|string,fileId:string|Buffer|Api.MessageMediaDocument|Api.Document,more?:Interface.sendMediaMoreParams){
+    let final:any 
+    if(fileId instanceof Api.MessageMediaDocument){
+      final = fileId as Api.MessageMediaDocument
+    }
+    if(fileId instanceof Api.Document){
+      final = fileId as Api.Document
+    }
+    if(typeof fileId == "string"){
+      if((Buffer.isBuffer(fileId)) || (/^http/i.exec(String(fileId))) || (/^(\/|\.\.?\/|~\/)/i.exec(String(fileId))) ){
+        let file = await this.uploadFile(fileId) 
+        final = new Api.InputMediaUploadedPhoto({
+          file : new Api.InputFile({...file!})
+        })
+      }
+    }
+    return this.sendMedia(
+      chat_id,
+      final,
+      more
+    )
+  }
+  /**
+   * Sending Media. 
+   * @param chat_id - chat id 
+   * @param media - media 
+   * @param more - Interface.sendMediaMoreParams
+  */
+  async sendMedia(chat_id:number|string,media:Api.TypeInputMedia,more?:Interface.sendMediaMoreParams){
+      let parseMode = ""
+      if(more){
+        if(more.parseMode){
+          parseMode = more.parseMode.toLowerCase()
+          delete more.parseMode
+        }
+      }
+      let parseText;
+      let entities;
+      if(more){
+        if(more.entities){
+          entities = more.entities
+          parseText = more.caption || ""
+        }
+        if(more.caption){
+          let parse = await _parseMessageText(client,more.caption,parseMode) 
+          parseText = parse[0] 
+          entities = parse[1]
+          delete more.caption
+        }
+      }
+      return client.invoke(
+          new Api.messages.SendMedia({
+            peer : chat_id,
+            media : media,
+            message : parseText || "",
+            randomId : BigInt(-Math.floor(Math.random() * 10000000000000)),
+            entities : entities
+          })
+        )
   }
 }

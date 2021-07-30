@@ -1,3 +1,11 @@
+// Tgsnake - Telegram MTProto framework developed based on gram.js.
+// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// 
+// This file is part of Tgsnake
+// 
+// Tgsnake is a free software : you can redistribute it and/or modify
+//  it under the terms of the MIT License as published.
+
 import {Telegram} from "./tele"
 import {NewMessage} from 'telegram/events';
 import {NewMessageEvent} from 'telegram/events/NewMessage';
@@ -29,7 +37,7 @@ export class Shortcut {
   }
   /**
    * reply 
-   * shortcut from telegram.sendMessage with replying message and markdown parse. 
+   * shortcut from {@link Telegram.sendMessage} with replying message and markdown parse. 
    * @example 
    * ```ts 
    * ctx.reply("**Hello World!**")
@@ -38,12 +46,13 @@ export class Shortcut {
   async reply(text:string,more?:Interface.replyMoreParams){
     return tg.sendMessage(this.message.chat.id,text,{
       replyToMsgId : this.message.id,
+      parseMode : more?.parseMode || "markdown",
       ...more
     })
   }
   /**
    * replyHTML 
-   * shortcut from telegram.sendMessage with replying message and HTML parse
+   * shortcut from {@link Telegram.sendMessage} with replying message and HTML parse
   */
   async replyHTML(text:string,more?:Interface.replyMoreParams){
     return tg.sendMessage(this.message.chat.id,text,{
@@ -54,7 +63,7 @@ export class Shortcut {
   }
   /**
    * respond 
-   * shortcut from telegram.sendMessage without replying message and parse mode. 
+   * shortcut from telegram.sendMessage without replying message and without parse mode
   */
   async respond(text:string,more?:Interface.sendMessageMoreParams){
     return tg.sendMessage(this.message.chat.id,text,more)

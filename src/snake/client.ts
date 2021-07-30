@@ -1,3 +1,11 @@
+// Tgsnake - Telegram MTProto framework developed based on gram.js.
+// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// 
+// This file is part of Tgsnake
+// 
+// Tgsnake is a free software : you can redistribute it and/or modify
+//  it under the terms of the MIT License as published.
+
 import {Logger} from 'telegram/extensions';
 import {TelegramClient} from 'telegram';
 import {StringSession,StoreSession} from 'telegram/sessions';
@@ -19,7 +27,7 @@ let session:string
 let bot_token:string
 let logger:string
 let tgSnakeLog:boolean|undefined = true
-let connection_retries:number
+let connectionRetries:number
 let appVersion:string
 let sessionName:string = "tgsnake"
 let storeSession:boolean = false
@@ -43,7 +51,7 @@ export class Snake {
    * all method in here.
   */
   telegram!:Telegram
-  constructor(options?:Interface.options){
+  constructor(public options?:Interface.options){
     if(!options){
       let dir = fs.readdirSync(process.cwd())
       if(dir.includes("tgsnake.config.js")){
@@ -53,39 +61,52 @@ export class Snake {
     }
     //default options
     session = ""
-    connection_retries = 5
+    connectionRetries = 5
     logger = "none"
     // custom options
     if(options){
       if(options.logger){
         logger = options.logger
+        delete options.logger
       }
       if(options.api_hash){
         api_hash = String(options.api_hash)
+        delete options.api_hash
       }
       if(options.api_id){
         api_id = Number(options.api_id)
+        delete options.api_id
       }
       if(options.session){
         session = options.session
+        delete options.session
       }
       if(options.bot_token){
         bot_token = options.bot_token
+        delete options.bot_token
       }
-      if(options.connection_retries){
-        connection_retries = options.connection_retries
+      if(options.connectionRetries){
+        connectionRetries = options.connectionRetries
+        delete options.connectionRetries
       }
       if(options.appVersion){
         appVersion = options.appVersion
+        delete options.appVersion
       }
       if(String(options.tgSnakeLog) == "false"){
         tgSnakeLog = Boolean(options.tgSnakeLog)
+        delete options.tgSnakeLog
+      }
+      if(options.tgSnakeLog){
+        delete options.tgSnakeLog
       }
       if(options.sessionName){
         sessionName = options.sessionName
+        delete options.sessionName
       }
       if(options.storeSession){
         storeSession = Boolean(options.storeSession)
+        delete options.storeSession
       }
     }
     Logger.setLevel(logger)
@@ -125,8 +146,9 @@ export class Snake {
        Number(api_id),
        String(api_hash),
        { 
-        connectionRetries : connection_retries,
-        appVersion : appVersion || version
+        connectionRetries : connectionRetries,
+        appVersion : appVersion || version,
+        ...this.options
       }
     )
     return this.client
@@ -240,8 +262,9 @@ export class Snake {
         Number(api_id),
         String(api_hash),
         { 
-          connectionRetries : connection_retries,
-          appVersion : appVersion || version
+          connectionRetries : connectionRetries,
+          appVersion : appVersion || version,
+          ...this.options
         }
       )
     this.telegram = new Telegram(this.client)
@@ -285,7 +308,7 @@ export class Snake {
           })
           session = String(await this.client.session.save())
           console.log(`🐍 Your string session : ${session}`)
-          this.telegram.sendMessage("me",`🐍 Your string session : <code>${session}</code>`,{parseMode:"HTML"})
+          await this.telegram.sendMessage("me",`🐍 Your string session : <code>${session}</code>`,{parseMode:"HTML"})
         }else{
           let value = await prompts({
             type : "text",

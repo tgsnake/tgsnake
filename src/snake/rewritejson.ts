@@ -1,7 +1,16 @@
+// Tgsnake - Telegram MTProto framework developed based on gram.js.
+// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// 
+// This file is part of Tgsnake
+// 
+// Tgsnake is a free software : you can redistribute it and/or modify
+//  it under the terms of the MIT License as published.
+
 import * as Interface from "./interface"
 import {Api} from "telegram"
 import {BigInteger} from "big-integer"
-export class Message implements Interface.Message{
+import {FileId} from "tg-file-id"
+export class Message implements Interface.Message {
   id!:number;
   chat:Interface.Chat;
   from:Interface.From;
@@ -199,5 +208,79 @@ class From implements Interface.From {
         this.id = message.senderId
       }
     }
+  }
+}
+let typeId = {
+  THUMBNAIL : 0,
+  CHAT_PHOTO : 1,  // ProfilePhoto
+  PHOTO : 2,
+  VOICE : 3,  // VoiceNote
+  VIDEO : 4,
+  DOCUMENT : 5,
+  ENCRYPTED : 6,
+  TEMP : 7,
+  STICKER : 8,
+  AUDIO : 9,
+  ANIMATION : 10,
+  ENCRYPTED_THUMBNAIL : 11,
+  WALLPAPER : 12,
+  VIDEO_NOTE : 13,
+  SECURE_RAW : 14,
+  SECURE : 15,
+  BACKGROUND : 16,
+  DOCUMENT_AS_FILE : 17
+}
+let thumbTypeId = {
+  LEGACY : 0,
+  THUMBNAIL : 1,
+  CHAT_PHOTO_SMALL : 2,  //DialogPhotoSmall
+  CHAT_PHOTO_BIG : 3,  // DialogPhotoBig
+  STICKER_SET_THUMBNAIL : 4
+}
+export class Media {
+  type?:string; 
+  fileId!:string; 
+  uniqueFileId!:string;
+  constructor(media:Api.TypeMessageMedia){
+    
+  }
+}
+interface generateFileId {
+  version: number;
+  subVersion: number;
+  dcId: number;
+  fileType: string | number;
+  id: bigint | BigInteger;
+  accessHash: bigint | BigInteger;
+  typeId: number;
+  fileReference: string;
+  url?: string;
+  volumeId?: number | bigint;
+  localId?: number ;
+  photoSizeSource?: 'legacy' | 'thumbnail' | 'dialogPhoto' | 'stickerSetThumbnail';
+  photoSizeSourceId?: number;
+  secret?: number;
+  dialogId?: number;
+  dialogAccessHash?: number;
+  isSmallDialogPhoto?: boolean;
+  stickerSetId?: number ;
+  stickerSetAccessHash?: number;
+  thumbType?: string;
+  thumbTypeId?: number;
+}
+function generateFileId(medias:generateFileId){
+  let file = new FileId() 
+  for(let [key,value] of Object.entries(medias)){
+      if(key == "id" || key == "accessHash" || key == "secret"){
+        file[key] = BigInt(String(value))
+      }else{
+        file[key] = value
+      }
+  }
+  let file_id = file.toFileId()
+  let unfId = file.toFileUniqId()
+  return {
+    fileId : file_id,
+    uniqueFileId : unfId
   }
 }

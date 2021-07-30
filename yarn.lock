@@ -1354,6 +1354,11 @@ term-size@^2.1.0:
   resolved "https://registry.yarnpkg.com/term-size/-/term-size-2.2.1.tgz#2a6a54840432c2fb6320fea0f415531e90189f54"
   integrity sha512-wK0Ri4fOGjv/XPy8SBHZChl8CM7uMc5VML7SqiQ0zG7+J5Vr+RMQDoHa2CNT6KHUnTGIXH34UDMkPzAUyapBZg==
 
+tg-file-id@^1.1.1:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/tg-file-id/-/tg-file-id-1.1.2.tgz#ef6d7ec52cde00770d71dada04f3746eed97117f"
+  integrity sha512-CP82EimaqVzI5ww7apIAOPkaKCx4kfAK11MPOw4YT7HXr9rbbPKWOIyIQV6dDUH2jBVM3lHDShXFS98u5+ABdQ==
+
 to-readable-stream@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/to-readable-stream/-/to-readable-stream-1.0.0.tgz#ce0aa0c2f3df6adf852efb404a783e77c0475771"
