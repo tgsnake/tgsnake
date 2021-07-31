@@ -66,16 +66,45 @@ bot.onNewMessage(async (ctx:Shortcut,message)=>{
   })
   if(message.media){
     console.log(message.media)
-    if(message.media.photo){
-      tg.sendPhoto(message.chat.id,message.media,{
-        caption : "ini text",
-        parseMode : "markdown"
-      })
+    if(message.media.type){
+      if(message.media.type == "sticker"){
+        tg.sendSticker(message.chat.id,message.media.fileId)
+      }
     }
-    if(message.media.document){
-      tg.sendDocument(message.chat.id,message.media,{
-        caption : "ini text"
-      })
-    }
+    //tg.sendMedia(message.chat.id,message.media)
+    /*console.log(message.media.document.accessHash,message.media.document.id)
+    let media = new GenerateJson.Media(message.media)
+    if(media.fileId){
+      ctx.reply(`File Id : \`${media.fileId}\``)
+      let decode = decodeFileId(media.fileId)
+      if(decode.fileType == "sticker"){
+        let accessHash = String(decode.access_hash) 
+        console.log(decode)
+        while(true){
+          console.log(accessHash)
+          let inputDocument = new Api.InputDocument({
+            id : BigInt(decode.id),
+            accessHash : BigInt(accessHash),
+            fileReference : Buffer.from(decode.fileReference,"hex")
+          })
+          try{
+            await tg.sendMedia(
+              message.chat.id,
+              new Api.InputMediaDocument({
+                id : inputDocument
+              })
+            )
+            break;
+          }catch(e){
+            if(!accessHash.startsWith("-")){
+              accessHash = `-${accessHash}`
+            }else{
+              throw new Error(e.message)
+              break;
+            }
+          }
+        }
+      }
+    }*/
   }
 })

@@ -681,6 +681,44 @@ export class Telegram {
       )
   }
   /**
+   * Sending Media. 
+   * @param chat_id - chat id 
+   * @param media - media 
+   * @param more - Interface.sendMediaMoreParams
+  */
+  async sendMedia(chat_id:number|string,media:Api.TypeInputMedia,more?:Interface.sendMediaMoreParams){
+    let parseMode = ""
+    if(more){
+      if(more.parseMode){
+        parseMode = more.parseMode.toLowerCase()
+        delete more.parseMode
+      }
+    }
+    let parseText;
+    let entities;
+    if(more){
+      if(more.entities){
+        entities = more.entities
+        parseText = more.caption || ""
+      }
+      if(more.caption){
+        let parse = await _parseMessageText(client,more.caption,parseMode) 
+        parseText = parse[0] 
+        entities = parse[1]
+        delete more.caption
+      }
+    }
+    return client.invoke(
+      new Api.messages.SendMedia({
+        peer : chat_id,
+        media : media,
+        message : parseText || "",
+        randomId : BigInt(-Math.floor(Math.random() * 10000000000000)),
+        entities : entities
+      })
+    )
+  }
+  /**
    * Sending Photo with fileId or PathFile or buffer or message.media 
    * @param chat_id - Destination 
    * @param fileId - Attached media 
@@ -725,8 +763,19 @@ export class Telegram {
     if(typeof fileId == "string"){
       if((Buffer.isBuffer(fileId)) || (/^http/i.exec(String(fileId))) || (/^(\/|\.\.?\/|~\/)/i.exec(String(fileId))) ){
         let file = await this.uploadFile(fileId) 
-        final = new Api.InputMediaUploadedPhoto({
-          file : new Api.InputFile({...file!})
+        let info = await this._getFileInfo(fileId)
+        let basename = path.basename(String(fileId))
+        if(!(/\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/gmi.exec(basename))){
+          basename = `${basename}.${info?.ext}`
+        }
+        final = new Api.InputMediaUploadedDocument({
+          file : new Api.InputFile({...file!}),
+          mimeType : info?.mime!,
+          attributes : [
+              new Api.DocumentAttributeFilename({
+                fileName : basename
+              })
+            ]
         })
       }
     }
@@ -737,41 +786,97 @@ export class Telegram {
     )
   }
   /**
-   * Sending Media. 
-   * @param chat_id - chat id 
-   * @param media - media 
-   * @param more - Interface.sendMediaMoreParams
+   * Sending sticker. 
+   * @param chat_id - destination 
+   * @param fileId - path/buffer/fileId to sending sticker.
   */
-  async sendMedia(chat_id:number|string,media:Api.TypeInputMedia,more?:Interface.sendMediaMoreParams){
-      let parseMode = ""
-      if(more){
-        if(more.parseMode){
-          parseMode = more.parseMode.toLowerCase()
-          delete more.parseMode
+  async sendSticker(chat_id:number|string,fileId:string|Buffer|Api.MessageMediaDocument|Api.Document){
+    let final:any
+    if(fileId instanceof Api.MessageMediaDocument){
+      final = fileId as Api.MessageMediaDocument
+    }
+    if(fileId instanceof Api.Document){
+      final = fileId as Api.Document
+    }
+    if(typeof fileId == "string"){
+      if((Buffer.isBuffer(fileId)) || (/^http/i.exec(String(fileId))) || (/^(\/|\.\.?\/|~\/)/i.exec(String(fileId))) ){
+        let file = await this.uploadFile(fileId)
+        final = new Api.InputMediaUploadedDocument({
+          file : new Api.InputFile({...file!}),
+          mimeType : "image/webp",
+          attributes : [
+              new Api.DocumentAttributeFilename({
+                fileName : `sticker.webp`
+              })
+            ]
+        })
+      }
+    }
+    if(final){
+      return this.sendMedia(
+        chat_id,
+        final
+      )
+    }else{
+      let decode 
+      if(typeof fileId !== "string"){
+        throw new Error("Invalid FileId!")
+      }
+      try{
+        decode = decodeFileId(String(fileId))
+      }catch(error){
+        throw new Error("Invalid FileId!")
+      }
+      if(decode){
+        if(decode.fileType == "sticker"){
+          let resultsSendSticker
+          let accessHash = String(decode.access_hash) 
+          while(true){
+            let inputDocument = new Api.InputDocument({
+              id : BigInt(decode.id),
+              accessHash : BigInt(accessHash),
+              fileReference : Buffer.from(decode.fileReference,"hex")
+            })
+            try{
+              resultsSendSticker = await this.sendMedia(
+                chat_id,
+                new Api.InputMediaDocument({
+                  id : inputDocument
+                })
+              )
+              break;
+            }catch(e){
+              if(!accessHash.startsWith("-")){
+                accessHash = `-${accessHash}`
+              }else{
+                throw new Error(e.message)
+                break;
+              }
+            }
+          }
+          return resultsSendSticker
+        }else{
+          throw new Error(`Invalid FileType. It must be "sticker". Received ${decode.fileType}`)
         }
       }
-      let parseText;
-      let entities;
-      if(more){
-        if(more.entities){
-          entities = more.entities
-          parseText = more.caption || ""
-        }
-        if(more.caption){
-          let parse = await _parseMessageText(client,more.caption,parseMode) 
-          parseText = parse[0] 
-          entities = parse[1]
-          delete more.caption
-        }
-      }
-      return client.invoke(
-          new Api.messages.SendMedia({
-            peer : chat_id,
-            media : media,
-            message : parseText || "",
-            randomId : BigInt(-Math.floor(Math.random() * 10000000000000)),
-            entities : entities
-          })
-        )
+    }
+  }
+  /**
+   * @hidden 
+   * Get the fileInfo from url or filePath.
+  */
+  async _getFileInfo(file:string){
+    if(/^http/i.exec(file)){
+      let res = await axios.get(file,{
+          responseType: "arraybuffer"
+        })
+      let basebuffer = Buffer.from(res.data, "utf-8")
+      let fileInfo = await FileType.fromBuffer(basebuffer)
+      return fileInfo
+    }
+    if(/^(\/|\.\.?\/|~\/)/i.exec(file)){
+      let fileInfo = await FileType.fromFile(file)
+      return fileInfo
+    }
   }
 }

@@ -18,7 +18,7 @@ export class Message implements Interface.Message {
   entities?:Api.TypeMessageEntity;
   replyToMessageId?:number;
   date:Date|number;
-  media?:any
+  media?:Api.TypeMessageMedia|Media
   /**
    * rewrite json from incoming message. 
    * original message can be found in bot.event.message.
@@ -65,7 +65,12 @@ export class Message implements Interface.Message {
     * if user sending media this object will showing.
    */
    if(message.media){
-     this.media = message.media
+     let convert = new Media(message.media) 
+     if(convert.type){ 
+       this.media = convert 
+     }else{
+       this.media = message.media
+     }
    }
   }
 }
@@ -241,8 +246,38 @@ export class Media {
   type?:string; 
   fileId!:string; 
   uniqueFileId!:string;
+  fileName?:string
   constructor(media:Api.TypeMessageMedia){
-    
+    if(media instanceof Api.MessageMediaDocument){
+      if((media.document) instanceof Api.Document){
+        let doc = (media.document) as Api.Document
+        switch(doc.mimeType){
+          case "image/webp":
+            this.type = "sticker";
+            for(let i=0; i < doc.attributes.length; i++){
+              if(doc.attributes[i] instanceof Api.DocumentAttributeFilename){
+                let daf = doc.attributes[i] as Api.DocumentAttributeFilename;
+                this.fileName = daf.fileName;
+                break;
+              }
+            }
+            let fId = generateFileId({
+              version : 4,
+              subVersion : 30,
+              dcId : doc.dcId,
+              fileType : "sticker",
+              id : doc.id,
+              accessHash : doc.accessHash,
+              typeId : typeId.STICKER,
+              fileReference : doc.fileReference.toString("hex")
+            })
+            this.fileId = fId.fileId 
+            this.uniqueFileId = fId.uniqueFileId
+            break; 
+          default:
+        }
+      }
+    }
   }
 }
 interface generateFileId {
@@ -272,7 +307,7 @@ function generateFileId(medias:generateFileId){
   let file = new FileId() 
   for(let [key,value] of Object.entries(medias)){
       if(key == "id" || key == "accessHash" || key == "secret"){
-        file[key] = BigInt(String(value))
+        file[key] = BigInt(String(value).replace("-",""))
       }else{
         file[key] = value
       }
