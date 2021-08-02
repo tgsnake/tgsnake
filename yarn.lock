@@ -1328,9 +1328,9 @@ supports-color@^7.1.0:
     has-flag "^4.0.0"
 
 telegram@^1.7.15:
-  version "1.7.27"
-  resolved "https://registry.yarnpkg.com/telegram/-/telegram-1.7.27.tgz#7c9f6306e998fa585c3a42f7b07979d0344b96a1"
-  integrity sha512-HENZ3hiIc5FN0mwI5aLAhv2u9aHw3Qp7LdsSHmcA2DpJdnpNYIuJlhp0Vj1602yvdsQxV8hKI2/kPppMsvmmTg==
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/telegram/-/telegram-1.8.0.tgz#ff845c0cbed8e53cb97c95101fa2e406e71648e9"
+  integrity sha512-KJJRYdMEmxkvkQwWvxH1SFujyWAzuzXshTajNz4RWTonte1p/eeRSHxRClE4m4aqo/b0F8CI1XSlW4bj2n6pqQ==
   dependencies:
     "@cryptography/aes" "^0.1.1"
     async-mutex "^0.3.0"
@@ -1345,6 +1345,7 @@ telegram@^1.7.15:
     path-browserify "^1.0.1"
     process "^0.11.10"
     store2 "^2.12.0"
+    ts-custom-error "^3.2.0"
     ts-mixer "^5.4.0"
     util "^0.12.4"
     websocket "^1.0.33"
@@ -1385,6 +1386,11 @@ touch@^3.1.0:
   integrity sha512-WBx8Uy5TLtOSRtIq+M03/sKDrXCLHxwDcquSP2c43Le03/9serjQBIztjRz6FkJez9D/hleyAXTBGLwwZUw9lA==
   dependencies:
     nopt "~1.0.10"
+
+ts-custom-error@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/ts-custom-error/-/ts-custom-error-3.2.0.tgz#ff8f80a3812bab9dc448536312da52dce1b720fb"
+  integrity sha512-cBvC2QjtvJ9JfWLvstVnI45Y46Y5dMxIaG1TDMGAD/R87hpvqFL+7LhvUDhnRCfOnx/xitollFWWvUKKKhbN0A==
 
 ts-mixer@^5.4.0:
   version "5.4.1"
