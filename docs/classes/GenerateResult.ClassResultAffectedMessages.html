@@ -104,19 +104,19 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Class<wbr>Result<wbr>Affected<wbr>Messages<span class="tsd-signature-symbol">(</span>resultReadHistory<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="GenerateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Class<wbr>Result<wbr>Affected<wbr>Messages<span class="tsd-signature-symbol">(</span>resultReadHistory<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">AffectedMessages</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">AffectedHistory</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="GenerateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/af44d55/src/snake/rewriteresults.ts#L577">snake/rewriteresults.ts:577</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/14e2699/src/snake/rewriteresults.ts#L600">snake/rewriteresults.ts:600</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>resultReadHistory: <span class="tsd-signature-type">any</span></h5>
+									<h5>resultReadHistory: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">AffectedMessages</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">AffectedHistory</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="GenerateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a></h4>
@@ -129,42 +129,62 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="date" class="tsd-anchor"></a>
 					<h3>date</h3>
-					<div class="tsd-signature tsd-kind-icon">date<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Date</span></div>
+					<div class="tsd-signature tsd-kind-icon">date<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/af44d55/src/snake/rewriteresults.ts#L576">snake/rewriteresults.ts:576</a></li>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/14e2699/src/snake/rewriteresults.ts#L599">snake/rewriteresults.ts:599</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Date result created.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="offset" class="tsd-anchor"></a>
-					<h3>offset</h3>
-					<div class="tsd-signature tsd-kind-icon">offset<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> offset</h3>
+					<div class="tsd-signature tsd-kind-icon">offset<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/af44d55/src/snake/rewriteresults.ts#L575">snake/rewriteresults.ts:575</a></li>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/14e2699/src/snake/rewriteresults.ts#L595">snake/rewriteresults.ts:595</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>If a parameter contains positive value, it is necessary to repeat the method call using the given value; during the proceeding of all the history the value itself shall gradually decrease</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="pts" class="tsd-anchor"></a>
-					<h3>pts</h3>
-					<div class="tsd-signature tsd-kind-icon">pts<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> pts</h3>
+					<div class="tsd-signature tsd-kind-icon">pts<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/af44d55/src/snake/rewriteresults.ts#L573">snake/rewriteresults.ts:573</a></li>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/14e2699/src/snake/rewriteresults.ts#L587">snake/rewriteresults.ts:587</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Number of events occured in a text box</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="ptsCount" class="tsd-anchor"></a>
-					<h3>pts<wbr>Count</h3>
-					<div class="tsd-signature tsd-kind-icon">pts<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> pts<wbr>Count</h3>
+					<div class="tsd-signature tsd-kind-icon">pts<wbr>Count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/af44d55/src/snake/rewriteresults.ts#L574">snake/rewriteresults.ts:574</a></li>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/14e2699/src/snake/rewriteresults.ts#L591">snake/rewriteresults.ts:591</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Number of affected events</p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>

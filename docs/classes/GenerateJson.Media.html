@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ClassResultGetAdminLog | tgsnake - v1.0.0</title>
+	<title>Media | tgsnake - v1.0.0</title>
 	<meta name="description" content="Documentation for tgsnake - v1.0.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,13 +55,13 @@
 					<a href="../modules.html">tgsnake - v1.0.0</a>
 				</li>
 				<li>
-					<a href="../modules/GenerateResult.html">GenerateResult</a>
+					<a href="../modules/GenerateJson.html">GenerateJson</a>
 				</li>
 				<li>
-					<a href="GenerateResult.ClassResultGetAdminLog.html">ClassResultGetAdminLog</a>
+					<a href="GenerateJson.Media.html">Media</a>
 				</li>
 			</ul>
-			<h1>Class ClassResultGetAdminLog</h1>
+			<h1>Class Media</h1>
 		</div>
 	</div>
 </header>
@@ -72,7 +72,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ClassResultGetAdminLog</span>
+						<span class="target">Media</span>
 					</li>
 				</ul>
 			</section>
@@ -83,13 +83,16 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="GenerateResult.ClassResultGetAdminLog.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="GenerateJson.Media.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="GenerateResult.ClassResultGetAdminLog.html#log" class="tsd-kind-icon">log</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="GenerateJson.Media.html#fileId" class="tsd-kind-icon">file<wbr>Id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="GenerateJson.Media.html#fileName" class="tsd-kind-icon">file<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="GenerateJson.Media.html#type" class="tsd-kind-icon">type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="GenerateJson.Media.html#uniqueFileId" class="tsd-kind-icon">unique<wbr>File<wbr>Id</a></li>
 							</ul>
 						</section>
 					</div>
@@ -101,22 +104,22 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Class<wbr>Result<wbr>Get<wbr>Admin<wbr>Log<span class="tsd-signature-symbol">(</span>resultGetAdminLog<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="GenerateResult.ClassResultGetAdminLog.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultGetAdminLog</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Media<span class="tsd-signature-symbol">(</span>media<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TypeMessageMedia</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="GenerateJson.Media.html" class="tsd-signature-type" data-tsd-kind="Class">Media</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/14e2699/src/snake/rewriteresults.ts#L717">snake/rewriteresults.ts:717</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/14e2699/src/snake/rewritejson.ts#L250">snake/rewritejson.ts:250</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>resultGetAdminLog: <span class="tsd-signature-type">any</span></h5>
+									<h5>media: <span class="tsd-signature-type">TypeMessageMedia</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="GenerateResult.ClassResultGetAdminLog.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultGetAdminLog</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="GenerateJson.Media.html" class="tsd-signature-type" data-tsd-kind="Class">Media</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -124,12 +127,42 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="log" class="tsd-anchor"></a>
-					<h3>log</h3>
-					<div class="tsd-signature tsd-kind-icon">log<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = ...</span></div>
+					<a name="fileId" class="tsd-anchor"></a>
+					<h3>file<wbr>Id</h3>
+					<div class="tsd-signature tsd-kind-icon">file<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/14e2699/src/snake/rewriteresults.ts#L716">snake/rewriteresults.ts:716</a></li>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/14e2699/src/snake/rewritejson.ts#L247">snake/rewritejson.ts:247</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="fileName" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> file<wbr>Name</h3>
+					<div class="tsd-signature tsd-kind-icon">file<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/14e2699/src/snake/rewritejson.ts#L249">snake/rewritejson.ts:249</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="type" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> type</h3>
+					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/14e2699/src/snake/rewritejson.ts#L246">snake/rewritejson.ts:246</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
+					<a name="uniqueFileId" class="tsd-anchor"></a>
+					<h3>unique<wbr>File<wbr>Id</h3>
+					<div class="tsd-signature tsd-kind-icon">unique<wbr>File<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/14e2699/src/snake/rewritejson.ts#L248">snake/rewritejson.ts:248</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -141,10 +174,10 @@
 					<li class=" ">
 						<a href="../modules.html">Exports</a>
 					</li>
-					<li class=" tsd-kind-namespace">
+					<li class="current tsd-kind-namespace">
 						<a href="../modules/GenerateJson.html">Generate<wbr>Json</a>
 					</li>
-					<li class="current tsd-kind-namespace">
+					<li class=" tsd-kind-namespace">
 						<a href="../modules/GenerateResult.html">Generate<wbr>Result</a>
 					</li>
 					<li class=" tsd-kind-namespace">
@@ -154,53 +187,32 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class tsd-parent-kind-namespace">
-						<a href="GenerateResult.ClassResultAffectedMessages.html" class="tsd-kind-icon">Class<wbr>Result<wbr>Affected<wbr>Messages</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-namespace">
-						<a href="GenerateResult.ClassResultEditAdminOrBanned.html" class="tsd-kind-icon">Class<wbr>Result<wbr>Edit<wbr>Admin<wbr>OrBanned</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-namespace">
-						<a href="GenerateResult.ClassResultEditMessage.html" class="tsd-kind-icon">Class<wbr>Result<wbr>Edit<wbr>Message</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-namespace">
-						<a href="GenerateResult.ClassResultEditPhotoOrTitle.html" class="tsd-kind-icon">Class<wbr>Result<wbr>Edit<wbr>Photo<wbr>OrTitle</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-namespace">
-						<a href="GenerateResult.ClassResultForwardMessages.html" class="tsd-kind-icon">Class<wbr>Result<wbr>Forward<wbr>Messages</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-namespace">
-						<a href="GenerateResult.ClassResultGetAdminLog.html" class="tsd-kind-icon">Class<wbr>Result<wbr>Get<wbr>Admin<wbr>Log</a>
+						<a href="GenerateJson.Media.html" class="tsd-kind-icon">Media</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="GenerateResult.ClassResultGetAdminLog.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="GenerateJson.Media.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="GenerateResult.ClassResultGetAdminLog.html#log" class="tsd-kind-icon">log</a>
+								<a href="GenerateJson.Media.html#fileId" class="tsd-kind-icon">file<wbr>Id</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="GenerateJson.Media.html#fileName" class="tsd-kind-icon">file<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="GenerateJson.Media.html#type" class="tsd-kind-icon">type</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class">
+								<a href="GenerateJson.Media.html#uniqueFileId" class="tsd-kind-icon">unique<wbr>File<wbr>Id</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-class tsd-parent-kind-namespace">
-						<a href="GenerateResult.ClassResultGetMessages.html" class="tsd-kind-icon">Class<wbr>Result<wbr>Get<wbr>Messages</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-namespace">
-						<a href="GenerateResult.ClassResultGetMessagesViews.html" class="tsd-kind-icon">Class<wbr>Result<wbr>Get<wbr>Messages<wbr>Views</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-namespace">
-						<a href="GenerateResult.ClassResultMessageChat.html" class="tsd-kind-icon">Class<wbr>Result<wbr>Message<wbr>Chat</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-namespace">
-						<a href="GenerateResult.ClassResultPinMessage.html" class="tsd-kind-icon">Class<wbr>Result<wbr>Pin<wbr>Message</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-namespace">
-						<a href="GenerateResult.ClassResultSendMessage.html" class="tsd-kind-icon">Class<wbr>Result<wbr>Send<wbr>Message</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-namespace">
-						<a href="GenerateResult.ClassResultUploadFile.html" class="tsd-kind-icon">Class<wbr>Result<wbr>Upload<wbr>File</a>
+						<a href="GenerateJson.Message.html" class="tsd-kind-icon">Message</a>
 					</li>
 				</ul>
 			</nav>
