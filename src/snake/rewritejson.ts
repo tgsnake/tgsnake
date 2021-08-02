@@ -242,7 +242,7 @@ let thumbTypeId = {
   CHAT_PHOTO_BIG: 3, // DialogPhotoBig
   STICKER_SET_THUMBNAIL: 4,
 };
-export class Media {
+class Media {
   type?: string;
   fileId!: string;
   uniqueFileId!: string;

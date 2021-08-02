@@ -8,7 +8,7 @@
     "prepare": "echo \"🐍 Building snake package.\" && tsc",
     "build": "tsc",
     "build:docs": "typedoc",
-    "prettier":"prettier --write ./src"
+    "prettier": "prettier --write ./src"
   },
   "homepage": "https://tgsnake.js.org",
   "keywords": [
