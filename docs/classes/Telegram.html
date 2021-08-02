@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Telegram | tgsnake - v0.0.5</title>
-	<meta name="description" content="Documentation for tgsnake - v0.0.5">
+	<title>Telegram | tgsnake - v1.0.0</title>
+	<meta name="description" content="Documentation for tgsnake - v1.0.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<script async src="../assets/js/search.js" id="search-script"></script>
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">tgsnake - v0.0.5</a>
+					<a href="../index.html" class="title">tgsnake - v1.0.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -52,7 +52,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../modules.html">tgsnake - v0.0.5</a>
+					<a href="../modules.html">tgsnake - v1.0.0</a>
 				</li>
 				<li>
 					<a href="Telegram.html">Telegram</a>
@@ -65,6 +65,19 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Create Method.</p>
+					</div>
+					<dl class="tsd-comment-tags">
+						<dt>example</dt>
+						<dd><pre><code class="language-ts"><span style="color: #AF00DB">import</span><span style="color: #000000"> {</span><span style="color: #001080">Telegram</span><span style="color: #000000">} </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;tgsnake&quot;</span>
+</code></pre>
+						</dd>
+					</dl>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -116,7 +129,11 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Telegram.html#readHistory" class="tsd-kind-icon">read<wbr>History</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Telegram.html#readMentions" class="tsd-kind-icon">read<wbr>Mentions</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Telegram.html#readMessageContents" class="tsd-kind-icon">read<wbr>Message<wbr>Contents</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Telegram.html#sendDocument" class="tsd-kind-icon">send<wbr>Document</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Telegram.html#sendMedia" class="tsd-kind-icon">send<wbr>Media</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Telegram.html#sendMessage" class="tsd-kind-icon">send<wbr>Message</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Telegram.html#sendPhoto" class="tsd-kind-icon">send<wbr>Photo</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Telegram.html#sendSticker" class="tsd-kind-icon">send<wbr>Sticker</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Telegram.html#unpinAllMessages" class="tsd-kind-icon">unpin<wbr>All<wbr>Messages</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Telegram.html#uploadFile" class="tsd-kind-icon">upload<wbr>File</a></li>
 							</ul>
@@ -136,7 +153,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L57">src/snake/tele.ts:57</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L66">snake/tele.ts:66</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -147,15 +164,15 @@
 								<dl class="tsd-comment-tags">
 									<dt>example</dt>
 									<dd><pre><code class="language-ts"><span style="color: #AF00DB">import</span><span style="color: #000000"> {</span><span style="color: #001080">Telegram</span><span style="color: #000000">} </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;tgsnake&quot;</span>
-<span style="color: #AF00DB">import</span><span style="color: #000000"> {</span><span style="color: #001080">TelegramClient</span><span style="color: #000000">} </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;telegram&quot;</span><span style="color: #000000"> </span>
+<span style="color: #AF00DB">import</span><span style="color: #000000"> {</span><span style="color: #001080">TelegramClient</span><span style="color: #000000">} </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;telegram&quot;</span>
 <span style="color: #AF00DB">import</span><span style="color: #000000"> {</span><span style="color: #001080">StringSession</span><span style="color: #000000">} </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;telegram/sessions&quot;</span>
 <span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">client</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">TelegramClient</span><span style="color: #000000">(</span>
 <span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">StringSession</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;&quot;</span><span style="color: #000000">),</span>
 <span style="color: #000000"> </span><span style="color: #001080">api_id</span><span style="color: #000000">,</span>
 <span style="color: #000000"> </span><span style="color: #001080">api_hash</span><span style="color: #000000">,</span>
 <span style="color: #000000"> {</span>
-<span style="color: #001080">connection_retries :</span><span style="color: #000000"> </span><span style="color: #098658">5</span>
-<span style="color: #000000">}</span>
+<span style="color: #000000">   </span><span style="color: #001080">connection_retries :</span><span style="color: #000000"> </span><span style="color: #098658">5</span>
+<span style="color: #000000"> }</span>
 <span style="color: #000000">)</span>
 <span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">method</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Telegram</span><span style="color: #000000">(</span>
 <span style="color: #000000"> </span><span style="color: #001080">client</span>
@@ -186,10 +203,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="className" class="tsd-anchor"></a>
 					<h3>class<wbr>Name</h3>
-					<div class="tsd-signature tsd-kind-icon">class<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;telegram&quot;</span></div>
+					<div class="tsd-signature tsd-kind-icon">class<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &#x27;telegram&#x27;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L33">src/snake/tele.ts:33</a></li>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L42">snake/tele.ts:42</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -200,19 +217,25 @@
 					<a name="deleteHistory" class="tsd-anchor"></a>
 					<h3>delete<wbr>History</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">delete<wbr>History<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.deleteHistoryMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">deleteHistoryMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><a href="generateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">delete<wbr>History<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.deleteHistoryMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">deleteHistoryMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><a href="GenerateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L336">src/snake/tele.ts:336</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L413">snake/tele.ts:413</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Delete the history of a supergroup</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">deleteHistory</span><span style="color: #000000">(</span><span style="color: #098658">1234567890</span><span style="color: #000000">)</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -225,12 +248,11 @@
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> more: <a href="../interfaces/Interface.deleteHistoryMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">deleteHistoryMoreParams</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Interface.deleteHistoryMoreParams</p>
+										<p>JSON object from <a href="../interfaces/Interface.deleteHistoryMoreParams.html">Interface.deleteHistoryMoreParams</a> which will be used to deleteHistory.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><a href="generateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>boolean or ClassResultAffectedMessages</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> | </span><a href="GenerateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -238,19 +260,25 @@
 					<a name="deleteMessages" class="tsd-anchor"></a>
 					<h3>delete<wbr>Messages</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">delete<wbr>Messages<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, message_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">delete<wbr>Messages<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, message_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L105">src/snake/tele.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L126">snake/tele.ts:126</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Delete messages in a chat/channel/supergroup</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">deleteMessages</span><span style="color: #000000">(</span><span style="color: #098658">1234567890</span><span style="color: #000000">,[</span><span style="color: #098658">11</span><span style="color: #000000">])</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -267,8 +295,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>ClassResultAffectedMessages</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -276,19 +303,25 @@
 					<a name="deleteUserHistory" class="tsd-anchor"></a>
 					<h3>delete<wbr>User<wbr>History</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">delete<wbr>User<wbr>History<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, user_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">delete<wbr>User<wbr>History<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, user_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L362">src/snake/tele.ts:362</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L442">snake/tele.ts:442</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Delete all messages sent by a certain user in a supergroup</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">deleteUserHistory</span><span style="color: #000000">(</span><span style="color: #098658">1234567890</span><span style="color: #000000">,</span><span style="color: #098658">0987654321</span><span style="color: #000000">)</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -305,8 +338,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>ClassResultAffectedMessages</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -314,19 +346,25 @@
 					<a name="editAdmin" class="tsd-anchor"></a>
 					<h3>edit<wbr>Admin</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">edit<wbr>Admin<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, user_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.editAdminMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">editAdminMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultEditAdminOrBanned.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultEditAdminOrBanned</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">edit<wbr>Admin<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, user_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.editAdminMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">editAdminMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultEditAdminOrBanned.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultEditAdminOrBanned</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L379">src/snake/tele.ts:379</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L462">snake/tele.ts:462</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Modify the admin rights of a user in a supergroup/channel.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">editAdmin</span><span style="color: #000000">(</span><span style="color: #098658">1234567890</span><span style="color: #000000">,</span><span style="color: #098658">0987654321</span><span style="color: #000000">)</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -345,12 +383,11 @@
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> more: <a href="../interfaces/Interface.editAdminMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">editAdminMoreParams</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Interface.editAdminMoreParams</p>
+										<p>JSON object from <a href="../interfaces/Interface.editAdminMoreParams.html">Interface.editAdminMoreParams</a> which will be used to editAdmin.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultEditAdminOrBanned.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultEditAdminOrBanned</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>ClassResultEditAdminOrBanned</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultEditAdminOrBanned.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultEditAdminOrBanned</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -358,19 +395,25 @@
 					<a name="editBanned" class="tsd-anchor"></a>
 					<h3>edit<wbr>Banned</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">edit<wbr>Banned<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, user_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.editBannedMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">editBannedMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultEditAdminOrBanned.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultEditAdminOrBanned</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">edit<wbr>Banned<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, user_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.editBannedMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">editBannedMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultEditAdminOrBanned.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultEditAdminOrBanned</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L410">src/snake/tele.ts:410</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L500">snake/tele.ts:500</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Ban/unban/kick a user in a supergroup/channel.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">editBanned</span><span style="color: #000000">(</span><span style="color: #098658">1234567890</span><span style="color: #000000">,</span><span style="color: #098658">0987654321</span><span style="color: #000000">)</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -389,12 +432,11 @@
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> more: <a href="../interfaces/Interface.editBannedMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">editBannedMoreParams</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Interface.editBannedMoreParams</p>
+										<p>JSON object from <a href="../interfaces/Interface.editBannedMoreParams.html">Interface.editBannedMoreParams</a> which will be used to editBanned.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultEditAdminOrBanned.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultEditAdminOrBanned</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>ClassResultEditAdminOrBanned</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultEditAdminOrBanned.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultEditAdminOrBanned</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -402,19 +444,25 @@
 					<a name="editMessage" class="tsd-anchor"></a>
 					<h3>edit<wbr>Message</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">edit<wbr>Message<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, message_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.editMessageMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">editMessageMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultEditMessage.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultEditMessage</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">edit<wbr>Message<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, message_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.editMessageMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">editMessageMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultEditMessage.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultEditMessage</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L135">src/snake/tele.ts:135</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L159">snake/tele.ts:159</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Edit message</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">editMessage</span><span style="color: #000000">(</span><span style="color: #098658">123456789</span><span style="color: #000000">,</span><span style="color: #098658">11</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;new text&quot;</span><span style="color: #000000">)</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -439,12 +487,11 @@
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> more: <a href="../interfaces/Interface.editMessageMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">editMessageMoreParams</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Interface.editMessageMoreParams</p>
+										<p>JSON object from <a href="../interfaces/Interface.editMessageMoreParams.html">Interface.editMessageMoreParams</a> which will be used to editMessage.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultEditMessage.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultEditMessage</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>ClassResultEditMessage</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultEditMessage.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultEditMessage</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -452,19 +499,25 @@
 					<a name="editPhoto" class="tsd-anchor"></a>
 					<h3>edit<wbr>Photo</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">edit<wbr>Photo<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, photo<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Buffer</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/Api.html#TypeUpdates" class="tsd-signature-type" data-tsd-kind="Type alias">TypeUpdates</a><span class="tsd-signature-symbol"> | </span><a href="generateResult.ClassResultEditPhotoOrTitle.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultEditPhotoOrTitle</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">edit<wbr>Photo<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, photo<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Buffer</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TypeUpdates</span><span class="tsd-signature-symbol"> | </span><a href="GenerateResult.ClassResultEditPhotoOrTitle.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultEditPhotoOrTitle</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L442">src/snake/tele.ts:442</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L539">snake/tele.ts:539</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Change the photo of a channel/Supergroup</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">editPhoto</span><span style="color: #000000">(</span><span style="color: #098658">1234567890</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;./media/tgsnake.jpg&quot;</span><span style="color: #000000">)</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -481,8 +534,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/Api.html#TypeUpdates" class="tsd-signature-type" data-tsd-kind="Type alias">TypeUpdates</a><span class="tsd-signature-symbol"> | </span><a href="generateResult.ClassResultEditPhotoOrTitle.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultEditPhotoOrTitle</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>ClassResultEditPhotoOrTitle</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TypeUpdates</span><span class="tsd-signature-symbol"> | </span><a href="GenerateResult.ClassResultEditPhotoOrTitle.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultEditPhotoOrTitle</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -490,19 +542,25 @@
 					<a name="editTitle" class="tsd-anchor"></a>
 					<h3>edit<wbr>Title</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">edit<wbr>Title<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/Api.html#TypeUpdates" class="tsd-signature-type" data-tsd-kind="Type alias">TypeUpdates</a><span class="tsd-signature-symbol"> | </span><a href="generateResult.ClassResultEditPhotoOrTitle.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultEditPhotoOrTitle</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">edit<wbr>Title<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TypeUpdates</span><span class="tsd-signature-symbol"> | </span><a href="GenerateResult.ClassResultEditPhotoOrTitle.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultEditPhotoOrTitle</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L547">src/snake/tele.ts:547</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L636">snake/tele.ts:636</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Edit the name of a channel/supergroup</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">editTitle</span><span style="color: #000000">(</span><span style="color: #098658">1234567890</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;new title&quot;</span><span style="color: #000000">)</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -515,12 +573,11 @@
 								<li>
 									<h5>title: <span class="tsd-signature-type">string</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>new title.
-										ClassResultEditPhotoOrTitle</p>
+										<p>new title.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/Api.html#TypeUpdates" class="tsd-signature-type" data-tsd-kind="Type alias">TypeUpdates</a><span class="tsd-signature-symbol"> | </span><a href="generateResult.ClassResultEditPhotoOrTitle.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultEditPhotoOrTitle</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TypeUpdates</span><span class="tsd-signature-symbol"> | </span><a href="GenerateResult.ClassResultEditPhotoOrTitle.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultEditPhotoOrTitle</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -528,19 +585,25 @@
 					<a name="exportMessageLink" class="tsd-anchor"></a>
 					<h3>export<wbr>Message<wbr>Link</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">export<wbr>Message<wbr>Link<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, message_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.exportMessageLinkMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">exportMessageLinkMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="Api.ExportedMessageLink.html" class="tsd-signature-type" data-tsd-kind="Class">ExportedMessageLink</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">export<wbr>Message<wbr>Link<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, message_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.exportMessageLinkMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">exportMessageLinkMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ExportedMessageLink</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L573">src/snake/tele.ts:573</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L665">snake/tele.ts:665</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Get link and embed info of a message in a channel/supergroup.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">exportMessageLink</span><span style="color: #000000">(</span><span style="color: #098658">1234567890</span><span style="color: #000000">,</span><span style="color: #098658">11</span><span style="color: #000000">)</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -559,12 +622,11 @@
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> more: <a href="../interfaces/Interface.exportMessageLinkMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">exportMessageLinkMoreParams</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Interface.exportMessageLinkMoreParams</p>
+										<p>JSON object from <a href="../interfaces/Interface.exportMessageLinkMoreParams.html">Interface.exportMessageLinkMoreParams</a> which will be used to exportMessageLink</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="Api.ExportedMessageLink.html" class="tsd-signature-type" data-tsd-kind="Class">ExportedMessageLink</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>gramjs ExportedMessageLink</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ExportedMessageLink</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -572,19 +634,25 @@
 					<a name="forwardMessages" class="tsd-anchor"></a>
 					<h3>forward<wbr>Messages</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">forward<wbr>Messages<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, from_chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, message_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.forwardMessageMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">forwardMessageMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultForwardMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultForwardMessages</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">forward<wbr>Messages<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, from_chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, message_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.forwardMessageMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">forwardMessageMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultForwardMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultForwardMessages</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L170">src/snake/tele.ts:170</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L202">snake/tele.ts:202</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Forwards messages by their IDs.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">forwardMessages</span><span style="color: #000000">(</span><span style="color: #098658">1234567890</span><span style="color: #000000">,</span><span style="color: #098658">0987654321</span><span style="color: #000000">,[</span><span style="color: #098658">11</span><span style="color: #000000">])</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -609,12 +677,11 @@
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> more: <a href="../interfaces/Interface.forwardMessageMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">forwardMessageMoreParams</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Interface.forwardMessageMoreParams</p>
+										<p>JSON object from <a href="../interfaces/Interface.forwardMessageMoreParams.html">Interface.forwardMessageMoreParams</a> which will be used to forwardMessages.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultForwardMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultForwardMessages</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>ClassResultForwardMessages</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultForwardMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultForwardMessages</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -622,19 +689,25 @@
 					<a name="getAdminLog" class="tsd-anchor"></a>
 					<h3>get<wbr>Admin<wbr>Log</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Admin<wbr>Log<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.getAdminLogMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">getAdminLogMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultGetAdminLog.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultGetAdminLog</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Admin<wbr>Log<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.getAdminLogMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">getAdminLogMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultGetAdminLog.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultGetAdminLog</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L604">src/snake/tele.ts:604</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L706">snake/tele.ts:706</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Get the admin log of a channel/supergroup</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">getAdminLog</span><span style="color: #000000">(</span><span style="color: #098658">1234567890</span><span style="color: #000000">)</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -647,12 +720,11 @@
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> more: <a href="../interfaces/Interface.getAdminLogMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">getAdminLogMoreParams</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Interface.getAdminLogMoreParams</p>
+										<p>JSON object from <a href="../interfaces/Interface.getAdminLogMoreParams.html">Interface.getAdminLogMoreParams</a> which will be used to getAdminLog</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultGetAdminLog.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultGetAdminLog</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>ClassResultGetAdminLog</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultGetAdminLog.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultGetAdminLog</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -660,13 +732,13 @@
 					<a name="getAdminedPublicChannels" class="tsd-anchor"></a>
 					<h3>get<wbr>Admined<wbr>Public<wbr>Channels</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Admined<wbr>Public<wbr>Channels<span class="tsd-signature-symbol">(</span>by_location<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span>, check_limit<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultMessageChat.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultMessageChat</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Admined<wbr>Public<wbr>Channels<span class="tsd-signature-symbol">(</span>by_location<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span>, check_limit<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultMessageChat.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultMessageChat</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L588">src/snake/tele.ts:588</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L687">snake/tele.ts:687</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -674,8 +746,9 @@
 									<p>Get channels/supergroups/geogroups we&#39;re admin in. Usually called when the user exceeds the limit for owned public channels/supergroups/geogroups, and the user is given the choice to remove one of his channels/supergroups/geogroups.</p>
 								</div>
 								<dl class="tsd-comment-tags">
-									<dt>patam</dt>
-									<dd><p>check_limit - If set and the user has reached the limit of owned public channels/supergroups/geogroups, instead of returning the channel list one of the specified errors will be returned. Useful to check if a new public channel can indeed be created, even before asking the user to enter a channel username to use in channels.checkUsername/channels.updateUsername.</p>
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">getAdminedPublicChannels</span><span style="color: #000000">()</span>
+</code></pre>
 									</dd>
 								</dl>
 							</div>
@@ -689,10 +762,12 @@
 								</li>
 								<li>
 									<h5>check_limit: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = true</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>If set and the user has reached the limit of owned public channels/supergroups/geogroups, instead of returning the channel list one of the specified errors will be returned. Useful to check if a new public channel can indeed be created, even before asking the user to enter a channel username to use in channels.checkUsername/channels.updateUsername.</p>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultMessageChat.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultMessageChat</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>ClassResultMessageChat</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultMessageChat.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultMessageChat</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -700,19 +775,25 @@
 					<a name="getChannels" class="tsd-anchor"></a>
 					<h3>get<wbr>Channels</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Channels<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultMessageChat.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultMessageChat</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Channels<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultMessageChat.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultMessageChat</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L641">src/snake/tele.ts:641</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L746">snake/tele.ts:746</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Get info about channels/supergroups</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">getChannels</span><span style="color: #000000">([</span><span style="color: #098658">1234567890</span><span style="color: #000000">])</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -723,8 +804,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultMessageChat.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultMessageChat</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>ClassResultMessageChat</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultMessageChat.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultMessageChat</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -732,20 +812,25 @@
 					<a name="getFullChat" class="tsd-anchor"></a>
 					<h3>get<wbr>Full<wbr>Chat</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Full<wbr>Chat<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="Api.messages.ChatFull.html" class="tsd-signature-type" data-tsd-kind="Class">ChatFull</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Full<wbr>Chat<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ChatFull</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L656">src/snake/tele.ts:656</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L763">snake/tele.ts:763</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Get full info about a channel or chats
-									parameters :</p>
+									<p>Get full info about a channel or chats</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">getFullChat</span><span style="color: #000000">(</span><span style="color: #098658">1234567890</span><span style="color: #000000">)</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -756,8 +841,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="Api.messages.ChatFull.html" class="tsd-signature-type" data-tsd-kind="Class">ChatFull</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>gramjs messages.ChatFull</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ChatFull</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -765,22 +849,27 @@
 					<a name="getGroupsForDiscussion" class="tsd-anchor"></a>
 					<h3>get<wbr>Groups<wbr>For<wbr>Discussion</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Groups<wbr>For<wbr>Discussion<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultMessageChat.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultMessageChat</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Groups<wbr>For<wbr>Discussion<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultMessageChat.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultMessageChat</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L675">src/snake/tele.ts:675</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L785">snake/tele.ts:785</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Get all groups that can be used as discussion groups.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">getGroupsForDiscussion</span><span style="color: #000000">()</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultMessageChat.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultMessageChat</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>ClassResultMessageChat</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultMessageChat.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultMessageChat</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -788,21 +877,27 @@
 					<a name="getInactiveChannels" class="tsd-anchor"></a>
 					<h3>get<wbr>Inactive<wbr>Channels</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Inactive<wbr>Channels<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="Api.messages.InactiveChats.html" class="tsd-signature-type" data-tsd-kind="Class">InactiveChats</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Inactive<wbr>Channels<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">InactiveChats</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L685">src/snake/tele.ts:685</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L797">snake/tele.ts:797</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Get inactive channels and supergroups</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">getInactiveChannels</span><span style="color: #000000">()</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="Api.messages.InactiveChats.html" class="tsd-signature-type" data-tsd-kind="Class">InactiveChats</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">InactiveChats</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -810,30 +905,36 @@
 					<a name="getLeftChannels" class="tsd-anchor"></a>
 					<h3>get<wbr>Left<wbr>Channels</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Left<wbr>Channels<span class="tsd-signature-symbol">(</span>offset<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/Api.messages.html#TypeChats" class="tsd-signature-type" data-tsd-kind="Type alias">TypeChats</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Left<wbr>Channels<span class="tsd-signature-symbol">(</span>offset<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TypeChats</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L694">src/snake/tele.ts:694</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L808">snake/tele.ts:808</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Get a list of channels/supergroups we left.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">TelegramClient</span><span style="color: #000000">.</span><span style="color: #795E26">getLeftChannels</span><span style="color: #000000">()</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>offset: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> = 0</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Offset for pagination</p>
+										<p>Offset for pagination.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/Api.messages.html#TypeChats" class="tsd-signature-type" data-tsd-kind="Type alias">TypeChats</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TypeChats</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -841,19 +942,25 @@
 					<a name="getMessages" class="tsd-anchor"></a>
 					<h3>get<wbr>Messages</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Messages<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, message_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultGetMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultGetMessages</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Messages<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, message_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultGetMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultGetMessages</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L193">src/snake/tele.ts:193</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L233">snake/tele.ts:233</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Get chat/channel/supergroup messages.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">getMessages</span><span style="color: #000000">(</span><span style="color: #098658">123456789</span><span style="color: #000000">,[</span><span style="color: #098658">11</span><span style="color: #000000">])</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -864,14 +971,13 @@
 									</div>
 								</li>
 								<li>
-									<h5>message_id: <span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5>message_id: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>array of number message id.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultGetMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultGetMessages</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>ClassResultGetMessages</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultGetMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultGetMessages</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -879,19 +985,25 @@
 					<a name="getMessagesViews" class="tsd-anchor"></a>
 					<h3>get<wbr>Messages<wbr>Views</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Messages<wbr>Views<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, message_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, increment<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultGetMessagesViews.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultGetMessagesViews</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Messages<wbr>Views<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, message_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span>, increment<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultGetMessagesViews.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultGetMessagesViews</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L217">src/snake/tele.ts:217</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L265">snake/tele.ts:265</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Get and increase the view counter of a message sent or forwarded from a channel.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">getMessagesViews</span><span style="color: #000000">(</span><span style="color: #098658">1234567890</span><span style="color: #000000">,[</span><span style="color: #098658">11</span><span style="color: #000000">])</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -914,8 +1026,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultGetMessagesViews.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultGetMessagesViews</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>ClassResultGetMessagesViews</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultGetMessagesViews.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultGetMessagesViews</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -923,19 +1034,25 @@
 					<a name="getUserPhotos" class="tsd-anchor"></a>
 					<h3>get<wbr>User<wbr>Photos</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>User<wbr>Photos<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.getUserPhotosMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">getUserPhotosMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/Api.photos.html#TypePhotos" class="tsd-signature-type" data-tsd-kind="Type alias">TypePhotos</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>User<wbr>Photos<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.getUserPhotosMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">getUserPhotosMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TypePhotos</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L231">src/snake/tele.ts:231</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L289">snake/tele.ts:289</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Returns the list of user photos.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">getUserPhotos</span><span style="color: #000000">(</span><span style="color: #098658">1234567890</span><span style="color: #000000">)</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -948,11 +1065,11 @@
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> more: <a href="../interfaces/Interface.getUserPhotosMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">getUserPhotosMoreParams</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Interface.getUserPhotosMoreParams.</p>
+										<p>JSON object from <a href="../interfaces/Interface.getUserPhotosMoreParams.html">Interface.getUserPhotosMoreParams</a> which will be used to getUserPhotos.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/Api.photos.html#TypePhotos" class="tsd-signature-type" data-tsd-kind="Type alias">TypePhotos</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TypePhotos</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -960,40 +1077,48 @@
 					<a name="pinMessage" class="tsd-anchor"></a>
 					<h3>pin<wbr>Message</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">pin<wbr>Message<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, message_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.pinMessageMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">pinMessageMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultPinMessage.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultPinMessage</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">pin<wbr>Message<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, message_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.pinMessageMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">pinMessageMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultPinMessage.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultPinMessage</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L319">src/snake/tele.ts:319</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L389">snake/tele.ts:389</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>class pinMessage
-										Pin a message
-										parameters :
-										chat_id : chat or channel or groups id.
-										message_id : The message to pin or unpin
-										more : Interface.pinMessageMoreParams.
-										results :
-									ClassResultPinMessage</p>
+									<p>Pin a message</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">pinMessage</span><span style="color: #000000">(</span><span style="color: #098658">1234567890</span><span style="color: #000000">,</span><span style="color: #098658">11</span><span style="color: #000000">)</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>chat_id: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>chat or channel or groups id.</p>
+									</div>
 								</li>
 								<li>
 									<h5>message_id: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The message to pin or unpin</p>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> more: <a href="../interfaces/Interface.pinMessageMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">pinMessageMoreParams</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>JSON object from <a href="../interfaces/Interface.pinMessageMoreParams.html">Interface.pinMessageMoreParams</a> which will be used to pinMessage.</p>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultPinMessage.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultPinMessage</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultPinMessage.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultPinMessage</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1001,19 +1126,25 @@
 					<a name="readHistory" class="tsd-anchor"></a>
 					<h3>read<wbr>History</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">read<wbr>History<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.readHistoryMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">readHistoryMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">read<wbr>History<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.readHistoryMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">readHistoryMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L245">src/snake/tele.ts:245</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L306">snake/tele.ts:306</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Mark channel/supergroup history as read</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">readHistory</span><span style="color: #000000">(</span><span style="color: #098658">1234567890</span><span style="color: #000000">)</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -1026,12 +1157,11 @@
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> more: <a href="../interfaces/Interface.readHistoryMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">readHistoryMoreParams</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Interface.readHistoryMoreParams.</p>
+										<p>JSON object from {@linl Interface.readHistoryMoreParams} which will be used to readHistory.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>ClassResultAffectedMessages</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1039,19 +1169,25 @@
 					<a name="readMentions" class="tsd-anchor"></a>
 					<h3>read<wbr>Mentions</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">read<wbr>Mentions<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">read<wbr>Mentions<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L272">src/snake/tele.ts:272</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L336">snake/tele.ts:336</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Get unread messages where we were mentioned</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">readMentions</span><span style="color: #000000">(</span><span style="color: #098658">1234567890</span><span style="color: #000000">)</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -1062,8 +1198,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>ClassResultAffectedMessages</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1071,31 +1206,140 @@
 					<a name="readMessageContents" class="tsd-anchor"></a>
 					<h3>read<wbr>Message<wbr>Contents</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">read<wbr>Message<wbr>Contents<span class="tsd-signature-symbol">(</span>message_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">read<wbr>Message<wbr>Contents<span class="tsd-signature-symbol">(</span>message_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L286">src/snake/tele.ts:286</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L353">snake/tele.ts:353</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Mark channel/supergroup message contents as read</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">readMessageContents</span><span style="color: #000000">([</span><span style="color: #098658">11</span><span style="color: #000000">])</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>message_id: <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>array of message id</p>
+										<p>array of message id.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>ClassResultAffectedMessages</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="sendDocument" class="tsd-anchor"></a>
+					<h3>send<wbr>Document</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">send<wbr>Document<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, fileId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Document</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">MessageMediaDocument</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Buffer</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.sendMediaMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">sendMediaMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TypeUpdates</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L913">snake/tele.ts:913</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sending Document with fileId or PathFile or buffer or message.media</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">sendDocument</span><span style="color: #000000">(</span><span style="color: #098658">1234567890</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;./media/tgsnake.jpg&quot;</span><span style="color: #000000">)</span>
+</code></pre>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>chat_id: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Destination</p>
+									</div>
+								</li>
+								<li>
+									<h5>fileId: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Document</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">MessageMediaDocument</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Buffer</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Attached media</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> more: <a href="../interfaces/Interface.sendMediaMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">sendMediaMoreParams</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>JSON object from <a href="../interfaces/Interface.sendMediaMoreParams.html">Interface.sendMediaMoreParams</a> which will be used to sendDocument.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TypeUpdates</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="sendMedia" class="tsd-anchor"></a>
+					<h3>send<wbr>Media</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">send<wbr>Media<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, media<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TypeInputMedia</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.sendMediaMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">sendMediaMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TypeUpdates</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L831">snake/tele.ts:831</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sending Media.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #0000FF">let</span><span style="color: #000000"> </span><span style="color: #001080">toUpload</span><span style="color: #000000"> = </span><span style="color: #AF00DB">await</span><span style="color: #000000"> </span><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">uploadFile</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;./media/tgsnake.jpg&quot;</span><span style="color: #000000">)</span>
+<span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">sendMedia</span><span style="color: #000000">(</span>
+<span style="color: #000000"> </span><span style="color: #098658">1234567890</span><span style="color: #000000">,</span>
+<span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #001080">Api</span><span style="color: #000000">.</span><span style="color: #795E26">InputMediaUploadedPhoto</span><span style="color: #000000">({</span>
+<span style="color: #000000">   </span><span style="color: #001080">file :</span><span style="color: #000000"> </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #001080">Api</span><span style="color: #000000">.</span><span style="color: #795E26">InputFile</span><span style="color: #000000">({...</span><span style="color: #001080">toUpload</span><span style="color: #000000">!})</span>
+<span style="color: #000000"> })</span>
+<span style="color: #000000">)</span>
+</code></pre>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>chat_id: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>chat id</p>
+									</div>
+								</li>
+								<li>
+									<h5>media: <span class="tsd-signature-type">TypeInputMedia</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>media</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> more: <a href="../interfaces/Interface.sendMediaMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">sendMediaMoreParams</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>JSON object from <a href="../interfaces/Interface.sendMediaMoreParams.html">Interface.sendMediaMoreParams</a> which will be used to sendMedia.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TypeUpdates</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1103,19 +1347,25 @@
 					<a name="sendMessage" class="tsd-anchor"></a>
 					<h3>send<wbr>Message</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">send<wbr>Message<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.sendMessageMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">sendMessageMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultSendMessage.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultSendMessage</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">send<wbr>Message<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.sendMessageMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">sendMessageMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultSendMessage.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultSendMessage</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L72">src/snake/tele.ts:72</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L86">snake/tele.ts:86</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Sends a message to a chat.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">sendMessage</span><span style="color: #000000">(</span><span style="color: #098658">1234567890</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;Hello World!&quot;</span><span style="color: #000000">)</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -1134,12 +1384,103 @@
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> more: <a href="../interfaces/Interface.sendMessageMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">sendMessageMoreParams</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Interface.sendMessageMoreParams</p>
+										<p>JSON object from <a href="../interfaces/Interface.sendMessageMoreParams.html">Interface.sendMessageMoreParams</a> which will be used to sendMessage.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultSendMessage.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultSendMessage</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>ClassResultSendMessage</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultSendMessage.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultSendMessage</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="sendPhoto" class="tsd-anchor"></a>
+					<h3>send<wbr>Photo</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">send<wbr>Photo<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, fileId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">MessageMediaPhoto</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Buffer</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Photo</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.sendMediaMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">sendMediaMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TypeUpdates</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L877">snake/tele.ts:877</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sending Photo with fileId or PathFile or buffer or message.media</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">sendPhoto</span><span style="color: #000000">(</span><span style="color: #098658">1234567890</span><span style="color: #000000">,</span><span style="color: #A31515">&quot;./media/tgsnake.jpg&quot;</span><span style="color: #000000">)</span>
+</code></pre>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>chat_id: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Destination</p>
+									</div>
+								</li>
+								<li>
+									<h5>fileId: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">MessageMediaPhoto</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Buffer</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Photo</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Attached media</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> more: <a href="../interfaces/Interface.sendMediaMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">sendMediaMoreParams</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>JSON object from <a href="../interfaces/Interface.sendMediaMoreParams.html">Interface.sendMediaMoreParams</a> which will be used to sendPhoto.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TypeUpdates</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="sendSticker" class="tsd-anchor"></a>
+					<h3>send<wbr>Sticker</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">send<wbr>Sticker<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span>, fileId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Document</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">MessageMediaDocument</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Buffer</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L959">snake/tele.ts:959</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Sending sticker.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">sendSticker</span><span style="color: #000000">(</span><span style="color: #098658">1234567890</span><span style="color: #000000">,</span><span style="color: #001080">message</span><span style="color: #000000">.</span><span style="color: #001080">media</span><span style="color: #000000">.</span><span style="color: #001080">fileId</span><span style="color: #000000">)</span>
+</code></pre>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>chat_id: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>destination</p>
+									</div>
+								</li>
+								<li>
+									<h5>fileId: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Document</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">MessageMediaDocument</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Buffer</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>path/buffer/fileId to sending sticker.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1147,19 +1488,25 @@
 					<a name="unpinAllMessages" class="tsd-anchor"></a>
 					<h3>unpin<wbr>All<wbr>Messages</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">unpin<wbr>All<wbr>Messages<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">unpin<wbr>All<wbr>Messages<span class="tsd-signature-symbol">(</span>chat_id<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L300">src/snake/tele.ts:300</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L370">snake/tele.ts:370</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Unpin all pinned messages</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">unpinAllMessages</span><span style="color: #000000">(</span><span style="color: #098658">1234567890</span><span style="color: #000000">)</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -1170,8 +1517,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="generateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>ClassResultAffectedMessages</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="GenerateResult.ClassResultAffectedMessages.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultAffectedMessages</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1179,19 +1525,25 @@
 					<a name="uploadFile" class="tsd-anchor"></a>
 					<h3>upload<wbr>File</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">upload<wbr>File<span class="tsd-signature-symbol">(</span>file<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Buffer</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.uploadFileMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">uploadFileMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="generateResult.ClassResultUploadFile.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultUploadFile</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">upload<wbr>File<span class="tsd-signature-symbol">(</span>file<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Buffer</span>, more<span class="tsd-signature-symbol">?: </span><a href="../interfaces/Interface.uploadFileMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">uploadFileMoreParams</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="GenerateResult.ClassResultUploadFile.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultUploadFile</a><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/6365888/src/snake/tele.ts#L469">src/snake/tele.ts:469</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/tele.ts#L569">snake/tele.ts:569</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>upload file from url or buffer or file path</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>example</dt>
+									<dd><pre><code class="language-ts"><span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #001080">telegram</span><span style="color: #000000">.</span><span style="color: #795E26">uploadFile</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;./media/tgsnake.jpg&quot;</span><span style="color: #000000">)</span>
+</code></pre>
+									</dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -1204,12 +1556,11 @@
 								<li>
 									<h5><span class="tsd-flag ts-flagOptional">Optional</span> more: <a href="../interfaces/Interface.uploadFileMoreParams.html" class="tsd-signature-type" data-tsd-kind="Interface">uploadFileMoreParams</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>Interface.uploadFileMoreParams</p>
+										<p>JSON object from <a href="../interfaces/Interface.uploadFileMoreParams.html">Interface.uploadFileMoreParams</a> which will be used to uploadFile.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="generateResult.ClassResultUploadFile.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultUploadFile</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>ClassResultUploadFile</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="GenerateResult.ClassResultUploadFile.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultUploadFile</a><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -1318,7 +1669,19 @@
 								<a href="Telegram.html#readMessageContents" class="tsd-kind-icon">read<wbr>Message<wbr>Contents</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="Telegram.html#sendDocument" class="tsd-kind-icon">send<wbr>Document</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="Telegram.html#sendMedia" class="tsd-kind-icon">send<wbr>Media</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="Telegram.html#sendMessage" class="tsd-kind-icon">send<wbr>Message</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="Telegram.html#sendPhoto" class="tsd-kind-icon">send<wbr>Photo</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="Telegram.html#sendSticker" class="tsd-kind-icon">send<wbr>Sticker</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="Telegram.html#unpinAllMessages" class="tsd-kind-icon">unpin<wbr>All<wbr>Messages</a>
@@ -1330,12 +1693,15 @@
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-variable">
+						<a href="../modules.html#GramJs" class="tsd-kind-icon">Gram<wbr>Js</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
 	</div>
 </div>
-<footer class="with-border-bottom">
+<footer>
 	<div class="container">
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
@@ -1347,9 +1713,6 @@
 		</div>
 	</div>
 </footer>
-<div class="container tsd-generator">
-	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
-</div>
 <div class="overlay"></div>
 <script src="../assets/js/main.js"></script>
 </body>
