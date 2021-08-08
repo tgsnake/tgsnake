@@ -10,20 +10,23 @@ import { Telegram } from './tele';
 import { Shortcut } from './shortcut';
 import { Message } from './rewritejson';
 let event: any;
-let msg: any;
-let bots: any;
+let msg: Message;
+let bots: Shortcut;
+let nowPrefix:string
 /**
  * This class to filter new message text.
- * This class is beta!
  */
 export class Filters {
-  constructor(bot?: any) {
-    if (bot) {
+  constructor(bot?:Shortcut,prefix:string = "!/") {
+    if(prefix){
+      nowPrefix = prefix
+    }
+    if(bot){
       bots = bot;
       if (bot.event) {
         event = bot.event;
         if (bot.event.message) {
-          msg = new Message(bot.event);
+          msg = bot.message;
         }
       }
     }
@@ -52,7 +55,7 @@ export class Filters {
       }
       if (Array.isArray(command)) {
         let regex = new RegExp(
-          `(?<cmd>^[/!](${command.join('|').replace(/\s+/gim, '')})(\@${username})?)$`,
+          `(?<cmd>^[${nowPrefix}](${command.join('|').replace(/\s+/gim, '')})(\@${username})?)$`,
           ''
         );
         if (msg.text) {
@@ -65,7 +68,7 @@ export class Filters {
         }
       } else {
         let regex = new RegExp(
-          `(?<cmd>^[/!]${command.replace(/\s+/gim, '')}(\@${username})?)$`,
+          `(?<cmd>^[${nowPrefix}]${command.replace(/\s+/gim, '')}(\@${username})?)$`,
           ''
         );
         if (msg.text) {
