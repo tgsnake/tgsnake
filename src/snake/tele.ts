@@ -1000,7 +1000,7 @@ export class Telegram {
       if (decode) {
         if (decode.fileType == 'sticker') {
           let resultsSendSticker;
-          let accessHash = String(decode.access_hash);
+          let accessHash = Number(decode.access_hash);
           while (true) {
             let inputDocument = new Api.InputDocument({
               id: BigInt(decode.id),
@@ -1016,8 +1016,8 @@ export class Telegram {
               );
               break;
             } catch (e) {
-              if (!accessHash.startsWith('-')) {
-                accessHash = `-${accessHash}`;
+              if (!String(accessHash).startsWith('-')) {
+                accessHash = accessHash * -1;
               } else {
                 throw new Error(e.message);
                 break;
@@ -1048,5 +1048,18 @@ export class Telegram {
       let fileInfo = await FileType.fromFile(file);
       return fileInfo;
     }
+  }
+  /**
+   * Turns the given entity into a valid Telegram entity. 
+   * @param chat_id - The chatId which will getting entity. 
+   * @example 
+   * ```ts  
+   * ctx.telegram.getEntity("me")
+   * ```
+  */
+  async getEntity(chat_id:string|number){
+    return new reResults.ClassResultGetEntity(
+        await client.getEntity(chat_id)
+      )
   }
 }
