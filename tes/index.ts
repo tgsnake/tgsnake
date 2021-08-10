@@ -6,7 +6,7 @@
 // Tgsnake is a free software : you can redistribute it and/or modify
 // it under the terms of the MIT License as published.
 
-import {Snake,Filters,GenerateResult, Interface, Shortcut, GramJs,GenerateJson} from "../src"
+import {Snake,LegacyFilters,Filters,GenerateResult, Interface, Shortcut, GramJs,GenerateJson} from "../src"
 const {Api} = GramJs
 import fs from "fs"
 import {StoreSession,StringSession} from "telegram/sessions" 
@@ -14,18 +14,24 @@ import BigInt from "big-integer"
 import {decodeFileId} from "tg-file-id" 
 
 const bot = new Snake()
+const filter = new Filters()
 //bot.generateSession()
 bot.catchError((reason, promise)=>{
   console.log(reason.message)
 })
 bot.run()
-bot.onNewMessage(async (ctx:Shortcut,message)=>{
-  let {telegram} = bot
+bot.onNewMessage(async (ctx,message)=>{
+  filter.init(ctx)
+  //let entity = await ctx.telegram.getEntity(ctx.message.chat.id) 
+  //console.log(entity)
+  //console.log(decodeFileId("AQADBAADwawxGxMjtgcACDvytxsABAMAAxMjtgcABPqM9f80seQ8JbwHAAEeBA"))
+  /*let {telegram} = bot
   let tg = telegram 
-  let filter = new Filters(ctx)
+  let filter = new Filters(ctx) 
   let {cmd,hears} = filter
   tg.readHistory(message.chat.id)
   tg.readMentions(message.chat.id)
+  //console.log(message,JSON.stringify(message,null,2))
   cmd("snake",async () => {
     let msg = await ctx.reply("Hai, saya snake!")
   })
@@ -63,48 +69,11 @@ bot.onNewMessage(async (ctx:Shortcut,message)=>{
         ctx.respond(random[Math.floor(Math.random() * random.length)])
       }
     }
-  })
-  if(message.media){
-    console.log(message.media)
-    if(message.media.type){
-      if(message.media.type == "sticker"){
-        tg.sendSticker(message.chat.id,message.media.fileId)
-      }
-    }
-    //tg.sendMedia(message.chat.id,message.media)
-    /*console.log(message.media.document.accessHash,message.media.document.id)
-    let media = new GenerateJson.Media(message.media)
-    if(media.fileId){
-      ctx.reply(`File Id : \`${media.fileId}\``)
-      let decode = decodeFileId(media.fileId)
-      if(decode.fileType == "sticker"){
-        let accessHash = String(decode.access_hash) 
-        console.log(decode)
-        while(true){
-          console.log(accessHash)
-          let inputDocument = new Api.InputDocument({
-            id : BigInt(decode.id),
-            accessHash : BigInt(accessHash),
-            fileReference : Buffer.from(decode.fileReference,"hex")
-          })
-          try{
-            await tg.sendMedia(
-              message.chat.id,
-              new Api.InputMediaDocument({
-                id : inputDocument
-              })
-            )
-            break;
-          }catch(e){
-            if(!accessHash.startsWith("-")){
-              accessHash = `-${accessHash}`
-            }else{
-              throw new Error(e.message)
-              break;
-            }
-          }
-        }
-      }
-    }*/
-  }
+  })*/
+})
+filter.hears("!snake help",(ctx)=>{
+  ctx.reply("hears")
+})
+filter.cmd("snake",(ctx)=>{
+  ctx.reply("i am snake!")
 })

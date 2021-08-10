@@ -1,10 +1,10 @@
 {
   "name": "tgsnake",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Telegram MTProto framework base gram.js",
   "main": "./lib/index.js",
   "scripts": {
-    "dev": "nodemon ./tes/index.ts",
+    "dev": "ts-node ./tes/index.ts",
     "prepare": "echo \"🐍 Building snake package.\" && tsc",
     "build": "tsc",
     "build:docs": "typedoc",
@@ -36,7 +36,6 @@
   "devDependencies": {
     "@types/node": "^16.3.1",
     "dotenv": "^10.0.0",
-    "nodemon": "^2.0.7",
     "prettier": "^2.3.2",
     "ts-node": "^10.0.0",
     "typedoc": "^0.21.4",

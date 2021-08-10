@@ -11,6 +11,7 @@ import { Api, TelegramClient } from 'telegram';
 import { BigInteger } from 'big-integer';
 import { Telegram } from './tele';
 import { Shortcut } from './shortcut';
+import {Message} from "./rewritejson"
 // option and client
 export interface options {
   /**
@@ -128,73 +129,6 @@ export interface ctxEvent {
 }
 export interface catchError {
   (reason: any, promise: Promise<any>);
-}
-// event interface
-export interface Message {
-  /**
-   * unique id from telegram for message.
-   */
-  id: number;
-  /**
-   * info about chat
-   */
-  chat: Chat;
-  /**
-   * info about from (sender)
-   */
-  from: From;
-  /**
-   * message text
-   */
-  text?: string;
-  /**
-   * entities from message
-   */
-  entities?: Api.TypeMessageEntity;
-  /**
-   * if user reply message this will showing the message from replying message.
-   */
-  replyToMessageId?: number;
-  /**
-   * Date when message sending.
-   */
-  date: Date | number;
-  /**
-   * Document/photo/anything in here.
-   */
-  media?: any;
-}
-export interface Chat {
-  /** chatId */
-  id: number;
-  /** title of chat*/
-  title?: string;
-  /** first name*/
-  first_name?: string;
-  /** last name*/
-  last_name?: string;
-  /** username */
-  username?: string;
-  /** private chat*/
-  private?: boolean | string;
-}
-export interface From {
-  /** sender id*/
-  id: number;
-  /** sender first name*/
-  first_name?: string;
-  /** sender last name */
-  last_name?: string;
-  /** sender username*/
-  username?: string;
-  /** sender is deleted account */
-  deleted?: boolean;
-  /** sender is restricted */
-  restricted?: boolean;
-  /** sender language */
-  lang?: string;
-  /** sender lastseen*/
-  status?: string;
 }
 //shortcut interface
 export interface replyMoreParams {

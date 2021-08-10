@@ -19,7 +19,7 @@ import { Api } from 'telegram';
 import * as Interface from './interface';
 import fs from 'fs';
 
-let version = '1.0.0'; //change this version according to what is in package.json
+let version = '1.1.0'; //change this version according to what is in package.json
 
 let api_hash: string;
 let api_id: number;
@@ -31,9 +31,9 @@ let connectionRetries: number;
 let appVersion: string;
 let sessionName: string = 'tgsnake';
 let storeSession: boolean = false;
-function log(text: string) {
+function log(...args) {
   if (tgSnakeLog) {
-    console.log(text);
+    console.log(...args);
   }
 }
 function makeApiHash(length) {
@@ -219,8 +219,10 @@ export class Snake {
       await this._createClient();
     }
     if (this.client) {
-      this.client.addEventHandler((event: NewMessageEvent) => {
-        return next(new Shortcut(this.client!, event!), new Message(event!));
+      this.client.addEventHandler(async (event: NewMessageEvent) => {
+        let shortcut = new Shortcut()
+        await shortcut.init(this.client!, event!)
+        return next(shortcut,shortcut.message);
       }, new NewMessage({}));
     }
   }
@@ -325,8 +327,9 @@ export class Snake {
           });
           session = String(await this.client.session.save());
           console.log(`🐍 Your string session : ${session}`);
+          let me = await this.client.getMe() as Api.User
           await this.telegram.sendMessage(
-            'me',
+            me.id,
             `🐍 Your string session : <code>${session}</code>`,
             { parseMode: 'HTML' }
           );

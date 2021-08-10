@@ -12,12 +12,19 @@ import { Message } from './rewritejson';
 let event: any;
 let msg: Message;
 let bots: Shortcut;
-let nowPrefix:string
-/**
- * This class to filter new message text.
- */
-export class LegacyFilters {
-  constructor(bot?:Shortcut,prefix:string = "!/") {
+let nowPrefix:string 
+
+interface Handler {
+  type : "command" | "hears",
+  run : {(ctx:Shortcut,msg:Message,match:RegExpExecArray):void},
+  key : string | RegExp | string[]
+}
+type TypeCmd = string | string[] 
+type TypeHears = string | RegExp
+export class Filters {
+  private handler:Handler[] = []
+  constructor () {}
+  init(bot:Shortcut,prefix:string="!/"){
     if(prefix){
       nowPrefix = prefix
     }
@@ -28,25 +35,33 @@ export class LegacyFilters {
         if (bot.event.message) {
           msg = bot.message;
         }
+        if(this.handler.length !== 0){
+          return this.run(this.handler[0],0)
+        }
       }
     }
   }
-  /**
-   * handle new message (text) with specific text. <br/> 
-   * prefix : !/ <br/> 
-   * @param key - some key like array of text or text 
-   * @param next - a callbacm function when message match with key
-   * @example 
-   * ```ts 
-   * import {Filters} from "tgsnake" 
-   * // onNewMessage 
-   * const filter = new Filters(ctx) 
-   * filter.cmd("hi",(match)=>{
-      ctx.reply("Hi!")
-    })
-   * ```
-  */
-  async cmd(command: string | string[], next: { (math: RegExpExecArray): void }) {
+  /** @hidden */
+  private async run(something:Handler,index:number){
+    switch (something.type){
+      case "command" : 
+        if(
+          await this.execCmd((something.key) as TypeCmd,something.run)
+          ) return;
+        break; 
+      case "hears" : 
+        if(
+          await this.execHears((something.key) as TypeHears,something.run)
+          ) return;
+        break; 
+      default : 
+    }
+    if(this.handler[index +1]){
+      return this.run(this.handler[index + 1],index + 1)
+    }
+  }
+  /** @hidden */
+  private async execCmd(command: string | string[], next: {(ctx:Shortcut,msg:Message,match:RegExpExecArray) : void}) {
     if (event) {
       let me = await event.client.getMe();
       let username = '';
@@ -62,7 +77,7 @@ export class LegacyFilters {
           let spl = msg.text.split(' ')[0];
           let match = regex.exec(spl) as RegExpExecArray;
           if (match as RegExpExecArray) {
-            next(match);
+            next(bots,msg,match);
             return true;
           }
         }
@@ -75,7 +90,7 @@ export class LegacyFilters {
           let spl = msg.text.split(' ')[0];
           let match = regex.exec(spl) as RegExpExecArray;
           if (match as RegExpExecArray) {
-            next(match);
+            next(bots,msg,match);
             return true;
           }
         }
@@ -83,30 +98,14 @@ export class LegacyFilters {
     }
     return false;
   }
-  /**
-   * handle new message (text) with specific text.
-   * @param key - some key like regex or string. 
-   * @param next - a callbacm function when message match with key.
-   * @example 
-   * ```ts 
-   * import {Filters} from "tgsnake" 
-   * // onNewMessage 
-   * const filter = new Filters(ctx) 
-   * filter.hears("hi",(match)=>{
-      ctx.reply("Hi!")
-    })
-     filter.hears(/hello/i,(match)=>{
-       ctx.reply("Oh Hi!")
-     })
-   * ```
-  */
-  async hears(key: string | RegExp, next: { (math: RegExpExecArray): void }) {
+  /** @hidden */
+  private async execHears(key: string | RegExp, next: {(ctx:Shortcut,msg:Message,match:RegExpExecArray) : void}) {
     if (event) {
       if (key instanceof RegExp) {
         if (msg) {
           if (msg.text) {
             if (key.exec(msg.text)) {
-              next(key.exec(msg.text) as RegExpExecArray);
+              next(bots,msg,key.exec(msg.text) as RegExpExecArray);
               return true;
             }
           }
@@ -116,7 +115,7 @@ export class LegacyFilters {
         if (msg) {
           if (msg.text) {
             if (regex.exec(msg.text)) {
-              next(regex.exec(msg.text) as RegExpExecArray);
+              next(bots,msg,regex.exec(msg.text) as RegExpExecArray);
               return true;
             }
           }
@@ -124,5 +123,21 @@ export class LegacyFilters {
       }
     }
     return false;
+  }
+  cmd(command: string | string[], next: {(ctx:Shortcut,msg:Message,match:RegExpExecArray) : void}){
+    this.handler.push({
+      type : "command",
+      run : next,
+      key : command!
+    })
+    return true
+  }
+  hears(key: string | RegExp, next: {(ctx:Shortcut,msg:Message,match:RegExpExecArray) : void}){
+    this.handler.push({
+      type : "hears",
+      run : next,
+      key : key!
+    })
+    return true
   }
 }

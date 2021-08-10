@@ -18,10 +18,18 @@ export { Snake } from './snake/client';
  * Helpers modules to filters text.
  * @example
  * ```ts
+ * import {LegacyFilters} from "tgsnake"
+ * ```
+ */
+export { LegacyFilters } from './snake/filters';
+/**
+ * Helpers modules to filters(2.0) text.
+ * @example
+ * ```ts
  * import {Filters} from "tgsnake"
  * ```
  */
-export { Filters } from './snake/filters';
+export { Filters } from './snake/filterstwo';
 /**
  * Create Shortcut or ctx.
  * @example

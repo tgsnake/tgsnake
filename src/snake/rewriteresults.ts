@@ -8,7 +8,8 @@
 
 import * as Interface from './interface';
 import { Api } from 'telegram';
-import BigInt, { BigInteger } from 'big-integer';
+import BigInt, { BigInteger } from 'big-integer'; 
+import * as media from "./media"
 export class ClassResultSendMessage {
   /**
    * Message Id where message successfully sent.
@@ -826,6 +827,9 @@ export class ClassResultGetEntity {
   hasGeo?: boolean; 
   slowmodeEnabled?: boolean; 
   gigagroup?: boolean;
+  restrictionReason?: RestrictionReason[]; 
+  dcId?:number;
+  photo?:ChatPhoto;
   constructor(resultsGetEntity:Api.User|Api.Chat|Api.Channel){
     if(resultsGetEntity instanceof Api.User){
       resultsGetEntity as Api.User 
@@ -866,15 +870,28 @@ export class ClassResultGetEntity {
             this.status = "recently"
             break;
           case "UserStatusLastWeek" : 
-            this.status = "withinAWeek"
+            this.status = "withinWeek"
             break;
           case "UserStatusLastMonth": 
-            this.status = "withinAMonth" 
+            this.status = "withinMonth" 
             break; 
           default : 
             this.status = "longTimeAgo"
         }
       }
+      if(resultsGetEntity.restrictionReason){
+        let temp:RestrictionReason[] = [] 
+        for(let i = 0; i < resultsGetEntity.restrictionReason.length; i++){
+          temp.push(
+              new RestrictionReason(resultsGetEntity.restrictionReason[i])
+            )
+        }
+        this.restrictionReason = temp
+      }
+      /*if((resultsGetEntity.photo) instanceof Api.UserProfilePhoto){
+        (resultsGetEntity.photo) as Api.UserProfilePhoto
+        this.photo = new ChatPhoto(resultsGetEntity.photo!,this)
+      }*/
     } 
     if(resultsGetEntity instanceof Api.Chat){
       resultsGetEntity as Api.Chat 
@@ -898,6 +915,10 @@ export class ClassResultGetEntity {
       if((resultsGetEntity.defaultBannedRights) instanceof Api.ChatBannedRights){
         this.defaultBannedRights = new BannedRights(resultsGetEntity.defaultBannedRights)
       }
+      /*if((resultsGetEntity.photo) instanceof Api.ChatPhoto){
+        (resultsGetEntity.photo) as Api.ChatPhoto
+        this.photo = new ChatPhoto(resultsGetEntity.photo!,this)
+      }*/
     }
     if(resultsGetEntity instanceof Api.Channel){
       resultsGetEntity as Api.Channel 
@@ -932,6 +953,19 @@ export class ClassResultGetEntity {
         this.defaultBannedRights = new BannedRights(resultsGetEntity.defaultBannedRights)
       }
       this.participantsCount = resultsGetEntity.participantsCount!
+      if(resultsGetEntity.restrictionReason){
+        let temp:RestrictionReason[] = [] 
+        for(let i = 0; i < resultsGetEntity.restrictionReason.length; i++){
+          temp.push(
+              new RestrictionReason(resultsGetEntity.restrictionReason[i])
+            )
+        }
+        this.restrictionReason = temp
+      }
+      /*if((resultsGetEntity.photo) instanceof Api.ChatPhoto){
+        (resultsGetEntity.photo) as Api.ChatPhoto
+        this.photo = new ChatPhoto(resultsGetEntity.photo!,this)
+      }*/
     }
   }
 }
@@ -997,5 +1031,40 @@ class BannedRights {
     this.inviteUsers = bannedRights.inviteUsers
     this.pinMessages = bannedRights.pinMessages
     this.untilDate = bannedRights.untilDate
+  }
+}
+class RestrictionReason {
+  platform!:string; 
+  text!:string; 
+  reason!:string; 
+  constructor(restrictionReason:Api.RestrictionReason){
+    this.platform = restrictionReason.platform 
+    this.text = restrictionReason.text 
+    this.reason = restrictionReason.reason
+  }
+}
+class ChatPhoto {
+  fileId!:string; 
+  uniqueFileId!:string;
+  isBig:boolean = true;
+  constructor(photo:Api.ChatPhoto|Api.UserProfilePhoto,resultsGetEntity:ClassResultGetEntity){
+    let file = media.generateFileId({
+      fileType : "profile_photo",
+      typeId : media.typeId.CHAT_PHOTO,
+      version : 4,
+      subVersion : 30,
+      dcId : photo.dcId,
+      id: photo.photoId,
+      accessHash : BigInt(0),
+      photoSizeSource : "dialogPhoto",
+      dialogId : resultsGetEntity.id,
+      isSmallDialogPhoto : false,
+      photoSizeSourceId : media.thumbTypeId.CHAT_PHOTO_BIG,
+      dialogAccessHash : resultsGetEntity.accessHash!,
+      volumeId : 0,
+      localId : 0
+    })
+    this.fileId = file.fileId
+    this.uniqueFileId = file.uniqueFileId
   }
 }
