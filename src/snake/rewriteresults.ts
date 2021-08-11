@@ -8,7 +8,7 @@
 
 import * as Interface from './interface';
 import { Api } from 'telegram';
-import BigInt, { BigInteger } from 'big-integer'; 
+import { BigInteger } from 'big-integer'; 
 import * as media from "./media"
 export class ClassResultSendMessage {
   /**
@@ -888,10 +888,11 @@ export class ClassResultGetEntity {
         }
         this.restrictionReason = temp
       }
-      /*if((resultsGetEntity.photo) instanceof Api.UserProfilePhoto){
+      if((resultsGetEntity.photo) instanceof Api.UserProfilePhoto){
         (resultsGetEntity.photo) as Api.UserProfilePhoto
         this.photo = new ChatPhoto(resultsGetEntity.photo!,this)
-      }*/
+        this.dcId = resultsGetEntity.photo.dcId
+      }
     } 
     if(resultsGetEntity instanceof Api.Chat){
       resultsGetEntity as Api.Chat 
@@ -915,10 +916,11 @@ export class ClassResultGetEntity {
       if((resultsGetEntity.defaultBannedRights) instanceof Api.ChatBannedRights){
         this.defaultBannedRights = new BannedRights(resultsGetEntity.defaultBannedRights)
       }
-      /*if((resultsGetEntity.photo) instanceof Api.ChatPhoto){
+      if((resultsGetEntity.photo) instanceof Api.ChatPhoto){
         (resultsGetEntity.photo) as Api.ChatPhoto
         this.photo = new ChatPhoto(resultsGetEntity.photo!,this)
-      }*/
+        this.dcId = resultsGetEntity.photo.dcId
+      }
     }
     if(resultsGetEntity instanceof Api.Channel){
       resultsGetEntity as Api.Channel 
@@ -962,14 +964,15 @@ export class ClassResultGetEntity {
         }
         this.restrictionReason = temp
       }
-      /*if((resultsGetEntity.photo) instanceof Api.ChatPhoto){
+      if((resultsGetEntity.photo) instanceof Api.ChatPhoto){
         (resultsGetEntity.photo) as Api.ChatPhoto
         this.photo = new ChatPhoto(resultsGetEntity.photo!,this)
-      }*/
+        this.dcId = resultsGetEntity.photo.dcId
+      }
     }
   }
 }
-class MigrateTo {
+export class MigrateTo {
   id!:number; 
   accessHash!:BigInteger; 
   constructor(migratedTo:Api.InputChannel){
@@ -977,7 +980,7 @@ class MigrateTo {
     this.accessHash = migratedTo.accessHash
   }
 }
-class AdminRights {
+export class AdminRights {
   changeInfo?: boolean; 
   postMessages?: boolean; 
   editMessages?: boolean; 
@@ -1003,7 +1006,7 @@ class AdminRights {
     this.other = adminRights.other
   }
 }
-class BannedRights {
+export class BannedRights {
   viewMessages?: boolean; 
   sendMessages?: boolean; 
   sendMedia?: boolean; 
@@ -1033,7 +1036,7 @@ class BannedRights {
     this.untilDate = bannedRights.untilDate
   }
 }
-class RestrictionReason {
+export class RestrictionReason {
   platform!:string; 
   text!:string; 
   reason!:string; 
@@ -1043,7 +1046,7 @@ class RestrictionReason {
     this.reason = restrictionReason.reason
   }
 }
-class ChatPhoto {
+export class ChatPhoto {
   fileId!:string; 
   uniqueFileId!:string;
   isBig:boolean = true;
@@ -1061,8 +1064,7 @@ class ChatPhoto {
       isSmallDialogPhoto : false,
       photoSizeSourceId : media.thumbTypeId.CHAT_PHOTO_BIG,
       dialogAccessHash : resultsGetEntity.accessHash!,
-      volumeId : 0,
-      localId : 0
+      volumeId : BigInt(1)
     })
     this.fileId = file.fileId
     this.uniqueFileId = file.uniqueFileId

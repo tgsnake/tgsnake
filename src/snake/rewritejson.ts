@@ -64,6 +64,12 @@ class Chat {
   lastName?: string;
   username?: string;
   private?: boolean;
+  photo?:GenerateResult.ChatPhoto
+  defaultBannedRights?:GenerateResult.BannedRights
+  participantsCount?:number 
+  dcId?:number 
+  fake:boolean = false 
+  scam:boolean = false
   constructor() {} 
   /**
    * @hidden
@@ -101,6 +107,24 @@ class Chat {
     if(entity.title){
       this.title = entity.title!
     }
+    if(entity.photo){
+      this.photo = entity.photo!
+    }
+    if(entity.defaultBannedRights){
+      this.defaultBannedRights = entity.defaultBannedRights
+    }
+    if(entity.participantsCount){
+      this.participantsCount = entity.participantsCount
+    }
+    if(entity.dcId){
+      this.dcId = entity.dcId
+    }
+    if(entity.fake){
+      this.fake = entity.fake
+    }
+    if(entity.scam){
+      this.scam = entity.scam
+    }
     this.private = Boolean(entity.type == "user")
     return 
   }
@@ -111,6 +135,16 @@ class From {
   lastName?: string;
   username?: string;
   status?: string;
+  self?:boolean
+  deleted?:boolean
+  fake?:boolean
+  scam?:boolean
+  bot?:boolean
+  verified?:boolean
+  restricted?:boolean 
+  dcId?:number 
+  photo?:GenerateResult.ChatPhoto
+  restrictionReason?:GenerateResult.RestrictionReason[]
   constructor() {}
   async _fill(event:NewMessageEvent){
     if(event.message){
@@ -125,6 +159,22 @@ class From {
     this.firstName = entity.firstName 
     this.lastName = entity.lastName
     this.status = entity.status
+    this.self = entity.self 
+    this.deleted = entity.deleted 
+    this.fake = entity.fake 
+    this.scam = entity.scam 
+    this.bot = entity.bot 
+    this.verified = entity.verified 
+    this.restricted = entity.restricted 
+    if(entity.dcId){
+      this.dcId = entity.dcId
+    }
+    if(entity.photo){
+      this.photo = entity.photo
+    }
+    if(entity.restrictionReason){
+      this.restrictionReason = entity.restrictionReason
+    }
     return 
   }
 }
