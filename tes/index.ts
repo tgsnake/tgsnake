@@ -27,7 +27,7 @@ bot.onNewMessage(async (ctx,message)=>{
   console.log(message)
   //let entity = await ctx.telegram.getEntity(ctx.message.chat.id) 
   //console.log(entity)
-  console.log(decodeFileId(String(message.from.photo?.fileId)))
+  //console.log(decodeFileId(String(message.from.photo?.fileId)))
 })
 filter.cmd("snake",async (ctx,message) => {
   let msg = await ctx.reply("Hai, saya snake!")

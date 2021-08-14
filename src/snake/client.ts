@@ -87,21 +87,21 @@ export class Snake {
         logger = options.logger;
         delete options.logger;
       }
-      if (options.api_hash) {
-        api_hash = String(options.api_hash);
-        delete options.api_hash;
+      if (options.apiHash) {
+        api_hash = String(options.apiHash);
+        delete options.apiHash;
       }
-      if (options.api_id) {
-        api_id = Number(options.api_id);
-        delete options.api_id;
+      if (options.apiId) {
+        api_id = Number(options.apiId);
+        delete options.apiId;
       }
       if (options.session) {
         session = options.session;
         delete options.session;
       }
-      if (options.bot_token) {
-        bot_token = options.bot_token;
-        delete options.bot_token;
+      if (options.botToken) {
+        bot_token = options.botToken;
+        delete options.botToken;
       }
       if (options.connectionRetries) {
         connectionRetries = options.connectionRetries;
@@ -196,13 +196,29 @@ export class Snake {
     });
     log(`🐍 Welcome To TGSNAKE ${version}.`);
     log(`🐍 Setting Logger level to "${logger}"`);
+    if(bot_token){
+      if(session == ""){
+        storeSession = false
+      }
+    }
     if (!this.client) {
       await this._createClient();
     }
     this.telegram = new Telegram(this.client);
-    await this.client.connect();
-    await this.client.getMe().catch((e: any) => {});
-    return log('🐍 Running..');
+    if(bot_token){
+      if(session == ""){
+        await this.client.start({
+          botAuthToken : bot_token
+        })
+      }else{
+        await this.client.connect();
+      }
+    }else{
+      await this.client.connect();
+    }
+    let me = await this.telegram.getEntity("me");
+    let name = me.lastName ? me.firstName + " " + me.lastName + " ["+ me.id +"]" : me.firstName + " ["+ me.id +"]"
+    return log('🐍 Connected as ',name);
   }
   /**
    * @param next - a callback function to handle new message.

@@ -90,42 +90,44 @@ class Chat {
     if(event.message){
       if((event.message.peerId) instanceof Api.PeerChannel){
         (event.message.peerId) as Api.PeerChannel 
-        this.id = event.message.peerId.channelId
+        this.id = Number(`-100${event.message.peerId.channelId}`)
       }
     }
-    let tg = new Telegram(event.client!)
-    let entity = await tg.getEntity(this.id) 
-    if(entity.username){
-      this.username = entity.username!
+    if(this.id){
+      let tg = new Telegram(event.client!)
+      let entity = await tg.getEntity(this.id) 
+      if(entity.username){
+        this.username = entity.username!
+      }
+      if(entity.firstName){
+        this.firstName = entity.firstName!
+      }
+      if(entity.lastName){
+        this.lastName = entity.lastName!
+      }
+      if(entity.title){
+        this.title = entity.title!
+      }
+      if(entity.photo){
+        this.photo = entity.photo!
+      }
+      if(entity.defaultBannedRights){
+        this.defaultBannedRights = entity.defaultBannedRights
+      }
+      if(entity.participantsCount){
+        this.participantsCount = entity.participantsCount
+      }
+      if(entity.dcId){
+        this.dcId = entity.dcId
+      }
+      if(entity.fake){
+        this.fake = entity.fake
+      }
+      if(entity.scam){
+        this.scam = entity.scam
+      }
+      this.private = Boolean(entity.type == "user")
     }
-    if(entity.firstName){
-      this.firstName = entity.firstName!
-    }
-    if(entity.lastName){
-      this.lastName = entity.lastName!
-    }
-    if(entity.title){
-      this.title = entity.title!
-    }
-    if(entity.photo){
-      this.photo = entity.photo!
-    }
-    if(entity.defaultBannedRights){
-      this.defaultBannedRights = entity.defaultBannedRights
-    }
-    if(entity.participantsCount){
-      this.participantsCount = entity.participantsCount
-    }
-    if(entity.dcId){
-      this.dcId = entity.dcId
-    }
-    if(entity.fake){
-      this.fake = entity.fake
-    }
-    if(entity.scam){
-      this.scam = entity.scam
-    }
-    this.private = Boolean(entity.type == "user")
     return 
   }
 }
@@ -151,29 +153,42 @@ class From {
       if((event.message.fromId) instanceof Api.PeerUser){
         (event.message.fromId) as Api.PeerUser 
         this.id = event.message.fromId.userId
+      }else{
+        if(event.message.senderId){
+          this.id = event.message.senderId
+        }else{
+          if(event.message.peerId){
+            if((event.message.peerId) instanceof Api.PeerUser){
+              (event.message.peerId) as Api.PeerUser 
+              this.id = event.message.peerId.userId
+            }
+          }
+        }
       }
     }
-    let tg = new Telegram(event.client!) 
-    let entity = await tg.getEntity(this.id)
-    this.username = entity.username 
-    this.firstName = entity.firstName 
-    this.lastName = entity.lastName
-    this.status = entity.status
-    this.self = entity.self 
-    this.deleted = entity.deleted 
-    this.fake = entity.fake 
-    this.scam = entity.scam 
-    this.bot = entity.bot 
-    this.verified = entity.verified 
-    this.restricted = entity.restricted 
-    if(entity.dcId){
-      this.dcId = entity.dcId
-    }
-    if(entity.photo){
-      this.photo = entity.photo
-    }
-    if(entity.restrictionReason){
-      this.restrictionReason = entity.restrictionReason
+    if(this.id){
+      let tg = new Telegram(event.client!) 
+      let entity = await tg.getEntity(this.id)
+      this.username = entity.username 
+      this.firstName = entity.firstName 
+      this.lastName = entity.lastName
+      this.status = entity.status
+      this.self = entity.self 
+      this.deleted = entity.deleted 
+      this.fake = entity.fake 
+      this.scam = entity.scam 
+      this.bot = entity.bot 
+      this.verified = entity.verified 
+      this.restricted = entity.restricted 
+      if(entity.dcId){
+        this.dcId = entity.dcId
+      }
+      if(entity.photo){
+        this.photo = entity.photo
+      }
+      if(entity.restrictionReason){
+        this.restrictionReason = entity.restrictionReason
+      }
     }
     return 
   }
