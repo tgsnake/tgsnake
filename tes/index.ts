@@ -21,10 +21,10 @@ bot.catchError((reason, promise)=>{
 })
 bot.run()
 bot.onNewMessage(async (ctx,message)=>{
-  ctx.telegram.readHistory(message.chat.id)
-  ctx.telegram.readMentions(message.chat.id)
+  //ctx.telegram.readHistory(message.chat.id)
+  //ctx.telegram.readMentions(message.chat.id)
   filter.init(ctx)
-  console.log(message)
+  //console.log(message)
   //let entity = await ctx.telegram.getEntity(ctx.message.chat.id) 
   //console.log(entity)
   //console.log(decodeFileId(String(message.from.photo?.fileId)))

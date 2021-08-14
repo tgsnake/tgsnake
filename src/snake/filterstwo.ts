@@ -36,93 +36,74 @@ export class Filters {
           msg = bot.message;
         }
         if(this.handler.length !== 0){
-          return this.run(this.handler[0],0)
+          return this.run()
         }
       }
     }
   }
   /** @hidden */
-  private async run(something:Handler,index:number){
-    switch (something.type){
-      case "command" : 
-        if(
-          await this.execCmd((something.key) as TypeCmd,something.run)
-          ) return;
-        break; 
-      case "hears" : 
-        if(
-          await this.execHears((something.key) as TypeHears,something.run)
-          ) return;
-        break; 
-      default : 
-    }
-    if(this.handler[index +1]){
-      return this.run(this.handler[index + 1],index + 1)
-    }
-  }
-  /** @hidden */
-  private async execCmd(command: string | string[], next: {(ctx:Shortcut,msg:Message,match:RegExpExecArray) : void}) {
-    if (event) {
-      let me = await event.client.getMe();
-      let username = '';
-      if (me.username) {
-        username = me.username;
-      }
-      if (Array.isArray(command)) {
-        let regex = new RegExp(
-          `(?<cmd>^[${nowPrefix}](${command.join('|').replace(/\s+/gim, '')})(\@${username})?)$`,
-          ''
-        );
-        if (msg.text) {
-          let spl = msg.text.split(' ')[0];
-          let match = regex.exec(spl) as RegExpExecArray;
-          if (match as RegExpExecArray) {
-            next(bots,msg,match);
-            return true;
+  private async run (){
+    this.handler.forEach(async (item,index)=>{
+      let next:{(ctx:Shortcut,msg:Message,match:RegExpExecArray):void} = item.run
+      switch (item.type){
+        case "command" : 
+          let command = (item.key) as TypeCmd
+          let me = await event.client.getMe();
+          let username = '';
+          if (me.username) {
+            username = me.username;
           }
-        }
-      } else {
-        let regex = new RegExp(
-          `(?<cmd>^[${nowPrefix}]${command.replace(/\s+/gim, '')}(\@${username})?)$`,
-          ''
-        );
-        if (msg.text) {
-          let spl = msg.text.split(' ')[0];
-          let match = regex.exec(spl) as RegExpExecArray;
-          if (match as RegExpExecArray) {
-            next(bots,msg,match);
-            return true;
-          }
-        }
-      }
-    }
-    return false;
-  }
-  /** @hidden */
-  private async execHears(key: string | RegExp, next: {(ctx:Shortcut,msg:Message,match:RegExpExecArray) : void}) {
-    if (event) {
-      if (key instanceof RegExp) {
-        if (msg) {
-          if (msg.text) {
-            if (key.exec(msg.text)) {
-              next(bots,msg,key.exec(msg.text) as RegExpExecArray);
-              return true;
+          if (Array.isArray(command)) {
+            let regex = new RegExp(
+              `(?<cmd>^[${nowPrefix}](${command.join('|').replace(/\s+/gim, '')})(\@${username})?)$`,
+              ''
+            );
+            if (msg.text) {
+              let spl = msg.text.split(' ')[0];
+              let match = regex.exec(spl) as RegExpExecArray;
+              if (match as RegExpExecArray) {
+                next(bots,msg,match);
+                return true;
+              }
+            }
+          } else {
+            let regex = new RegExp(
+              `(?<cmd>^[${nowPrefix}]${command.replace(/\s+/gim, '')}(\@${username})?)$`,
+              ''
+            );
+            if (msg.text) {
+              let spl = msg.text.split(' ')[0];
+              let match = regex.exec(spl) as RegExpExecArray;
+              if (match as RegExpExecArray) {
+                return next(bots,msg,match);
+              }
             }
           }
-        }
-      } else {
-        let regex = new RegExp(key, '');
-        if (msg) {
-          if (msg.text) {
-            if (regex.exec(msg.text)) {
-              next(bots,msg,regex.exec(msg.text) as RegExpExecArray);
-              return true;
+          break; 
+        case "hears" : 
+          let key = (item.key) as TypeHears
+          if (key instanceof RegExp) {
+            if (msg) {
+              if (msg.text) {
+                if (key.exec(msg.text)) {
+                  return next(bots,msg,key.exec(msg.text) as RegExpExecArray);
+                }
+              }
+            }
+          } else {
+            let regex = new RegExp(key, '');
+            if (msg) {
+              if (msg.text) {
+                if (regex.exec(msg.text)) {
+                  return next(bots,msg,regex.exec(msg.text) as RegExpExecArray);
+                }
+              }
             }
           }
-        }
+          break; 
+        default : 
       }
-    }
-    return false;
+    })
   }
   cmd(command: string | string[], next: {(ctx:Shortcut,msg:Message,match:RegExpExecArray) : void}){
     this.handler.push({
