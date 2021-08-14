@@ -33,7 +33,7 @@ export interface options {
   /**
    * Bot Token from botFather. If you need to login as bot this required
    */
-  bot_token?: string;
+  botToken?: string;
   /**
    * tgsnake console.log
    * If set, tgsnake will showing the message in console like welcome to tgsnake or anything.
@@ -168,6 +168,34 @@ export interface replyMoreParams {
    * parse mode
    */
   parseMode?: string;
+} 
+/**
+ * Hide sent bot keyboard
+*/
+export interface keyboardHide { 
+  /**
+   * Use this flag if you want to remove the keyboard for specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.<br/>
+   * Example: A user votes in a poll, bot returns confirmation message in reply to the vote and removes the keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet
+  */
+  selective?:boolean 
+}
+/**
+ * Force the user to send a reply
+*/
+export interface forceReply {
+  /**
+   * Requests clients to hide the keyboard as soon as it's been used. The keyboard will still be available, but clients will automatically display the usual letter-keyboard in the chat – the user can press a special button in the input field to see the custom keyboard again.
+  */
+  singleUse?: boolean; 
+  /**
+   * Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message. <br/>
+   * Example: A user requests to change the bot‘s language, bot replies to the request with a keyboard to select the new language. Other users in the group don’t see the keyboard.
+  */
+  selective?: boolean;
+}
+export interface replyMarkup {
+  forceReply?:boolean|forceReply; 
+  removeKeyboard?:boolean|keyboardHide;
 }
 //method interface
 interface onProgress {
