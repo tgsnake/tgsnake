@@ -21,11 +21,11 @@ export interface options {
   /**
    * An api_hash got from my.telegram.org
    */
-  api_hash?: string;
+  apiHash?: string;
   /**
    * An api_id got from my.telegram.org
    */
-  api_id?: number;
+  apiId?: number;
   /**
    * String sessions
    */
