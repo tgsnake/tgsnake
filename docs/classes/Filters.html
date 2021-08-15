@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Filters | tgsnake - v1.0.0</title>
-	<meta name="description" content="Documentation for tgsnake - v1.0.0">
+	<title>Filters | tgsnake - v1.1.0</title>
+	<meta name="description" content="Documentation for tgsnake - v1.1.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<script async src="../assets/js/search.js" id="search-script"></script>
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">tgsnake - v1.0.0</a>
+					<a href="../index.html" class="title">tgsnake - v1.1.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -52,7 +52,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../modules.html">tgsnake - v1.0.0</a>
+					<a href="../modules.html">tgsnake - v1.1.0</a>
 				</li>
 				<li>
 					<a href="Filters.html">Filters</a>
@@ -68,7 +68,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Helpers modules to filters text.</p>
+						<p>Helpers modules to filters(2.0) text.</p>
 					</div>
 					<dl class="tsd-comment-tags">
 						<dt>example</dt>
@@ -96,11 +96,18 @@
 								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="Filters.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
+						<section class="tsd-index-section tsd-is-private tsd-is-private-protected">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="Filters.html#handler" class="tsd-kind-icon">handler</a></li>
+							</ul>
+						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Filters.html#cmd" class="tsd-kind-icon">cmd</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Filters.html#hears" class="tsd-kind-icon">hears</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Filters.html#init" class="tsd-kind-icon">init</a></li>
 							</ul>
 						</section>
 					</div>
@@ -112,24 +119,31 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Filters<span class="tsd-signature-symbol">(</span>bot<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Filters.html" class="tsd-signature-type" data-tsd-kind="Class">Filters</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Filters<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Filters.html" class="tsd-signature-type" data-tsd-kind="Class">Filters</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/filters.ts#L20">snake/filters.ts:20</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/8354c24/src/snake/filterstwo.ts#L26">snake/filterstwo.ts:26</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> bot: <span class="tsd-signature-type">any</span></h5>
-								</li>
-							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="Filters.html" class="tsd-signature-type" data-tsd-kind="Class">Filters</a></h4>
 						</li>
 					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private">
+					<a name="handler" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagPrivate">Private</span> handler</h3>
+					<div class="tsd-signature tsd-kind-icon">handler<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Handler</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> = []</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/8354c24/src/snake/filterstwo.ts#L25">snake/filterstwo.ts:25</a></li>
+						</ul>
+					</aside>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
@@ -138,53 +152,39 @@
 					<a name="cmd" class="tsd-anchor"></a>
 					<h3>cmd</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">cmd<span class="tsd-signature-symbol">(</span>command<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>math<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RegExpExecArray</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">cmd<span class="tsd-signature-symbol">(</span>command<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>ctx<span class="tsd-signature-symbol">: </span><a href="Shortcut.html" class="tsd-signature-type" data-tsd-kind="Class">Shortcut</a>, msg<span class="tsd-signature-symbol">: </span><a href="GenerateJson.Message.html" class="tsd-signature-type" data-tsd-kind="Class">Message</a>, match<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RegExpExecArray</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/filters.ts#L46">snake/filters.ts:46</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/8354c24/src/snake/filterstwo.ts#L108">snake/filterstwo.ts:108</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>handle new message (text) with specific text. <br/>
-									prefix : !/ <br/></p>
-								</div>
-								<dl class="tsd-comment-tags">
-									<dt>example</dt>
-									<dd><pre><code class="language-ts"><span style="color: #AF00DB">import</span><span style="color: #000000"> {</span><span style="color: #001080">Filters</span><span style="color: #000000">} </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;tgsnake&quot;</span><span style="color: #000000"> </span>
-<span style="color: #008000">// onNewMessage </span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">filter</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Filters</span><span style="color: #000000">(</span><span style="color: #001080">ctx</span><span style="color: #000000">) </span>
-<span style="color: #001080">filter</span><span style="color: #000000">.</span><span style="color: #795E26">cmd</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;hi&quot;</span><span style="color: #000000">,(</span><span style="color: #001080">match</span><span style="color: #000000">)</span><span style="color: #0000FF">=&gt;</span><span style="color: #000000">{</span>
-<span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #795E26">reply</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;Hi!&quot;</span><span style="color: #000000">)</span>
-<span style="color: #000000">})</span>
-</code></pre>
-									</dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>command: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5>
 								</li>
 								<li>
-									<h5>next: <span class="tsd-signature-symbol">(</span>math<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RegExpExecArray</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>a callbacm function when message match with key</p>
-									</div>
+									<h5>next: <span class="tsd-signature-symbol">(</span>ctx<span class="tsd-signature-symbol">: </span><a href="Shortcut.html" class="tsd-signature-type" data-tsd-kind="Class">Shortcut</a>, msg<span class="tsd-signature-symbol">: </span><a href="GenerateJson.Message.html" class="tsd-signature-type" data-tsd-kind="Class">Message</a>, match<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RegExpExecArray</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-signature">
 											<ul class="tsd-signatures tsd-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>math<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RegExpExecArray</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>ctx<span class="tsd-signature-symbol">: </span><a href="Shortcut.html" class="tsd-signature-type" data-tsd-kind="Class">Shortcut</a>, msg<span class="tsd-signature-symbol">: </span><a href="GenerateJson.Message.html" class="tsd-signature-type" data-tsd-kind="Class">Message</a>, match<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RegExpExecArray</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
 													<h4 class="tsd-parameters-title">Parameters</h4>
 													<ul class="tsd-parameters">
 														<li>
-															<h5>math: <span class="tsd-signature-type">RegExpExecArray</span></h5>
+															<h5>ctx: <a href="Shortcut.html" class="tsd-signature-type" data-tsd-kind="Class">Shortcut</a></h5>
+														</li>
+														<li>
+															<h5>msg: <a href="GenerateJson.Message.html" class="tsd-signature-type" data-tsd-kind="Class">Message</a></h5>
+														</li>
+														<li>
+															<h5>match: <span class="tsd-signature-type">RegExpExecArray</span></h5>
 														</li>
 													</ul>
 													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -194,7 +194,7 @@
 									</ul>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -202,58 +202,39 @@
 					<a name="hears" class="tsd-anchor"></a>
 					<h3>hears</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">hears<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">RegExp</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>math<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RegExpExecArray</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">hears<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">RegExp</span>, next<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>ctx<span class="tsd-signature-symbol">: </span><a href="Shortcut.html" class="tsd-signature-type" data-tsd-kind="Class">Shortcut</a>, msg<span class="tsd-signature-symbol">: </span><a href="GenerateJson.Message.html" class="tsd-signature-type" data-tsd-kind="Class">Message</a>, match<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RegExpExecArray</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/filters.ts#L100">snake/filters.ts:100</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/8354c24/src/snake/filterstwo.ts#L116">snake/filterstwo.ts:116</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>handle new message (text) with specific text.</p>
-								</div>
-								<dl class="tsd-comment-tags">
-									<dt>example</dt>
-									<dd><pre><code class="language-ts"><span style="color: #AF00DB">import</span><span style="color: #000000"> {</span><span style="color: #001080">Filters</span><span style="color: #000000">} </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&quot;tgsnake&quot;</span><span style="color: #000000"> </span>
-<span style="color: #008000">// onNewMessage </span>
-<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">filter</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">Filters</span><span style="color: #000000">(</span><span style="color: #001080">ctx</span><span style="color: #000000">) </span>
-<span style="color: #001080">filter</span><span style="color: #000000">.</span><span style="color: #795E26">hears</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;hi&quot;</span><span style="color: #000000">,(</span><span style="color: #001080">match</span><span style="color: #000000">)</span><span style="color: #0000FF">=&gt;</span><span style="color: #000000">{</span>
-<span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #795E26">reply</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;Hi!&quot;</span><span style="color: #000000">)</span>
-<span style="color: #000000">})</span>
-<span style="color: #001080">filter</span><span style="color: #000000">.</span><span style="color: #795E26">hears</span><span style="color: #000000">(</span><span style="color: #811F3F">/hello/</span><span style="color: #0000FF">i</span><span style="color: #000000">,(</span><span style="color: #001080">match</span><span style="color: #000000">)</span><span style="color: #0000FF">=&gt;</span><span style="color: #000000">{</span>
-<span style="color: #001080">ctx</span><span style="color: #000000">.</span><span style="color: #795E26">reply</span><span style="color: #000000">(</span><span style="color: #A31515">&quot;Oh Hi!&quot;</span><span style="color: #000000">)</span>
-<span style="color: #000000">})</span>
-</code></pre>
-									</dd>
-								</dl>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>key: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">RegExp</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>some key like regex or string.</p>
-									</div>
 								</li>
 								<li>
-									<h5>next: <span class="tsd-signature-symbol">(</span>math<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RegExpExecArray</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>a callbacm function when message match with key.</p>
-									</div>
+									<h5>next: <span class="tsd-signature-symbol">(</span>ctx<span class="tsd-signature-symbol">: </span><a href="Shortcut.html" class="tsd-signature-type" data-tsd-kind="Class">Shortcut</a>, msg<span class="tsd-signature-symbol">: </span><a href="GenerateJson.Message.html" class="tsd-signature-type" data-tsd-kind="Class">Message</a>, match<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RegExpExecArray</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span></h5>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-signature">
 											<ul class="tsd-signatures tsd-kind-type-literal">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>math<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RegExpExecArray</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>ctx<span class="tsd-signature-symbol">: </span><a href="Shortcut.html" class="tsd-signature-type" data-tsd-kind="Class">Shortcut</a>, msg<span class="tsd-signature-symbol">: </span><a href="GenerateJson.Message.html" class="tsd-signature-type" data-tsd-kind="Class">Message</a>, match<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RegExpExecArray</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
 													<h4 class="tsd-parameters-title">Parameters</h4>
 													<ul class="tsd-parameters">
 														<li>
-															<h5>math: <span class="tsd-signature-type">RegExpExecArray</span></h5>
+															<h5>ctx: <a href="Shortcut.html" class="tsd-signature-type" data-tsd-kind="Class">Shortcut</a></h5>
+														</li>
+														<li>
+															<h5>msg: <a href="GenerateJson.Message.html" class="tsd-signature-type" data-tsd-kind="Class">Message</a></h5>
+														</li>
+														<li>
+															<h5>match: <span class="tsd-signature-type">RegExpExecArray</span></h5>
 														</li>
 													</ul>
 													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -263,7 +244,33 @@
 									</ul>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="init" class="tsd-anchor"></a>
+					<h3>init</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">init<span class="tsd-signature-symbol">(</span>bot<span class="tsd-signature-symbol">: </span><a href="Shortcut.html" class="tsd-signature-type" data-tsd-kind="Class">Shortcut</a>, prefix<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/8354c24/src/snake/filterstwo.ts#L27">snake/filterstwo.ts:27</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>bot: <a href="Shortcut.html" class="tsd-signature-type" data-tsd-kind="Class">Shortcut</a></h5>
+								</li>
+								<li>
+									<h5>prefix: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> = &quot;!/&quot;</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -287,16 +294,25 @@
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
 								<a href="Filters.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-private">
+								<a href="Filters.html#handler" class="tsd-kind-icon">handler</a>
+							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="Filters.html#cmd" class="tsd-kind-icon">cmd</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="Filters.html#hears" class="tsd-kind-icon">hears</a>
 							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="Filters.html#init" class="tsd-kind-icon">init</a>
+							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class">
+						<a href="LegacyFilters.html" class="tsd-kind-icon">Legacy<wbr>Filters</a>
+					</li>
 					<li class=" tsd-kind-class">
 						<a href="Shortcut.html" class="tsd-kind-icon">Shortcut</a>
 					</li>
@@ -322,6 +338,9 @@
 				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
 			</ul>
 		</div>
 	</div>

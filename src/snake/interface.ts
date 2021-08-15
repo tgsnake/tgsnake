@@ -169,33 +169,37 @@ export interface replyMoreParams {
    */
   parseMode?: string;
 } 
-/**
- * Hide sent bot keyboard
-*/
-export interface keyboardHide { 
-  /**
-   * Use this flag if you want to remove the keyboard for specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message.<br/>
-   * Example: A user votes in a poll, bot returns confirmation message in reply to the vote and removes the keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet
-  */
-  selective?:boolean 
+export interface inlineKeyboard {
+  inlineKeyboard:inlineKeyboardButton[][];
 }
-/**
- * Force the user to send a reply
-*/
-export interface forceReply {
-  /**
-   * Requests clients to hide the keyboard as soon as it's been used. The keyboard will still be available, but clients will automatically display the usual letter-keyboard in the chat – the user can press a special button in the input field to see the custom keyboard again.
-  */
-  singleUse?: boolean; 
-  /**
-   * Use this parameter if you want to show the keyboard to specific users only. Targets: 1) users that are @mentioned in the text of the Message object; 2) if the bot's message is a reply (has reply_to_message_id), sender of the original message. <br/>
-   * Example: A user requests to change the bot‘s language, bot replies to the request with a keyboard to select the new language. Other users in the group don’t see the keyboard.
-  */
-  selective?: boolean;
+export interface inlineKeyboardButton {
+  text:string;
+  url?:string; 
+  loginUrl?:loginUrl;
+  callbackData?:string;
+  switchInlineQuery?:string;
+  switchInlineQueryCurrentChat?:string; 
+  callbackGame?:string;
+  buy?:string;
 }
-export interface replyMarkup {
-  forceReply?:boolean|forceReply; 
-  removeKeyboard?:boolean|keyboardHide;
+export interface loginUrl { 
+  /**
+   * Set this flag to request the permission for your bot to send messages to the user.
+  */
+  requestWriteAccess?:boolean; 
+  /**
+   * New text of the button in forwarded messages.
+  */
+  forwardText?:string; 
+  /**
+   * An HTTP URL to be opened with user authorization data added to the query string when the button is pressed. If the user refuses to provide authorization data, the original URL without information about the user will be opened. The data added is the same as described in Receiving authorization data. <br/>
+   * NOTE: You must always check the hash of the received data to verify the authentication and the integrity of the data as described in Checking authorization.
+  */
+  url:string; 
+  /**
+   * Username of a bot, which will be used for user authorization. See Setting up a bot for more details. If not specified, the current bot's username will be assumed. The url's domain must be the same as the domain linked with the bot.
+  */
+  botUsername?:string;
 }
 //method interface
 interface onProgress {

@@ -20,6 +20,9 @@ bot.catchError((reason, promise)=>{
   console.log(reason.message)
 })
 bot.run()
+bot.onNewEvent((event)=>{
+  console.log(event)
+})
 bot.onNewMessage(async (ctx,message)=>{
   //ctx.telegram.readHistory(message.chat.id)
   //ctx.telegram.readMentions(message.chat.id)
@@ -30,7 +33,29 @@ bot.onNewMessage(async (ctx,message)=>{
   //console.log(decodeFileId(String(message.from.photo?.fileId)))
 })
 filter.cmd("snake",async (ctx,message) => {
-  let msg = await ctx.reply("Hai, saya snake!")
+  let msg = await ctx.reply("Hai, saya snake!",{
+    replyMarkup : new Api.ReplyInlineMarkup({
+      rows : [
+          new Api.KeyboardButtonRow({
+            buttons : [
+                new Api.KeyboardButtonCallback({
+                  text : "hai",
+                  data : Buffer.from("hai"),
+                  requiresPassword : true
+                })
+              ]
+          }),
+          new Api.KeyboardButtonRow({
+            buttons : [
+                new Api.KeyboardButtonCallback({
+                  text : "ping",
+                  data : Buffer.from("ping")
+                })
+              ]
+          })
+        ]
+    })
+  })
 })
 filter.cmd("ping",async (ctx,message) => {
   let d = ((Date.now() / 1000) - Number(message.date)).toFixed(3)
