@@ -759,9 +759,9 @@ strtok3@^6.2.4:
     peek-readable "^4.0.1"
 
 telegram@^1.7.15:
-  version "1.8.3"
-  resolved "https://registry.yarnpkg.com/telegram/-/telegram-1.8.3.tgz#d307a1b3d0e305502c095c1ff270ff2fb7237040"
-  integrity sha512-5diTpU14rki3PqTUHOonCM4p5gGSqf+5E7t/s40Q9er61RzF57hPKqaVleJFk5pQkoqFOTcnil17yMH0M5BORg==
+  version "1.8.4"
+  resolved "https://registry.yarnpkg.com/telegram/-/telegram-1.8.4.tgz#37b29f517e67dfbf073281786533e9a8fb7cef0e"
+  integrity sha512-Grz9zWaEfR30zY/5kBq1hFDj9z+3jN/eIMKkiitl4ydHXFSKDwkf17vo2nMriWYKoSOrWlzF1i95wwqpVIdXFw==
   dependencies:
     "@cryptography/aes" "^0.1.1"
     async-mutex "^0.3.0"
