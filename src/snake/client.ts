@@ -196,29 +196,31 @@ export class Snake {
     });
     log(`🐍 Welcome To TGSNAKE ${version}.`);
     log(`🐍 Setting Logger level to "${logger}"`);
-    if(bot_token){
-      if(session == ""){
-        storeSession = false
+    if (bot_token) {
+      if (session == '') {
+        storeSession = false;
       }
     }
     if (!this.client) {
       await this._createClient();
     }
     this.telegram = new Telegram(this.client);
-    if(bot_token){
-      if(session == ""){
+    if (bot_token) {
+      if (session == '') {
         await this.client.start({
-          botAuthToken : bot_token
-        })
-      }else{
+          botAuthToken: bot_token,
+        });
+      } else {
         await this.client.connect();
       }
-    }else{
+    } else {
       await this.client.connect();
     }
-    let me = await this.telegram.getEntity("me");
-    let name = me.lastName ? me.firstName + " " + me.lastName + " ["+ me.id +"]" : me.firstName + " ["+ me.id +"]"
-    return log('🐍 Connected as ',name);
+    let me = await this.telegram.getEntity('me');
+    let name = me.lastName
+      ? me.firstName + ' ' + me.lastName + ' [' + me.id + ']'
+      : me.firstName + ' [' + me.id + ']';
+    return log('🐍 Connected as ', name);
   }
   /**
    * @param next - a callback function to handle new message.
@@ -236,9 +238,9 @@ export class Snake {
     }
     if (this.client) {
       this.client.addEventHandler(async (event: NewMessageEvent) => {
-        let shortcut = new Shortcut()
-        await shortcut.init(this.client!, event!)
-        return next(shortcut,shortcut.message);
+        let shortcut = new Shortcut();
+        await shortcut.init(this.client!, event!);
+        return next(shortcut, shortcut.message);
       }, new NewMessage({}));
     }
   }
@@ -343,7 +345,7 @@ export class Snake {
           });
           session = String(await this.client.session.save());
           console.log(`🐍 Your string session : ${session}`);
-          let me = await this.client.getMe() as Api.User
+          let me = (await this.client.getMe()) as Api.User;
           await this.telegram.sendMessage(
             me.id,
             `🐍 Your string session : <code>${session}</code>`,

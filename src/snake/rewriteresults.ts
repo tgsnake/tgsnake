@@ -8,8 +8,8 @@
 
 import * as Interface from './interface';
 import { Api } from 'telegram';
-import { BigInteger } from 'big-integer'; 
-import * as media from "./media"
+import { BigInteger } from 'big-integer';
+import * as media from './media';
 export class ClassResultSendMessage {
   /**
    * Message Id where message successfully sent.
@@ -781,292 +781,288 @@ export class ClassResultUploadFile {
 }
 
 export class ClassResultGetEntity {
-  type?:string;
-  self?: boolean; 
-  contact?: boolean; 
-  mutualContact?: boolean; 
-  deleted?: boolean; 
-  bot?: boolean; 
-  botChatHistory?: boolean; 
-  botNochats?: boolean; 
-  verified?: boolean; 
-  restricted?: boolean; 
-  min?: boolean; 
-  botInlineGeo?: boolean; 
-  support?: boolean; 
-  scam?: boolean; 
-  applyMinPhoto?: boolean; 
-  fake?: boolean; 
-  id!: number; 
-  accessHash?: BigInteger; 
-  firstName?: string; 
-  lastName?: string; 
-  username?: string; 
-  phone?: string; 
-  status?: string; 
-  botInfoVersion?: number; 
-  botInlinePlaceholder?: string; 
-  langCode?: string; 
-  creator?: boolean; 
-  kicked?: boolean; 
-  left?: boolean; 
-  deactivated?: boolean; 
-  callActive?: boolean; 
+  type?: string;
+  self?: boolean;
+  contact?: boolean;
+  mutualContact?: boolean;
+  deleted?: boolean;
+  bot?: boolean;
+  botChatHistory?: boolean;
+  botNochats?: boolean;
+  verified?: boolean;
+  restricted?: boolean;
+  min?: boolean;
+  botInlineGeo?: boolean;
+  support?: boolean;
+  scam?: boolean;
+  applyMinPhoto?: boolean;
+  fake?: boolean;
+  id!: number;
+  accessHash?: BigInteger;
+  firstName?: string;
+  lastName?: string;
+  username?: string;
+  phone?: string;
+  status?: string;
+  botInfoVersion?: number;
+  botInlinePlaceholder?: string;
+  langCode?: string;
+  creator?: boolean;
+  kicked?: boolean;
+  left?: boolean;
+  deactivated?: boolean;
+  callActive?: boolean;
   callNotEmpty?: boolean;
-  title!: string; 
-  participantsCount!: number; 
-  version!: number; 
-  migratedTo?: MigrateTo; 
-  adminRights?: AdminRights; 
-  defaultBannedRights?: BannedRights; 
+  title!: string;
+  participantsCount!: number;
+  version!: number;
+  migratedTo?: MigrateTo;
+  adminRights?: AdminRights;
+  defaultBannedRights?: BannedRights;
   bannedRights?: BannedRights;
-  broadcast?: boolean; 
-  megagroup?: boolean;  
+  broadcast?: boolean;
+  megagroup?: boolean;
   signatures?: boolean;
-  hasLink?: boolean; 
-  hasGeo?: boolean; 
-  slowmodeEnabled?: boolean; 
+  hasLink?: boolean;
+  hasGeo?: boolean;
+  slowmodeEnabled?: boolean;
   gigagroup?: boolean;
-  restrictionReason?: RestrictionReason[]; 
-  dcId?:number;
-  photo?:ChatPhoto;
-  constructor(resultsGetEntity:Api.User|Api.Chat|Api.Channel){
-    if(resultsGetEntity instanceof Api.User){
-      resultsGetEntity as Api.User 
-      this.type = "user"
-      this.self = resultsGetEntity.self 
-      this.contact = resultsGetEntity.contact 
-      this.mutualContact = resultsGetEntity.mutualContact 
-      this.deleted = resultsGetEntity.deleted 
-      this.bot = resultsGetEntity.bot 
-      this.botChatHistory = resultsGetEntity.botChatHistory 
-      this.botNochats = resultsGetEntity.botNochats 
-      this.verified = resultsGetEntity.verified 
-      this.restricted = resultsGetEntity.restricted
-      this.min = resultsGetEntity.min 
-      this.botInlineGeo = resultsGetEntity.botInlineGeo 
-      this.support = resultsGetEntity.support 
-      this.scam = resultsGetEntity.scam 
-      this.applyMinPhoto = resultsGetEntity.applyMinPhoto 
-      this.fake = resultsGetEntity.fake 
-      this.id = resultsGetEntity.id 
-      this.accessHash = resultsGetEntity.accessHash 
-      this.firstName = resultsGetEntity.firstName 
-      this.lastName = resultsGetEntity.lastName 
-      this.username = resultsGetEntity.username 
-      this.phone = resultsGetEntity.phone 
-      this.botInfoVersion = resultsGetEntity.botInfoVersion 
-      this.botInlinePlaceholder = resultsGetEntity.botInlinePlaceholder 
-      this.langCode = resultsGetEntity.langCode
-      if(resultsGetEntity.status){
-        switch(resultsGetEntity.status.className){
-          case "UserStatusOnline" : 
-            this.status = "online" 
+  restrictionReason?: RestrictionReason[];
+  dcId?: number;
+  photo?: ChatPhoto;
+  constructor(resultsGetEntity: Api.User | Api.Chat | Api.Channel) {
+    if (resultsGetEntity instanceof Api.User) {
+      resultsGetEntity as Api.User;
+      this.type = 'user';
+      this.self = resultsGetEntity.self;
+      this.contact = resultsGetEntity.contact;
+      this.mutualContact = resultsGetEntity.mutualContact;
+      this.deleted = resultsGetEntity.deleted;
+      this.bot = resultsGetEntity.bot;
+      this.botChatHistory = resultsGetEntity.botChatHistory;
+      this.botNochats = resultsGetEntity.botNochats;
+      this.verified = resultsGetEntity.verified;
+      this.restricted = resultsGetEntity.restricted;
+      this.min = resultsGetEntity.min;
+      this.botInlineGeo = resultsGetEntity.botInlineGeo;
+      this.support = resultsGetEntity.support;
+      this.scam = resultsGetEntity.scam;
+      this.applyMinPhoto = resultsGetEntity.applyMinPhoto;
+      this.fake = resultsGetEntity.fake;
+      this.id = resultsGetEntity.id;
+      this.accessHash = resultsGetEntity.accessHash;
+      this.firstName = resultsGetEntity.firstName;
+      this.lastName = resultsGetEntity.lastName;
+      this.username = resultsGetEntity.username;
+      this.phone = resultsGetEntity.phone;
+      this.botInfoVersion = resultsGetEntity.botInfoVersion;
+      this.botInlinePlaceholder = resultsGetEntity.botInlinePlaceholder;
+      this.langCode = resultsGetEntity.langCode;
+      if (resultsGetEntity.status) {
+        switch (resultsGetEntity.status.className) {
+          case 'UserStatusOnline':
+            this.status = 'online';
             break;
-          case "UserStatusOffline" : 
-            this.status = "offline" 
+          case 'UserStatusOffline':
+            this.status = 'offline';
             break;
-          case "UserStatusRecently" : 
-            this.status = "recently"
+          case 'UserStatusRecently':
+            this.status = 'recently';
             break;
-          case "UserStatusLastWeek" : 
-            this.status = "withinWeek"
+          case 'UserStatusLastWeek':
+            this.status = 'withinWeek';
             break;
-          case "UserStatusLastMonth": 
-            this.status = "withinMonth" 
-            break; 
-          default : 
-            this.status = "longTimeAgo"
+          case 'UserStatusLastMonth':
+            this.status = 'withinMonth';
+            break;
+          default:
+            this.status = 'longTimeAgo';
         }
       }
-      if(resultsGetEntity.restrictionReason){
-        let temp:RestrictionReason[] = [] 
-        for(let i = 0; i < resultsGetEntity.restrictionReason.length; i++){
-          temp.push(
-              new RestrictionReason(resultsGetEntity.restrictionReason[i])
-            )
+      if (resultsGetEntity.restrictionReason) {
+        let temp: RestrictionReason[] = [];
+        for (let i = 0; i < resultsGetEntity.restrictionReason.length; i++) {
+          temp.push(new RestrictionReason(resultsGetEntity.restrictionReason[i]));
         }
-        this.restrictionReason = temp
+        this.restrictionReason = temp;
       }
-      if((resultsGetEntity.photo) instanceof Api.UserProfilePhoto){
-        (resultsGetEntity.photo) as Api.UserProfilePhoto
-        this.photo = new ChatPhoto(resultsGetEntity.photo!,this)
-        this.dcId = resultsGetEntity.photo.dcId
-      }
-    } 
-    if(resultsGetEntity instanceof Api.Chat){
-      resultsGetEntity as Api.Chat 
-      this.type = "chat"
-      this.creator = resultsGetEntity.creator
-      this.kicked = resultsGetEntity.kicked
-      this.left = resultsGetEntity.left
-      this.deactivated = resultsGetEntity.deactivated
-      this.callActive = resultsGetEntity.callActive
-      this.callNotEmpty = resultsGetEntity.callNotEmpty
-      this.id = resultsGetEntity.id
-      this.title = resultsGetEntity.title
-      this.participantsCount = resultsGetEntity.participantsCount
-      this.version = resultsGetEntity.version
-      if((resultsGetEntity.migratedTo) instanceof Api.InputChannel){
-        this.migratedTo = new MigrateTo(resultsGetEntity.migratedTo)
-      }
-      if((resultsGetEntity.adminRights) instanceof Api.ChatAdminRights){
-        this.adminRights = new AdminRights(resultsGetEntity.adminRights)
-      }
-      if((resultsGetEntity.defaultBannedRights) instanceof Api.ChatBannedRights){
-        this.defaultBannedRights = new BannedRights(resultsGetEntity.defaultBannedRights)
-      }
-      if((resultsGetEntity.photo) instanceof Api.ChatPhoto){
-        (resultsGetEntity.photo) as Api.ChatPhoto
-        this.photo = new ChatPhoto(resultsGetEntity.photo!,this)
-        this.dcId = resultsGetEntity.photo.dcId
+      if (resultsGetEntity.photo instanceof Api.UserProfilePhoto) {
+        resultsGetEntity.photo as Api.UserProfilePhoto;
+        this.photo = new ChatPhoto(resultsGetEntity.photo!, this);
+        this.dcId = resultsGetEntity.photo.dcId;
       }
     }
-    if(resultsGetEntity instanceof Api.Channel){
-      resultsGetEntity as Api.Channel 
-      this.type = "channel"
-      this.creator = resultsGetEntity.creator
-      this.left = resultsGetEntity.left
-      this.broadcast = resultsGetEntity.broadcast
-      this.verified = resultsGetEntity.verified
-      this.megagroup = resultsGetEntity.megagroup
-      this.restricted = resultsGetEntity.restricted
-      this.signatures = resultsGetEntity.signatures
-      this.min = resultsGetEntity.min
-      this.scam = resultsGetEntity.scam
-      this.hasLink = resultsGetEntity.hasLink
-      this.hasGeo = resultsGetEntity.hasGeo
-      this.slowmodeEnabled = resultsGetEntity.slowmodeEnabled
-      this.callActive = resultsGetEntity.callActive
-      this.callNotEmpty = resultsGetEntity.callNotEmpty
-      this.fake = resultsGetEntity.fake
-      this.gigagroup = resultsGetEntity.gigagroup
-      this.id = resultsGetEntity.id
-      this.accessHash = resultsGetEntity.accessHash
-      this.title = resultsGetEntity.title
-      this.username = resultsGetEntity.username
-      if((resultsGetEntity.adminRights) instanceof Api.ChatAdminRights){
-        this.adminRights = new AdminRights(resultsGetEntity.adminRights)
+    if (resultsGetEntity instanceof Api.Chat) {
+      resultsGetEntity as Api.Chat;
+      this.type = 'chat';
+      this.creator = resultsGetEntity.creator;
+      this.kicked = resultsGetEntity.kicked;
+      this.left = resultsGetEntity.left;
+      this.deactivated = resultsGetEntity.deactivated;
+      this.callActive = resultsGetEntity.callActive;
+      this.callNotEmpty = resultsGetEntity.callNotEmpty;
+      this.id = resultsGetEntity.id;
+      this.title = resultsGetEntity.title;
+      this.participantsCount = resultsGetEntity.participantsCount;
+      this.version = resultsGetEntity.version;
+      if (resultsGetEntity.migratedTo instanceof Api.InputChannel) {
+        this.migratedTo = new MigrateTo(resultsGetEntity.migratedTo);
       }
-      if((resultsGetEntity.bannedRights) instanceof Api.ChatBannedRights){
-        this.bannedRights = new BannedRights(resultsGetEntity.bannedRights)
+      if (resultsGetEntity.adminRights instanceof Api.ChatAdminRights) {
+        this.adminRights = new AdminRights(resultsGetEntity.adminRights);
       }
-      if((resultsGetEntity.defaultBannedRights) instanceof Api.ChatBannedRights){
-        this.defaultBannedRights = new BannedRights(resultsGetEntity.defaultBannedRights)
+      if (resultsGetEntity.defaultBannedRights instanceof Api.ChatBannedRights) {
+        this.defaultBannedRights = new BannedRights(resultsGetEntity.defaultBannedRights);
       }
-      this.participantsCount = resultsGetEntity.participantsCount!
-      if(resultsGetEntity.restrictionReason){
-        let temp:RestrictionReason[] = [] 
-        for(let i = 0; i < resultsGetEntity.restrictionReason.length; i++){
-          temp.push(
-              new RestrictionReason(resultsGetEntity.restrictionReason[i])
-            )
+      if (resultsGetEntity.photo instanceof Api.ChatPhoto) {
+        resultsGetEntity.photo as Api.ChatPhoto;
+        this.photo = new ChatPhoto(resultsGetEntity.photo!, this);
+        this.dcId = resultsGetEntity.photo.dcId;
+      }
+    }
+    if (resultsGetEntity instanceof Api.Channel) {
+      resultsGetEntity as Api.Channel;
+      this.type = 'channel';
+      this.creator = resultsGetEntity.creator;
+      this.left = resultsGetEntity.left;
+      this.broadcast = resultsGetEntity.broadcast;
+      this.verified = resultsGetEntity.verified;
+      this.megagroup = resultsGetEntity.megagroup;
+      this.restricted = resultsGetEntity.restricted;
+      this.signatures = resultsGetEntity.signatures;
+      this.min = resultsGetEntity.min;
+      this.scam = resultsGetEntity.scam;
+      this.hasLink = resultsGetEntity.hasLink;
+      this.hasGeo = resultsGetEntity.hasGeo;
+      this.slowmodeEnabled = resultsGetEntity.slowmodeEnabled;
+      this.callActive = resultsGetEntity.callActive;
+      this.callNotEmpty = resultsGetEntity.callNotEmpty;
+      this.fake = resultsGetEntity.fake;
+      this.gigagroup = resultsGetEntity.gigagroup;
+      this.id = resultsGetEntity.id;
+      this.accessHash = resultsGetEntity.accessHash;
+      this.title = resultsGetEntity.title;
+      this.username = resultsGetEntity.username;
+      if (resultsGetEntity.adminRights instanceof Api.ChatAdminRights) {
+        this.adminRights = new AdminRights(resultsGetEntity.adminRights);
+      }
+      if (resultsGetEntity.bannedRights instanceof Api.ChatBannedRights) {
+        this.bannedRights = new BannedRights(resultsGetEntity.bannedRights);
+      }
+      if (resultsGetEntity.defaultBannedRights instanceof Api.ChatBannedRights) {
+        this.defaultBannedRights = new BannedRights(resultsGetEntity.defaultBannedRights);
+      }
+      this.participantsCount = resultsGetEntity.participantsCount!;
+      if (resultsGetEntity.restrictionReason) {
+        let temp: RestrictionReason[] = [];
+        for (let i = 0; i < resultsGetEntity.restrictionReason.length; i++) {
+          temp.push(new RestrictionReason(resultsGetEntity.restrictionReason[i]));
         }
-        this.restrictionReason = temp
+        this.restrictionReason = temp;
       }
-      if((resultsGetEntity.photo) instanceof Api.ChatPhoto){
-        (resultsGetEntity.photo) as Api.ChatPhoto
-        this.photo = new ChatPhoto(resultsGetEntity.photo!,this)
-        this.dcId = resultsGetEntity.photo.dcId
+      if (resultsGetEntity.photo instanceof Api.ChatPhoto) {
+        resultsGetEntity.photo as Api.ChatPhoto;
+        this.photo = new ChatPhoto(resultsGetEntity.photo!, this);
+        this.dcId = resultsGetEntity.photo.dcId;
       }
     }
   }
 }
 export class MigrateTo {
-  id!:number; 
-  accessHash!:BigInteger; 
-  constructor(migratedTo:Api.InputChannel){
-    this.id = migratedTo.channelId; 
-    this.accessHash = migratedTo.accessHash
+  id!: number;
+  accessHash!: BigInteger;
+  constructor(migratedTo: Api.InputChannel) {
+    this.id = migratedTo.channelId;
+    this.accessHash = migratedTo.accessHash;
   }
 }
 export class AdminRights {
-  changeInfo?: boolean; 
-  postMessages?: boolean; 
-  editMessages?: boolean; 
-  deleteMessages?: boolean; 
-  banUsers?: boolean; 
-  inviteUsers?: boolean; 
-  pinMessages?: boolean; 
-  addAdmins?: boolean; 
-  anonymous?: boolean; 
-  manageCall?: boolean; 
+  changeInfo?: boolean;
+  postMessages?: boolean;
+  editMessages?: boolean;
+  deleteMessages?: boolean;
+  banUsers?: boolean;
+  inviteUsers?: boolean;
+  pinMessages?: boolean;
+  addAdmins?: boolean;
+  anonymous?: boolean;
+  manageCall?: boolean;
   other?: boolean;
-  constructor(adminRights:Api.ChatAdminRights){
-    this.changeInfo = adminRights.changeInfo 
-    this.postMessages = adminRights.postMessages 
-    this.editMessages = adminRights.editMessages 
-    this.deleteMessages = adminRights.deleteMessages 
-    this.banUsers = adminRights.banUsers 
-    this.inviteUsers = adminRights.inviteUsers 
-    this.pinMessages = adminRights.pinMessages 
-    this.addAdmins = adminRights.addAdmins 
-    this.anonymous = adminRights.anonymous 
-    this.manageCall = adminRights.manageCall 
-    this.other = adminRights.other
+  constructor(adminRights: Api.ChatAdminRights) {
+    this.changeInfo = adminRights.changeInfo;
+    this.postMessages = adminRights.postMessages;
+    this.editMessages = adminRights.editMessages;
+    this.deleteMessages = adminRights.deleteMessages;
+    this.banUsers = adminRights.banUsers;
+    this.inviteUsers = adminRights.inviteUsers;
+    this.pinMessages = adminRights.pinMessages;
+    this.addAdmins = adminRights.addAdmins;
+    this.anonymous = adminRights.anonymous;
+    this.manageCall = adminRights.manageCall;
+    this.other = adminRights.other;
   }
 }
 export class BannedRights {
-  viewMessages?: boolean; 
-  sendMessages?: boolean; 
-  sendMedia?: boolean; 
-  sendStickers?: boolean; 
-  sendGifs?: boolean; 
-  sendGames?: boolean; 
-  sendInline?: boolean; 
-  embedLinks?: boolean; 
-  sendPolls?: boolean; 
-  changeInfo?: boolean; 
-  inviteUsers?: boolean; 
-  pinMessages?: boolean; 
-  untilDate: number; 
-  constructor(bannedRights:Api.ChatBannedRights){
-    this.viewMessages = bannedRights.viewMessages
-    this.sendMessages = bannedRights.sendMessages
-    this.sendMedia = bannedRights.sendMedia
-    this.sendStickers = bannedRights.sendStickers
-    this.sendGifs = bannedRights.sendGifs
-    this.sendGames = bannedRights.sendGames
-    this.sendInline = bannedRights.sendInline
-    this.embedLinks = bannedRights.embedLinks
-    this.sendPolls = bannedRights.sendPolls
-    this.changeInfo = bannedRights.changeInfo
-    this.inviteUsers = bannedRights.inviteUsers
-    this.pinMessages = bannedRights.pinMessages
-    this.untilDate = bannedRights.untilDate
+  viewMessages?: boolean;
+  sendMessages?: boolean;
+  sendMedia?: boolean;
+  sendStickers?: boolean;
+  sendGifs?: boolean;
+  sendGames?: boolean;
+  sendInline?: boolean;
+  embedLinks?: boolean;
+  sendPolls?: boolean;
+  changeInfo?: boolean;
+  inviteUsers?: boolean;
+  pinMessages?: boolean;
+  untilDate: number;
+  constructor(bannedRights: Api.ChatBannedRights) {
+    this.viewMessages = bannedRights.viewMessages;
+    this.sendMessages = bannedRights.sendMessages;
+    this.sendMedia = bannedRights.sendMedia;
+    this.sendStickers = bannedRights.sendStickers;
+    this.sendGifs = bannedRights.sendGifs;
+    this.sendGames = bannedRights.sendGames;
+    this.sendInline = bannedRights.sendInline;
+    this.embedLinks = bannedRights.embedLinks;
+    this.sendPolls = bannedRights.sendPolls;
+    this.changeInfo = bannedRights.changeInfo;
+    this.inviteUsers = bannedRights.inviteUsers;
+    this.pinMessages = bannedRights.pinMessages;
+    this.untilDate = bannedRights.untilDate;
   }
 }
 export class RestrictionReason {
-  platform!:string; 
-  text!:string; 
-  reason!:string; 
-  constructor(restrictionReason:Api.RestrictionReason){
-    this.platform = restrictionReason.platform 
-    this.text = restrictionReason.text 
-    this.reason = restrictionReason.reason
+  platform!: string;
+  text!: string;
+  reason!: string;
+  constructor(restrictionReason: Api.RestrictionReason) {
+    this.platform = restrictionReason.platform;
+    this.text = restrictionReason.text;
+    this.reason = restrictionReason.reason;
   }
 }
 export class ChatPhoto {
-  fileId!:string; 
-  uniqueFileId!:string;
-  isBig:boolean = true;
-  constructor(photo:Api.ChatPhoto|Api.UserProfilePhoto,resultsGetEntity:ClassResultGetEntity){
+  fileId!: string;
+  uniqueFileId!: string;
+  isBig: boolean = true;
+  constructor(photo: Api.ChatPhoto | Api.UserProfilePhoto, resultsGetEntity: ClassResultGetEntity) {
     let file = media.generateFileId({
-      fileType : "profile_photo",
-      typeId : media.typeId.CHAT_PHOTO,
-      version : 4,
-      subVersion : 30,
-      dcId : photo.dcId,
+      fileType: 'profile_photo',
+      typeId: media.typeId.CHAT_PHOTO,
+      version: 4,
+      subVersion: 30,
+      dcId: photo.dcId,
       id: photo.photoId,
-      accessHash : BigInt(0),
-      photoSizeSource : "dialogPhoto",
-      dialogId : resultsGetEntity.id,
-      isSmallDialogPhoto : false,
-      photoSizeSourceId : media.thumbTypeId.CHAT_PHOTO_BIG,
-      dialogAccessHash : resultsGetEntity.accessHash!,
-      volumeId : BigInt(1)
-    })
-    this.fileId = file.fileId
-    this.uniqueFileId = file.uniqueFileId
+      accessHash: BigInt(0),
+      photoSizeSource: 'dialogPhoto',
+      dialogId: resultsGetEntity.id,
+      isSmallDialogPhoto: false,
+      photoSizeSourceId: media.thumbTypeId.CHAT_PHOTO_BIG,
+      dialogAccessHash: resultsGetEntity.accessHash!,
+      volumeId: BigInt(1),
+    });
+    this.fileId = file.fileId;
+    this.uniqueFileId = file.uniqueFileId;
   }
 }

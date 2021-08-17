@@ -12,16 +12,16 @@ import { Message } from './rewritejson';
 let event: any;
 let msg: Message;
 let bots: Shortcut;
-let nowPrefix:string
+let nowPrefix: string;
 /**
  * This class to filter new message text.
  */
 export class LegacyFilters {
-  constructor(bot?:Shortcut,prefix:string = "!/") {
-    if(prefix){
-      nowPrefix = prefix
+  constructor(bot?: Shortcut, prefix: string = '!/') {
+    if (prefix) {
+      nowPrefix = prefix;
     }
-    if(bot){
+    if (bot) {
       bots = bot;
       if (bot.event) {
         event = bot.event;

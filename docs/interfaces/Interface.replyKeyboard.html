@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>readHistoryMoreParams | tgsnake - v1.1.0</title>
+	<title>replyKeyboard | tgsnake - v1.1.0</title>
 	<meta name="description" content="Documentation for tgsnake - v1.1.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -58,21 +58,28 @@
 					<a href="../modules/Interface.html">Interface</a>
 				</li>
 				<li>
-					<a href="Interface.readHistoryMoreParams.html">readHistoryMoreParams</a>
+					<a href="Interface.replyKeyboard.html">replyKeyboard</a>
 				</li>
 			</ul>
-			<h1>Interface readHistoryMoreParams</h1>
+			<h1>Interface replyKeyboard</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Bot keyboard</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">readHistoryMoreParams</span>
+						<span class="target">replyKeyboard</span>
 					</li>
 				</ul>
 			</section>
@@ -83,7 +90,11 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.readHistoryMoreParams.html#maxId" class="tsd-kind-icon">max<wbr>Id</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.replyKeyboard.html#inputFieldPlaceholder" class="tsd-kind-icon">input<wbr>Field<wbr>Placeholder</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.replyKeyboard.html#keyboard" class="tsd-kind-icon">keyboard</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.replyKeyboard.html#oneTimeKeyboard" class="tsd-kind-icon">one<wbr>Time<wbr>Keyboard</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.replyKeyboard.html#resizeKeyboard" class="tsd-kind-icon">resize<wbr>Keyboard</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.replyKeyboard.html#selective" class="tsd-kind-icon">selective</a></li>
 							</ul>
 						</section>
 					</div>
@@ -92,17 +103,83 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="maxId" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> max<wbr>Id</h3>
-					<div class="tsd-signature tsd-kind-icon">max<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="inputFieldPlaceholder" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> input<wbr>Field<wbr>Placeholder</h3>
+					<div class="tsd-signature tsd-kind-icon">input<wbr>Field<wbr>Placeholder<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/5bc1d93/src/snake/interface.ts#L437">snake/interface.ts:437</a></li>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/5bc1d93/src/snake/interface.ts#L230">snake/interface.ts:230</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>ID of message up to which messages should be marked as read</p>
+							<p>The placeholder to be shown in the input field when the keyboard is active.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="keyboard" class="tsd-anchor"></a>
+					<h3>keyboard</h3>
+					<div class="tsd-signature tsd-kind-icon">keyboard<span class="tsd-signature-symbol">:</span> <a href="Interface.replyKeyboardButton.html" class="tsd-signature-type" data-tsd-kind="Interface">replyKeyboardButton</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/5bc1d93/src/snake/interface.ts#L218">snake/interface.ts:218</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Array of array of <a href="Interface.replyKeyboardButton.html">replyKeyboardButton</a> or Array of array of string.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>example</dt>
+							<dd><pre><code class="language-ts"><span style="color: #000000">[[</span><span style="color: #A31515">&quot;hello&quot;</span><span style="color: #000000">]]</span>
+</code></pre>
+							</dd>
+						</dl>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="oneTimeKeyboard" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> one<wbr>Time<wbr>Keyboard</h3>
+					<div class="tsd-signature tsd-kind-icon">one<wbr>Time<wbr>Keyboard<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/5bc1d93/src/snake/interface.ts#L226">snake/interface.ts:226</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Requests clients to hide the keyboard as soon as it&#39;s been used.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="resizeKeyboard" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> resize<wbr>Keyboard</h3>
+					<div class="tsd-signature tsd-kind-icon">resize<wbr>Keyboard<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/5bc1d93/src/snake/interface.ts#L222">snake/interface.ts:222</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Requests clients to resize the keyboard vertically for optimal fit (e.g., make the keyboard smaller if there are just two rows of buttons).</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="selective" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> selective</h3>
+					<div class="tsd-signature tsd-kind-icon">selective<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/5bc1d93/src/snake/interface.ts#L234">snake/interface.ts:234</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Use this parameter if you want to show the keyboard to specific users only.</p>
 						</div>
 					</div>
 				</section>
@@ -181,24 +258,36 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="Interface.pinMessageMoreParams.html" class="tsd-kind-icon">pin<wbr>Message<wbr>More<wbr>Params</a>
 					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="Interface.readHistoryMoreParams.html" class="tsd-kind-icon">read<wbr>History<wbr>More<wbr>Params</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="Interface.removeKeyboard.html" class="tsd-kind-icon">remove<wbr>Keyboard</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="Interface.readHistoryMoreParams.html" class="tsd-kind-icon">read<wbr>History<wbr>More<wbr>Params</a>
+						<a href="Interface.replyKeyboard.html" class="tsd-kind-icon">reply<wbr>Keyboard</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="Interface.readHistoryMoreParams.html#maxId" class="tsd-kind-icon">max<wbr>Id</a>
+								<a href="Interface.replyKeyboard.html#inputFieldPlaceholder" class="tsd-kind-icon">input<wbr>Field<wbr>Placeholder</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="Interface.replyKeyboard.html#keyboard" class="tsd-kind-icon">keyboard</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="Interface.replyKeyboard.html#oneTimeKeyboard" class="tsd-kind-icon">one<wbr>Time<wbr>Keyboard</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="Interface.replyKeyboard.html#resizeKeyboard" class="tsd-kind-icon">resize<wbr>Keyboard</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="Interface.replyKeyboard.html#selective" class="tsd-kind-icon">selective</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="Interface.removeKeyboard.html" class="tsd-kind-icon">remove<wbr>Keyboard</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="Interface.replyKeyboard.html" class="tsd-kind-icon">reply<wbr>Keyboard</a>
-					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="Interface.replyKeyboardButton.html" class="tsd-kind-icon">reply<wbr>Keyboard<wbr>Button</a>
 					</li>

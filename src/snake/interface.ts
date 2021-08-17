@@ -11,7 +11,7 @@ import { Api, TelegramClient } from 'telegram';
 import { BigInteger } from 'big-integer';
 import { Telegram } from './tele';
 import { Shortcut } from './shortcut';
-import {Message} from "./rewritejson"
+import { Message } from './rewritejson';
 // option and client
 export interface options {
   /**
@@ -168,149 +168,149 @@ export interface replyMoreParams {
    * parse mode
    */
   parseMode?: string;
-} 
-export type TypeReplyMarkup = inlineKeyboard | replyKeyboard | removeKeyboard | forceReplyMarkup
+}
+export type TypeReplyMarkup = inlineKeyboard | replyKeyboard | removeKeyboard | forceReplyMarkup;
 /**
  * Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot's message and tapped 'Reply')
-*/
+ */
 export interface forceReplyMarkup {
   /**
    * Shows reply interface to the user, as if they manually selected the bot's message and tapped 'Reply'
-  */
-  forceReply:boolean; 
+   */
+  forceReply: boolean;
   /**
    * The placeholder to be shown in the input field when the reply is active
-  */
-  inputFieldPlaceholder?:string; 
+   */
+  inputFieldPlaceholder?: string;
   /**
    * Use this parameter if you want to force reply from specific users only.
-  */
-  selective?:boolean; 
+   */
+  selective?: boolean;
   /**
-   * Requests clients to hide the keyboard as soon as it's been used. 
-  */
-  singleUse?:boolean; 
+   * Requests clients to hide the keyboard as soon as it's been used.
+   */
+  singleUse?: boolean;
 }
 /**
  * Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter-keyboard.
-*/
+ */
 export interface removeKeyboard {
   /**
    * Requests clients to remove the custom keyboard (user will not be able to summon this keyboard
-  */
-  removeKeyboard:boolean; 
+   */
+  removeKeyboard: boolean;
   /**
    * Use this parameter if you want to remove the keyboard for specific users only
-  */
-  selective?:boolean;
+   */
+  selective?: boolean;
 }
-/** 
+/**
  * Bot keyboard
-*/
-export interface replyKeyboard { 
-  /** 
-   * Array of array of {@link replyKeyboardButton} or Array of array of string. 
-   * @example 
-   * ```ts 
+ */
+export interface replyKeyboard {
+  /**
+   * Array of array of {@link replyKeyboardButton} or Array of array of string.
+   * @example
+   * ```ts
    * [["hello"]]
    * ```
-  */
-  keyboard:replyKeyboardButton[][]|string[][];
+   */
+  keyboard: replyKeyboardButton[][] | string[][];
   /**
    * Requests clients to resize the keyboard vertically for optimal fit (e.g., make the keyboard smaller if there are just two rows of buttons).
-  */
-  resizeKeyboard?:boolean; 
+   */
+  resizeKeyboard?: boolean;
   /**
-   * Requests clients to hide the keyboard as soon as it's been used. 
-  */
-  oneTimeKeyboard?:boolean; 
+   * Requests clients to hide the keyboard as soon as it's been used.
+   */
+  oneTimeKeyboard?: boolean;
   /**
    * The placeholder to be shown in the input field when the keyboard is active.
-  */
-  inputFieldPlaceholder?:string; 
+   */
+  inputFieldPlaceholder?: string;
   /**
-   * Use this parameter if you want to show the keyboard to specific users only. 
-  */
-  selective?:boolean;
+   * Use this parameter if you want to show the keyboard to specific users only.
+   */
+  selective?: boolean;
 }
-export interface replyKeyboardButton { 
+export interface replyKeyboardButton {
   /** keyboard text */
-  text:string;  
+  text: string;
   /** The user's phone number will be sent as a contact when the button is pressed */
-  requestContact?:boolean; 
+  requestContact?: boolean;
   /** The user's current location will be sent when the button is pressed. */
-  requestLocation?:boolean; 
+  requestLocation?: boolean;
   /**
-   * The user will be asked to create a poll and send it to the bot when the button is pressed. <br/> 
+   * The user will be asked to create a poll and send it to the bot when the button is pressed. <br/>
    * If _quiz_ is passed, the user will be allowed to create only polls in the quiz mode. <br/>
    * If _regular_ is passed, only regular polls will be allowed. Otherwise, the user will be allowed to create a poll of _any_ type.
-  */
-  requestPoll?:"regular"|"quiz";
+   */
+  requestPoll?: 'regular' | 'quiz';
 }
 /**
  * Bot button
-*/
-export interface inlineKeyboard { 
+ */
+export interface inlineKeyboard {
   /**
-   * array of array of {@link inlineKeyboardButton} 
-   * @example 
-   * ```ts 
+   * array of array of {@link inlineKeyboardButton}
+   * @example
+   * ```ts
    * [[{
-   *  text : "button", // the text of button 
+   *  text : "button", // the text of button
    *  callbackData : "cbdata" // the callback data of button.
    * }]]
    * ```
-  */
-  inlineKeyboard:inlineKeyboardButton[][];
+   */
+  inlineKeyboard: inlineKeyboardButton[][];
 }
-export interface inlineKeyboardButton { 
+export interface inlineKeyboardButton {
   /** Button text */
-  text:string; 
-  /** Button url */ 
-  url?:string; 
+  text: string;
+  /** Button url */
+  url?: string;
   /** loginUrl button*/
-  loginUrl?:loginUrl; 
+  loginUrl?: loginUrl;
   /** callback data button */
-  callbackData?:string; 
+  callbackData?: string;
   /** query to fill the inline query */
-  switchInlineQuery?:string; 
+  switchInlineQuery?: string;
   /** query to fill the inline query */
-  switchInlineQueryCurrentChat?:string; 
+  switchInlineQueryCurrentChat?: string;
   /** description of game */
-  callbackGame?:string; 
+  callbackGame?: string;
   /** description of product */
-  buy?:string;
+  buy?: string;
 }
-export interface loginUrl { 
+export interface loginUrl {
   /**
    * Set this flag to request the permission for your bot to send messages to the user.
-  */
-  requestWriteAccess?:boolean; 
+   */
+  requestWriteAccess?: boolean;
   /**
    * New text of the button in forwarded messages.
-  */
-  forwardText?:string; 
+   */
+  forwardText?: string;
   /**
    * An HTTP URL to be opened with user authorization data added to the query string when the button is pressed. If the user refuses to provide authorization data, the original URL without information about the user will be opened. The data added is the same as described in Receiving authorization data. <br/>
    * NOTE: You must always check the hash of the received data to verify the authentication and the integrity of the data as described in Checking authorization.
-  */
-  url:string; 
+   */
+  url: string;
   /**
    * id and access hash of a bot, which will be used for user authorization. The url's domain must be the same as the domain linked with the bot.
-  */
-  bot:BotLoginUrl;
+   */
+  bot: BotLoginUrl;
 }
-export interface BotLoginUrl { 
-  /** 
-   * Bot Id. 
-   * bot id getting from .getEntity()
-  */
-  id:number; 
+export interface BotLoginUrl {
   /**
-   * Bot access hash 
+   * Bot Id.
+   * bot id getting from .getEntity()
+   */
+  id: number;
+  /**
+   * Bot access hash
    * access hash getting from .getEntity()
-  */
-  accessHash:BigInteger;
+   */
+  accessHash: BigInteger;
 }
 //method interface
 interface onProgress {
@@ -688,4 +688,8 @@ export interface sendMediaMoreParams {
    * captiom
    */
   caption?: string;
+  /**
+   * workers to sending media
+   */
+  workers?: number;
 }

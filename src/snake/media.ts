@@ -42,7 +42,7 @@ export interface GenerateFileId {
   subVersion: number;
   dcId: number;
   fileType: string | number;
-  id: bigint | BigInteger ;
+  id: bigint | BigInteger;
   accessHash: bigint | BigInteger;
   typeId: number;
   fileReference?: string;
@@ -63,11 +63,18 @@ export interface GenerateFileId {
 export function generateFileId(medias: GenerateFileId) {
   let file = new FileId();
   for (let [key, value] of Object.entries(medias)) {
-    if (key == 'id' || key == 'accessHash' || key == 'secret' || key == "dialogAccessHash" || key == "volumeId" || key == "dialogId") {
-      if(String(value).startsWith("-")){
+    if (
+      key == 'id' ||
+      key == 'accessHash' ||
+      key == 'secret' ||
+      key == 'dialogAccessHash' ||
+      key == 'volumeId' ||
+      key == 'dialogId'
+    ) {
+      if (String(value).startsWith('-')) {
         file[key] = BigInt(Number(value) * -1);
-      }else{
-        file[key] = BigInt(Number(value))
+      } else {
+        file[key] = BigInt(Number(value));
       }
     } else {
       file[key] = value;

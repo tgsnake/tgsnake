@@ -11,28 +11,28 @@ import { Api } from 'telegram';
 import { BigInteger } from 'big-integer';
 import { FileId } from 'tg-file-id';
 import { NewMessageEvent } from 'telegram/events/NewMessage';
-import {Telegram} from "./tele"
-import * as GenerateResult from "./rewriteresults"
-import * as media from "./media"
+import { Telegram } from './tele';
+import * as GenerateResult from './rewriteresults';
+import * as media from './media';
 export class Message {
   id!: number;
   chat!: Chat;
   from!: From;
-  text?: string; 
-  entities?: Api.TypeMessageEntity[]; 
+  text?: string;
+  entities?: Api.TypeMessageEntity[];
   replyToMessageId?: number;
-  date!: Date | number; 
+  date!: Date | number;
   media?: Api.TypeMessageMedia | media.Media;
-  constructor(){} 
-  /** @hidden */ 
-  async _fill(event:NewMessageEvent){
+  constructor() {}
+  /** @hidden */
+  async _fill(event: NewMessageEvent) {
     let message = event.message;
-    let cht = new Chat(); 
-    let frm = new From(); 
-    await cht._fill(event)
-    await frm._fill(event)
+    let cht = new Chat();
+    let frm = new From();
+    await cht._fill(event);
+    await frm._fill(event);
     this.id = message.id;
-    this.chat = cht
+    this.chat = cht;
     this.from = frm;
     this.date = message.date || Date.now() / 1000;
     if (message.entities) {
@@ -54,7 +54,7 @@ export class Message {
         this.media = message.media;
       }
     }
-    return this
+    return this;
   }
 }
 class Chat {
@@ -64,71 +64,71 @@ class Chat {
   lastName?: string;
   username?: string;
   private?: boolean;
-  photo?:GenerateResult.ChatPhoto
-  defaultBannedRights?:GenerateResult.BannedRights
-  participantsCount?:number 
-  dcId?:number 
-  fake:boolean = false 
-  scam:boolean = false
-  constructor() {} 
+  photo?: GenerateResult.ChatPhoto;
+  defaultBannedRights?: GenerateResult.BannedRights;
+  participantsCount?: number;
+  dcId?: number;
+  fake: boolean = false;
+  scam: boolean = false;
+  constructor() {}
   /**
    * @hidden
-  */
-  async _fill(event:NewMessageEvent){
-    if(event.message){
-      if((event.message.peerId) instanceof Api.PeerUser){
-        (event.message.peerId) as Api.PeerUser 
-        this.id = event.message.peerId.userId
+   */
+  async _fill(event: NewMessageEvent) {
+    if (event.message) {
+      if (event.message.peerId instanceof Api.PeerUser) {
+        event.message.peerId as Api.PeerUser;
+        this.id = event.message.peerId.userId;
       }
     }
-    if(event.message){
-      if((event.message.peerId) instanceof Api.PeerChat){
-        (event.message.peerId) as Api.PeerChat 
-        this.id = event.message.peerId.chatId * -1
+    if (event.message) {
+      if (event.message.peerId instanceof Api.PeerChat) {
+        event.message.peerId as Api.PeerChat;
+        this.id = event.message.peerId.chatId * -1;
       }
     }
-    if(event.message){
-      if((event.message.peerId) instanceof Api.PeerChannel){
-        (event.message.peerId) as Api.PeerChannel 
-        this.id = Number(`-100${event.message.peerId.channelId}`)
+    if (event.message) {
+      if (event.message.peerId instanceof Api.PeerChannel) {
+        event.message.peerId as Api.PeerChannel;
+        this.id = Number(`-100${event.message.peerId.channelId}`);
       }
     }
-    if(this.id){
-      let tg = new Telegram(event.client!)
-      let entity = await tg.getEntity(this.id) 
-      if(entity.username){
-        this.username = entity.username!
+    if (this.id) {
+      let tg = new Telegram(event.client!);
+      let entity = await tg.getEntity(this.id);
+      if (entity.username) {
+        this.username = entity.username!;
       }
-      if(entity.firstName){
-        this.firstName = entity.firstName!
+      if (entity.firstName) {
+        this.firstName = entity.firstName!;
       }
-      if(entity.lastName){
-        this.lastName = entity.lastName!
+      if (entity.lastName) {
+        this.lastName = entity.lastName!;
       }
-      if(entity.title){
-        this.title = entity.title!
+      if (entity.title) {
+        this.title = entity.title!;
       }
-      if(entity.photo){
-        this.photo = entity.photo!
+      if (entity.photo) {
+        this.photo = entity.photo!;
       }
-      if(entity.defaultBannedRights){
-        this.defaultBannedRights = entity.defaultBannedRights
+      if (entity.defaultBannedRights) {
+        this.defaultBannedRights = entity.defaultBannedRights;
       }
-      if(entity.participantsCount){
-        this.participantsCount = entity.participantsCount
+      if (entity.participantsCount) {
+        this.participantsCount = entity.participantsCount;
       }
-      if(entity.dcId){
-        this.dcId = entity.dcId
+      if (entity.dcId) {
+        this.dcId = entity.dcId;
       }
-      if(entity.fake){
-        this.fake = entity.fake
+      if (entity.fake) {
+        this.fake = entity.fake;
       }
-      if(entity.scam){
-        this.scam = entity.scam
+      if (entity.scam) {
+        this.scam = entity.scam;
       }
-      this.private = Boolean(entity.type == "user")
+      this.private = Boolean(entity.type == 'user');
     }
-    return 
+    return;
   }
 }
 class From {
@@ -137,60 +137,59 @@ class From {
   lastName?: string;
   username?: string;
   status?: string;
-  self?:boolean
-  deleted?:boolean
-  fake?:boolean
-  scam?:boolean
-  bot?:boolean
-  verified?:boolean
-  restricted?:boolean 
-  dcId?:number 
-  photo?:GenerateResult.ChatPhoto
-  restrictionReason?:GenerateResult.RestrictionReason[]
+  self?: boolean;
+  deleted?: boolean;
+  fake?: boolean;
+  scam?: boolean;
+  bot?: boolean;
+  verified?: boolean;
+  restricted?: boolean;
+  dcId?: number;
+  photo?: GenerateResult.ChatPhoto;
+  restrictionReason?: GenerateResult.RestrictionReason[];
   constructor() {}
-  async _fill(event:NewMessageEvent){
-    if(event.message){
-      if((event.message.fromId) instanceof Api.PeerUser){
-        (event.message.fromId) as Api.PeerUser 
-        this.id = event.message.fromId.userId
-      }else{
-        if(event.message.senderId){
-          this.id = event.message.senderId
-        }else{
-          if(event.message.peerId){
-            if((event.message.peerId) instanceof Api.PeerUser){
-              (event.message.peerId) as Api.PeerUser 
-              this.id = event.message.peerId.userId
+  async _fill(event: NewMessageEvent) {
+    if (event.message) {
+      if (event.message.fromId instanceof Api.PeerUser) {
+        event.message.fromId as Api.PeerUser;
+        this.id = event.message.fromId.userId;
+      } else {
+        if (event.message.senderId) {
+          this.id = event.message.senderId;
+        } else {
+          if (event.message.peerId) {
+            if (event.message.peerId instanceof Api.PeerUser) {
+              event.message.peerId as Api.PeerUser;
+              this.id = event.message.peerId.userId;
             }
           }
         }
       }
     }
-    if(this.id){
-      let tg = new Telegram(event.client!) 
-      let entity = await tg.getEntity(this.id)
-      this.username = entity.username 
-      this.firstName = entity.firstName 
-      this.lastName = entity.lastName
-      this.status = entity.status
-      this.self = entity.self 
-      this.deleted = entity.deleted 
-      this.fake = entity.fake 
-      this.scam = entity.scam 
-      this.bot = entity.bot 
-      this.verified = entity.verified 
-      this.restricted = entity.restricted 
-      if(entity.dcId){
-        this.dcId = entity.dcId
+    if (this.id) {
+      let tg = new Telegram(event.client!);
+      let entity = await tg.getEntity(this.id);
+      this.username = entity.username;
+      this.firstName = entity.firstName;
+      this.lastName = entity.lastName;
+      this.status = entity.status;
+      this.self = entity.self;
+      this.deleted = entity.deleted;
+      this.fake = entity.fake;
+      this.scam = entity.scam;
+      this.bot = entity.bot;
+      this.verified = entity.verified;
+      this.restricted = entity.restricted;
+      if (entity.dcId) {
+        this.dcId = entity.dcId;
       }
-      if(entity.photo){
-        this.photo = entity.photo
+      if (entity.photo) {
+        this.photo = entity.photo;
       }
-      if(entity.restrictionReason){
-        this.restrictionReason = entity.restrictionReason
+      if (entity.restrictionReason) {
+        this.restrictionReason = entity.restrictionReason;
       }
     }
-    return 
+    return;
   }
 }
-

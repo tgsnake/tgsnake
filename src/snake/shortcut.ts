@@ -33,15 +33,15 @@ export class Shortcut {
    * Init Class.
    * @param tgclient - Telegram Client
    * @param event - Incomming new Event (NewMessageEvent)
-  */ 
-  async init(tgclient: TelegramClient, event: NewMessageEvent){
+   */
+  async init(tgclient: TelegramClient, event: NewMessageEvent) {
     client = tgclient;
     this.telegram = new Telegram(tgclient);
     this.event = event;
-    let msg = new Message() 
-    await msg._fill(event) 
-    this.message = msg 
-    return this
+    let msg = new Message();
+    await msg._fill(event);
+    this.message = msg;
+    return this;
   }
   /**
    * shortcut from {@link Telegram.sendMessage} with replying message and markdown parse.
