@@ -155,7 +155,7 @@ export interface replyMoreParams {
   /**
    * Reply markup for sending bot buttons
    */
-  replyMarkup?: Api.TypeReplyMarkup;
+  replyMarkup?: TypeReplyMarkup;
   /**
    * Message entities for sending styled text.
    */
@@ -169,17 +169,116 @@ export interface replyMoreParams {
    */
   parseMode?: string;
 } 
-export interface inlineKeyboard {
+export type TypeReplyMarkup = inlineKeyboard | replyKeyboard | removeKeyboard | forceReplyMarkup
+/**
+ * Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot's message and tapped 'Reply')
+*/
+export interface forceReplyMarkup {
+  /**
+   * Shows reply interface to the user, as if they manually selected the bot's message and tapped 'Reply'
+  */
+  forceReply:boolean; 
+  /**
+   * The placeholder to be shown in the input field when the reply is active
+  */
+  inputFieldPlaceholder?:string; 
+  /**
+   * Use this parameter if you want to force reply from specific users only.
+  */
+  selective?:boolean; 
+  /**
+   * Requests clients to hide the keyboard as soon as it's been used. 
+  */
+  singleUse?:boolean; 
+}
+/**
+ * Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter-keyboard.
+*/
+export interface removeKeyboard {
+  /**
+   * Requests clients to remove the custom keyboard (user will not be able to summon this keyboard
+  */
+  removeKeyboard:boolean; 
+  /**
+   * Use this parameter if you want to remove the keyboard for specific users only
+  */
+  selective?:boolean;
+}
+/** 
+ * Bot keyboard
+*/
+export interface replyKeyboard { 
+  /** 
+   * Array of array of {@link replyKeyboardButton} or Array of array of string. 
+   * @example 
+   * ```ts 
+   * [["hello"]]
+   * ```
+  */
+  keyboard:replyKeyboardButton[][]|string[][];
+  /**
+   * Requests clients to resize the keyboard vertically for optimal fit (e.g., make the keyboard smaller if there are just two rows of buttons).
+  */
+  resizeKeyboard?:boolean; 
+  /**
+   * Requests clients to hide the keyboard as soon as it's been used. 
+  */
+  oneTimeKeyboard?:boolean; 
+  /**
+   * The placeholder to be shown in the input field when the keyboard is active.
+  */
+  inputFieldPlaceholder?:string; 
+  /**
+   * Use this parameter if you want to show the keyboard to specific users only. 
+  */
+  selective?:boolean;
+}
+export interface replyKeyboardButton { 
+  /** keyboard text */
+  text:string;  
+  /** The user's phone number will be sent as a contact when the button is pressed */
+  requestContact?:boolean; 
+  /** The user's current location will be sent when the button is pressed. */
+  requestLocation?:boolean; 
+  /**
+   * The user will be asked to create a poll and send it to the bot when the button is pressed. <br/> 
+   * If _quiz_ is passed, the user will be allowed to create only polls in the quiz mode. <br/>
+   * If _regular_ is passed, only regular polls will be allowed. Otherwise, the user will be allowed to create a poll of _any_ type.
+  */
+  requestPoll?:"regular"|"quiz";
+}
+/**
+ * Bot button
+*/
+export interface inlineKeyboard { 
+  /**
+   * array of array of {@link inlineKeyboardButton} 
+   * @example 
+   * ```ts 
+   * [[{
+   *  text : "button", // the text of button 
+   *  callbackData : "cbdata" // the callback data of button.
+   * }]]
+   * ```
+  */
   inlineKeyboard:inlineKeyboardButton[][];
 }
-export interface inlineKeyboardButton {
-  text:string;
+export interface inlineKeyboardButton { 
+  /** Button text */
+  text:string; 
+  /** Button url */ 
   url?:string; 
-  loginUrl?:loginUrl;
-  callbackData?:string;
-  switchInlineQuery?:string;
+  /** loginUrl button*/
+  loginUrl?:loginUrl; 
+  /** callback data button */
+  callbackData?:string; 
+  /** query to fill the inline query */
+  switchInlineQuery?:string; 
+  /** query to fill the inline query */
   switchInlineQueryCurrentChat?:string; 
-  callbackGame?:string;
+  /** description of game */
+  callbackGame?:string; 
+  /** description of product */
   buy?:string;
 }
 export interface loginUrl { 
@@ -197,9 +296,21 @@ export interface loginUrl {
   */
   url:string; 
   /**
-   * Username of a bot, which will be used for user authorization. See Setting up a bot for more details. If not specified, the current bot's username will be assumed. The url's domain must be the same as the domain linked with the bot.
+   * id and access hash of a bot, which will be used for user authorization. The url's domain must be the same as the domain linked with the bot.
   */
-  botUsername?:string;
+  bot:BotLoginUrl;
+}
+export interface BotLoginUrl { 
+  /** 
+   * Bot Id. 
+   * bot id getting from .getEntity()
+  */
+  id:number; 
+  /**
+   * Bot access hash 
+   * access hash getting from .getEntity()
+  */
+  accessHash:BigInteger;
 }
 //method interface
 interface onProgress {
@@ -249,7 +360,7 @@ export interface sendMessageMoreParams {
   /**
    * Reply markup for sending bot buttons
    */
-  replyMarkup?: Api.TypeReplyMarkup;
+  replyMarkup?: TypeReplyMarkup;
   /**
    * Message entities for sending styled text.
    * if you set parse mode don't set this.
@@ -272,7 +383,7 @@ export interface editMessageMoreParams {
   /**
    * Reply markup for sending bot buttons
    */
-  replyMarkup?: Api.TypeReplyMarkup;
+  replyMarkup?: TypeReplyMarkup;
   /**
    * Message entities for sending styled text.
    * if you set parse mode don't set this.
@@ -563,7 +674,7 @@ export interface sendMediaMoreParams {
   /**
    * Reply markup for sending bot buttons
    */
-  replyMarkup?: Api.TypeReplyMarkup;
+  replyMarkup?: TypeReplyMarkup;
   /**
    * Message entities for sending styled text.
    * if you set parse mode don't set this.

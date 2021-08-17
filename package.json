@@ -5,7 +5,7 @@
   "main": "./lib/index.js",
   "scripts": {
     "dev": "ts-node ./tes/index.ts",
-    "prepare": "echo \"🐍 Building snake package.\" && tsc",
+    "prepare": "husky install && echo \"🐍 Building snake package.\" && tsc",
     "build": "tsc",
     "build:docs": "typedoc",
     "prettier": "prettier --write ./src"
@@ -36,6 +36,7 @@
   "devDependencies": {
     "@types/node": "^16.3.1",
     "dotenv": "^10.0.0",
+    "husky": "^7.0.1",
     "prettier": "^2.3.2",
     "ts-node": "^10.0.0",
     "typedoc": "^0.21.4",

@@ -12,7 +12,7 @@ import fs from "fs"
 import {StoreSession,StringSession} from "telegram/sessions" 
 import BigInt from "big-integer"
 import {decodeFileId} from "tg-file-id" 
-
+import * as Utils from "../src/snake/utils"
 const bot = new Snake()
 const filter = new Filters()
 //bot.generateSession()
@@ -20,9 +20,21 @@ bot.catchError((reason, promise)=>{
   console.log(reason.message)
 })
 bot.run()
-bot.onNewEvent((event)=>{
+/*bot.onNewEvent((event)=>{
   console.log(event)
-})
+})*/
+/*console.log(JSON.stringify(Utils.BuildReplyMarkup({
+  inlineKeyboard : [[{
+    text : "halo",
+    url : "apa kabar"
+  },{
+    text : "halo hai",
+    url : "apa kabar kamu"
+  }],[{
+    text : "callback",
+    callbackData : "halo"
+  }]]
+}),null,2))*/
 bot.onNewMessage(async (ctx,message)=>{
   //ctx.telegram.readHistory(message.chat.id)
   //ctx.telegram.readMentions(message.chat.id)
@@ -34,27 +46,12 @@ bot.onNewMessage(async (ctx,message)=>{
 })
 filter.cmd("snake",async (ctx,message) => {
   let msg = await ctx.reply("Hai, saya snake!",{
-    replyMarkup : new Api.ReplyInlineMarkup({
-      rows : [
-          new Api.KeyboardButtonRow({
-            buttons : [
-                new Api.KeyboardButtonCallback({
-                  text : "hai",
-                  data : Buffer.from("hai"),
-                  requiresPassword : true
-                })
-              ]
-          }),
-          new Api.KeyboardButtonRow({
-            buttons : [
-                new Api.KeyboardButtonCallback({
-                  text : "ping",
-                  data : Buffer.from("ping")
-                })
-              ]
-          })
-        ]
-    })
+    replyMarkup : {
+      inlineKeyboard : [[{
+        text : "hai",
+        callbackData : "halo"
+      }]]
+    }
   })
 })
 filter.cmd("ping",async (ctx,message) => {

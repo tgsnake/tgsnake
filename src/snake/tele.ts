@@ -25,6 +25,7 @@ import FileType from 'file-type';
 import { _parseMessageText } from 'telegram/client/messageParse';
 import * as Interface from './interface';
 import { FileId, decodeFileId } from 'tg-file-id';
+import * as Utils from "./utils"
 
 export let client: TelegramClient;
 
@@ -89,6 +90,7 @@ export class Telegram {
     more?: Interface.sendMessageMoreParams
   ) {
     let parseMode = '';
+    let replyMarkup;
     if (more) {
       if (more.parseMode) {
         parseMode = more.parseMode.toLowerCase();
@@ -101,6 +103,10 @@ export class Telegram {
         entities = more.entities;
         parseText = text;
       }
+      if(more.replyMarkup){
+        replyMarkup = Utils.BuildReplyMarkup(more.replyMarkup!)
+        delete more.replyMarkup
+      }
     }
     return new reResults.ClassResultSendMessage(
       await client.invoke(
@@ -109,6 +115,7 @@ export class Telegram {
           message: parseText,
           randomId: BigInt(-Math.floor(Math.random() * 10000000000000)),
           entities: entities,
+          replyMarkup : replyMarkup,
           ...more,
         })
       )
@@ -163,6 +170,7 @@ export class Telegram {
     more?: Interface.editMessageMoreParams
   ) {
     let parseMode = '';
+    let replyMarkup;
     if (more) {
       if (more.parseMode) {
         parseMode = more.parseMode.toLowerCase();
@@ -175,6 +183,10 @@ export class Telegram {
         entities = more.entities;
         parseText = text;
       }
+      if(more.replyMarkup){
+        replyMarkup = Utils.BuildReplyMarkup(more.replyMarkup!) 
+        delete more.replyMarkup
+      }
     }
     return new reResults.ClassResultEditMessage(
       await client.invoke(
@@ -183,6 +195,7 @@ export class Telegram {
           id: message_id,
           message: parseText,
           entities: entities,
+          replyMarkup : replyMarkup,
           ...more,
         })
       )
@@ -842,16 +855,22 @@ export class Telegram {
     }
     let parseText;
     let entities;
+    let replyMarkup;
     if (more) {
       if (more.entities) {
         entities = more.entities;
-        parseText = more.caption || '';
+        parseText = more.caption || ''; 
+        delete more.entities 
       }
-      if (more.caption) {
+      if (more.caption && !entities) {
         let parse = await _parseMessageText(client, more.caption, parseMode);
         parseText = parse[0];
         entities = parse[1];
         delete more.caption;
+      }
+      if(more.replyMarkup){
+        replyMarkup = Utils.BuildReplyMarkup(more.replyMarkup!)
+        delete more.replyMarkup
       }
     }
     return client.invoke(
@@ -861,6 +880,8 @@ export class Telegram {
         message: parseText || '',
         randomId: BigInt(-Math.floor(Math.random() * 10000000000000)),
         entities: entities,
+        replyMarkup : replyMarkup,
+        ...more
       })
     );
   }
