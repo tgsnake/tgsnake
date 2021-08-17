@@ -9,7 +9,7 @@
     "build": "tsc",
     "build:docs": "typedoc",
     "prettier": "prettier --write ./src",
-    "prettier:quick" : "pretty-quick --staged --pattern \"src/**/*.*(js|jsx|ts|tsx)\""
+    "prettier:quick": "pretty-quick --staged --pattern \"src/**/*.*(js|jsx|ts|tsx)\""
   },
   "homepage": "https://tgsnake.js.org",
   "keywords": [
