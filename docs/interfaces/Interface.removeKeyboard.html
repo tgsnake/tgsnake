@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>forwardMessageMoreParams | tgsnake - v1.1.0</title>
+	<title>removeKeyboard | tgsnake - v1.1.0</title>
 	<meta name="description" content="Documentation for tgsnake - v1.1.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -58,21 +58,28 @@
 					<a href="../modules/Interface.html">Interface</a>
 				</li>
 				<li>
-					<a href="Interface.forwardMessageMoreParams.html">forwardMessageMoreParams</a>
+					<a href="Interface.removeKeyboard.html">removeKeyboard</a>
 				</li>
 			</ul>
-			<h1>Interface forwardMessageMoreParams</h1>
+			<h1>Interface removeKeyboard</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Upon receiving a message with this object, Telegram clients will remove the current custom keyboard and display the default letter-keyboard.</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">forwardMessageMoreParams</span>
+						<span class="target">removeKeyboard</span>
 					</li>
 				</ul>
 			</section>
@@ -83,10 +90,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.forwardMessageMoreParams.html#background" class="tsd-kind-icon">background</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.forwardMessageMoreParams.html#scheduleDate" class="tsd-kind-icon">schedule<wbr>Date</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.forwardMessageMoreParams.html#silent" class="tsd-kind-icon">silent</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.forwardMessageMoreParams.html#withMyScore" class="tsd-kind-icon">with<wbr>MyScore</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.removeKeyboard.html#removeKeyboard" class="tsd-kind-icon">remove<wbr>Keyboard</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.removeKeyboard.html#selective" class="tsd-kind-icon">selective</a></li>
 							</ul>
 						</section>
 					</div>
@@ -95,62 +100,32 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="background" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> background</h3>
-					<div class="tsd-signature tsd-kind-icon">background<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<a name="removeKeyboard" class="tsd-anchor"></a>
+					<h3>remove<wbr>Keyboard</h3>
+					<div class="tsd-signature tsd-kind-icon">remove<wbr>Keyboard<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/interface.ts#L413">snake/interface.ts:413</a></li>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/interface.ts#L201">snake/interface.ts:201</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Whether to send the message in background.</p>
+							<p>Requests clients to remove the custom keyboard (user will not be able to summon this keyboard</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="scheduleDate" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> schedule<wbr>Date</h3>
-					<div class="tsd-signature tsd-kind-icon">schedule<wbr>Date<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="selective" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> selective</h3>
+					<div class="tsd-signature tsd-kind-icon">selective<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/interface.ts#L417">snake/interface.ts:417</a></li>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/interface.ts#L205">snake/interface.ts:205</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Scheduled message date for scheduled messages.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="silent" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> silent</h3>
-					<div class="tsd-signature tsd-kind-icon">silent<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/interface.ts#L409">snake/interface.ts:409</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Whether to send messages silently (no notification will be triggered on the destination clients).</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="withMyScore" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> with<wbr>MyScore</h3>
-					<div class="tsd-signature tsd-kind-icon">with<wbr>MyScore<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/interface.ts#L405">snake/interface.ts:405</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>When forwarding games, whether to include your score in the game.</p>
+							<p>Use this parameter if you want to remove the keyboard for specific users only</p>
 						</div>
 					</div>
 				</section>
@@ -205,27 +180,9 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="Interface.forceReplyMarkup.html" class="tsd-kind-icon">force<wbr>Reply<wbr>Markup</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-namespace">
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="Interface.forwardMessageMoreParams.html" class="tsd-kind-icon">forward<wbr>Message<wbr>More<wbr>Params</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="Interface.forwardMessageMoreParams.html#background" class="tsd-kind-icon">background</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="Interface.forwardMessageMoreParams.html#scheduleDate" class="tsd-kind-icon">schedule<wbr>Date</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="Interface.forwardMessageMoreParams.html#silent" class="tsd-kind-icon">silent</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="Interface.forwardMessageMoreParams.html#withMyScore" class="tsd-kind-icon">with<wbr>MyScore</a>
-							</li>
-						</ul>
 					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="Interface.getAdminLogMoreParams.html" class="tsd-kind-icon">get<wbr>Admin<wbr>Log<wbr>More<wbr>Params</a>
 					</li>
@@ -250,9 +207,21 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="Interface.readHistoryMoreParams.html" class="tsd-kind-icon">read<wbr>History<wbr>More<wbr>Params</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="Interface.removeKeyboard.html" class="tsd-kind-icon">remove<wbr>Keyboard</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="Interface.removeKeyboard.html#removeKeyboard" class="tsd-kind-icon">remove<wbr>Keyboard</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="Interface.removeKeyboard.html#selective" class="tsd-kind-icon">selective</a>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="Interface.replyKeyboard.html" class="tsd-kind-icon">reply<wbr>Keyboard</a>
 					</li>

@@ -6,105 +6,85 @@
 // Tgsnake is a free software : you can redistribute it and/or modify
 // it under the terms of the MIT License as published.
 
-import {Snake,Filters,GenerateResult, Interface, Shortcut, GramJs,GenerateJson} from "../src"
+import {Snake,LegacyFilters,Filters,GenerateResult, Interface, Shortcut, GramJs,GenerateJson} from "../src"
 const {Api} = GramJs
 import fs from "fs"
 import {StoreSession,StringSession} from "telegram/sessions" 
 import BigInt from "big-integer"
 import {decodeFileId} from "tg-file-id" 
-
+import * as Utils from "../src/snake/utils"
 const bot = new Snake()
+const filter = new Filters()
 //bot.generateSession()
 bot.catchError((reason, promise)=>{
   console.log(reason.message)
 })
 bot.run()
-bot.onNewMessage(async (ctx:Shortcut,message)=>{
-  let {telegram} = bot
-  let tg = telegram 
-  let filter = new Filters(ctx)
-  let {cmd,hears} = filter
-  tg.readHistory(message.chat.id)
-  tg.readMentions(message.chat.id)
-  cmd("snake",async () => {
-    let msg = await ctx.reply("Hai, saya snake!")
-  })
-  cmd("ping",async () => {
-    let d = ((Date.now() / 1000) - Number(message.date)).toFixed(3)
-    ctx.reply(`🏓 **Pong!**\n\`${d} s\``)
-  })
-  cmd("purge",async () => {
-    let now = Date.now() / 1000
-    if(message.replyToMessageId){
-      let cache:number[] = [message.id] 
-      let abs:number = Math.abs(message.id - message.replyToMessageId)
-      for(let i = 0; i < abs; i++){
-        let num = message.replyToMessageId ++
-        if(num == message.id) break; 
-        cache.push(num)
-      }
-      ctx.deleteMessages(cache)
-      let ping = ((Date.now() /1000) - now).toFixed(3)
-      return ctx.respond(`🧹 Done. Clean Now! - \`${ping} s\``)
+/*bot.onNewEvent((event)=>{
+  console.log(event)
+})*/
+/*console.log(JSON.stringify(Utils.BuildReplyMarkup({
+  inlineKeyboard : [[{
+    text : "halo",
+    url : "apa kabar"
+  },{
+    text : "halo hai",
+    url : "apa kabar kamu"
+  }],[{
+    text : "callback",
+    callbackData : "halo"
+  }]]
+}),null,2))*/
+bot.onNewMessage(async (ctx,message)=>{
+  //ctx.telegram.readHistory(message.chat.id)
+  //ctx.telegram.readMentions(message.chat.id)
+  filter.init(ctx)
+  //console.log(message)
+  //let entity = await ctx.telegram.getEntity(ctx.message.chat.id) 
+  //console.log(entity)
+  //console.log(decodeFileId(String(message.from.photo?.fileId)))
+})
+filter.cmd("snake",async (ctx,message) => {
+  let msg = await ctx.reply("Hai, saya snake!",{
+    replyMarkup : {
+      inlineKeyboard : [[{
+        text : "hai",
+        callbackData : "halo"
+      }]]
     }
+  })
+})
+filter.cmd("ping",async (ctx,message) => {
+  let d = ((Date.now() / 1000) - Number(message.date)).toFixed(3)
+  ctx.reply(`🏓 **Pong!**\n\`${d} s\``)
+})
+filter.cmd("purge",async (ctx,message) => {
+  let now = Date.now() / 1000
+  if(message.replyToMessageId){
+    let cache:number[] = [message.id] 
+    let abs:number = Math.abs(message.id - message.replyToMessageId)
+    for(let i = 0; i < abs; i++){
+      let num = message.replyToMessageId ++
+      if(num == message.id) break; 
+      cache.push(num)
+    }
+    ctx.deleteMessages(cache)
     let ping = ((Date.now() /1000) - now).toFixed(3)
-    return ctx.reply(`🧹 What should I clean? - \`${ping} s\``)
-  })
-  cmd("spam",async () =>{
-    if(message.text){
-      let split = message.text.split(" ") 
-      let num = Number(split[1]) 
-      split.splice(1,1)
-      split.splice(0,1)
-      console.log(split)
-      let random = split.join(" ").split("\n%%%")
-      for(let i = 0; i< num; i++){
-        if(i >= 50) return; 
-        ctx.respond(random[Math.floor(Math.random() * random.length)])
-      }
+    return ctx.respond(`🧹 Done. Clean Now! - \`${ping} s\``)
+  }
+  let ping = ((Date.now() /1000) - now).toFixed(3)
+  return ctx.reply(`🧹 What should I clean? - \`${ping} s\``)
+})
+filter.cmd("spam",async (ctx,message) =>{
+  if(message.text){
+    let split = message.text.split(" ") 
+    let num = Number(split[1]) 
+    split.splice(1,1)
+    split.splice(0,1)
+    let random = split.join(" ").split("\n%%%")
+    for(let i = 0; i< num; i++){
+      if(i >= 50) return; 
+      ctx.respond(random[Math.floor(Math.random() * random.length)])
     }
-  })
-  if(message.media){
-    console.log(message.media)
-    if(message.media.type){
-      if(message.media.type == "sticker"){
-        tg.sendSticker(message.chat.id,message.media.fileId)
-      }
-    }
-    //tg.sendMedia(message.chat.id,message.media)
-    /*console.log(message.media.document.accessHash,message.media.document.id)
-    let media = new GenerateJson.Media(message.media)
-    if(media.fileId){
-      ctx.reply(`File Id : \`${media.fileId}\``)
-      let decode = decodeFileId(media.fileId)
-      if(decode.fileType == "sticker"){
-        let accessHash = String(decode.access_hash) 
-        console.log(decode)
-        while(true){
-          console.log(accessHash)
-          let inputDocument = new Api.InputDocument({
-            id : BigInt(decode.id),
-            accessHash : BigInt(accessHash),
-            fileReference : Buffer.from(decode.fileReference,"hex")
-          })
-          try{
-            await tg.sendMedia(
-              message.chat.id,
-              new Api.InputMediaDocument({
-                id : inputDocument
-              })
-            )
-            break;
-          }catch(e){
-            if(!accessHash.startsWith("-")){
-              accessHash = `-${accessHash}`
-            }else{
-              throw new Error(e.message)
-              break;
-            }
-          }
-        }
-      }
-    }*/
   }
 })

@@ -1,14 +1,15 @@
 {
   "name": "tgsnake",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Telegram MTProto framework base gram.js",
   "main": "./lib/index.js",
   "scripts": {
-    "dev": "nodemon ./tes/index.ts",
-    "prepare": "echo \"🐍 Building snake package.\" && tsc",
+    "dev": "ts-node ./tes/index.ts",
+    "prepare": "husky install && echo \"🐍 Building snake package.\" && tsc",
     "build": "tsc",
     "build:docs": "typedoc",
-    "prettier": "prettier --write ./src"
+    "prettier": "prettier --write ./src",
+    "prettier:quick": "pretty-quick --staged --pattern \"src/**/*.*(js|jsx|ts|tsx)\""
   },
   "homepage": "https://tgsnake.js.org",
   "keywords": [
@@ -36,8 +37,9 @@
   "devDependencies": {
     "@types/node": "^16.3.1",
     "dotenv": "^10.0.0",
-    "nodemon": "^2.0.7",
+    "husky": "^7.0.1",
     "prettier": "^2.3.2",
+    "pretty-quick": "^3.1.1",
     "ts-node": "^10.0.0",
     "typedoc": "^0.21.4",
     "typedoc-plugin-cname": "^1.0.1",

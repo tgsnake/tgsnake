@@ -10,312 +10,186 @@ import * as Interface from './interface';
 import { Api } from 'telegram';
 import { BigInteger } from 'big-integer';
 import { FileId } from 'tg-file-id';
-export class Message implements Interface.Message {
+import { NewMessageEvent } from 'telegram/events/NewMessage';
+import { Telegram } from './tele';
+import * as GenerateResult from './rewriteresults';
+import * as media from './media';
+export class Message {
   id!: number;
-  chat: Interface.Chat;
-  from: Interface.From;
+  chat!: Chat;
+  from!: From;
   text?: string;
-  entities?: Api.TypeMessageEntity;
+  entities?: Api.TypeMessageEntity[];
   replyToMessageId?: number;
-  date: Date | number;
-  media?: Api.TypeMessageMedia | Media;
-  /**
-   * rewrite json from incoming message.
-   * original message can be found in bot.event.message.
-   */
-  constructor(event?: any) {
+  date!: Date | number;
+  media?: Api.TypeMessageMedia | media.Media;
+  constructor() {}
+  /** @hidden */
+  async _fill(event: NewMessageEvent) {
     let message = event.message;
-    /**
-     * message id from incoming new message
-     */
+    let cht = new Chat();
+    let frm = new From();
+    await cht._fill(event);
+    await frm._fill(event);
     this.id = message.id;
-    /**
-     * class chatClass
-     */
-    this.chat = new Chat(message, event);
-    /**
-     * class fromClass
-     */
-    this.from = new From(message, event);
-    /**
-     * date of sending message
-     */
+    this.chat = cht;
+    this.from = frm;
     this.date = message.date || Date.now() / 1000;
-    /**
-     * if user sending text with entities (bold/italic/etc..) this object will showing.
-     */
     if (message.entities) {
       this.entities = message.entities;
     }
-    /**
-     * message_id if user reply some message.
-     */
-    if (message.replyTo !== null) {
+    if (message.replyTo) {
       if (message.replyTo.replyToMsgId) {
         this.replyToMessageId = message.replyTo.replyToMsgId;
       }
     }
-    /**
-     * if user sending message this object will showing
-     */
     if (message.message) {
       this.text = message.message;
     }
-    /**
-     * if user sending media this object will showing.
-     */
     if (message.media) {
-      let convert = new Media(message.media);
+      let convert = new media.Media(message.media);
       if (convert.type) {
         this.media = convert;
       } else {
         this.media = message.media;
       }
     }
+    return this;
   }
 }
-class Chat implements Interface.Chat {
+class Chat {
   id!: number;
   title?: string;
-  first_name?: string;
-  last_name?: string;
+  firstName?: string;
+  lastName?: string;
   username?: string;
-  private?: boolean | string;
+  private?: boolean;
+  photo?: GenerateResult.ChatPhoto;
+  defaultBannedRights?: GenerateResult.BannedRights;
+  participantsCount?: number;
+  dcId?: number;
+  fake: boolean = false;
+  scam: boolean = false;
+  constructor() {}
   /**
-   * To generate new json from `message.chat`
+   * @hidden
    */
-  constructor(message?: any, event?: any) {
-    if (message.chat) {
-      /**
-       * Generate chatId.
-       * If chat id == undefined this constructor don't have chatId
-       * use this chat id to call telegram api.
-       */
-      if (message.chat.id) {
-        this.id = message.chat.id;
-      }
-      /**
-       * Generate Title of chat
-       * title of groups or channel when nee message comming.
-       */
-      if (message.chat.title) {
-        this.title = message.chat.title;
-      }
-      /**
-       * Generate First Name (private chat)
-       * first name from user when user sending message in private chat
-       */
-      if (message.chat.firstName) {
-        this.first_name = message.chat.firstName;
-      }
-      /**
-       * Generate Last Name (private chat)
-       * last name from user when user sending message in private chat
-       */
-      if (message.chat.lastName) {
-        this.last_name = message.chat.lastName;
-      }
-      /**
-       *  Generate Username
-       * username from chat (groups/channel/user)
-       */
-      if (message.chat.username) {
-        this.username = message.chat.username;
-      }
-    } else {
-      /**
-       * if message.chat.id not found change with this
-       */
-      if (message.senderId) {
-        this.id = message.senderId;
+  async _fill(event: NewMessageEvent) {
+    if (event.message) {
+      if (event.message.peerId instanceof Api.PeerUser) {
+        event.message.peerId as Api.PeerUser;
+        this.id = event.message.peerId.userId;
       }
     }
-    /**
-     * Generate typeof chat (private/groups)
-     * where user sending messsage.
-     */
-    this.private = event.isPrivate || false;
+    if (event.message) {
+      if (event.message.peerId instanceof Api.PeerChat) {
+        event.message.peerId as Api.PeerChat;
+        this.id = event.message.peerId.chatId * -1;
+      }
+    }
+    if (event.message) {
+      if (event.message.peerId instanceof Api.PeerChannel) {
+        event.message.peerId as Api.PeerChannel;
+        this.id = Number(`-100${event.message.peerId.channelId}`);
+      }
+    }
+    if (this.id) {
+      let tg = new Telegram(event.client!);
+      let entity = await tg.getEntity(this.id);
+      if (entity.username) {
+        this.username = entity.username!;
+      }
+      if (entity.firstName) {
+        this.firstName = entity.firstName!;
+      }
+      if (entity.lastName) {
+        this.lastName = entity.lastName!;
+      }
+      if (entity.title) {
+        this.title = entity.title!;
+      }
+      if (entity.photo) {
+        this.photo = entity.photo!;
+      }
+      if (entity.defaultBannedRights) {
+        this.defaultBannedRights = entity.defaultBannedRights;
+      }
+      if (entity.participantsCount) {
+        this.participantsCount = entity.participantsCount;
+      }
+      if (entity.dcId) {
+        this.dcId = entity.dcId;
+      }
+      if (entity.fake) {
+        this.fake = entity.fake;
+      }
+      if (entity.scam) {
+        this.scam = entity.scam;
+      }
+      this.private = Boolean(entity.type == 'user');
+    }
+    return;
   }
 }
-class From implements Interface.From {
+class From {
   id!: number;
-  first_name?: string;
-  last_name?: string;
+  firstName?: string;
+  lastName?: string;
   username?: string;
-  deleted?: boolean;
-  restricted?: boolean;
-  lang?: string;
   status?: string;
-  /**
-   * To generate json from `message.sender`
-   */
-  constructor(message?: any, event?: any) {
-    if (message.sender) {
-      /**
-       * Generate userId
-       * userId is id when user sends message to group/private chat
-       */
-      if (message.sender.id) {
-        this.id = message.sender.id;
-      }
-      /**
-       * Generate First Name
-       * firstName from user when sending message
-       */
-      if (message.sender.firstName) {
-        this.first_name = message.sender.firstName;
-      }
-      /**
-       * Generate Last Name
-       * lastName from user when sending message
-       */
-      if (message.sender.lastName) {
-        this.last_name = message.sender.lastName;
-      }
-      /**
-       * Generate username
-       * firstName from user when sending message
-       */
-      if (message.sender.username) {
-        this.username = message.sender.username;
-      }
-      /**
-       *  if user delete account this object will showing
-       */
-      if (message.sender.deleted) {
-        this.deleted = message.sender.deleted;
-      }
-      /**
-       *  if user restricted this object will showing
-       */
-      if (message.sender.restricted) {
-        this.restricted = message.sender.restricted;
-      }
-      /**
-       * language used by user
-       */
-      if (message.sender.langCode) {
-        this.lang = message.sender.langCode;
-      }
-      /**
-       * Last seen from user
-       */
-      if (message.sender.status) {
-        if (message.sender.status.className) {
-          this.status = message.sender.status.className;
-        }
-      }
-    } else {
-      /**
-       * if message.sender.id not found change with this
-       */
-      if (message.senderId) {
-        this.id = message.senderId;
-      }
-    }
-  }
-}
-let typeId = {
-  THUMBNAIL: 0,
-  CHAT_PHOTO: 1, // ProfilePhoto
-  PHOTO: 2,
-  VOICE: 3, // VoiceNote
-  VIDEO: 4,
-  DOCUMENT: 5,
-  ENCRYPTED: 6,
-  TEMP: 7,
-  STICKER: 8,
-  AUDIO: 9,
-  ANIMATION: 10,
-  ENCRYPTED_THUMBNAIL: 11,
-  WALLPAPER: 12,
-  VIDEO_NOTE: 13,
-  SECURE_RAW: 14,
-  SECURE: 15,
-  BACKGROUND: 16,
-  DOCUMENT_AS_FILE: 17,
-};
-let thumbTypeId = {
-  LEGACY: 0,
-  THUMBNAIL: 1,
-  CHAT_PHOTO_SMALL: 2, //DialogPhotoSmall
-  CHAT_PHOTO_BIG: 3, // DialogPhotoBig
-  STICKER_SET_THUMBNAIL: 4,
-};
-class Media {
-  type?: string;
-  fileId!: string;
-  uniqueFileId!: string;
-  fileName?: string;
-  constructor(media: Api.TypeMessageMedia) {
-    if (media instanceof Api.MessageMediaDocument) {
-      if (media.document instanceof Api.Document) {
-        let doc = media.document as Api.Document;
-        switch (doc.mimeType) {
-          case 'image/webp':
-            this.type = 'sticker';
-            for (let i = 0; i < doc.attributes.length; i++) {
-              if (doc.attributes[i] instanceof Api.DocumentAttributeFilename) {
-                let daf = doc.attributes[i] as Api.DocumentAttributeFilename;
-                this.fileName = daf.fileName;
-                break;
-              }
+  self?: boolean;
+  deleted?: boolean;
+  fake?: boolean;
+  scam?: boolean;
+  bot?: boolean;
+  verified?: boolean;
+  restricted?: boolean;
+  dcId?: number;
+  photo?: GenerateResult.ChatPhoto;
+  restrictionReason?: GenerateResult.RestrictionReason[];
+  constructor() {}
+  async _fill(event: NewMessageEvent) {
+    if (event.message) {
+      if (event.message.fromId instanceof Api.PeerUser) {
+        event.message.fromId as Api.PeerUser;
+        this.id = event.message.fromId.userId;
+      } else {
+        if (event.message.senderId) {
+          this.id = event.message.senderId;
+        } else {
+          if (event.message.peerId) {
+            if (event.message.peerId instanceof Api.PeerUser) {
+              event.message.peerId as Api.PeerUser;
+              this.id = event.message.peerId.userId;
             }
-            let fId = generateFileId({
-              version: 4,
-              subVersion: 30,
-              dcId: doc.dcId,
-              fileType: 'sticker',
-              id: doc.id,
-              accessHash: doc.accessHash,
-              typeId: typeId.STICKER,
-              fileReference: doc.fileReference.toString('hex'),
-            });
-            this.fileId = fId.fileId;
-            this.uniqueFileId = fId.uniqueFileId;
-            break;
-          default:
+          }
         }
       }
     }
-  }
-}
-interface generateFileId {
-  version: number;
-  subVersion: number;
-  dcId: number;
-  fileType: string | number;
-  id: bigint | BigInteger;
-  accessHash: bigint | BigInteger;
-  typeId: number;
-  fileReference: string;
-  url?: string;
-  volumeId?: number | bigint;
-  localId?: number;
-  photoSizeSource?: 'legacy' | 'thumbnail' | 'dialogPhoto' | 'stickerSetThumbnail';
-  photoSizeSourceId?: number;
-  secret?: number;
-  dialogId?: number;
-  dialogAccessHash?: number;
-  isSmallDialogPhoto?: boolean;
-  stickerSetId?: number;
-  stickerSetAccessHash?: number;
-  thumbType?: string;
-  thumbTypeId?: number;
-}
-function generateFileId(medias: generateFileId) {
-  let file = new FileId();
-  for (let [key, value] of Object.entries(medias)) {
-    if (key == 'id' || key == 'accessHash' || key == 'secret') {
-      file[key] = BigInt(String(value).replace('-', ''));
-    } else {
-      file[key] = value;
+    if (this.id) {
+      let tg = new Telegram(event.client!);
+      let entity = await tg.getEntity(this.id);
+      this.username = entity.username;
+      this.firstName = entity.firstName;
+      this.lastName = entity.lastName;
+      this.status = entity.status;
+      this.self = entity.self;
+      this.deleted = entity.deleted;
+      this.fake = entity.fake;
+      this.scam = entity.scam;
+      this.bot = entity.bot;
+      this.verified = entity.verified;
+      this.restricted = entity.restricted;
+      if (entity.dcId) {
+        this.dcId = entity.dcId;
+      }
+      if (entity.photo) {
+        this.photo = entity.photo;
+      }
+      if (entity.restrictionReason) {
+        this.restrictionReason = entity.restrictionReason;
+      }
     }
+    return;
   }
-  let file_id = file.toFileId();
-  let unfId = file.toFileUniqId();
-  return {
-    fileId: file_id,
-    uniqueFileId: unfId,
-  };
 }

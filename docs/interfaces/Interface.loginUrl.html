@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Message | tgsnake - v1.0.0</title>
-	<meta name="description" content="Documentation for tgsnake - v1.0.0">
+	<title>loginUrl | tgsnake - v1.1.0</title>
+	<meta name="description" content="Documentation for tgsnake - v1.1.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<script async src="../assets/js/search.js" id="search-script"></script>
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">tgsnake - v1.0.0</a>
+					<a href="../index.html" class="title">tgsnake - v1.1.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -52,16 +52,16 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../modules.html">tgsnake - v1.0.0</a>
+					<a href="../modules.html">tgsnake - v1.1.0</a>
 				</li>
 				<li>
 					<a href="../modules/Interface.html">Interface</a>
 				</li>
 				<li>
-					<a href="Interface.Message.html">Message</a>
+					<a href="Interface.loginUrl.html">loginUrl</a>
 				</li>
 			</ul>
-			<h1>Interface Message</h1>
+			<h1>Interface loginUrl</h1>
 		</div>
 	</div>
 </header>
@@ -72,14 +72,8 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Message</span>
+						<span class="target">loginUrl</span>
 					</li>
-				</ul>
-			</section>
-			<section class="tsd-panel">
-				<h3>Implemented by</h3>
-				<ul class="tsd-hierarchy">
-					<li><a href="../classes/GenerateJson.Message.html" class="tsd-signature-type" data-tsd-kind="Class">Message</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -89,14 +83,10 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.Message.html#chat" class="tsd-kind-icon">chat</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.Message.html#date" class="tsd-kind-icon">date</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.Message.html#entities" class="tsd-kind-icon">entities</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.Message.html#from" class="tsd-kind-icon">from</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.Message.html#id" class="tsd-kind-icon">id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.Message.html#media" class="tsd-kind-icon">media</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.Message.html#replyToMessageId" class="tsd-kind-icon">reply<wbr>ToMessage<wbr>Id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.Message.html#text" class="tsd-kind-icon">text</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.loginUrl.html#bot" class="tsd-kind-icon">bot</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.loginUrl.html#forwardText" class="tsd-kind-icon">forward<wbr>Text</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.loginUrl.html#requestWriteAccess" class="tsd-kind-icon">request<wbr>Write<wbr>Access</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="Interface.loginUrl.html#url" class="tsd-kind-icon">url</a></li>
 							</ul>
 						</section>
 					</div>
@@ -105,122 +95,63 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="chat" class="tsd-anchor"></a>
-					<h3>chat</h3>
-					<div class="tsd-signature tsd-kind-icon">chat<span class="tsd-signature-symbol">:</span> <a href="Interface.Chat.html" class="tsd-signature-type" data-tsd-kind="Interface">Chat</a></div>
+					<a name="bot" class="tsd-anchor"></a>
+					<h3>bot</h3>
+					<div class="tsd-signature tsd-kind-icon">bot<span class="tsd-signature-symbol">:</span> <a href="Interface.BotLoginUrl.html" class="tsd-signature-type" data-tsd-kind="Interface">BotLoginUrl</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/interface.ts#L141">snake/interface.ts:141</a></li>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/interface.ts#L301">snake/interface.ts:301</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>info about chat</p>
+							<p>id and access hash of a bot, which will be used for user authorization. The url&#39;s domain must be the same as the domain linked with the bot.</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="date" class="tsd-anchor"></a>
-					<h3>date</h3>
-					<div class="tsd-signature tsd-kind-icon">date<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Date</span></div>
+					<a name="forwardText" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> forward<wbr>Text</h3>
+					<div class="tsd-signature tsd-kind-icon">forward<wbr>Text<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/interface.ts#L161">snake/interface.ts:161</a></li>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/interface.ts#L292">snake/interface.ts:292</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Date when message sending.</p>
+							<p>New text of the button in forwarded messages.</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="entities" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> entities</h3>
-					<div class="tsd-signature tsd-kind-icon">entities<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">TypeMessageEntity</span></div>
+					<a name="requestWriteAccess" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> request<wbr>Write<wbr>Access</h3>
+					<div class="tsd-signature tsd-kind-icon">request<wbr>Write<wbr>Access<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/interface.ts#L153">snake/interface.ts:153</a></li>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/interface.ts#L288">snake/interface.ts:288</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>entities from message</p>
+							<p>Set this flag to request the permission for your bot to send messages to the user.</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="from" class="tsd-anchor"></a>
-					<h3>from</h3>
-					<div class="tsd-signature tsd-kind-icon">from<span class="tsd-signature-symbol">:</span> <a href="Interface.From.html" class="tsd-signature-type" data-tsd-kind="Interface">From</a></div>
+					<a name="url" class="tsd-anchor"></a>
+					<h3>url</h3>
+					<div class="tsd-signature tsd-kind-icon">url<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/interface.ts#L145">snake/interface.ts:145</a></li>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/interface.ts#L297">snake/interface.ts:297</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>info about from (sender)</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="id" class="tsd-anchor"></a>
-					<h3>id</h3>
-					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/interface.ts#L137">snake/interface.ts:137</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>unique id from telegram for message.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="media" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> media</h3>
-					<div class="tsd-signature tsd-kind-icon">media<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/interface.ts#L165">snake/interface.ts:165</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Document/photo/anything in here.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="replyToMessageId" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> reply<wbr>ToMessage<wbr>Id</h3>
-					<div class="tsd-signature tsd-kind-icon">reply<wbr>ToMessage<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/interface.ts#L157">snake/interface.ts:157</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>if user reply message this will showing the message from replying message.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="text" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> text</h3>
-					<div class="tsd-signature tsd-kind-icon">text<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/interface.ts#L149">snake/interface.ts:149</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>message text</p>
+							<p>An HTTP URL to be opened with user authorization data added to the query string when the button is pressed. If the user refuses to provide authorization data, the original URL without information about the user will be opened. The data added is the same as described in Receiving authorization data. <br/>
+							NOTE: You must always check the hash of the received data to verify the authentication and the integrity of the data as described in Checking authorization.</p>
 						</div>
 					</div>
 				</section>
@@ -246,44 +177,8 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="Interface.Chat.html" class="tsd-kind-icon">Chat</a>
+						<a href="Interface.BotLoginUrl.html" class="tsd-kind-icon">Bot<wbr>Login<wbr>Url</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="Interface.From.html" class="tsd-kind-icon">From</a>
-					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="Interface.Message.html" class="tsd-kind-icon">Message</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="Interface.Message.html#chat" class="tsd-kind-icon">chat</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="Interface.Message.html#date" class="tsd-kind-icon">date</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="Interface.Message.html#entities" class="tsd-kind-icon">entities</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="Interface.Message.html#from" class="tsd-kind-icon">from</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="Interface.Message.html#id" class="tsd-kind-icon">id</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="Interface.Message.html#media" class="tsd-kind-icon">media</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="Interface.Message.html#replyToMessageId" class="tsd-kind-icon">reply<wbr>ToMessage<wbr>Id</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="Interface.Message.html#text" class="tsd-kind-icon">text</a>
-							</li>
-						</ul>
-					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="Interface.catchError.html" class="tsd-kind-icon">catch<wbr>Error</a>
 					</li>
@@ -309,6 +204,9 @@
 						<a href="Interface.exportMessageLinkMoreParams.html" class="tsd-kind-icon">export<wbr>Message<wbr>Link<wbr>More<wbr>Params</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="Interface.forceReplyMarkup.html" class="tsd-kind-icon">force<wbr>Reply<wbr>Markup</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="Interface.forwardMessageMoreParams.html" class="tsd-kind-icon">forward<wbr>Message<wbr>More<wbr>Params</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
@@ -318,6 +216,33 @@
 						<a href="Interface.getUserPhotosMoreParams.html" class="tsd-kind-icon">get<wbr>User<wbr>Photos<wbr>More<wbr>Params</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="Interface.inlineKeyboard.html" class="tsd-kind-icon">inline<wbr>Keyboard</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="Interface.inlineKeyboardButton.html" class="tsd-kind-icon">inline<wbr>Keyboard<wbr>Button</a>
+					</li>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="Interface.loginUrl.html" class="tsd-kind-icon">login<wbr>Url</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="Interface.loginUrl.html#bot" class="tsd-kind-icon">bot</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="Interface.loginUrl.html#forwardText" class="tsd-kind-icon">forward<wbr>Text</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="Interface.loginUrl.html#requestWriteAccess" class="tsd-kind-icon">request<wbr>Write<wbr>Access</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="Interface.loginUrl.html#url" class="tsd-kind-icon">url</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="Interface.options.html" class="tsd-kind-icon">options</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
@@ -325,6 +250,15 @@
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="Interface.readHistoryMoreParams.html" class="tsd-kind-icon">read<wbr>History<wbr>More<wbr>Params</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="Interface.removeKeyboard.html" class="tsd-kind-icon">remove<wbr>Keyboard</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="Interface.replyKeyboard.html" class="tsd-kind-icon">reply<wbr>Keyboard</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="Interface.replyKeyboardButton.html" class="tsd-kind-icon">reply<wbr>Keyboard<wbr>Button</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="Interface.replyMoreParams.html" class="tsd-kind-icon">reply<wbr>More<wbr>Params</a>
@@ -337,6 +271,9 @@
 					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="Interface.uploadFileMoreParams.html" class="tsd-kind-icon">upload<wbr>File<wbr>More<wbr>Params</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
+						<a href="../modules/Interface.html#TypeReplyMarkup" class="tsd-kind-icon">Type<wbr>Reply<wbr>Markup</a>
 					</li>
 				</ul>
 			</nav>
@@ -354,6 +291,9 @@
 			</ul>
 			<ul class="tsd-legend">
 				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
 			</ul>
 		</div>
 	</div>

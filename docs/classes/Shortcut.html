@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Shortcut | tgsnake - v1.0.0</title>
-	<meta name="description" content="Documentation for tgsnake - v1.0.0">
+	<title>Shortcut | tgsnake - v1.1.0</title>
+	<meta name="description" content="Documentation for tgsnake - v1.1.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
 	<script async src="../assets/js/search.js" id="search-script"></script>
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="../index.html" class="title">tgsnake - v1.0.0</a>
+					<a href="../index.html" class="title">tgsnake - v1.1.0</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -52,7 +52,7 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="../modules.html">tgsnake - v1.0.0</a>
+					<a href="../modules.html">tgsnake - v1.1.0</a>
 				</li>
 				<li>
 					<a href="Shortcut.html">Shortcut</a>
@@ -127,6 +127,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Shortcut.html#getMessages" class="tsd-kind-icon">get<wbr>Messages</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Shortcut.html#getMessagesViews" class="tsd-kind-icon">get<wbr>Messages<wbr>Views</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Shortcut.html#getUserPhotos" class="tsd-kind-icon">get<wbr>User<wbr>Photos</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Shortcut.html#init" class="tsd-kind-icon">init</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Shortcut.html#pinMessage" class="tsd-kind-icon">pin<wbr>Message</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Shortcut.html#readHistory" class="tsd-kind-icon">read<wbr>History</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="Shortcut.html#readMentions" class="tsd-kind-icon">read<wbr>Mentions</a></li>
@@ -152,34 +153,15 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Shortcut<span class="tsd-signature-symbol">(</span>tgclient<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TelegramClient</span>, event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">NewMessageEvent</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Shortcut.html" class="tsd-signature-type" data-tsd-kind="Class">Shortcut</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Shortcut<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Shortcut.html" class="tsd-signature-type" data-tsd-kind="Class">Shortcut</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L35">snake/shortcut.ts:35</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L31">snake/shortcut.ts:31</a></li>
 								</ul>
 							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>tgclient: <span class="tsd-signature-type">TelegramClient</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>Telegram Client</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5>event: <span class="tsd-signature-type">NewMessageEvent</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>Incomming new Event (NewMessageEvent)</p>
-										</div>
-									</div>
-								</li>
-							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="Shortcut.html" class="tsd-signature-type" data-tsd-kind="Class">Shortcut</a></h4>
 						</li>
 					</ul>
@@ -193,7 +175,7 @@
 					<div class="tsd-signature tsd-kind-icon">event<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">NewMessageEvent</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L22">snake/shortcut.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L22">snake/shortcut.ts:22</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -205,10 +187,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="message" class="tsd-anchor"></a>
 					<h3>message</h3>
-					<div class="tsd-signature tsd-kind-icon">message<span class="tsd-signature-symbol">:</span> <a href="../interfaces/Interface.Message.html" class="tsd-signature-type" data-tsd-kind="Interface">Message</a></div>
+					<div class="tsd-signature tsd-kind-icon">message<span class="tsd-signature-symbol">:</span> <a href="GenerateJson.Message.html" class="tsd-signature-type" data-tsd-kind="Class">Message</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L26">snake/shortcut.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L26">snake/shortcut.ts:26</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -223,7 +205,7 @@
 					<div class="tsd-signature tsd-kind-icon">telegram<span class="tsd-signature-symbol">:</span> <a href="Telegram.html" class="tsd-signature-type" data-tsd-kind="Class">Telegram</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L30">snake/shortcut.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L30">snake/shortcut.ts:30</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -245,7 +227,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L248">snake/shortcut.ts:248</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L253">snake/shortcut.ts:253</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -283,7 +265,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L93">snake/shortcut.ts:93</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L98">snake/shortcut.ts:98</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -320,7 +302,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L260">snake/shortcut.ts:260</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L265">snake/shortcut.ts:265</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -358,7 +340,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L273">snake/shortcut.ts:273</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L278">snake/shortcut.ts:278</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -402,7 +384,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L286">snake/shortcut.ts:286</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L291">snake/shortcut.ts:291</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -446,7 +428,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L106">snake/shortcut.ts:106</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L111">snake/shortcut.ts:111</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -495,7 +477,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L298">snake/shortcut.ts:298</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L303">snake/shortcut.ts:303</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -533,7 +515,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L323">snake/shortcut.ts:323</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L328">snake/shortcut.ts:328</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -571,7 +553,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L336">snake/shortcut.ts:336</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L341">snake/shortcut.ts:341</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -615,7 +597,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L121">snake/shortcut.ts:121</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L126">snake/shortcut.ts:126</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -671,7 +653,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L361">snake/shortcut.ts:361</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L366">snake/shortcut.ts:366</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -709,7 +691,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L349">snake/shortcut.ts:349</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L354">snake/shortcut.ts:354</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -753,7 +735,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L373">snake/shortcut.ts:373</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L378">snake/shortcut.ts:378</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -791,7 +773,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L385">snake/shortcut.ts:385</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L390">snake/shortcut.ts:390</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -829,7 +811,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L396">snake/shortcut.ts:396</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L401">snake/shortcut.ts:401</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -858,7 +840,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L407">snake/shortcut.ts:407</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L412">snake/shortcut.ts:412</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -887,7 +869,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L419">snake/shortcut.ts:419</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L424">snake/shortcut.ts:424</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -916,7 +898,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L138">snake/shortcut.ts:138</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L143">snake/shortcut.ts:143</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -954,7 +936,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L151">snake/shortcut.ts:151</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L156">snake/shortcut.ts:156</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -998,7 +980,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L164">snake/shortcut.ts:164</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L169">snake/shortcut.ts:169</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1033,6 +1015,43 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="init" class="tsd-anchor"></a>
+					<h3>init</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">init<span class="tsd-signature-symbol">(</span>tgclient<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TelegramClient</span>, event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">NewMessageEvent</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="Shortcut.html" class="tsd-signature-type" data-tsd-kind="Class">Shortcut</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L37">snake/shortcut.ts:37</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Init Class.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>tgclient: <span class="tsd-signature-type">TelegramClient</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Telegram Client</p>
+									</div>
+								</li>
+								<li>
+									<h5>event: <span class="tsd-signature-type">NewMessageEvent</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Incomming new Event (NewMessageEvent)</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="Shortcut.html" class="tsd-signature-type" data-tsd-kind="Class">Shortcut</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="pinMessage" class="tsd-anchor"></a>
 					<h3>pin<wbr>Message</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -1042,7 +1061,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L222">snake/shortcut.ts:222</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L227">snake/shortcut.ts:227</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1086,7 +1105,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L176">snake/shortcut.ts:176</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L181">snake/shortcut.ts:181</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1124,7 +1143,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L187">snake/shortcut.ts:187</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L192">snake/shortcut.ts:192</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1153,7 +1172,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L198">snake/shortcut.ts:198</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L203">snake/shortcut.ts:203</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1190,7 +1209,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L50">snake/shortcut.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L55">snake/shortcut.ts:55</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1233,7 +1252,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L466">snake/shortcut.ts:466</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L471">snake/shortcut.ts:471</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1277,7 +1296,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L66">snake/shortcut.ts:66</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L71">snake/shortcut.ts:71</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1320,7 +1339,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L437">snake/shortcut.ts:437</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L442">snake/shortcut.ts:442</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1369,7 +1388,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L450">snake/shortcut.ts:450</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L455">snake/shortcut.ts:455</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1413,7 +1432,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L481">snake/shortcut.ts:481</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L486">snake/shortcut.ts:486</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1451,7 +1470,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L82">snake/shortcut.ts:82</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L87">snake/shortcut.ts:87</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1494,7 +1513,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L209">snake/shortcut.ts:209</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L214">snake/shortcut.ts:214</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1523,7 +1542,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L234">snake/shortcut.ts:234</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L239">snake/shortcut.ts:239</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1561,7 +1580,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/e41189c/src/snake/shortcut.ts#L311">snake/shortcut.ts:311</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/shortcut.ts#L316">snake/shortcut.ts:316</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -1609,6 +1628,9 @@
 				<ul class="before-current">
 					<li class=" tsd-kind-class">
 						<a href="Filters.html" class="tsd-kind-icon">Filters</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="LegacyFilters.html" class="tsd-kind-icon">Legacy<wbr>Filters</a>
 					</li>
 				</ul>
 				<ul class="current">
@@ -1688,6 +1710,9 @@
 								<a href="Shortcut.html#getUserPhotos" class="tsd-kind-icon">get<wbr>User<wbr>Photos</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="Shortcut.html#init" class="tsd-kind-icon">init</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="Shortcut.html#pinMessage" class="tsd-kind-icon">pin<wbr>Message</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -1755,6 +1780,9 @@
 				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
 				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
 				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
 			</ul>
 		</div>
 	</div>

@@ -19,7 +19,7 @@ import { Api } from 'telegram';
 import * as Interface from './interface';
 import fs from 'fs';
 
-let version = '1.0.0'; //change this version according to what is in package.json
+let version = '1.1.0'; //change this version according to what is in package.json
 
 let api_hash: string;
 let api_id: number;
@@ -31,9 +31,9 @@ let connectionRetries: number;
 let appVersion: string;
 let sessionName: string = 'tgsnake';
 let storeSession: boolean = false;
-function log(text: string) {
+function log(...args) {
   if (tgSnakeLog) {
-    console.log(text);
+    console.log(...args);
   }
 }
 function makeApiHash(length) {
@@ -87,21 +87,21 @@ export class Snake {
         logger = options.logger;
         delete options.logger;
       }
-      if (options.api_hash) {
-        api_hash = String(options.api_hash);
-        delete options.api_hash;
+      if (options.apiHash) {
+        api_hash = String(options.apiHash);
+        delete options.apiHash;
       }
-      if (options.api_id) {
-        api_id = Number(options.api_id);
-        delete options.api_id;
+      if (options.apiId) {
+        api_id = Number(options.apiId);
+        delete options.apiId;
       }
       if (options.session) {
         session = options.session;
         delete options.session;
       }
-      if (options.bot_token) {
-        bot_token = options.bot_token;
-        delete options.bot_token;
+      if (options.botToken) {
+        bot_token = options.botToken;
+        delete options.botToken;
       }
       if (options.connectionRetries) {
         connectionRetries = options.connectionRetries;
@@ -196,13 +196,31 @@ export class Snake {
     });
     log(`🐍 Welcome To TGSNAKE ${version}.`);
     log(`🐍 Setting Logger level to "${logger}"`);
+    if (bot_token) {
+      if (session == '') {
+        storeSession = false;
+      }
+    }
     if (!this.client) {
       await this._createClient();
     }
     this.telegram = new Telegram(this.client);
-    await this.client.connect();
-    await this.client.getMe().catch((e: any) => {});
-    return log('🐍 Running..');
+    if (bot_token) {
+      if (session == '') {
+        await this.client.start({
+          botAuthToken: bot_token,
+        });
+      } else {
+        await this.client.connect();
+      }
+    } else {
+      await this.client.connect();
+    }
+    let me = await this.telegram.getEntity('me');
+    let name = me.lastName
+      ? me.firstName + ' ' + me.lastName + ' [' + me.id + ']'
+      : me.firstName + ' [' + me.id + ']';
+    return log('🐍 Connected as ', name);
   }
   /**
    * @param next - a callback function to handle new message.
@@ -219,8 +237,10 @@ export class Snake {
       await this._createClient();
     }
     if (this.client) {
-      this.client.addEventHandler((event: NewMessageEvent) => {
-        return next(new Shortcut(this.client!, event!), new Message(event!));
+      this.client.addEventHandler(async (event: NewMessageEvent) => {
+        let shortcut = new Shortcut();
+        await shortcut.init(this.client!, event!);
+        return next(shortcut, shortcut.message);
       }, new NewMessage({}));
     }
   }
@@ -325,8 +345,9 @@ export class Snake {
           });
           session = String(await this.client.session.save());
           console.log(`🐍 Your string session : ${session}`);
+          let me = (await this.client.getMe()) as Api.User;
           await this.telegram.sendMessage(
-            'me',
+            me.id,
             `🐍 Your string session : <code>${session}</code>`,
             { parseMode: 'HTML' }
           );

@@ -19,24 +19,29 @@ export class Shortcut {
   /**
    * Original Event from gramjs.
    */
-  event: NewMessageEvent;
+  event!: NewMessageEvent;
   /**
    * New JSON Message.
    */
-  message: Interface.Message;
+  message!: Message;
   /**
    * All method in here.
    */
-  telegram: Telegram;
+  telegram!: Telegram;
+  constructor() {}
   /**
+   * Init Class.
    * @param tgclient - Telegram Client
    * @param event - Incomming new Event (NewMessageEvent)
    */
-  constructor(tgclient: TelegramClient, event: NewMessageEvent) {
+  async init(tgclient: TelegramClient, event: NewMessageEvent) {
     client = tgclient;
     this.telegram = new Telegram(tgclient);
     this.event = event;
-    this.message = new Message(event);
+    let msg = new Message();
+    await msg._fill(event);
+    this.message = msg;
+    return this;
   }
   /**
    * shortcut from {@link Telegram.sendMessage} with replying message and markdown parse.

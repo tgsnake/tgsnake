@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ClassResultSendMessage | tgsnake - v1.1.0</title>
+	<title>MigrateTo | tgsnake - v1.1.0</title>
 	<meta name="description" content="Documentation for tgsnake - v1.1.0">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -58,10 +58,10 @@
 					<a href="../modules/GenerateResult.html">GenerateResult</a>
 				</li>
 				<li>
-					<a href="GenerateResult.ClassResultSendMessage.html">ClassResultSendMessage</a>
+					<a href="GenerateResult.MigrateTo.html">MigrateTo</a>
 				</li>
 			</ul>
-			<h1>Class ClassResultSendMessage</h1>
+			<h1>Class MigrateTo</h1>
 		</div>
 	</div>
 </header>
@@ -72,7 +72,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ClassResultSendMessage</span>
+						<span class="target">MigrateTo</span>
 					</li>
 				</ul>
 			</section>
@@ -83,16 +83,14 @@
 						<section class="tsd-index-section ">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="GenerateResult.ClassResultSendMessage.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class"><a href="GenerateResult.MigrateTo.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="GenerateResult.ClassResultSendMessage.html#chatId" class="tsd-kind-icon">chat<wbr>Id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="GenerateResult.ClassResultSendMessage.html#date" class="tsd-kind-icon">date</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="GenerateResult.ClassResultSendMessage.html#id" class="tsd-kind-icon">id</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class"><a href="GenerateResult.ClassResultSendMessage.html#original" class="tsd-kind-icon">original</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="GenerateResult.MigrateTo.html#accessHash" class="tsd-kind-icon">access<wbr>Hash</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class"><a href="GenerateResult.MigrateTo.html#id" class="tsd-kind-icon">id</a></li>
 							</ul>
 						</section>
 					</div>
@@ -104,22 +102,22 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Class<wbr>Result<wbr>Send<wbr>Message<span class="tsd-signature-symbol">(</span>resultSendMessage<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TypeUpdates</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="GenerateResult.ClassResultSendMessage.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultSendMessage</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Migrate<wbr>To<span class="tsd-signature-symbol">(</span>migratedTo<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">InputChannel</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="GenerateResult.MigrateTo.html" class="tsd-signature-type" data-tsd-kind="Class">MigrateTo</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/rewriteresults.ts#L31">snake/rewriteresults.ts:31</a></li>
+									<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/rewriteresults.ts#L974">snake/rewriteresults.ts:974</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>resultSendMessage: <span class="tsd-signature-type">TypeUpdates</span></h5>
+									<h5>migratedTo: <span class="tsd-signature-type">InputChannel</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="GenerateResult.ClassResultSendMessage.html" class="tsd-signature-type" data-tsd-kind="Class">ClassResultSendMessage</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="GenerateResult.MigrateTo.html" class="tsd-signature-type" data-tsd-kind="Class">MigrateTo</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -127,35 +125,14 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="chatId" class="tsd-anchor"></a>
-					<h3>chat<wbr>Id</h3>
-					<div class="tsd-signature tsd-kind-icon">chat<wbr>Id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<a name="accessHash" class="tsd-anchor"></a>
+					<h3>access<wbr>Hash</h3>
+					<div class="tsd-signature tsd-kind-icon">access<wbr>Hash<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">BigInteger</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/rewriteresults.ts#L22">snake/rewriteresults.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/rewriteresults.ts#L973">snake/rewriteresults.ts:973</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>ChatId where message sent.
-							<code>ChatId</code> only showing where sending message in channel/supergroups.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="date" class="tsd-anchor"></a>
-					<h3>date</h3>
-					<div class="tsd-signature tsd-kind-icon">date<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Date</span><span class="tsd-signature-symbol"> = ...</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/rewriteresults.ts#L26">snake/rewriteresults.ts:26</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Date the message sending.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
 					<a name="id" class="tsd-anchor"></a>
@@ -163,29 +140,9 @@
 					<div class="tsd-signature tsd-kind-icon">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/rewriteresults.ts#L17">snake/rewriteresults.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/rewriteresults.ts#L972">snake/rewriteresults.ts:972</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Message Id where message successfully sent.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class">
-					<a name="original" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> original</h3>
-					<div class="tsd-signature tsd-kind-icon">original<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">TypeUpdates</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/butthx/tgsnake/blob/7eacafe/src/snake/rewriteresults.ts#L30">snake/rewriteresults.ts:30</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Original JSON Update from telegram where typeof not match with Api.UpdateShortSentMessage or Api.Updates</p>
-						</div>
-					</div>
 				</section>
 			</section>
 		</div>
@@ -250,36 +207,30 @@
 					<li class=" tsd-kind-class tsd-parent-kind-namespace">
 						<a href="GenerateResult.ClassResultPinMessage.html" class="tsd-kind-icon">Class<wbr>Result<wbr>Pin<wbr>Message</a>
 					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-namespace">
+						<a href="GenerateResult.ClassResultSendMessage.html" class="tsd-kind-icon">Class<wbr>Result<wbr>Send<wbr>Message</a>
+					</li>
+					<li class=" tsd-kind-class tsd-parent-kind-namespace">
+						<a href="GenerateResult.ClassResultUploadFile.html" class="tsd-kind-icon">Class<wbr>Result<wbr>Upload<wbr>File</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-class tsd-parent-kind-namespace">
-						<a href="GenerateResult.ClassResultSendMessage.html" class="tsd-kind-icon">Class<wbr>Result<wbr>Send<wbr>Message</a>
+						<a href="GenerateResult.MigrateTo.html" class="tsd-kind-icon">Migrate<wbr>To</a>
 						<ul>
 							<li class=" tsd-kind-constructor tsd-parent-kind-class">
-								<a href="GenerateResult.ClassResultSendMessage.html#constructor" class="tsd-kind-icon">constructor</a>
+								<a href="GenerateResult.MigrateTo.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="GenerateResult.ClassResultSendMessage.html#chatId" class="tsd-kind-icon">chat<wbr>Id</a>
+								<a href="GenerateResult.MigrateTo.html#accessHash" class="tsd-kind-icon">access<wbr>Hash</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="GenerateResult.ClassResultSendMessage.html#date" class="tsd-kind-icon">date</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="GenerateResult.ClassResultSendMessage.html#id" class="tsd-kind-icon">id</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class">
-								<a href="GenerateResult.ClassResultSendMessage.html#original" class="tsd-kind-icon">original</a>
+								<a href="GenerateResult.MigrateTo.html#id" class="tsd-kind-icon">id</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-class tsd-parent-kind-namespace">
-						<a href="GenerateResult.ClassResultUploadFile.html" class="tsd-kind-icon">Class<wbr>Result<wbr>Upload<wbr>File</a>
-					</li>
-					<li class=" tsd-kind-class tsd-parent-kind-namespace">
-						<a href="GenerateResult.MigrateTo.html" class="tsd-kind-icon">Migrate<wbr>To</a>
-					</li>
 					<li class=" tsd-kind-class tsd-parent-kind-namespace">
 						<a href="GenerateResult.RestrictionReason.html" class="tsd-kind-icon">Restriction<wbr>Reason</a>
 					</li>

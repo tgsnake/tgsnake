@@ -25,6 +25,7 @@ import FileType from 'file-type';
 import { _parseMessageText } from 'telegram/client/messageParse';
 import * as Interface from './interface';
 import { FileId, decodeFileId } from 'tg-file-id';
+import * as Utils from './utils';
 
 export let client: TelegramClient;
 
@@ -89,6 +90,7 @@ export class Telegram {
     more?: Interface.sendMessageMoreParams
   ) {
     let parseMode = '';
+    let replyMarkup;
     if (more) {
       if (more.parseMode) {
         parseMode = more.parseMode.toLowerCase();
@@ -101,6 +103,10 @@ export class Telegram {
         entities = more.entities;
         parseText = text;
       }
+      if (more.replyMarkup) {
+        replyMarkup = Utils.BuildReplyMarkup(more.replyMarkup!);
+        delete more.replyMarkup;
+      }
     }
     return new reResults.ClassResultSendMessage(
       await client.invoke(
@@ -109,6 +115,7 @@ export class Telegram {
           message: parseText,
           randomId: BigInt(-Math.floor(Math.random() * 10000000000000)),
           entities: entities,
+          replyMarkup: replyMarkup,
           ...more,
         })
       )
@@ -163,6 +170,7 @@ export class Telegram {
     more?: Interface.editMessageMoreParams
   ) {
     let parseMode = '';
+    let replyMarkup;
     if (more) {
       if (more.parseMode) {
         parseMode = more.parseMode.toLowerCase();
@@ -175,6 +183,10 @@ export class Telegram {
         entities = more.entities;
         parseText = text;
       }
+      if (more.replyMarkup) {
+        replyMarkup = Utils.BuildReplyMarkup(more.replyMarkup!);
+        delete more.replyMarkup;
+      }
     }
     return new reResults.ClassResultEditMessage(
       await client.invoke(
@@ -183,6 +195,7 @@ export class Telegram {
           id: message_id,
           message: parseText,
           entities: entities,
+          replyMarkup: replyMarkup,
           ...more,
         })
       )
@@ -842,16 +855,25 @@ export class Telegram {
     }
     let parseText;
     let entities;
+    let replyMarkup;
     if (more) {
       if (more.entities) {
         entities = more.entities;
         parseText = more.caption || '';
+        delete more.entities;
       }
-      if (more.caption) {
+      if (more.caption && !entities) {
         let parse = await _parseMessageText(client, more.caption, parseMode);
         parseText = parse[0];
         entities = parse[1];
         delete more.caption;
+      }
+      if (more.replyMarkup) {
+        replyMarkup = Utils.BuildReplyMarkup(more.replyMarkup!);
+        delete more.replyMarkup;
+      }
+      if (more.workers) {
+        delete more.workers;
       }
     }
     return client.invoke(
@@ -861,6 +883,8 @@ export class Telegram {
         message: parseText || '',
         randomId: BigInt(-Math.floor(Math.random() * 10000000000000)),
         entities: entities,
+        replyMarkup: replyMarkup,
+        ...more,
       })
     );
   }
@@ -892,7 +916,9 @@ export class Telegram {
         /^http/i.exec(String(fileId)) ||
         /^(\/|\.\.?\/|~\/)/i.exec(String(fileId))
       ) {
-        let file = await this.uploadFile(fileId);
+        let file = await this.uploadFile(fileId, {
+          workers: more?.workers || 1,
+        });
         final = new Api.InputMediaUploadedPhoto({
           file: new Api.InputFile({ ...file! }),
         });
@@ -928,7 +954,9 @@ export class Telegram {
         /^http/i.exec(String(fileId)) ||
         /^(\/|\.\.?\/|~\/)/i.exec(String(fileId))
       ) {
-        let file = await this.uploadFile(fileId);
+        let file = await this.uploadFile(fileId, {
+          workers: more?.workers || 1,
+        });
         let info = await this._getFileInfo(fileId);
         let basename = path.basename(String(fileId));
         if (!/\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/gim.exec(basename)) {
@@ -1000,7 +1028,7 @@ export class Telegram {
       if (decode) {
         if (decode.fileType == 'sticker') {
           let resultsSendSticker;
-          let accessHash = String(decode.access_hash);
+          let accessHash = Number(decode.access_hash);
           while (true) {
             let inputDocument = new Api.InputDocument({
               id: BigInt(decode.id),
@@ -1016,8 +1044,8 @@ export class Telegram {
               );
               break;
             } catch (e) {
-              if (!accessHash.startsWith('-')) {
-                accessHash = `-${accessHash}`;
+              if (!String(accessHash).startsWith('-')) {
+                accessHash = accessHash * -1;
               } else {
                 throw new Error(e.message);
                 break;
@@ -1048,5 +1076,16 @@ export class Telegram {
       let fileInfo = await FileType.fromFile(file);
       return fileInfo;
     }
+  }
+  /**
+   * Turns the given entity into a valid Telegram entity.
+   * @param chat_id - The chatId which will getting entity.
+   * @example
+   * ```ts
+   * ctx.telegram.getEntity("me")
+   * ```
+   */
+  async getEntity(chat_id: string | number) {
+    return new reResults.ClassResultGetEntity(await client.getEntity(chat_id));
   }
 }
