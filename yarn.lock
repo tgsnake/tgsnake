@@ -1007,9 +1007,9 @@ supports-color@^7.1.0:
     has-flag "^4.0.0"
 
 telegram@^1.7.15:
-  version "1.8.6"
-  resolved "https://registry.yarnpkg.com/telegram/-/telegram-1.8.6.tgz#bb75c56dc09d38b277eb01f70bfd305f7ee374d3"
-  integrity sha512-xK1vsADzQL425d1FMCOYRsIinhEpL3uwDQkVnKU2kjTy37oakAIZd+2RuhpSs3A/TLDM9JK0J6DYhlizQeYtIA==
+  version "1.8.7"
+  resolved "https://registry.yarnpkg.com/telegram/-/telegram-1.8.7.tgz#08ce6039a1b1603700ddb5f36acb8f5aa8592963"
+  integrity sha512-4xedsMM8pl7OlpI7IgeaT1v/mOd2Jh0nFxbD1hHsRtIWV869goJ7aaSVdEW3AMULiD3NXBq5EPF5ir/IRdc4og==
   dependencies:
     "@cryptography/aes" "^0.1.1"
     async-mutex "^0.3.0"
