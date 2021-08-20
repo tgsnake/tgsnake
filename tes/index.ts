@@ -13,6 +13,7 @@ import {StoreSession,StringSession} from "telegram/sessions"
 import BigInt from "big-integer"
 import {decodeFileId} from "tg-file-id" 
 import * as Utils from "../src/snake/utils"
+import * as Wizard from "../src/snake/wizard"
 const bot = new Snake()
 const filter = new Filters()
 //bot.generateSession()
@@ -20,39 +21,95 @@ bot.catchError((reason, promise)=>{
   console.log(reason.message)
 })
 bot.run()
-/*bot.onNewEvent((event)=>{
-  console.log(event)
-})*/
-/*console.log(JSON.stringify(Utils.BuildReplyMarkup({
-  inlineKeyboard : [[{
-    text : "halo",
-    url : "apa kabar"
-  },{
-    text : "halo hai",
-    url : "apa kabar kamu"
-  }],[{
-    text : "callback",
-    callbackData : "halo"
-  }]]
-}),null,2))*/
+/*class WizardState {
+  private current:{chatId:number;now:number;running:boolean;}[] = []
+  private wizard!:WizardSession<any>
+  constructor(wizard:WizardSession<any>){
+    this.wizard = wizard
+  }
+  async run(filters:Filters,event:Shortcut){
+    if(this.current.length == 0){
+      this.current.push({chatId:event.message.chat.id,now:0,running:true})
+    }else{
+      let index = this.current.findIndex((e)=>{return e.chatId == event.message.chat.id})
+      if(index == -1){
+        this.current.push({chatId:event.message.chat.id,now:0,running:true})
+      }
+    }
+    this.current.forEach(async (e,i)=>{
+      console.log(e)
+      if(e.chatId == event.message.chat.id){
+        if(e.running){
+          await this.wizard.wizard[e.now](event)
+          e.now = e.now+1
+          if(this.wizard.wizard[e.now]){
+            return e.running = true
+          }else{
+            this.current.splice(i,1)
+            return e.running = false
+          }
+        }
+        if(!e.running){
+          return filters.init(event)
+        }
+      }
+    })
+  }
+}
+class WizardSession<T>{ 
+  state!:T
+  name!:string
+  wizard!:{(ctx:Shortcut):void}[]
+  constructor(wizardName:string,...wizardFunc:{(ctx:Shortcut):void}[]){
+    this.wizard = wizardFunc 
+    this.name = wizardName
+  }
+}
+
+let session = new WizardSession<{id:number}>("testing",
+  (ctx) => {
+    session.state = {id:0}
+    session.state.id = ctx.message.chat.id 
+    ctx.reply("please input your number")
+  },
+  (ctx) => {
+    ctx.reply(`your number is ${ctx.message.text}`)
+  }
+)
+let state = new WizardState(session)*/
+let session = new Wizard.Session<{id?:number}>("testing",
+  (ctx) => {
+    session.state = {}
+    session.state.id = ctx.message.chat.id 
+    ctx.reply("Silakan masukan nomor anda")
+  },
+  (ctx) => {
+    ctx.reply("nomor anda adalah "+ctx.message.text)
+    ctx.reply("silakan masukan pin anda")
+  },
+  (ctx) => {
+    ctx.reply("oke selesai.")
+  }
+)
+let state = new Wizard.State([session])
 bot.onNewMessage(async (ctx,message)=>{
   //ctx.telegram.readHistory(message.chat.id)
   //ctx.telegram.readMentions(message.chat.id)
   filter.init(ctx)
-  //console.log(message)
-  //let entity = await ctx.telegram.getEntity(ctx.message.chat.id) 
-  //console.log(entity)
-  //console.log(decodeFileId(String(message.from.photo?.fileId)))
+})
+filter.use((ctx)=>{
+  state.init(ctx)
+})
+state.use((ctx)=>{
+  if(/^[\!\/]leave/.exec(String(ctx.message.text))){
+    return state.quit()
+  }
+})
+filter.cmd("login",async (ctx,msg)=>{
+  state.launch("testing")
 })
 filter.cmd("snake",async (ctx,message) => {
-  let msg = await ctx.reply("Hai, saya snake!",{
-    replyMarkup : {
-      inlineKeyboard : [[{
-        text : "hai",
-        callbackData : "halo"
-      }]]
-    }
-  })
+  let msg = await ctx.reply("Hai, saya snake!")
 })
 filter.cmd("ping",async (ctx,message) => {
   let d = ((Date.now() / 1000) - Number(message.date)).toFixed(3)
@@ -88,3 +145,7 @@ filter.cmd("spam",async (ctx,message) =>{
     }
   }
 })
+/*let state = new WizardState<{id:number}>()
+console.log(new WizardSession("tester",(ctx)=>{
+  ctx.reply("whats your name")
+}))*/

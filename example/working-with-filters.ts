@@ -14,36 +14,37 @@ const bot = new Snake()
  * Handle new message. 
  * Class Filters only working with onNewMessage for now.
 */
+/**
+ * Create new filters. 
+*/
+let filter = new Filters()
 bot.onNewMessage((ctx,message)=>{
-  /**
-   * Create new filters. 
-  */
-  let filter = new Filters(ctx) 
-  /**
-   * handle message "/start help"
-   * to makesure the command "start" not executed then do like this :
-  */
-  if(
-      filter.hears(/^[!\/]start help/,(match)=>{
-        ctx.reply("Help?")
-      })
-    ) return 
-  /**
-   * handle message "hi" 
-  */
-  filter.hears("hi",(match)=>{
-    ctx.reply("Oh Hi!")
-  })
-  /**
-   * handle command "start"
-  */
-  filter.cmd("start",(match)=>{
-    ctx.reply("Hello Filters Working!")
-  })
-  /**
-   * handle command "help" or "getHelp"
-  */
-  filter.cmd(["help","getHelp"],(match) => {
-    ctx.reply("No one wants to help you, Just Kidding.")
-  })
+  filter.init(ctx) 
 })
+/**
+ * handle message "/start help"
+ * to makesure the command "start" not executed then do like this :
+*/
+filter.hears(/^[!\/]start help/,(match)=>{
+  ctx.reply("Help?")
+})
+/**
+ * handle message "hi" 
+*/
+filter.hears("hi",(match)=>{
+  ctx.reply("Oh Hi!")
+})
+/**
+ * handle command "start"
+*/
+filter.cmd("start",(match)=>{
+  ctx.reply("Hello Filters Working!")
+})
+/**
+ * handle command "help" or "getHelp"
+*/
+filter.cmd(["help","getHelp"],(match) => {
+  ctx.reply("No one wants to help you, Just Kidding.")
+})
+
+bot.run()
