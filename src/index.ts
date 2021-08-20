@@ -55,6 +55,16 @@ export { Telegram } from './snake/tele';
  */
 export * as GenerateResult from './snake/rewriteresults';
 /**
+ * Wizard session <br/>
+ * like : <br/>
+ * user type "!login" bot will asnwer "please input your number" the user send message with number bot will answer "your number is 1234567890". 
+ * @example 
+ * ```ts 
+ * import {Wizard} from "tgsnake"
+ * ```
+*/
+export * as Wizard from "./snake/wizard"
+/**
  * Helpers modules to rewrite json.
  * @example
  * ```ts
