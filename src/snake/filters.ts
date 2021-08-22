@@ -8,7 +8,7 @@
 
 import { Telegram } from './tele';
 import { Shortcut } from './shortcut';
-import { Message } from './rewritejson'; 
+import { Message } from './rewritejson';
 let event: any;
 let msg: Message;
 let bots: Shortcut;

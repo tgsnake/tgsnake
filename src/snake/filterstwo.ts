@@ -9,7 +9,7 @@
 import { Telegram } from './tele';
 import { Shortcut } from './shortcut';
 import { Message } from './rewritejson';
-import {State} from "./wizard"
+import { State } from './wizard';
 let event: any;
 let msg: Message;
 let bots: Shortcut;
@@ -24,7 +24,7 @@ type TypeCmd = string | string[];
 type TypeHears = string | RegExp;
 export class Filters {
   private handler: Handler[] = [];
-  private middleware:{(ctx:Shortcut):void}[] = []
+  private middleware: { (ctx: Shortcut): void }[] = [];
   constructor() {}
   init(bot: Shortcut, prefix: string = '!/') {
     if (prefix) {
@@ -37,10 +37,10 @@ export class Filters {
         if (bot.event.message) {
           msg = bot.message;
         }
-        if(this.middleware.length > 0){
-          this.middleware.forEach((item,index) => {
-             return item(bots)
-          })
+        if (this.middleware.length > 0) {
+          this.middleware.forEach((item, index) => {
+            return item(bots);
+          });
         }
         if (this.handler.length !== 0) {
           return this.run();
@@ -136,7 +136,7 @@ export class Filters {
     });
     return true;
   }
-  use(func:{(ctx:Shortcut):void}){
-    return this.middleware.push(func)
+  use(func: { (ctx: Shortcut): void }) {
+    return this.middleware.push(func);
   }
 }

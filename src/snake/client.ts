@@ -19,7 +19,7 @@ import { Api } from 'telegram';
 import * as Interface from './interface';
 import fs from 'fs';
 
-let version = '1.1.0'; //change this version according to what is in package.json
+let version = '1.1.1'; //change this version according to what is in package.json
 
 let api_hash: string;
 let api_id: number;
