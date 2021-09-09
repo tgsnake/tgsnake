@@ -85,6 +85,7 @@ export async function SendPhoto(
               accessHash = accessHash.replace(/^\-/, '');
               // id (-) accessHash (+)
             } else {
+              //@ts-ignore
               throw new Error(e.message);
               break;
             }
@@ -130,6 +131,7 @@ export async function SendPhoto(
               accessHash = accessHash.replace(/^\-/, '');
               // id (-) accessHash (+)
             } else {
+              //@ts-ignore
               throw new Error(e.message);
               break;
             }

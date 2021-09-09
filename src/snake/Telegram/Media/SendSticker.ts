@@ -87,6 +87,7 @@ export async function SendSticker(
                 accessHash = accessHash.replace(/^\-/, '');
                 // id (-) accessHash (+)
               } else {
+                //@ts-ignore
                 throw new Error(e.message);
                 break;
               }
