@@ -6,6 +6,9 @@
 html {
   scroll-behavior: smooth;
 }
+img {
+  @apply rounded-md transform hover:scale-110 transition-all duration-500 ease-in-out hover:rounded-none
+}
 .remark-code-title {
   @apply px-5 py-3 font-mono text-sm font-bold text-gray-200 bg-gray-700 rounded-t;
 }

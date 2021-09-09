@@ -3,8 +3,11 @@ title : tgsnake - rengasdengklok
 lang : en 
 --- 
 
-![tgsnake-icon](./images/tgsnake.jpg)
+![tgsnake-icon-by-flat-icon](./images/tgsnake.jpg)
 
+<center><i>icon by flaticon</i></center> 
+
+  
 <center>
  [Getting Started](/en/handlingupdate) | [release notes](/release)
 </center>
@@ -18,22 +21,23 @@ yarn add tgsnake@latest
 after installing the package. 
 
 ```ts:index.ts
-import {Snake,Filters} from "tgsnake" //importing the modules.
+import {Snake} from "tgsnake" //importing the modules.
 const bot = new Snake({ // create new client. you can pass the options in tgsnake.config.js file.
   apiHash : "paste here", // get it from my.telegram.org
   apiId : 1234, // get it from my.telegram.org
   botToken : "paste here" // if you need login with user remove this and create session first. then paste your string session in field "session".
 }) 
-const filter = new Filters() // using filters modules.
 bot.run() // running client. 
 // bot.generateSession() // enable this to generate session and disable the bot.run().
-bot.onNewMessage(ctx => filter.init(ctx)) // handle new message.
-// when you send message "hi" it should reply with "hello"
-filter.hears("hi",(ctx)=>{
-  return ctx.reply("Hello")
+bot.hears("hi",(ctx)=>{
+    ctx.reply("wow you are perfect")
 })
-```
+```  
 
 <Important>
 Your telegram account can be banned if you make userbot and make floading. I am not responsible if this happens.
 </Important>
+
+[Telegram Channel](https://t.me/tgsnake) - 
+[Telegram Chat](https://t.me/tgsnakechat)
+

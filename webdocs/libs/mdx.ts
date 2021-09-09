@@ -52,7 +52,7 @@ export async function getContent(loc:string) {
           ...(options.rehypePlugins ?? []), 
           slug,
           katex,
-          [headings,{content: {type: 'text', value: '#'},behavior:'append',linkProperties:{ariaHidden: 'true', tabIndex: -1,className:["icon-link"]}}],
+          [headings,{content: {type: 'text', value: '#'},behavior:'append',properties:{ariaHidden: 'true', tabIndex: -1,className:["icon-link"]}}],
           [rehypePrismPlus, { ignoreMissing: true }]
         ]
       return options

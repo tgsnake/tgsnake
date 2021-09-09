@@ -46,7 +46,7 @@ const Layout:NextPage = (props) => {
                             { 
                             //@ts-ignore
                               e.content.map(f => (
-                                <li className="text-blue-500"> 
+                                <li key={f.slug} className="text-blue-500"> 
                                   {/*@ts-ignore*/}
                                   <Link href={f.slug}>
                                     {/*@ts-ignore*/}
