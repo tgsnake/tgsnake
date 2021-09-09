@@ -1,20 +1,26 @@
-import { Shortcut } from './shortcut';
+// Tgsnake - Telegram MTProto framework developed based on gram.js.
+// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+//
+// This file is part of Tgsnake
+//
+// Tgsnake is a free software : you can redistribute it and/or modify
+//  it under the terms of the MIT License as published.
+import { MessageContext } from './Context/MessageContext';
 export class State {
-  /**@hidden*/
   private current: { chatId: number; now: number; running: boolean; wizard: string }[] = [];
-  /**@hidden*/
   private wizard!: Session<any>[];
-  /**@hidden*/
-  private middleware: { (ctx: Shortcut): void }[] = [];
-  /**@hidden*/
-  private ctx!: Shortcut;
+  //todo
+  //change the ctx:any with TypeContext
+  private middleware: { (ctx: MessageContext): void }[] = [];
+  private ctx!: MessageContext;
   constructor(wizard: Session<any>[]) {
     this.wizard = wizard;
   }
-  /**@hidden*/
-  private running() {
+  //todo
+  //change the any type with next context type
+  private running(next: any) {
     this.current.forEach((e, i) => {
-      if (e.chatId == this.ctx.message.from.id) {
+      if (e.chatId == this.ctx.from.id) {
         if (e.running) {
           this.wizard.forEach(async (wzrd, indx) => {
             if (wzrd.name == e.wizard) {
@@ -25,7 +31,7 @@ export class State {
                 });
               }
               this.current.forEach(async (user) => {
-                if (user.chatId == this.ctx.message.from.id) {
+                if (user.chatId == this.ctx.from.id) {
                   if (user.running) {
                     await wzrd.wizard[user.now](this.ctx);
                     await wzrd.save(user.chatId);
@@ -44,46 +50,50 @@ export class State {
         }
       }
     });
-    return;
+    return next();
   }
   launch(name: string) {
+    console.log(this.ctx);
     this.wizard.forEach((wzrd, indx) => {
       if (wzrd.name == name) {
         if (this.current.length == 0) {
           this.current.push({
-            chatId: this.ctx.message.from.id,
+            chatId: this.ctx.from.id,
             now: 0,
             running: true,
             wizard: wzrd.name,
           });
         } else {
           let index = this.current.findIndex((e) => {
-            return e.chatId == this.ctx.message.from.id;
+            return e.chatId == this.ctx.from.id;
           });
           if (index == -1) {
             this.current.push({
-              chatId: this.ctx.message.from.id,
+              chatId: this.ctx.from.id,
               now: 0,
               running: true,
               wizard: wzrd.name,
             });
           }
         }
-        return this.running();
+        return this.running(() => {
+          return true;
+        });
       }
     });
     return;
   }
-  init(event: Shortcut) {
-    this.ctx = event;
-    return this.running();
+  init(ctx: any, next: any) {
+    if (!(ctx instanceof MessageContext)) return;
+    this.ctx = ctx;
+    return this.running(next);
   }
-  use(func: { (ctx: Shortcut): void }) {
+  use(func: { (ctx: MessageContext): void }) {
     return this.middleware.push(func);
   }
   quit() {
     this.current.forEach((e, i) => {
-      if (e.chatId == this.ctx.message.from.id) {
+      if (e.chatId == this.ctx.from.id) {
         if (e.running) {
           e.running = false;
           return this.current.splice(i, 1);
@@ -95,14 +105,14 @@ export class State {
 export class Session<StateInterface> {
   state!: StateInterface;
   name!: string;
-  wizard!: { (ctx: Shortcut): void }[];
-  /** @hidden */
+  //todo
+  //change any type with TypeContext
+  wizard!: { (ctx: MessageContext): void }[];
   private database: { chatId: number; data: StateInterface }[] = [];
-  constructor(wizardName: string, ...wizardFunc: { (ctx: Shortcut): void }[]) {
+  constructor(wizardName: string, ...wizardFunc: { (ctx: MessageContext): void }[]) {
     this.name = wizardName;
     this.wizard = wizardFunc;
   }
-  /** @hidden */
   save(chatId: number) {
     let index: number = this.database.findIndex((item) => {
       return item.chatId === chatId;
@@ -117,7 +127,6 @@ export class Session<StateInterface> {
     }
     return this.database;
   }
-  /** @hidden */
   find(chatId: number) {
     let index: number = this.database.findIndex((item) => {
       return item.chatId === chatId;

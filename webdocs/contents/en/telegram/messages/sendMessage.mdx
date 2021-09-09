@@ -1,0 +1,97 @@
+---
+title : sendMessage 
+folder : telegram 
+--- 
+## Overview 
+Sending message text to user with userid or username. 
+## Parameters 
+`chatId` : `number|string` 
+> Target which will be sent a message.  
+
+`text` : `string` 
+> Message text 
+
+`more`: `Interface.SendMessageMoreParams`
+> Opsional params which will using to sending a message. For interface you can see bellow. 
+```ts:interface.ts
+interface sendMessageMoreParams {
+  /**
+   * Set this flag to disable generation of the webpage preview
+   */
+  noWebpage?: boolean;
+  /**
+   * Send this message silently (no notifications for the receivers)
+   */
+  silent?: boolean;
+  /**
+   * Send this message as background message
+   */
+  background?: boolean;
+  /**
+   * send message with parse mode.
+   */
+  parseMode?: string;
+  /**
+   * Clear the draft field
+   */
+  clearDraft?: boolean;
+  /**
+   * The message ID to which this message will reply to
+   */
+  replyToMsgId?: define.MessageIDLike;
+  /**
+   * Reply markup for sending bot buttons
+   */
+  replyMarkup?: TypeReplyMarkup;
+  /**
+   * Message entities for sending styled text.
+   * if you set parse mode don't set this.
+   */
+  entities?: Api.TypeMessageEntity[];
+  /**
+   * Scheduled message date for scheduled messages.
+   */
+  scheduleDate?: number;
+}
+```
+
+## Example 
+```ts:index.ts
+// You can using the Snake class. 
+bot.telegram.sendMessage("me","Hello") 
+// You can using Context class 
+ctx.telegram.sendMessage("me","hello")
+```
+
+## Shortcut 
+```ts
+ctx.reply("text") 
+ctx.respond("text")
+ctx.replyHTML("<b>text</b>")
+```
+
+## Possible Errors
+You can see in [Telegram Documentation](https://core.telegram.org/method/messages.sendMessage#possible-errors)
+
+## Results 
+```ts:rewriteresults.ts
+class ClassResultsSendMessage {
+  /**
+   * Message Id where message successfully sent.
+   */
+  id!: number;
+  /**
+   * ChatId where message sent.
+   * ``ChatId`` only showing where sending message in channel/supergroups.
+   */
+  chatId!: number;
+  /**
+   * Date the message sending.
+   */
+  date: Date | number = Math.floor(Date.now() / 1000);
+  /**
+   * Original JSON Update from telegram where typeof not match with Api.UpdateShortSentMessage or Api.Updates
+   */
+  original?: Api.TypeUpdates;
+}
+```

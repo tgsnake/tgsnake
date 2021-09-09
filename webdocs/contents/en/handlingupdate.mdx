@@ -1,0 +1,17 @@
+--- 
+title : Handling Update. 
+folder : Getting Started. 
+--- 
+To handle updates you can use 2 methods. 
+## Using onNewMessage 
+Only new message will receive with this method. 
+```ts:index.ts {1} showLineNumbers 
+bot.onNewMessage(ctx => {})
+```
+`ctx` is JSON update from telegram which we have added a prototype like `ctx.reply` 
+## Using onNewEvent 
+All event will receive with this method. 
+```ts:index.ts {1} showLineNumbers 
+bot.onNewEvent(event => {})
+```
+`event` is pure JSON update from telegram.
