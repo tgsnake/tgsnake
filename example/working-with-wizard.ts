@@ -11,16 +11,16 @@ const session = new Wizard.Session<SessionData>(
     async (ctx) => {
       session.state = {}
       await ctx.reply("Hi, Please input your number.")
-      return session.state.userId = ctx.message.chat.id
+      return session.state.userId = ctx.chat.id
     },
     async (ctx) => {
-      await ctx.reply("Your number : "+ctx.message.text)
-      session.state.userNumber = Number(ctx.message.text)
+      await ctx.reply("Your number : "+ctx.text)
+      session.state.userNumber = Number(ctx.text)
       return ctx.reply("Input your password")
     }
     async (ctx) => {
-     await ctx.reply("Your password : "+ctx.message.text)
-     session.state.userPass = ctx.message.text
+     await ctx.reply("Your password : "+ctx.text)
+     session.state.userPass = ctx.text
      return ctx.reply("Done.")
     }
   )
@@ -29,7 +29,7 @@ bot.use((ctx)=>{
   return state.init(ctx) // installing wizard
 })
 state.use((ctx)=>{
-  let text = String(ctx.message.text).split(" ")
+  let text = String(ctx.text).split(" ")
   if(/^[\!\/]leave/i.exec(text[0])){
     return state.quit() // leave current session
   }
