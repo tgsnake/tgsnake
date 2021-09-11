@@ -1,5 +1,5 @@
 --- 
-title : Handling Update. 
+title : 2. Handling Update. 
 folder : Getting Started. 
 --- 
 To handle update you can use the `hears`,`command`,`use`,`on` method. For example you can see this : 
@@ -62,7 +62,7 @@ bot.use((ctx,next)=>{
 bot.run() // running 🐍
 ``` 
 ## using on 
-This is a method to receive incoming event. 
+This is a method to receive incoming event. We following the gramjs [TypeUpdate](https://gram.js.org/beta/modules/tl_api.api.html#typeupdate).
 ```ts:index.ts
 import {Snake} from "tgsnake"
 const bot = new Snake() 

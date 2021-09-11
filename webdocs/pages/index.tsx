@@ -64,9 +64,9 @@ export const getStaticProps = async (ctx:any) => {
     }
     continue;
   } 
-  folder.sort((a,b)=> a.folder.localeCompare(b.folder))
+  folder.sort((a:any,b:any)=> a.folder.localeCompare(b.folder))
   for(let i=0; i<folder.length;i++){
-    folder[i].content.sort((a,b)=> a.title.localeCompare(b.title))
+    folder[i].content.sort((a:any,b:any)=> a.title.localeCompare(b.title))
     if(/getting(\s+)?started/i.exec(folder[i].folder)){
       folder.splice(0,0,folder.splice(i,1)[0])
     }

@@ -7,7 +7,7 @@
     "dev": "ts-node ./tes/index.ts",
     "prepare": "husky install && echo \"🐍 Building snake package.\" && tsc",
     "build": "tsc",
-    "build:docs": "typedoc && node builddocs.js",
+    "build:docs": "node builddocs.js",
     "prettier": "prettier --write ./src",
     "prettier:quick": "pretty-quick --staged --pattern \"src/**/*.*(js|jsx|ts|tsx)\""
   },

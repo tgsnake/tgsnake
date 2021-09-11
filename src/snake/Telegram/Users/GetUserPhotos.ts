@@ -8,10 +8,10 @@
 
 import { Api } from 'telegram';
 import { Snake } from '../../client';
-
+import {BigInteger} from "big-integer"
 export interface getUserPhotosMoreParams {
   offset?: number;
-  maxId?: Api.long;
+  maxId?: BigInteger;
   limit?: number;
 }
 export async function GetUserPhotos(

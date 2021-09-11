@@ -1,0 +1,22 @@
+--- 
+title : getEntity 
+folder : Telegram 
+--- 
+## Overview 
+Getting chat or user info.
+## Parameters 
+```ts 
+ctx.telegram.getEntity(chatId)
+```
+- `chatId` (_number|string_) 
+    - Chat/Groups/Channel id.
+## Example 
+```ts:index.ts {2} showLineNumber 
+bot.command("me",async (ctx)=>{
+    let results = await ctx.telegram.getEntity(ctx.chat.id) 
+    console.log(results)
+})
+```
+## Possible Error 
+- 
+## Bot can use this method.

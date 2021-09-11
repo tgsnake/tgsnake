@@ -1,0 +1,23 @@
+--- 
+title : getGroupsForDiscussion
+folder : Telegram 
+--- 
+## Overview 
+Get all groups that can be used as discussion groups.  
+Returned legacy group chats must be first upgraded to supergroups before they can be set as a discussion group.  
+To set a returned supergroup as a discussion group, access to its old messages must be enabled using channels.togglePreHistoryHidden, first.  
+## Parameters 
+```ts 
+ctx.telegram.getGroupsForDiscussion()
+```
+- 
+## Example 
+```ts:index.ts {2} showLineNumber 
+bot.command("getGroupsForDiscussion",async (ctx) => {
+    let results = await ctx.telegram.getGroupsForDiscussion() 
+    console.log(results)
+})
+```
+## Possible Error 
+- 
+## Bot can't use this method.

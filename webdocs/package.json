@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "export": "next export -o ../docs/beta"
+    "export": "next export -o ../docs"
   },
   "dependencies": {
     "next": "11.1.1",

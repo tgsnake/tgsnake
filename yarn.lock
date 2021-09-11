@@ -50,9 +50,9 @@
   integrity sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==
 
 "@types/node@^16.3.1":
-  version "16.9.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.9.0.tgz#d9512fe037472dcb58931ce19f837348db828a62"
-  integrity sha512-nmP+VR4oT0pJUPFbKE4SXj3Yb4Q/kz3M9dSAO1GGMebRKWHQxLfDNmU/yh3xxCJha3N60nQ/JwXWwOE/ZSEVag==
+  version "16.9.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.9.1.tgz#0611b37db4246c937feef529ddcc018cf8e35708"
+  integrity sha512-QpLcX9ZSsq3YYUUnD3nFDY8H7wctAhQj/TFKL8Ya8v5fMm3CFXxo8zStsLAl780ltoYoo1WvKUVGBQK+1ifr7g==
 
 acorn-walk@^8.1.1:
   version "8.2.0"
@@ -1016,9 +1016,9 @@ supports-color@^7.1.0:
     has-flag "^4.0.0"
 
 telegram@^1.7.15:
-  version "1.8.11"
-  resolved "https://registry.yarnpkg.com/telegram/-/telegram-1.8.11.tgz#35bdd0939c0083bf1096c4694821165c543ffe12"
-  integrity sha512-2rT8Qk4S8XvxSOoHpAQ11M2lWEYgELfuk3UUDB8n8uhmv8ln5ztPWYtOYC2iYQ+/QTRrwttTK58SyxciZwP0Eg==
+  version "1.8.13"
+  resolved "https://registry.yarnpkg.com/telegram/-/telegram-1.8.13.tgz#5e53c25505b8facdeac5398b8ad0b5c2d8929e3d"
+  integrity sha512-mgkZNytA7BKALQA0nmOa6axcSXGb/r/Wd/Z6lHIIvNTq51PvV21eih4puin6Y4KMl0WA/2/LkDMNHkm/Jh/D0A==
   dependencies:
     "@cryptography/aes" "^0.1.1"
     async-mutex "^0.3.0"
@@ -1126,9 +1126,9 @@ typedoc@^0.21.4:
     typedoc-default-themes "^0.12.10"
 
 typescript@^4.3.2:
-  version "4.4.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.4.2.tgz#6d618640d430e3569a1dfb44f7d7e600ced3ee86"
-  integrity sha512-gzP+t5W4hdy4c+68bfcv0t400HVJMMd2+H9B7gae1nQlBzCqvrXX+6GL/b3GAgyTH966pzrZ70/fRjwAtZksSQ==
+  version "4.4.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.4.3.tgz#bdc5407caa2b109efd4f82fe130656f977a29324"
+  integrity sha512-4xfscpisVgqqDfPaJo5vkd+Qd/ItkoagnHpufr+i2QCHBsNYp+G7UAoyFl8aPtx879u38wPV65rZ8qbGZijalA==
 
 uglify-js@^3.1.4:
   version "3.14.2"
