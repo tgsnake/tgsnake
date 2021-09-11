@@ -25,14 +25,15 @@ const session = new Wizard.Session<SessionData>(
     }
   )
 const state = new Wizard.State([session]) 
-bot.use((ctx)=>{
-  return state.init(ctx) // installing wizard
+bot.use((ctx,next)=>{
+  return state.init(ctx,next) // installing wizard
 })
-state.use((ctx)=>{
+state.use((ctx,next)=>{
   let text = String(ctx.text).split(" ")
   if(/^[\!\/]leave/i.exec(text[0])){
     return state.quit() // leave current session
   }
+  return next()
 })
 bot.command("login",(ctx)=>{
   return state.launch("wizard-session") // login as wizard-session 
