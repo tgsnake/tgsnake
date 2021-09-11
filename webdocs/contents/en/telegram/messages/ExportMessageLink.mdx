@@ -1,0 +1,31 @@
+--- 
+title : exportMessageLink
+folder : Telegram 
+--- 
+## Overview 
+Get link and embed info of a message in a channel/supergroup
+## Parameters 
+```ts 
+ctx.telegram.exportMessageLink(chatId,messageId,more)
+```
+- `chatId` (_number|string_) 
+    - supergroup/channel id. 
+- `messageId` (_number_) 
+    - message id. 
+- `more` (_object_) 
+    - `thread` (_boolean_)
+        - Whether to also include a thread ID, if available, inside of the link.
+    - `grouped` (_boolean_) 
+        - Whether to include other grouped media (for albums)
+## Example 
+```ts:index.ts {2} showLineNumber
+bot.command("getLink", async (ctx) => {
+    let results = await ctx.telegram.exportMessageLink(ctx.chat.id,ctx.id) 
+    return console.log(results)
+})
+```
+## Possible Error 
+400 : CHANNEL_INVALID : The provided channel is invalid.  
+400 : CHANNEL_PRIVATE : You haven't joined this channel/supergroup.  
+400 : MESSAGE_ID_INVALID : The provided message id is invalid.  
+400 : MSG_ID_INVALID : Invalid message ID provided.

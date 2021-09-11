@@ -11,15 +11,13 @@ import { TelegramClient } from 'telegram';
 import { StringSession, StoreSession } from 'telegram/sessions';
 import { NewMessage } from 'telegram/events';
 import { NewMessageEvent } from 'telegram/events/NewMessage';
-import { Telegram } from './tele';
-import { Shortcut } from './shortcut';
-import { Message } from './rewritejson';
+import { Telegram } from './Telegram';
+import { MainContext } from './Context/MainContext';
 import prompts from 'prompts';
 import { Api } from 'telegram';
-import * as Interface from './interface';
 import fs from 'fs';
-
-let version = '1.1.0'; //change this version according to what is in package.json
+import { Options } from './Interface/Options';
+import { CatchError } from './Interface/CatchError';
 
 let api_hash: string;
 let api_id: number;
@@ -30,7 +28,9 @@ let tgSnakeLog: boolean | undefined = true;
 let connectionRetries: number;
 let appVersion: string;
 let sessionName: string = 'tgsnake';
-let storeSession: boolean = false;
+let storeSession: boolean = true;
+let catchFunct: CatchError;
+let isBot: boolean = false;
 function log(...args) {
   if (tgSnakeLog) {
     console.log(...args);
@@ -54,22 +54,13 @@ function makeApiId(length) {
   }
   return result;
 }
-/**
- * Class Snake.
- * This class functions as a client of gramjs.
- */
-export class Snake {
-  /**
-   * class Client.
-   * This is a class of gramjs (TelegramClient)
-   */
+export class Snake extends MainContext {
   client!: TelegramClient;
-  /**
-   * class Telegram.
-   * all method in here.
-   */
   telegram!: Telegram;
-  constructor(public options?: Interface.options) {
+  version: string = '1.2.0';
+  connected: Boolean = false;
+  constructor(public options?: Options) {
+    super();
     if (!options) {
       let dir = fs.readdirSync(process.cwd());
       if (dir.includes('tgsnake.config.js')) {
@@ -129,10 +120,9 @@ export class Snake {
     }
     Logger.setLevel(logger);
   }
-  /** @hidden */
   private async _convertString() {
     let stringsession = new StringSession(session);
-    if (storeSession) {
+    if (storeSession && session !== '') {
       let storesession = new StoreSession(sessionName);
       await stringsession.load();
       storesession.setDC(stringsession.dcId, stringsession.serverAddress!, stringsession.port!);
@@ -142,253 +132,261 @@ export class Snake {
       return stringsession;
     }
   }
-  /** @hidden */
   private async _createClient() {
-    if (!api_hash) {
-      if (session == '') {
-        throw new Error('api_hash required!');
-      } else {
-        api_hash = makeApiHash(32);
+    try {
+      if (!api_hash) {
+        if (session == '') {
+          throw new Error('api_hash required!');
+        } else {
+          api_hash = makeApiHash(32);
+        }
       }
-    }
-    if (!api_id) {
-      if (session == '') {
-        throw new Error('api_id required!');
-      } else {
-        api_id = Number(makeApiId(7));
+      if (!api_id) {
+        if (session == '') {
+          throw new Error('api_id required!');
+        } else {
+          api_id = Number(makeApiId(7));
+        }
       }
-    }
-    if (!bot_token && session == '') {
-      throw new Error(
-        'bot_token required if you login as bot, session required if you login as user. To get session run generateSession function.'
+      if (!bot_token && session == '') {
+        throw new Error(
+          'bot_token required if you login as bot, session required if you login as user. To get session run generateSession function.'
+        );
+      }
+      this.client = new TelegramClient(
+        await this._convertString(),
+        Number(api_id),
+        String(api_hash),
+        {
+          connectionRetries: connectionRetries,
+          appVersion: appVersion || this.version,
+          ...this.options,
+        }
       );
+      return this.client;
+    } catch (error) {
+      this._handleError(error, `Snake._createClient()`);
     }
-    this.client = new TelegramClient(
-      await this._convertString(),
-      Number(api_id),
-      String(api_hash),
-      {
-        connectionRetries: connectionRetries,
-        appVersion: appVersion || version,
-        ...this.options,
-      }
-    );
-    return this.client;
   }
-  /**
-   * running the client.
-   * @example
-   * ```ts
-   * import {Snake} from "tgsnake"
-   * const bot = new Snake({...options}) // you can found the options list on Interface.Options.
-   * // you can create the tgsnake.config.js to save this config.
-   * Snake.run() // now the client running.
-   * ```
-   */
   async run() {
-    process.once('SIGINT', () => {
-      log('🐍 Killing..');
-      process.exit(0);
-    });
-    process.once('SIGTERM', () => {
-      log('🐍 Killing..');
-      process.exit(0);
-    });
-    log(`🐍 Welcome To TGSNAKE ${version}.`);
-    log(`🐍 Setting Logger level to "${logger}"`);
-    if (bot_token) {
-      if (session == '') {
-        storeSession = false;
+    try {
+      process.once('SIGINT', () => {
+        log('🐍 Killing..');
+        this.client.disconnect();
+        process.exit(0);
+      });
+      process.once('SIGTERM', () => {
+        log('🐍 Killing..');
+        this.client.disconnect();
+        process.exit(0);
+      });
+      log(`🐍 Welcome To TGSNAKE ${this.version}.`);
+      log(`🐍 Setting Logger level to "${logger}"`);
+      if (bot_token) {
+        if (session == '') {
+          storeSession = false;
+        }
       }
-    }
-    if (!this.client) {
-      await this._createClient();
-    }
-    this.telegram = new Telegram(this.client);
-    if (bot_token) {
-      if (session == '') {
-        await this.client.start({
-          botAuthToken: bot_token,
-        });
+      if (!this.client) {
+        await this._createClient();
+      }
+      this.telegram = new Telegram(this);
+      if (bot_token) {
+        if (session == '') {
+          await this.client.start({
+            botAuthToken: bot_token,
+          });
+        } else {
+          await this.client.connect();
+        }
       } else {
         await this.client.connect();
       }
-    } else {
-      await this.client.connect();
-    }
-    let me = await this.telegram.getEntity('me');
-    let name = me.lastName
-      ? me.firstName + ' ' + me.lastName + ' [' + me.id + ']'
-      : me.firstName + ' [' + me.id + ']';
-    return log('🐍 Connected as ', name);
-  }
-  /**
-   * @param next - a callback function to handle new message.
-   * This is a function to use handle new message.
-   * @example 
-   * ```ts 
-   * Snake.onNewMessage((ctx,message)=>{
-      ctx.reply("new message")
-    })
-   * ```
-  */
-  async onNewMessage(next: Interface.ctxParams) {
-    if (!this.client) {
-      await this._createClient();
-    }
-    if (this.client) {
-      this.client.addEventHandler(async (event: NewMessageEvent) => {
-        let shortcut = new Shortcut();
-        await shortcut.init(this.client!, event!);
-        return next(shortcut, shortcut.message);
-      }, new NewMessage({}));
+      let me = await this.telegram.getMe();
+      isBot = me.bot;
+      let name = me.lastName
+        ? me.firstName + ' ' + me.lastName + ' [' + me.id + ']'
+        : me.firstName + ' [' + me.id + ']';
+      this.onNewMessage((update) => {
+        return this.handleUpdate(update, this);
+      });
+      this.onNewEvent((update) => {
+        return this.handleUpdate(update, this);
+      });
+      this.connected = true;
+      this.emit('connected', me);
+      return log('🐍 Connected as ', name);
+    } catch (error) {
+      this._handleError(error, `Snake.run()`);
     }
   }
-  /**
-   * @param next - a callback function to handle new event.
-   * This is a function to use handle new event.
-   * @example 
-   * ```ts 
-   * Snake.onNewEvent((update)=>{
-      console.log(update)
-    })
-   * ```
-  */
-  async onNewEvent(next: Interface.ctxEvent) {
-    if (!this.client) {
-      await this._createClient();
-    }
-    if (this.client) {
-      this.client.addEventHandler((update: Api.TypeUpdate) => {
-        return next(update);
-      });
+  private async onNewMessage(next: any) {
+    try {
+      if (!this.client) {
+        await this._createClient();
+      }
+      if (this.client) {
+        this.client.addEventHandler(async (event: NewMessageEvent) => {
+          if (!isBot) {
+            await this.client.getDialogs({});
+          }
+          return next(event);
+        }, new NewMessage({}));
+      }
+    } catch (error) {
+      this._handleError(error, `Snake.onNewMessage([${typeof next}])`);
     }
   }
-  /**
-   * Generate the stringSession for user or bot.
-   * Please remove the run function if you using this function.
-   * @example
-   * ```ts
-   * Snake.generateSession()
-   * ```
-   */
-  async generateSession() {
-    process.once('SIGINT', () => {
-      log('🐍 Killing..');
-      process.exit(0);
-    });
-    process.once('SIGTERM', () => {
-      log('🐍 Killing..');
-      process.exit(0);
-    });
-    log(`🐍 Welcome To TGSNAKE ${version}.`);
-    log(`🐍 Setting Logger level to "${logger}"`);
-    if (!api_hash) {
-      let input_api_hash = await prompts({
-        type: 'text',
-        name: 'value',
-        message: '🐍 Input your api_hash',
-      });
-      api_hash = input_api_hash.value;
-    }
-    if (!api_id) {
-      let input_api_id = await prompts({
-        type: 'text',
-        name: 'value',
-        message: '🐍 Input your api_id',
-      });
-      api_id = input_api_id.value;
-    }
-    this.client = new TelegramClient(new StringSession(session), Number(api_id), String(api_hash), {
-      connectionRetries: connectionRetries,
-      appVersion: appVersion || version,
-      ...this.options,
-    });
-    this.telegram = new Telegram(this.client);
-    if (session == '') {
-      if (!bot_token) {
-        let loginAsBot = await prompts({
-          type: 'confirm',
-          name: 'value',
-          initial: false,
-          message: '🐍 Login as bot?',
+  private async onNewEvent(next: any) {
+    try {
+      if (!this.client) {
+        await this._createClient();
+      }
+      if (this.client) {
+        this.client.addEventHandler((update: Api.TypeUpdate) => {
+          return next(update);
         });
-        if (!loginAsBot.value) {
-          await this.client.start({
-            phoneNumber: async () => {
-              let value = await prompts({
-                type: 'text',
-                name: 'value',
-                message: '🐍 Input your international phone number',
-              });
-              return value.value;
-            },
-            password: async () => {
-              let value = await prompts({
-                type: 'text',
-                name: 'value',
-                message: '🐍 Input your 2FA password',
-              });
-              return value.value;
-            },
-            phoneCode: async () => {
-              let value = await prompts({
-                type: 'text',
-                name: 'value',
-                message: '🐍 Input Telegram verifications code',
-              });
-              return value.value;
-            },
-            onError: (err: any) => {
-              console.log(err);
-            },
-          });
-          session = String(await this.client.session.save());
-          console.log(`🐍 Your string session : ${session}`);
-          let me = (await this.client.getMe()) as Api.User;
-          await this.telegram.sendMessage(
-            me.id,
-            `🐍 Your string session : <code>${session}</code>`,
-            { parseMode: 'HTML' }
-          );
-        } else {
-          let value = await prompts({
-            type: 'text',
+      }
+    } catch (error) {
+      this._handleError(error, `Snake.onNewEvent([${typeof next}])`);
+    }
+  }
+  async generateSession() {
+    try {
+      process.once('SIGINT', () => {
+        log('🐍 Killing..');
+        this.client.disconnect();
+        process.exit(0);
+      });
+      process.once('SIGTERM', () => {
+        log('🐍 Killing..');
+        this.client.disconnect();
+        process.exit(0);
+      });
+      log(`🐍 Welcome To TGSNAKE ${this.version}.`);
+      log(`🐍 Setting Logger level to "${logger}"`);
+      if (!api_hash) {
+        let input_api_hash = await prompts({
+          type: 'text',
+          name: 'value',
+          message: '🐍 Input your api_hash',
+        });
+        api_hash = input_api_hash.value;
+      }
+      if (!api_id) {
+        let input_api_id = await prompts({
+          type: 'text',
+          name: 'value',
+          message: '🐍 Input your api_id',
+        });
+        api_id = input_api_id.value;
+      }
+      this.client = new TelegramClient(
+        new StringSession(session),
+        Number(api_id),
+        String(api_hash),
+        {
+          connectionRetries: connectionRetries,
+          appVersion: appVersion || this.version,
+          ...this.options,
+        }
+      );
+      this.telegram = new Telegram(this);
+      if (session == '') {
+        if (!bot_token) {
+          let loginAsBot = await prompts({
+            type: 'confirm',
             name: 'value',
-            message: '🐍 Input your bot_token',
+            initial: false,
+            message: '🐍 Login as bot?',
           });
+          if (!loginAsBot.value) {
+            await this.client.start({
+              phoneNumber: async () => {
+                let value = await prompts({
+                  type: 'text',
+                  name: 'value',
+                  message: '🐍 Input your international phone number',
+                });
+                return value.value;
+              },
+              password: async () => {
+                let value = await prompts({
+                  type: 'text',
+                  name: 'value',
+                  message: '🐍 Input your 2FA password',
+                });
+                return value.value;
+              },
+              phoneCode: async () => {
+                let value = await prompts({
+                  type: 'text',
+                  name: 'value',
+                  message: '🐍 Input Telegram verifications code',
+                });
+                return value.value;
+              },
+              onError: (err: any) => {
+                console.log(err);
+              },
+            });
+            session = String(await this.client.session.save());
+            console.log(`🐍 Your string session : ${session}`);
+            let me = (await this.client.getMe()) as Api.User;
+            await this.telegram.sendMessage(
+              me.id,
+              `🐍 Your string session : <code>${session}</code>`,
+              { parseMode: 'HTML' }
+            );
+          } else {
+            let value = await prompts({
+              type: 'text',
+              name: 'value',
+              message: '🐍 Input your bot_token',
+            });
+            await this.client.start({
+              botAuthToken: value.value,
+            });
+            session = String(await this.client.session.save());
+            console.log(`🐍 Your string session : ${session}`);
+          }
+        } else {
           await this.client.start({
-            botAuthToken: value.value,
+            botAuthToken: bot_token,
           });
           session = String(await this.client.session.save());
           console.log(`🐍 Your string session : ${session}`);
         }
       } else {
-        await this.client.start({
-          botAuthToken: bot_token,
-        });
-        session = String(await this.client.session.save());
-        console.log(`🐍 Your string session : ${session}`);
+        log(`🐍 You should use the \`Snake.run()\`!`);
       }
-    } else {
-      log(`🐍 You should use the \`Snake.run()\`!`);
+      log('🐍 Killing...');
+      this.client.disconnect();
+      process.exit(0);
+    } catch (error) {
+      this._handleError(error, `Snake.generateSession()`);
     }
-    log('🐍 Killing...');
-    process.exit(0);
   }
-  /**
-   * Handle promise unhandledRejection. 
-   * @param - next a callback function to handle error.
-   * @example 
-   * ```ts 
-   * Snake.catch((error)=>{
-      console.log(error)
-    })
-   * ```
-  */
-  async catchError(next: Interface.catchError) {
-    process.on('unhandledRejection', (reason: any, promise: Promise<any>) => {
-      return next(reason, promise);
-    });
+  async catch(next: CatchError) {
+    return (catchFunct = next);
+  }
+  async _handleError(error: any, running?: string) {
+    if (catchFunct) {
+      return catchFunct(error, this.ctx);
+    } else {
+      if (this.ctx) {
+        console.log(`🐍 Snake Error (${error.message}) When running: `);
+        console.log(this.ctx);
+        if (running) {
+          console.log(`🐍 ${running}`);
+        }
+      } else {
+        console.log(`🐍 Snake Error (${error.message}).`);
+        if (running) {
+          console.log(`🐍 ${running}`);
+        }
+      }
+      throw new Error(error.message);
+    }
   }
 }

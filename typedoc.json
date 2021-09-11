@@ -6,5 +6,7 @@
   "name" : "tgsnake",
   "includeVersion" : true,
   "hideGenerator": true,
-  "externalPattern":["./example/*(.js|.ts|.md)"]
+  "externalPattern":["./example/*(.js|.ts|.md)"],
+  "emit" : true,
+  "json" : "docs/api/docs.json"
 }

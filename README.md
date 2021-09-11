@@ -34,11 +34,11 @@ const bot = new Snake({
 */
 bot.run() //snake running
 
-bot.onNewMessage((ctx,message)=>{ //handle new message event.
+bot.on("message",(ctx)=>{ //handle new message event.
   ctx.reply("Hello World") // reply with "Hello World"
-  //console.log(message) // see json of message.
+  //console.log(ctx) // see json of message.
 })
 ```
-More example you can found in example folder
+More example you can found in example folder or in website.
   
 ### MIT LICENSE 

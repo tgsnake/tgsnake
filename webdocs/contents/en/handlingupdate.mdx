@@ -1,0 +1,75 @@
+--- 
+title : 2. Handling Update. 
+folder : Getting Started. 
+--- 
+To handle update you can use the `hears`,`command`,`use`,`on` method. For example you can see this : 
+
+## using hears 
+This method allow you to use regex or you can fill with some text 
+
+```ts:index.ts
+import {Snake} from "tgsnake"
+const bot = new Snake() // fill the options. you can use the tgsnake.config.js file.
+// with text 
+bot.hears("hello",(ctx)=>{
+  ctx.reply("Hi") 
+  if(ctx.replyToMessage){ 
+    ctx.replyToMessage.reply("Who are you?")
+  }
+})
+// with regex 
+bot.hears(/hello/i,(ctx,match)=>{
+  ctx.reply("Hi") 
+  if(ctx.replyToMessage){ 
+    ctx.replyToMessage.reply("Who are you?")
+  }
+})
+bot.run() // running 🐍
+```
+Then send message `hello`.
+
+## using command 
+This method only allow you to use string or array of string. The prefix is `.!/` 
+```ts:index.ts
+import {Snake} from "tgsnake"
+const bot = new Snake() // fill the options. you can use the tgsnake.config.js file.
+// with text 
+bot.command("hello",(ctx)=>{
+  ctx.reply("Hi") 
+  if(ctx.replyToMessage){ 
+    ctx.replyToMessage.reply("Who are you?")
+  }
+})
+// with array
+bot.command(["hello","hi"],(ctx)=>{
+  ctx.reply("Hi") 
+  if(ctx.replyToMessage){ 
+    ctx.replyToMessage.reply("Who are you?")
+  }
+})
+bot.run() // running 🐍
+```
+Then send message `!hello` or `!hi` 
+## using use 
+This is a middleware. This function will execute first before other. 
+```ts:index.ts
+import {Snake} from "tgsnake"
+const bot = new Snake() 
+bot.use((ctx,next)=>{
+    console.log(ctx)
+    return next()
+})
+bot.run() // running 🐍
+``` 
+## using on 
+This is a method to receive incoming event. We following the gramjs [TypeUpdate](https://gram.js.org/beta/modules/tl_api.api.html#typeupdate)   
+_connected | message | UpdateNewMessage | UpdateMessageID | UpdateDeleteMessages | UpdateUserTyping | UpdateChatUserTyping | UpdateChatParticipants | UpdateUserStatus | UpdateUserName | UpdateUserPhoto | UpdateNewEncryptedMessage | UpdateEncryptedChatTyping | UpdateEncryption | UpdateEncryptedMessagesRead | UpdateChatParticipantAdd | UpdateChatParticipantDelete | UpdateDcOptions | UpdateNotifySettings | UpdateServiceNotification | UpdatePrivacy | UpdateUserPhone | UpdateReadHistoryInbox | UpdateReadHistoryOutbox | UpdateWebPage | UpdateReadMessagesContents | UpdateChannelTooLong | UpdateChannel | UpdateNewChannelMessage | UpdateReadChannelInbox | UpdateDeleteChannelMessages | UpdateChannelMessageViews | UpdateChatParticipantAdmin | UpdateNewStickerSet | UpdateStickerSetsOrder | UpdateStickerSets | UpdateSavedGifs | UpdateBotInlineQuery | UpdateBotInlineSend | UpdateEditChannelMessage | UpdateBotCallbackQuery | UpdateEditMessage | UpdateInlineBotCallbackQuery | UpdateReadChannelOutbox | UpdateDraftMessage | UpdateReadFeaturedStickers | UpdateRecentStickers | UpdateConfig | UpdatePtsChanged | UpdateChannelWebPage | UpdateDialogPinned | UpdatePinnedDialogs | UpdateBotWebhookJSON | UpdateBotWebhookJSONQuery | UpdateBotShippingQuery | UpdateBotPrecheckoutQuery | UpdatePhoneCall | UpdateLangPackTooLong | UpdateLangPack | UpdateFavedStickers | UpdateChannelReadMessagesContents | UpdateContactsReset | UpdateChannelAvailableMessages | UpdateDialogUnreadMark | UpdateMessagePoll | UpdateChatDefaultBannedRights | UpdateFolderPeers | UpdatePeerSettings | UpdatePeerLocated | UpdateNewScheduledMessage | UpdateDeleteScheduledMessages | UpdateTheme | UpdateGeoLiveViewed | UpdateLoginToken | UpdateMessagePollVote | UpdateDialogFilter | UpdateDialogFilterOrder | UpdateDialogFilters | UpdatePhoneCallSignalingData | UpdateChannelMessageForwards | UpdateReadChannelDiscussionInbox | UpdateReadChannelDiscussionOutbox | UpdatePeerBlocked | UpdateChannelUserTyping | UpdatePinnedMessages | UpdatePinnedChannelMessages | UpdateChat | UpdateGroupCallParticipants | UpdateGroupCall | UpdatePeerHistoryTTL | UpdateChatParticipant | UpdateChannelParticipant | UpdateBotStopped | UpdateGroupCallConnection | UpdateBotCommands_ 
+  
+```ts:index.ts
+import {Snake} from "tgsnake"
+const bot = new Snake() 
+bot.on("message",(ctx)=>{
+    console.log(ctx)
+})
+bot.run() // running 🐍
+``` 

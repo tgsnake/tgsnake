@@ -1,0 +1,27 @@
+--- 
+title : sendPhoto 
+folder : Telegram 
+--- 
+## Overview 
+Sending photo with fileId/file location/url/buffer. 
+## Parameters 
+```ts  
+ctx.telegram.sendPhoto(chatId,photo,more)
+```
+- `chatId` (_number|string_) 
+    - Chat/Groups/Channel id. 
+- `photo` (_string|Buffer_) 
+    - FileId/File Location/Url/Buffer 
+- `more` (_[sendMediaMoreParams](/en/telegram/media/SendMedia#parameters)_)
+## Example 
+```ts:index.ts {3} showLineNumber 
+bot.on("message",async (ctx) => {
+    if(ctx.media && ctx.media.type == "photo"){
+        let results = await ctx.telegram.sendPhoto(ctx.chat.id,ctx.media.fileId) 
+        console.log(results)
+    }
+})
+```
+## Possible Error 
+Same as [sendMedia](/en/telegram/media/SendMedia#possibleerror)
+## Bot can use this method.
