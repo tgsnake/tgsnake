@@ -11,7 +11,7 @@ export class State {
   private wizard!: Session<any>[];
   //todo
   //change the ctx:any with TypeContext
-  private middleware: { (ctx: MessageContext): void }[] = [];
+  private middleware: { (ctx: MessageContext, next: any): void }[] = [];
   private ctx!: MessageContext;
   constructor(wizard: Session<any>[]) {
     this.wizard = wizard;
@@ -25,26 +25,37 @@ export class State {
           this.wizard.forEach(async (wzrd, indx) => {
             if (wzrd.name == e.wizard) {
               await wzrd.find(e.chatId);
-              if (this.middleware.length > 0) {
-                this.middleware.forEach((mid) => {
-                  mid(this.ctx);
-                });
-              }
-              this.current.forEach(async (user) => {
-                if (user.chatId == this.ctx.from.id) {
-                  if (user.running) {
-                    await wzrd.wizard[user.now](this.ctx);
-                    await wzrd.save(user.chatId);
-                    user.now = user.now + 1;
-                    if (wzrd.wizard[user.now]) {
-                      return (user.running = true);
-                    } else {
-                      user.running = false;
-                      return this.current.splice(i, 1);
+              let runHand = (update) => {
+                this.current.forEach(async (user) => {
+                  if (user.chatId == update.from.id) {
+                    if (user.running) {
+                      await wzrd.wizard[user.now](update);
+                      await wzrd.save(user.chatId);
+                      user.now = user.now + 1;
+                      if (wzrd.wizard[user.now]) {
+                        return (user.running = true);
+                      } else {
+                        user.running = false;
+                        return this.current.splice(i, 1);
+                      }
                     }
                   }
-                }
-              });
+                });
+              };
+              if (this.middleware.length > 0) {
+                let runMid = (update: MessageContext, index: number) => {
+                  return () => {
+                    if (this.middleware[index + 1]) {
+                      return this.middleware[index + 1](update, runMid(update, index + 1));
+                    } else {
+                      return runHand(update);
+                    }
+                  };
+                };
+                return this.middleware[0](this.ctx, runMid(this.ctx, 0));
+              } else {
+                return runHand(this.ctx);
+              }
             }
           });
         }
@@ -53,7 +64,6 @@ export class State {
     return next();
   }
   launch(name: string) {
-    console.log(this.ctx);
     this.wizard.forEach((wzrd, indx) => {
       if (wzrd.name == name) {
         if (this.current.length == 0) {
@@ -88,7 +98,7 @@ export class State {
     this.ctx = ctx;
     return this.running(next);
   }
-  use(func: { (ctx: MessageContext): void }) {
+  use(func: { (ctx: MessageContext, next: any): void }) {
     return this.middleware.push(func);
   }
   quit() {

@@ -1,18 +1,11 @@
-import {Wizard,Snake,Filters} from "tgsnake"
+import {Wizard,Snake} from "tgsnake"
 
-const bot = new Snake() // create mew client 
-const filter = new Filters() // create new filter 
-bot.onNewMessage((ctx)=>{
-  filter.init(ctx) // installing filters
-})
+const bot = new Snake() // create new client 
 interface SessionData {
   userNumber?:number;
   userPass?:string; 
   userId?:number;
 }
-/**
- * create new session
-*/
 const session = new Wizard.Session<SessionData>(
     "wizard-session", // session name
     async (ctx) => {
@@ -31,11 +24,8 @@ const session = new Wizard.Session<SessionData>(
      return ctx.reply("Done.")
     }
   )
-/**
- * create new wizard
-*/
 const state = new Wizard.State([session]) 
-filter.use((ctx)=>{
+bot.use((ctx)=>{
   return state.init(ctx) // installing wizard
 })
 state.use((ctx)=>{
@@ -44,7 +34,7 @@ state.use((ctx)=>{
     return state.quit() // leave current session
   }
 })
-filter.cmd("login",(ctx)=>{
-  return state.login("wizard-session") // login as wizard-session 
+bot.command("login",(ctx)=>{
+  return state.launch("wizard-session") // login as wizard-session 
 })
 bot.run()
