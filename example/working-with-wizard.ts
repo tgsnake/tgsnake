@@ -11,28 +11,29 @@ const session = new Wizard.Session<SessionData>(
     async (ctx) => {
       session.state = {}
       await ctx.reply("Hi, Please input your number.")
-      return session.state.userId = ctx.message.chat.id
+      return session.state.userId = ctx.chat.id
     },
     async (ctx) => {
-      await ctx.reply("Your number : "+ctx.message.text)
-      session.state.userNumber = Number(ctx.message.text)
+      await ctx.reply("Your number : "+ctx.text)
+      session.state.userNumber = Number(ctx.text)
       return ctx.reply("Input your password")
     }
     async (ctx) => {
-     await ctx.reply("Your password : "+ctx.message.text)
-     session.state.userPass = ctx.message.text
+     await ctx.reply("Your password : "+ctx.text)
+     session.state.userPass = ctx.text
      return ctx.reply("Done.")
     }
   )
 const state = new Wizard.State([session]) 
-bot.use((ctx)=>{
-  return state.init(ctx) // installing wizard
+bot.use((ctx,next)=>{
+  return state.init(ctx,next) // installing wizard
 })
-state.use((ctx)=>{
-  let text = String(ctx.message.text).split(" ")
+state.use((ctx,next)=>{
+  let text = String(ctx.text).split(" ")
   if(/^[\!\/]leave/i.exec(text[0])){
     return state.quit() // leave current session
   }
+  return next()
 })
 bot.command("login",(ctx)=>{
   return state.launch("wizard-session") // login as wizard-session 
