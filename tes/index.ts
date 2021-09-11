@@ -7,6 +7,7 @@
 //  it under the terms of the MIT License as published. 
 
 import {Snake,Wizard} from "../src" 
+import * as fs from "fs"
 const session = new Wizard.Session("tester",(ctx)=>{
   ctx.reply("hello")
 },(ctx)=>{
@@ -15,6 +16,9 @@ const session = new Wizard.Session("tester",(ctx)=>{
 const state = new Wizard.State([session])
 const bot = new Snake() 
 bot.use((ctx, next)=> state.init(ctx,next))
+bot.on("message",(ctx)=>{ 
+  ctx.telegram.readHistory(ctx.chat.id)
+})
 bot.command("hi",(ctx)=>{
   console.log(ctx)
   ctx.reply("Hi")
