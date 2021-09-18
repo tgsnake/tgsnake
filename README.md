@@ -41,4 +41,16 @@ bot.on("message",(ctx)=>{ //handle new message event.
 ```
 More example you can found in example folder or in website.
   
-### MIT LICENSE 
+### Contribution  
+Welcome, You can contribute to this project. 
+#### Guide 
+- Fork this repo to your account. 
+- Clone your fork repo using git.   
+```bash 
+git clone <your github repo url> -b "dev"
+```
+Cloning branch dev in your repo. 
+- Edit and make something. 
+- Pull new update from branch `dev` original repo (this repo). 
+- Push update to your branch `dev` in fork repo.
+- Create pull request to branch `dev` original repo from branch `dev` frok repo.

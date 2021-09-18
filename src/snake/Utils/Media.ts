@@ -93,7 +93,7 @@ export function generateFileId(medias: GenerateFileId) {
   };
 }
 export class Media {
-  type?:
+  type!:
     | 'sticker'
     | 'document'
     | 'photo'
@@ -111,13 +111,22 @@ export class Media {
     | 'invoice';
   fileId!: string;
   uniqueFileId!: string;
-  fileName?: string;
-  emoji?: string;
+  fileName!: string;
+  emoji!: string;
   width!: number;
   height!: number;
-  isAnimated?: boolean;
+  isAnimated!: boolean;
   dcId!: number;
   size!: number;
+  value!: number;
+  closed!: boolean;
+  publicVoters!: boolean;
+  multipleChoice!: boolean;
+  quiz!: boolean;
+  question!: string;
+  answers!: string[];
+  longitude!: number;
+  latitude!: number;
   constructor() {}
   private stickerToFileId(doc: Api.Document) {
     let data: GenerateFileId = {
@@ -198,7 +207,22 @@ export class Media {
     this.uniqueFileId = file.uniqueFileId;
     return this;
   }
-  encode(media?: Api.Document | Api.Photo) {
+  private formatPoll(poll: Api.Poll) {
+    this.closed = poll.closed || false;
+    this.publicVoters = poll.publicVoters || false;
+    this.multipleChoice = poll.multipleChoice || false;
+    this.quiz = poll.quiz || false;
+    this.question = poll.question;
+    this.type = 'poll';
+    let asn: string[] = [];
+    for (let i = 0; i < poll.answers.length; i++) {
+      let cc = poll.answers[i] as Api.PollAnswer;
+      asn.push(cc.text);
+    }
+    this.answers = asn;
+    return this;
+  }
+  encode(media?: Api.Document | Api.Photo | Api.MessageMediaDice | Api.Poll | Api.GeoPoint) {
     // document
     if (media instanceof Api.Document) {
       let doc = media as Api.Document;
@@ -216,6 +240,23 @@ export class Media {
       let photo = media as Api.Photo;
       return this.photoToFileId(photo);
     }
+    // Dice
+    if (media instanceof Api.MessageMediaDice) {
+      this.emoji = media.emoticon;
+      this.value = media.value;
+      this.type = 'dice';
+    }
+    // Poll
+    if (media instanceof Api.Poll) {
+      return this.formatPoll(media);
+    }
+    // Geo
+    if (media instanceof Api.GeoPoint) {
+      let loc = media as Api.GeoPoint;
+      this.type = 'location';
+      this.latitude = loc.lat;
+      this.longitude = loc.long;
+    }
     return this;
   }
   decode(fileId?: string) {
@@ -224,6 +265,7 @@ export class Media {
     return decodeFileId(String(file));
   }
   parseMedia(media: Api.TypeMessageMedia) {
+    console.log(JSON.stringify(media, null, 2));
     if (media instanceof Api.MessageMediaDocument) {
       if (media.document instanceof Api.Document) {
         return media.document as Api.Document;
@@ -233,6 +275,15 @@ export class Media {
       if (media.photo instanceof Api.Photo) {
         return media.photo as Api.Photo;
       }
+    }
+    if (media instanceof Api.MessageMediaDice) {
+      return media as Api.MessageMediaDice;
+    }
+    if (media instanceof Api.MessageMediaPoll) {
+      return media.poll as Api.Poll;
+    }
+    if (media instanceof Api.MessageMediaGeo) {
+      return media.geo as Api.GeoPoint;
     }
   }
 }

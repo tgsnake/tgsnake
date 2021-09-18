@@ -215,6 +215,7 @@ export class Snake extends MainContext {
       });
       this.connected = true;
       this.emit('connected', me);
+      this.emit('*', me);
       return log('🐍 Connected as ', name);
     } catch (error) {
       this._handleError(error, `Snake.run()`);

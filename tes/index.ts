@@ -33,8 +33,13 @@ state.use(async (ctx,next) => {
   }
   return next()
 })
+bot.on("message",(ctx)=>{
+  if("media" in ctx){
+    console.log(ctx.media)
+  }
+})
 bot.command("hi",(ctx)=>{
-  console.log(ctx)
+
   ctx.reply("Hi")
 })
 bot.command("info",(ctx)=>{

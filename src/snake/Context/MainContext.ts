@@ -7,9 +7,11 @@
 //  it under the terms of the MIT License as published.
 
 import { Telegram } from '../Telegram';
-import * as Update from '../Update/Update';
+import { ResultGetEntity } from '../Telegram/Users/GetEntity';
+import * as Update from '../Update';
 import { Snake } from '../client';
 import EventEmiter from 'events';
+import TypedEmitter from 'typed-emitter';
 import { Api } from 'telegram';
 import { NewMessage } from 'telegram/events';
 import { NewMessageEvent } from 'telegram/events/NewMessage';
@@ -29,7 +31,109 @@ export interface HandlerObject {
   run: MiddlewareFunction | HandlerFunction;
   key: string | RegExp | string[];
 }
-export class MainContext extends EventEmiter {
+interface eventsOn {
+  '*': (context: Api.TypeUpdate | Update.TypeUpdate | ResultGetEntity | MessageContext) => void;
+  connected: (context: ResultGetEntity) => void;
+  message: (context: MessageContext) => void;
+  UpdateNewMessage: (context: Api.UpdateNewMessage) => void;
+  UpdateMessageID: (context: Update.UpdateMessageID) => void;
+  UpdateDeleteMessages: (context: Update.UpdateDeleteMessages) => void;
+  UpdateUserTyping: (context: Update.UpdateUserTyping) => void;
+  UpdateChatUserTyping: (context: Update.UpdateChatUserTyping) => void;
+  UpdateChatParticipants: (context: Update.UpdateChatParticipants) => void;
+  UpdateUserStatus: (context: Update.UpdateUserStatus) => void;
+  UpdateUserName: (context: Api.UpdateUserName) => void;
+  UpdateUserPhoto: (context: Api.UpdateUserPhoto) => void;
+  UpdateNewEncryptedMessage: (context: Api.UpdateNewEncryptedMessage) => void;
+  UpdateEncryptedChatTyping: (context: Api.UpdateEncryptedChatTyping) => void;
+  UpdateEncryption: (context: Api.UpdateEncryption) => void;
+  UpdateEncryptedMessagesRead: (context: Api.UpdateEncryptedMessagesRead) => void;
+  UpdateChatParticipantAdd: (context: Api.UpdateChatParticipantAdd) => void;
+  UpdateChatParticipantDelete: (context: Api.UpdateChatParticipantDelete) => void;
+  UpdateDcOptions: (context: Api.UpdateDcOptions) => void;
+  UpdateNotifySettings: (context: Api.UpdateNotifySettings) => void;
+  UpdateServiceNotification: (context: Api.UpdateServiceNotification) => void;
+  UpdatePrivacy: (context: Api.UpdatePrivacy) => void;
+  UpdateUserPhone: (context: Api.UpdateUserPhone) => void;
+  UpdateReadHistoryInbox: (context: Api.UpdateReadHistoryInbox) => void;
+  UpdateReadHistoryOutbox: (context: Api.UpdateReadHistoryOutbox) => void;
+  UpdateWebPage: (context: Api.UpdateWebPage) => void;
+  UpdateReadMessagesContents: (context: Api.UpdateReadMessagesContents) => void;
+  UpdateChannelTooLong: (context: Api.UpdateChannelTooLong) => void;
+  UpdateChannel: (context: Api.UpdateChannel) => void;
+  UpdateNewChannelMessage: (context: Api.UpdateNewChannelMessage) => void;
+  UpdateReadChannelInbox: (context: Api.UpdateReadChannelInbox) => void;
+  UpdateDeleteChannelMessages: (context: Api.UpdateDeleteChannelMessages) => void;
+  UpdateChannelMessageViews: (context: Api.UpdateChannelMessageViews) => void;
+  UpdateChatParticipantAdmin: (context: Api.UpdateChatParticipantAdmin) => void;
+  UpdateNewStickerSet: (context: Api.UpdateNewStickerSet) => void;
+  UpdateStickerSetsOrder: (context: Api.UpdateStickerSetsOrder) => void;
+  UpdateStickerSets: (context: Api.UpdateStickerSets) => void;
+  UpdateSavedGifs: (context: Api.UpdateSavedGifs) => void;
+  UpdateBotInlineQuery: (context: Api.UpdateBotInlineQuery) => void;
+  UpdateBotInlineSend: (context: Api.UpdateBotInlineSend) => void;
+  UpdateEditChannelMessage: (context: Api.UpdateEditChannelMessage) => void;
+  UpdateBotCallbackQuery: (context: Api.UpdateBotCallbackQuery) => void;
+  UpdateEditMessage: (context: Api.UpdateEditMessage) => void;
+  UpdateInlineBotCallbackQuery: (context: Api.UpdateInlineBotCallbackQuery) => void;
+  UpdateReadChannelOutbox: (context: Api.UpdateReadChannelInbox) => void;
+  UpdateDraftMessage: (context: Api.UpdateDraftMessage) => void;
+  UpdateReadFeaturedStickers: (context: Api.UpdateReadFeaturedStickers) => void;
+  UpdateRecentStickers: (context: Api.UpdateRecentStickers) => void;
+  UpdateConfig: (context: Api.UpdateConfig) => void;
+  UpdatePtsChanged: (context: Api.UpdatePtsChanged) => void;
+  UpdateChannelWebPage: (context: Api.UpdateChannelWebPage) => void;
+  UpdateDialogPinned: (context: Api.UpdateDialogPinned) => void;
+  UpdatePinnedDialogs: (context: Api.UpdatePinnedDialogs) => void;
+  UpdateBotWebhookJSON: (context: Api.UpdateBotWebhookJSON) => void;
+  UpdateBotWebhookJSONQuery: (context: Api.UpdateBotWebhookJSONQuery) => void;
+  UpdateBotShippingQuery: (context: Api.UpdateBotShippingQuery) => void;
+  UpdateBotPrecheckoutQuery: (context: Api.UpdateBotPrecheckoutQuery) => void;
+  UpdatePhoneCall: (context: Api.UpdatePhoneCall) => void;
+  UpdateLangPackTooLong: (context: Api.UpdateLangPackTooLong) => void;
+  UpdateLangPack: (context: Api.UpdateLangPack) => void;
+  UpdateFavedStickers: (context: Api.UpdateFavedStickers) => void;
+  UpdateChannelReadMessagesContents: (context: Api.UpdateChannelReadMessagesContents) => void;
+  UpdateContactsReset: (context: Api.UpdateContactsReset) => void;
+  UpdateChannelAvailableMessages: (context: Api.UpdateChannelAvailableMessages) => void;
+  UpdateDialogUnreadMark: (context: Api.UpdateDialogUnreadMark) => void;
+  UpdateMessagePoll: (context: Api.UpdateMessagePoll) => void;
+  UpdateChatDefaultBannedRights: (context: Api.UpdateChatDefaultBannedRights) => void;
+  UpdateFolderPeers: (context: Api.UpdateFolderPeers) => void;
+  UpdatePeerSettings: (context: Api.UpdatePeerSettings) => void;
+  UpdatePeerLocated: (context: Api.UpdatePeerLocated) => void;
+  UpdateNewScheduledMessage: (context: Api.UpdateNewScheduledMessage) => void;
+  UpdateDeleteScheduledMessages: (context: Api.UpdateDeleteScheduledMessages) => void;
+  UpdateTheme: (context: Api.UpdateTheme) => void;
+  UpdateGeoLiveViewed: (context: Api.UpdateGeoLiveViewed) => void;
+  UpdateLoginToken: (context: Api.UpdateLoginToken) => void;
+  UpdateMessagePollVote: (context: Api.UpdateMessagePollVote) => void;
+  UpdateDialogFilter: (context: Api.UpdateDialogFilter) => void;
+  UpdateDialogFilterOrder: (context: Api.UpdateDialogFilters) => void;
+  UpdateDialogFilters: (context: Api.UpdateDialogFilters) => void;
+  UpdatePhoneCallSignalingData: (context: Api.UpdatePhoneCallSignalingData) => void;
+  UpdateChannelMessageForwards: (context: Api.UpdateChannelMessageForwards) => void;
+  UpdateReadChannelDiscussionInbox: (context: Api.UpdateReadChannelDiscussionOutbox) => void;
+  UpdateReadChannelDiscussionOutbox: (context: Api.UpdateReadChannelDiscussionOutbox) => void;
+  UpdatePeerBlocked: (context: Api.UpdatePeerBlocked) => void;
+  UpdateChannelUserTyping: (context: Api.UpdateChannelUserTyping) => void;
+  UpdatePinnedMessages: (context: Api.UpdatePinnedMessages) => void;
+  UpdatePinnedChannelMessages: (context: Api.UpdatePinnedChannelMessages) => void;
+  UpdateChat: (context: Api.UpdateChat) => void;
+  UpdateGroupCallParticipants: (context: Api.UpdateGroupCallParticipants) => void;
+  UpdateGroupCall: (context: Api.UpdateGroupCall) => void;
+  UpdatePeerHistoryTTL: (context: Api.UpdatePeerHistoryTTL) => void;
+  UpdateChatParticipant: (context: Api.UpdateChatParticipant) => void;
+  UpdateChannelParticipant: (context: Api.UpdateChannelParticipant) => void;
+  UpdateBotStopped: (context: Api.UpdateBotStopped) => void;
+  UpdateGroupCallConnection: (context: Api.UpdateGroupCall) => void;
+  UpdateBotCommands: (context: Api.UpdateBotCommands) => void;
+  UpdatesTooLong: (context: Api.UpdatesTooLong) => void;
+  UpdateShortMessage: (context: Update.UpdateShortMessage) => void;
+  UpdateShortChatMessage: (context: Update.UpdateShortChatMessage) => void;
+  UpdateShortSentMessage: (context: Update.UpdateShortSentMessage) => void;
+}
+export class MainContext extends (EventEmiter as new () => TypedEmitter<eventsOn>) {
   private middleware: MiddlewareFunction[] = [];
   private handler: HandlerObject[] = [];
   ctx!: any;
@@ -44,6 +148,7 @@ export class MainContext extends EventEmiter {
       let parse = new MessageContext();
       await parse.init(message, SnakeClient);
       this.emit('message', parse);
+      this.emit('*', parse);
       let runHandler = (updates) => {
         this.handler.forEach(async (item) => {
           switch (item.type) {
@@ -124,7 +229,9 @@ export class MainContext extends EventEmiter {
       }
     } else {
       let parse = await this.parseUpdate(update, SnakeClient);
+      //@ts-ignore
       this.emit(update.className, parse);
+      this.emit('*', parse);
       if (this.middleware.length > 0) {
         let next = (updates, index: number) => {
           return () => {
