@@ -113,7 +113,7 @@ export class Snake extends MainContext {
         sessionName = options.sessionName;
         delete options.sessionName;
       }
-      if (options.storeSession) {
+      if (String(options.storeSession) !== 'true') {
         storeSession = Boolean(options.storeSession);
         delete options.storeSession;
       }
