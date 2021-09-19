@@ -45,4 +45,7 @@ bot.command("hi",(ctx)=>{
 bot.command("info",(ctx)=>{
   state.launch("tester")
 })
+bot.command("mycommand",(ctx)=>{
+  console.log(ctx)
+})
 bot.run()

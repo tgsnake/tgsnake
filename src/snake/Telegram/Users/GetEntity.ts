@@ -13,6 +13,7 @@ import { AdminRights } from '../../Utils/AdminRights';
 import { Api } from 'telegram';
 import { BigInteger } from 'big-integer';
 import { Snake } from '../../client';
+import * as fs from 'fs';
 export class ResultGetEntity {
   type?: string;
   self?: boolean;

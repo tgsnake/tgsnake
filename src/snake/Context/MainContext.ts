@@ -10,7 +10,8 @@ import { Telegram } from '../Telegram';
 import { ResultGetEntity } from '../Telegram/Users/GetEntity';
 import * as Update from '../Update';
 import { Snake } from '../client';
-import EventEmiter from 'events';
+import { EventEmitter } from 'events';
+import TypedEmitter from 'typed-emitter';
 import { Api } from 'telegram';
 import { NewMessage } from 'telegram/events';
 import { NewMessageEvent } from 'telegram/events/NewMessage';
@@ -132,12 +133,7 @@ export interface eventsOn {
   UpdateShortChatMessage: (context: Update.UpdateShortChatMessage) => void;
   UpdateShortSentMessage: (context: Update.UpdateShortSentMessage) => void;
 }
-export declare interface MainContext {
-  on<U extends keyof eventsOn>(event: U, listener: eventsOn[U]): this;
-
-  emit<U extends keyof eventsOn>(event: U, ...args: Parameters<eventsOn[U]>): boolean;
-}
-export class MainContext extends EventEmiter {
+export class MainContext extends (EventEmitter as new () => TypedEmitter<eventsOn>) {
   private middleware: MiddlewareFunction[] = [];
   private handler: HandlerObject[] = [];
   ctx!: any;
