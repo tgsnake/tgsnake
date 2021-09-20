@@ -215,6 +215,7 @@ export class Snake extends MainContext {
         : me.firstName + ' [' + me.id + ']';
       // new message
       this.client.addEventHandler(async (event: NewMessageEvent) => {
+        console.log('[NewMessageEvent-Client.ts]', event);
         if (!isBot) {
           await this.client.getDialogs({});
         }
@@ -222,6 +223,7 @@ export class Snake extends MainContext {
       }, new NewMessage({}));
       // new event
       this.client.addEventHandler((update: Api.TypeUpdate) => {
+        console.log('[NewEvent-Client.ts]', update);
         return this.handleUpdate(update, this);
       });
       this.connected = true;
