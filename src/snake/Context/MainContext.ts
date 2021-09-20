@@ -144,6 +144,7 @@ export class MainContext extends (EventEmitter as new () => TypedEmitter<eventsO
   async handleUpdate(update: Api.TypeUpdate | NewMessageEvent, SnakeClient: Snake) {
     if (update instanceof NewMessageEvent) {
       update as NewMessageEvent;
+      console.log(update);
       let message: Message = update.message as Message;
       let parse = new MessageContext();
       await parse.init(message, SnakeClient);

@@ -499,6 +499,11 @@ internal-slot@^1.0.3:
     has "^1.0.3"
     side-channel "^1.0.4"
 
+ip@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/ip/-/ip-1.1.5.tgz#bdded70114290828c0a039e72ef25f5aaec4354a"
+  integrity sha1-vd7XARQpCCjAoDnnLvJfWq7ENUo=
+
 is-arguments@^1.0.4:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/is-arguments/-/is-arguments-1.1.1.tgz#15b3f88fda01f2a97fec84ca761a560f123efa9b"
@@ -870,6 +875,19 @@ slide@^1.1.5:
   resolved "https://registry.yarnpkg.com/slide/-/slide-1.1.6.tgz#56eb027d65b4d2dce6cb2e2d32c4d4afc9e1d707"
   integrity sha1-VusCfWW00tzmyy4tMsTUr8nh1wc=
 
+smart-buffer@^4.1.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/smart-buffer/-/smart-buffer-4.2.0.tgz#6e1d71fa4f18c05f7d0ff216dd16a481d0e8d9ae"
+  integrity sha512-94hK0Hh8rPqQl2xXc3HsaBoOXKV20MToPkcXvwbISWLEs+64sBq5kFgn2kJDHb1Pry9yrP0dxrCI9RRci7RXKg==
+
+socks@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/socks/-/socks-2.6.1.tgz#989e6534a07cf337deb1b1c94aaa44296520d30e"
+  integrity sha512-kLQ9N5ucj8uIcxrDwjm0Jsqk06xdpBjGNQtpXy4Q8/QY2k+fY7nZH8CARy+hkbG+SGAovmzzuauCpBlb8FrnBA==
+  dependencies:
+    ip "^1.1.5"
+    smart-buffer "^4.1.0"
+
 store2@^2.12.0:
   version "2.12.0"
   resolved "https://registry.yarnpkg.com/store2/-/store2-2.12.0.tgz#e1f1b7e1a59b6083b2596a8d067f6ee88fd4d3cf"
@@ -918,10 +936,10 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
-telegram@^1.7.15:
-  version "1.8.15"
-  resolved "https://registry.yarnpkg.com/telegram/-/telegram-1.8.15.tgz#a65114578577d9dee900928b1fb67b7bcdc1ab4b"
-  integrity sha512-h0f4wL5tMJIL7MlIaC2LpycdhVybV4da9uqKIzhC2VoDAwMtL8uBrawCZaxbI57vFH8ciz83IsGb9u9wLKrR1A==
+telegram@^1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/telegram/-/telegram-1.9.0.tgz#dbba40f4a2e915af407f2cfcde01ceace2060da4"
+  integrity sha512-3WTGMeRK0MBTB0qbPOQ13coIQXFY3Kv8qu6r9kjAj/Kmeg32ctS4EY+9Z1VMuDqMQVAl7g3I22/QXtRLv+prxw==
   dependencies:
     "@cryptography/aes" "^0.1.1"
     async-mutex "^0.3.0"
@@ -935,6 +953,7 @@ telegram@^1.7.15:
     pako "^2.0.3"
     path-browserify "^1.0.1"
     process "^0.11.10"
+    socks "^2.6.1"
     store2 "^2.12.0"
     ts-custom-error "^3.2.0"
     ts-mixer "^5.4.0"

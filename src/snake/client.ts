@@ -59,7 +59,8 @@ export class Snake extends MainContext {
   telegram!: Telegram;
   version: string = '1.2.1';
   connected: Boolean = false;
-  constructor(public options?: Options) {
+  options!: Options;
+  constructor(options?: Options) {
     super();
     if (!options) {
       let dir = fs.readdirSync(process.cwd());
@@ -117,6 +118,10 @@ export class Snake extends MainContext {
         storeSession = Boolean(options.storeSession);
         delete options.storeSession;
       }
+      if (!options.useWSS) {
+        options.useWSS = false;
+      }
+      this.options = options;
     }
     Logger.setLevel(logger);
   }
@@ -169,6 +174,7 @@ export class Snake extends MainContext {
     }
   }
   async run() {
+    console.log(this);
     try {
       process.once('SIGINT', () => {
         log('🐍 Killing..');
@@ -207,10 +213,15 @@ export class Snake extends MainContext {
       let name = me.lastName
         ? me.firstName + ' ' + me.lastName + ' [' + me.id + ']'
         : me.firstName + ' [' + me.id + ']';
-      this.onNewMessage((update) => {
-        return this.handleUpdate(update, this);
-      });
-      this.onNewEvent((update) => {
+      // new message
+      this.client.addEventHandler(async (event: NewMessageEvent) => {
+        if (!isBot) {
+          await this.client.getDialogs({});
+        }
+        return this.handleUpdate(event, this);
+      }, new NewMessage({}));
+      // new event
+      this.client.addEventHandler((update: Api.TypeUpdate) => {
         return this.handleUpdate(update, this);
       });
       this.connected = true;
@@ -219,37 +230,6 @@ export class Snake extends MainContext {
       return log('🐍 Connected as ', name);
     } catch (error) {
       this._handleError(error, `Snake.run()`);
-    }
-  }
-  private async onNewMessage(next: any) {
-    try {
-      if (!this.client) {
-        await this._createClient();
-      }
-      if (this.client) {
-        this.client.addEventHandler(async (event: NewMessageEvent) => {
-          if (!isBot) {
-            await this.client.getDialogs({});
-          }
-          return next(event);
-        }, new NewMessage({}));
-      }
-    } catch (error) {
-      this._handleError(error, `Snake.onNewMessage([${typeof next}])`);
-    }
-  }
-  private async onNewEvent(next: any) {
-    try {
-      if (!this.client) {
-        await this._createClient();
-      }
-      if (this.client) {
-        this.client.addEventHandler((update: Api.TypeUpdate) => {
-          return next(update);
-        });
-      }
-    } catch (error) {
-      this._handleError(error, `Snake.onNewEvent([${typeof next}])`);
     }
   }
   async generateSession() {

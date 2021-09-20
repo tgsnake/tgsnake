@@ -18,7 +18,7 @@ import { Entities } from './Entities';
 import { ForwardMessage } from './ForwardMessage';
 import { Media } from './Media';
 import { Message as MessageEvent } from 'telegram/tl/custom/message';
-import {Telegram} from "../Telegram"
+import { Telegram } from '../Telegram';
 export class Message {
   out?: boolean;
   mentioned?: boolean;
@@ -50,11 +50,11 @@ export class Message {
   mediaGroupId?: BigInteger | number;
   restrictionReason?: RestrictionReason[];
   SnakeClient!: Snake;
-  telegram!:Telegram
+  telegram!: Telegram;
   constructor() {}
   async init(message: MessageEvent | Api.MessageService | Api.Message, SnakeClient: Snake) {
     this.SnakeClient = SnakeClient;
-    this.telegram = SnakeClient.telegram
+    this.telegram = SnakeClient.telegram;
     if (message instanceof MessageEvent || message.className == 'Message') {
       return await this.parseMessage(message as MessageEvent);
     }

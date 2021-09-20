@@ -5,6 +5,7 @@
 //
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
+import { ProxyInterface } from 'telegram/network/connection/TCPMTProxy';
 export interface Options {
   /**
    * Set Logger level for gramjs. Default is "none".
@@ -66,6 +67,10 @@ export interface Options {
    * defaults to 5
    */
   connectionRetries?: number;
+  /**
+   * Experimental proxy to be used for the connection. (only supports MTProxies)
+   */
+  proxy?: ProxyInterface;
   /**
    * How many times we should retry borrowing a sender from another DC when it fails. defaults to 5
    */
