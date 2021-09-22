@@ -151,7 +151,7 @@ buffer@^6.0.3:
     base64-js "^1.3.1"
     ieee754 "^1.2.1"
 
-bufferutil@^4.0.1:
+bufferutil@^4.0.1, bufferutil@^4.0.3:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/bufferutil/-/bufferutil-4.0.3.tgz#66724b756bed23cd7c28c4d306d7994f9943cc6b"
   integrity sha512-yEYTwGndELGvfXsImMBLop58eaGW+YdONi1fNjTINSY98tmMmFijBG6WXgdkfuLNt4imzQNtIE+eBp1PVpMCSw==
@@ -937,9 +937,9 @@ supports-color@^7.1.0:
     has-flag "^4.0.0"
 
 telegram@^1.9.0:
-  version "1.9.0"
-  resolved "https://registry.yarnpkg.com/telegram/-/telegram-1.9.0.tgz#dbba40f4a2e915af407f2cfcde01ceace2060da4"
-  integrity sha512-3WTGMeRK0MBTB0qbPOQ13coIQXFY3Kv8qu6r9kjAj/Kmeg32ctS4EY+9Z1VMuDqMQVAl7g3I22/QXtRLv+prxw==
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/telegram/-/telegram-1.9.3.tgz#aaaaa9dde3ee123318e7b3a8440e3bcc1fc902a9"
+  integrity sha512-J3MlSpWcWK1CK0JxuFh9mwbpiuG2UAK4zLjvrAkfzVaiuAEj77ydpxtufgh87eUWS0v7wx2MtJ8qEsdRVRShww==
   dependencies:
     "@cryptography/aes" "^0.1.1"
     async-mutex "^0.3.0"
@@ -956,9 +956,12 @@ telegram@^1.9.0:
     socks "^2.6.1"
     store2 "^2.12.0"
     ts-custom-error "^3.2.0"
-    ts-mixer "^5.4.0"
+    ts-mixer "^6.0.0"
     util "^0.12.4"
-    websocket "^1.0.33"
+    websocket "^1.0.34"
+  optionalDependencies:
+    bufferutil "^4.0.3"
+    utf-8-validate "^5.0.5"
 
 tg-file-id@^1.1.1:
   version "1.1.2"
@@ -978,10 +981,10 @@ ts-custom-error@^3.2.0:
   resolved "https://registry.yarnpkg.com/ts-custom-error/-/ts-custom-error-3.2.0.tgz#ff8f80a3812bab9dc448536312da52dce1b720fb"
   integrity sha512-cBvC2QjtvJ9JfWLvstVnI45Y46Y5dMxIaG1TDMGAD/R87hpvqFL+7LhvUDhnRCfOnx/xitollFWWvUKKKhbN0A==
 
-ts-mixer@^5.4.0:
-  version "5.4.1"
-  resolved "https://registry.yarnpkg.com/ts-mixer/-/ts-mixer-5.4.1.tgz#b90db9ced48531aa17ce9184a2890d1e3c99b1e5"
-  integrity sha512-Zo9HgPCtNouDgJ+LGtrzVOjSg8+7WGQktIKLwAfaNrlOK1mWGlz1ejsAF/YqUEqAGjUTeB5fEg8gH9Aui6w9xA==
+ts-mixer@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/ts-mixer/-/ts-mixer-6.0.0.tgz#4e631d3a36e3fa9521b973b132e8353bc7267f9f"
+  integrity sha512-nXIb1fvdY5CBSrDIblLn73NW0qRDk5yJ0Sk1qPBF560OdJfQp9jhl+0tzcY09OZ9U+6GpeoI9RjwoIKFIoB9MQ==
 
 ts-node@^10.0.0:
   version "10.2.1"
@@ -1043,7 +1046,7 @@ unbox-primitive@^1.0.1:
     has-symbols "^1.0.2"
     which-boxed-primitive "^1.0.2"
 
-utf-8-validate@^5.0.2:
+utf-8-validate@^5.0.2, utf-8-validate@^5.0.5:
   version "5.0.5"
   resolved "https://registry.yarnpkg.com/utf-8-validate/-/utf-8-validate-5.0.5.tgz#dd32c2e82c72002dc9f02eb67ba6761f43456ca1"
   integrity sha512-+pnxRYsS/axEpkrrEpzYfNZGXp0IjC/9RIxwM5gntY4Koi8SHmUGSfxfWqxZdRxrtaoVstuOzUp/rbs3JSPELQ==
@@ -1067,7 +1070,7 @@ util@^0.12.4:
     safe-buffer "^5.1.2"
     which-typed-array "^1.1.2"
 
-websocket@^1.0.33:
+websocket@^1.0.34:
   version "1.0.34"
   resolved "https://registry.yarnpkg.com/websocket/-/websocket-1.0.34.tgz#2bdc2602c08bf2c82253b730655c0ef7dcab3111"
   integrity sha512-PRDso2sGwF6kM75QykIesBijKSVceR6jL2G8NGYyq2XrItNC2P5/qL5XeR056GhA+Ly7JMFvJb9I312mJfmqnQ==
