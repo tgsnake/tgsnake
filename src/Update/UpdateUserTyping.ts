@@ -23,7 +23,7 @@ export class UpdateUserTyping extends Update {
   async init(update: Api.UpdateUserTyping, SnakeClient: Snake) {
     this.telegram = SnakeClient.telegram;
     if (update.userId) {
-      let user = new From();
+      let user = new From(); 
       await user.init(update.userId, SnakeClient);
       this.user = user;
     }

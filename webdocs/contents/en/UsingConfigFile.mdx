@@ -7,7 +7,7 @@ This is a config file for tgsnake. You can pass all option in there to make your
 ## Option 
 We have a many option then if you use them together it will make your index file long. The options are: 
 ```ts 
-interface option {
+interface Options {
   /**
    * Set Logger level for gramjs. Default is "none".
    */
@@ -68,6 +68,10 @@ interface option {
    * defaults to 5
    */
   connectionRetries?: number;
+  /**
+   * Experimental proxy to be used for the connection. (only supports MTProxies)
+   */
+  proxy?: ProxyInterface;
   /**
    * How many times we should retry borrowing a sender from another DC when it fails. defaults to 5
    */

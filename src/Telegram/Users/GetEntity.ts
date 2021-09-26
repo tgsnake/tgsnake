@@ -202,9 +202,19 @@ export class ResultGetEntity {
     }
   }
 }
-export async function GetEntity(snakeClient: Snake, chatId: string | number) {
+export async function GetEntity(snakeClient: Snake, chatId: string | number,useCache?:boolean) {
   try {
-    return new ResultGetEntity(await snakeClient.client.getEntity(chatId));
+    if(useCache){
+      if(typeof chatId == "number"){
+        if(snakeClient.entityCache.get(Number(chatId))){
+          return snakeClient.entityCache.get(Number(chatId))
+        }
+      }
+    }
+    let e = await snakeClient.client.getEntity(chatId);
+    let r = new ResultGetEntity(e) 
+    snakeClient.entityCache.set(Number(r.id),r)
+    return r
   } catch (error) {
     return snakeClient._handleError(error, `telegram.getEntity(${chatId})`);
   }

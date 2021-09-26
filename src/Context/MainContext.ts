@@ -16,7 +16,7 @@ import { Api } from 'telegram';
 import { NewMessage } from 'telegram/events';
 import { NewMessageEvent } from 'telegram/events/NewMessage';
 import { MessageContext } from './MessageContext';
-import { Message } from 'telegram/tl/custom/message';
+import { Message } from 'telegram/tl/custom/message'; 
 export type Handler = 'use' | 'hears' | 'command';
 type TypeCmd = string | string[];
 type TypeHears = string | RegExp;
@@ -137,15 +137,27 @@ export class MainContext extends (EventEmitter as new () => TypedEmitter<eventsO
   private middleware: MiddlewareFunction[] = [];
   private handler: HandlerObject[] = [];
   ctx!: any;
-  nowPrefix: string = '.!/';
+  nowPrefix: string = '.!/'; 
+  /**@hidden*/
+  entityCache:Map<number,ResultGetEntity> = new Map()
   constructor() {
     super();
   }
   async handleUpdate(update: Api.TypeUpdate | NewMessageEvent, SnakeClient: Snake) {
-    console.log('[NewUpdate-MainContext.ts]', update);
     if (update instanceof NewMessageEvent) {
       update as NewMessageEvent;
       let message: Message = update.message as Message;
+      if(update.originalUpdate){
+        if(update.originalUpdate._entities){
+          let en = update.originalUpdate._entities
+          en.forEach((e,i)=>{
+            this.entityCache.set(
+                i, 
+                new ResultGetEntity(e)
+              )
+          })
+        }
+      }
       let parse = new MessageContext();
       await parse.init(message, SnakeClient);
       this.emit('message', parse);
@@ -248,6 +260,18 @@ export class MainContext extends (EventEmitter as new () => TypedEmitter<eventsO
     return this;
   }
   private async parseUpdate(update: Api.TypeUpdate, SnakeClient: Snake) {
+    console.log(update) 
+    //@ts-ignore
+    if(update._entities){ 
+      //@ts-ignore
+        let en = update._entities
+        en.forEach((e,i)=>{
+          this.entityCache.set(
+              i, 
+              new ResultGetEntity(e)
+            )
+        })
+      }
     if (Update[update.className]) {
       let up = new Update[update.className]();
       await up.init(update, SnakeClient);

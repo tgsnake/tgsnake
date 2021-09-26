@@ -37,9 +37,11 @@ bot.on("message",(ctx)=>{
   if("media" in ctx){
     console.log(ctx.media)
   }
+  ctx.telegram.readHistory(ctx.chat.id) 
+  ctx.telegram.readMentions(ctx.chat.id)
+  console.log(ctx)
 })
 bot.command("hi",(ctx)=>{
-
   ctx.reply("Hi")
 })
 bot.command("info",(ctx)=>{

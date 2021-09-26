@@ -43,7 +43,7 @@ export class Chat {
     }
     if (this.id) {
       let tg = snakeClient.telegram;
-      let entity = await tg.getEntity(this.id);
+      let entity = await tg.getEntity(this.id,true);
       this.id = entity.id;
       if (entity.username) {
         this.username = entity.username!;

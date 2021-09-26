@@ -18,6 +18,7 @@ import { Api } from 'telegram';
 import fs from 'fs';
 import { Options } from './Interface/Options';
 import { CatchError } from './Interface/CatchError';
+import {ResultGetEntity} from "./Telegram/Users/GetEntity"
 
 let api_hash: string;
 let api_id: number;
@@ -174,7 +175,6 @@ export class Snake extends MainContext {
     }
   }
   async run() {
-    console.log(this);
     try {
       process.once('SIGINT', () => {
         log('🐍 Killing..');
@@ -215,7 +215,6 @@ export class Snake extends MainContext {
         : me.firstName + ' [' + me.id + ']';
       // new message
       this.client.addEventHandler(async (event: NewMessageEvent) => {
-        console.log('[NewMessageEvent-Client.ts]', event);
         if (!isBot) {
           await this.client.getDialogs({});
         }
@@ -223,7 +222,6 @@ export class Snake extends MainContext {
       }, new NewMessage({}));
       // new event
       this.client.addEventHandler((update: Api.TypeUpdate) => {
-        console.log('[NewEvent-Client.ts]', update);
         return this.handleUpdate(update, this);
       });
       this.connected = true;

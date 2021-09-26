@@ -15,7 +15,8 @@ import { Chat } from './Chat';
 import { From } from './From';
 import { Entities } from './Entities';
 import { ForwardMessage } from './ForwardMessage';
-import { Media } from './Media';
+import { Media } from './Media'; 
+let _SnakeClient: Snake;
 export class ReplyToMessage {
   out?: boolean;
   mentioned?: boolean;
@@ -45,10 +46,9 @@ export class ReplyToMessage {
   postAuthor?: string;
   mediaGroupId?: BigInteger | number;
   restrictionReason?: RestrictionReason[];
-  SnakeClient!: Snake;
   constructor() {}
   async init(messageReplyHeader: Api.MessageReplyHeader, SnakeClient: Snake, chatId: number) {
-    this.SnakeClient = SnakeClient;
+    _SnakeClient = SnakeClient;
     if (messageReplyHeader.replyToMsgId) {
       this.id = messageReplyHeader.replyToMsgId;
       let message = await this.SnakeClient.telegram.getMessages(chatId, [this.id]);
@@ -84,5 +84,11 @@ export class ReplyToMessage {
       }
       return this;
     }
+  } 
+  get SnakeClient(){
+    return _SnakeClient
+  } 
+  get telegram(){
+    return _SnakeClient.telegram
   }
 }

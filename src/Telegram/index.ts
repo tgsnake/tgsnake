@@ -31,12 +31,18 @@ import { SendDocument } from './Media/SendDocument';
 import { SendSticker } from './Media/SendSticker';
 import { Snake } from '../client';
 import { Api, TelegramClient } from 'telegram';
-import { Media } from '../Utils/Media';
+import { Media } from '../Utils/Media'; 
+let _SnakeClient:Snake
 export class Telegram {
-  constructor(public SnakeClient: Snake) {}
+  constructor(SnakeClient: Snake) {
+    _SnakeClient = SnakeClient
+  } 
+  get SnakeClient(){
+    return _SnakeClient
+  }
   // getEntity
-  async getEntity(chatId: string | number) {
-    return await GetEntity(this.SnakeClient, chatId);
+  async getEntity(chatId: string | number,useCache?:boolean) {
+    return await GetEntity(this.SnakeClient, chatId,useCache);
   }
   // getMe
   async getMe() {

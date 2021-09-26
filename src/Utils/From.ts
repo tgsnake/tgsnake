@@ -9,6 +9,7 @@
 import { Api } from 'telegram';
 import { Snake } from '../client';
 import { ChatPhoto } from './ChatPhoto';
+import {ResultGetEntity} from "../Telegram/Users/GetEntity"
 import { RestrictionReason } from './RestrictionReason';
 export class From {
   id!: number;
@@ -27,7 +28,7 @@ export class From {
   photo?: ChatPhoto;
   restrictionReason?: RestrictionReason[];
   constructor() {}
-  async init(peer: Api.TypePeer | number, snakeClient: Snake) {
+  async init(peer:Api.TypePeer|number, snakeClient: Snake) { 
     if (typeof peer !== 'number') {
       if (peer instanceof Api.PeerUser) {
         peer as Api.PeerUser;
@@ -44,9 +45,8 @@ export class From {
     } else {
       this.id = peer;
     }
-    if (this.id) {
-      let tg = snakeClient.telegram;
-      let entity = await tg.getEntity(this.id);
+    if(this.id){
+      let entity = await snakeClient.telegram.getEntity(this.id,true)
       this.id = entity.id;
       this.username = entity.username;
       this.firstName = entity.firstName;

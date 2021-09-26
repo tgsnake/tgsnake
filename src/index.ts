@@ -6,8 +6,8 @@
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
 
-export { Snake } from './snake/client';
-export { Telegram } from './snake/Telegram';
-export * as Wizard from './snake/wizard';
-export * as Update from './snake/Update';
+export { Snake } from './client';
+export { Telegram } from './Telegram';
+export * as Wizard from './wizard';
+export * as Update from './Update';
 export * as GramJs from 'telegram';

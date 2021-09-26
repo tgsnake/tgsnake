@@ -265,7 +265,7 @@ export class Media {
     return decodeFileId(String(file));
   }
   parseMedia(media: Api.TypeMessageMedia) {
-    console.log(JSON.stringify(media, null, 2));
+    //console.log(JSON.stringify(media, null, 2));
     if (media instanceof Api.MessageMediaDocument) {
       if (media.document instanceof Api.Document) {
         return media.document as Api.Document;
