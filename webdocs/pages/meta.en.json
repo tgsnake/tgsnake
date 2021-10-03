@@ -1,0 +1,10 @@
+{
+  "index" : {
+    "title" : "Introduction",
+    "type" : "nav",
+    "hidden" : true
+  },
+  "release" : {
+    "title" : "Changelog"
+  }
+}
