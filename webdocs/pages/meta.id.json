@@ -1,16 +1,16 @@
 {
   "index" : {
-    "title" : "Introduction",
+    "title" : "Perkenalan",
     "type" : "nav",
     "hidden" : true
   },
   "release" : {
-    "title" : "Changelog"
+    "title" : "Catatan Perubahan"
   },
   "getting-started" : {
-    "title" : "Getting Started"
+    "title" : "Memulai"
   },
   "methods" : {
-    "title" : "Method"
+    "title" : "Metode"
   }
 }

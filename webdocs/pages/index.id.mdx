@@ -1,0 +1,78 @@
+--- 
+title : Rengasdengklok 
+---
+import Callout from 'nextra-theme-docs/callout'
+import TabName from "@/components/Tab"
+import { Tab } from '@headlessui/react' 
+
+![tgsnake-icon-by-flat-icon](./images/tgsnake.jpg)
+  
+<Tab.Group>
+    <Tab.List>
+        <TabName>npm</TabName> 
+        <TabName>yarn</TabName>
+    </Tab.List>
+    <Tab.Panels> 
+        <Tab.Panel>
+            ```bash 
+            npm install tgsnake@latest -s
+            ``` 
+        </Tab.Panel>
+        <Tab.Panel>
+            ```bash 
+            yarn add tgsnake@latest
+            ``` 
+        </Tab.Panel>
+    </Tab.Panels>
+</Tab.Group>
+
+setelah menginstal paket. 
+<Tab.Group>
+    <Tab.List>
+        <TabName>javascript</TabName> 
+        <TabName>typescript</TabName>
+    </Tab.List>
+    <Tab.Panels> 
+        <Tab.Panel>
+```js
+// index.js
+const {Snake} = require("tgsnake") // mengimpor modul.
+const bot = new Snake({ // membuat klien baru. Anda dapat menaruh opsi di file tgsnake.config.js.
+  apiHash : "tempel disini", // dapatkan dari my.telegram.org
+  apiId : 1234, // dapatkan dari my.telegram.org
+  botToken : "tempel disini" // jika anda ingin login dengan akun anda, hapus ini dan buat sesi terlebih dahulu. lalu tempel sesi anda di bidang "session".
+}) 
+bot.run() // jalankan client. 
+// bot.generateSession() // aktifkan ini untuk menghasilkan sesi dan nonaktifkan bot.run().
+bot.hears("hai",(ctx)=>{
+    ctx.reply("wow kamu berhasil.")
+})
+```
+        </Tab.Panel>
+        <Tab.Panel>
+```ts
+// index.ts
+import {Snake} from "tgsnake" // mengimpor mo
+const bot = new Snake({ // membuat klien baru. Anda dapat menaruh opsi di file tgsnake.config.js.
+  apiHash : "tempel disini", // dapatkan dari my.telegram.org
+  apiId : 1234, // dapatkan dari my.telegram.org
+  botToken : "tempel disini" // jika anda ingin login dengan akun anda, hapus ini dan buat sesi terlebih dahulu. lalu tempel sesi anda di bidang "session".
+}) 
+bot.run() // jalankan client. 
+// bot.generateSession() // aktifkan ini untuk menghasilkan sesi dan nonaktifkan bot.run().
+bot.hears("hai",(ctx)=>{
+    ctx.reply("wow kamu berhasil.")
+})
+```
+        </Tab.Panel>
+    </Tab.Panels>
+</Tab.Group>
+
+<Callout type="warning" >
+Akun telegram Anda bisa dibanned jika Anda membuat userbot dan membuat flooding. Saya tidak bertanggung jawab jika hal ini terjadi.
+</Callout>
+
+<div className="text-center py-2">
+[Telegram Channel](https://t.me/tgsnake) - 
+[Telegram Chat](https://t.me/tgsnakechat) 
+</div>
