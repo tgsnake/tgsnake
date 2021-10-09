@@ -1,0 +1,44 @@
+{
+  "deleteHistory" : {
+    "title" : "deleteHistory"
+  },
+  "deleteMessages" : {
+    "title" : "deleteMessages"
+  },
+  "deleteUserHistory" : {
+    "title" : "deleteUserHistory"
+  },
+  "editMessage" : {
+    "title" : "editMessage"
+  },
+  "exportMessageLink" : {
+    "title" : "exportMessageLink"
+  },
+  "forwardMessages" : {
+    "title" : "forwardMessages"
+  },
+  "getMessages" : {
+    "title" : "getMessages"
+  },
+  "getMessagesViews" : {
+    "title" : "getMessagesViews"
+  },
+  "pinMessage" : {
+    "title" : "pinMessage"
+  },
+  "readHistory" : {
+    "title" : "readHistory"
+  },
+  "readMentions" : {
+    "title" : "readMentions"
+  },
+  "readmessagecontents": {
+    "title": "readmessagecontents"
+  },
+  "sendMessage" : {
+    "title" : "sendMessage"
+  },
+  "unpinAllMessages" : {
+    "title" : "unpinAllMessages"
+  }
+}

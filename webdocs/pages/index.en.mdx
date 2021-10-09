@@ -2,71 +2,57 @@
 title : Rengasdengklok 
 ---
 import Callout from 'nextra-theme-docs/callout'
-import TabName from "@/components/Tab"
-import { Tab } from '@headlessui/react' 
+import {TabGroup,TabContent} from "@/components/Tab"
 
 ![tgsnake-icon-by-flat-icon](./images/tgsnake.jpg)
   
-<Tab.Group>
-    <Tab.List>
-        <TabName>npm</TabName> 
-        <TabName>yarn</TabName>
-    </Tab.List>
-    <Tab.Panels> 
-        <Tab.Panel>
-            ```bash 
-            npm install tgsnake@latest -s
-            ``` 
-        </Tab.Panel>
-        <Tab.Panel>
-            ```bash 
-            yarn add tgsnake@latest
-            ``` 
-        </Tab.Panel>
-    </Tab.Panels>
-</Tab.Group>
-
+<TabGroup>
+    <TabContent name="npm">
+        ```bash 
+        npm install tgsnake@latest -s
+        ``` 
+    </TabContent>
+    <TabContent name="yarn">
+        ```bash 
+        yarn add tgsnake@latest
+        ``` 
+    </TabContent>
+</TabGroup>
 after installing the package. 
-<Tab.Group>
-    <Tab.List>
-        <TabName>javascript</TabName> 
-        <TabName>typescript</TabName>
-    </Tab.List>
-    <Tab.Panels> 
-        <Tab.Panel>
-```js
-// index.js
-const {Snake} = require("tgsnake") //importing the modules.
-const bot = new Snake({ // create new client. you can pass the options in tgsnake.config.js file.
-  apiHash : "paste here", // get it from my.telegram.org
-  apiId : 1234, // get it from my.telegram.org
-  botToken : "paste here" // if you need login with user remove this and create session first. then paste your string session in field "session".
-}) 
-bot.run() // running client. 
-// bot.generateSession() // enable this to generate session and disable the bot.run().
-bot.hears("hi",(ctx)=>{
-    ctx.reply("wow you are perfect")
-})
-```
-        </Tab.Panel>
-        <Tab.Panel>
-```ts
-// index.ts
-import {Snake} from "tgsnake" //importing the modules.
-const bot = new Snake({ // create new client. you can pass the options in tgsnake.config.js file.
-  apiHash : "paste here", // get it from my.telegram.org
-  apiId : 1234, // get it from my.telegram.org
-  botToken : "paste here" // if you need login with user remove this and create session first. then paste your string session in field "session".
-}) 
-bot.run() // running client. 
-// bot.generateSession() // enable this to generate session and disable the bot.run().
-bot.hears("hi",(ctx)=>{
-    ctx.reply("wow you are perfect")
-})
-```
-        </Tab.Panel>
-    </Tab.Panels>
-</Tab.Group>
+<TabGroup>
+    <TabContent name="javascript">
+    ```js
+    // index.js
+    const {Snake} = require("tgsnake") //importing the modules.
+    const bot = new Snake({ // create new client. you can pass the options in tgsnake.config.js file.
+      apiHash : "paste here", // get it from my.telegram.org
+      apiId : 1234, // get it from my.telegram.org
+      botToken : "paste here" // if you need login with user remove this and create session first. then paste your string session in field "session".
+    }) 
+    bot.run() // running client. 
+    // bot.generateSession() // enable this to generate session and disable the bot.run().
+    bot.hears("hi",(ctx)=>{
+        ctx.reply("wow you are perfect")
+    })
+    ```
+    </TabContent>
+    <TabContent name="typescript">
+    ```ts
+    // index.ts
+    import {Snake} from "tgsnake" //importing the modules.
+    const bot = new Snake({ // create new client. you can pass the options in tgsnake.config.js file.
+      apiHash : "paste here", // get it from my.telegram.org
+      apiId : 1234, // get it from my.telegram.org
+      botToken : "paste here" // if you need login with user remove this and create session first. then paste your string session in field "session".
+    }) 
+    bot.run() // running client. 
+    // bot.generateSession() // enable this to generate session and disable the bot.run().
+    bot.hears("hi",(ctx)=>{
+        ctx.reply("wow you are perfect")
+    })
+    ```
+    </TabContent>
+</TabGroup>
 
 <Callout type="warning" >
 Your telegram account can be banned if you make userbot and make flooding. I am not responsible if this happens.

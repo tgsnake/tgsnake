@@ -39,7 +39,6 @@ bot.on("message",(ctx)=>{
   }
   ctx.telegram.readHistory(ctx.chat.id) 
   ctx.telegram.readMentions(ctx.chat.id)
-  console.log(ctx)
 })
 bot.command("hi",(ctx)=>{
   ctx.reply("Hi")
@@ -47,7 +46,8 @@ bot.command("hi",(ctx)=>{
 bot.command("info",(ctx)=>{
   state.launch("tester")
 })
-bot.command("mycommand",(ctx)=>{
-  console.log(ctx)
+bot.hears("tes",async (ctx)=>{
+  let tes = await ctx.telegram.getParticipant(ctx.chat.id,ctx.from.id) 
+  console.log("_tes.index",tes)
 })
 bot.run()

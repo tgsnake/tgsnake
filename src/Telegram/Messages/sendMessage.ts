@@ -71,7 +71,6 @@ export async function sendMessage(
   }
 }
 async function createResults(results: Api.TypeUpdates, snakeClient: Snake) {
-  console.log(JSON.stringify(results,null,2));
   if (results instanceof Api.UpdateShortSentMessage) {
     results as Api.UpdateShortSentMessage;
     let update = new Update.UpdateShortSentMessage();
@@ -80,7 +79,7 @@ async function createResults(results: Api.TypeUpdates, snakeClient: Snake) {
   }
   if (results instanceof Api.Updates) {
     results as Api.Updates;
-    if (results.updates?.length > 0) {
+    if (results.updates.length > 0) {
       for (let i = 0; i < results.updates.length; i++) {
         if (results.updates[i] instanceof Api.UpdateNewMessage) {
           let arc = results.updates[i] as Api.UpdateNewMessage;

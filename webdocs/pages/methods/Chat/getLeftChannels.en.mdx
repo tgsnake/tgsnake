@@ -1,0 +1,25 @@
+--- 
+title : getLeftChannels
+--- 
+## Overview 
+Get a list of channels/supergroups we left. 
+## Parameters 
+```ts 
+ctx.telegram.getLeftChannels(offset)
+```
+- `offset` (_number_) 
+    - offset of pagination. 
+## Example 
+```ts headlight=2
+bot.command("getLeftChannels",async (ctx) => {
+    let results = await ctx.telegram.getLeftChannels() 
+    console.log(results)
+})
+```
+## Possible Error 
+
+| code | type | description | 
+| :---: | :---: | :------:| 
+| 403 |  TAKEOUT_REQUIRED | A takeout session has to be initialized, first | 
+
+## Bot can't use this method

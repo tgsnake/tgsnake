@@ -260,7 +260,6 @@ export class MainContext extends (EventEmitter as new () => TypedEmitter<eventsO
     return this;
   }
   private async parseUpdate(update: Api.TypeUpdate, SnakeClient: Snake) {
-    console.log(update) 
     //@ts-ignore
     if(update._entities){ 
       //@ts-ignore

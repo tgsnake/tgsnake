@@ -1,3 +1,12 @@
 {
-  "editAdmin" : "editAdmin"
+  "editAdmin" : "editAdmin",
+  "editBanned" : "editBanned",
+  "editTitle" : "editTitle",
+  "getAdminedPublicChannels" : "getAdminedPublicChannels",
+  "getAdminLog" : "getAdminLog",
+  "getChannels" : "getChannels",
+  "getFullChat" : "getFullChat",
+  "getGroupsForDiscussion" : "getGroupsForDiscussion",
+  "getInactiveChannels" : "getInactiveChannels",
+  "getLeftChannels" : "getLeftChannels"
 }

@@ -31,7 +31,8 @@ import { SendDocument } from './Media/SendDocument';
 import { SendSticker } from './Media/SendSticker';
 import { Snake } from '../client';
 import { Api, TelegramClient } from 'telegram';
-import { Media } from '../Utils/Media'; 
+import { Media } from '../Utils/Media';  
+import {GetParticipant} from "./Chats/GetParticipant"
 let _SnakeClient:Snake
 export class Telegram {
   constructor(SnakeClient: Snake) {
@@ -195,6 +196,13 @@ export class Telegram {
     chatId: number | string,
     fileId: string | Buffer | Api.MessageMediaDocument | Api.Document
   ) {
-    return SendSticker(this.SnakeClient, chatId, fileId);
-  }
+    return await SendSticker(this.SnakeClient, chatId, fileId);
+  } 
+  // getParticipant 
+  /*async getParticipant(
+      chatId:string|number,
+      userId:string|number
+    ){
+      return await GetParticipant(this.SnakeClient,chatId,userId)
+    }*/
 }

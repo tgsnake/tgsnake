@@ -1,0 +1,8 @@
+{
+  "getEntity" : {
+    "title" : "getEntity"
+  },
+  "getUserPhotos" : {
+    "title" : "getUserPhotos"
+  }
+}

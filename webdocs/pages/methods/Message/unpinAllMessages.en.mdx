@@ -1,0 +1,21 @@
+--- 
+title : unpinAllMessages 
+--- 
+## Overview 
+Unpin all message in chats.
+## Parameters 
+```ts 
+ctx.telegram.unpinAllMessages(chatId)
+```
+- `chatId` (_number|string_) 
+    - Chat/Groups/Channel id. 
+## Example 
+```ts highlight=2
+bot.command("unpinAll",async (ctx)=>{
+    let results = await ctx.telegram.unpinAllMessages(ctx.chat.id)
+    console.log(results)
+})
+```
+## Possible Error 
+- 
+## Bot can use this method.

@@ -1,8 +1,7 @@
 --- 
 title : Using tgsnake.config.js 
 --- 
-import TabName from "@/components/Tab"
-import { Tab } from '@headlessui/react' 
+import {TabGroup,TabContent} from "@/components/Tab"
 
 This is a config file for tgsnake. You can pass all option in there to make your index file is clean. 
 
@@ -49,35 +48,25 @@ module.exports = {
 ```
 
 Then the index file should be :  
-<Tab.Group>
-    <Tab.List>
-        <TabName>javascript</TabName> 
-        <TabName>typescript</TabName>
-    </Tab.List>
-    <Tab.Panels> 
-        <Tab.Panel>
-
-```ts headlight=2 
-// index.js
-const {Snake} = require("snake")
-const bot = new Snake() // don't pass the option in here because you already pass in config file.
-// ...your code...
-bot.run()
-```
-
-        </Tab.Panel>
-        <Tab.Panel>
-
-```ts headlight=2 
-// index.ts
-import {Snake} from "snake" 
-const bot = new Snake() // don't pass the option in here because you already pass in config file.
-// ...your code...
-bot.run()
-```
-
-        </Tab.Panel>
-    </Tab.Panels>
-</Tab.Group> 
+<TabGroup>
+    <TabContent name="javascript">
+    ```ts headlight=2 
+    // index.js
+    const {Snake} = require("snake")
+    const bot = new Snake() // don't pass the option in here because you already pass in config file.
+    // ...your code...
+    bot.run()
+    ```
+    </TabContent>
+    <TabContent>
+    ```ts headlight=2 
+    // index.ts
+    import {Snake} from "snake" 
+    const bot = new Snake() // don't pass the option in here because you already pass in config file.
+    // ...your code...
+    bot.run()
+    ```
+    </TabContent>
+</TabGroup> 
 
 Done. 

@@ -1,161 +1,142 @@
 --- 
 title : Handling Update
 --- 
-import TabName from "@/components/Tab"
-import { Tab } from '@headlessui/react' 
+import {TabGroup,TabContent} from "@/components/Tab" 
 
 Untuk menangani pembaruan, Anda dapat menggunakan metode `hears`,`command`,`use`,`on`. Misalnya Anda dapat melihat ini: 
 
 ## Menggunakan `hears` 
 Metode ini memungkinkan Anda untuk menggunakan regex atau Anda dapat mengisi dengan text. 
 
-<Tab.Group>
-    <Tab.List>
-        <TabName>javascript</TabName> 
-        <TabName>typescript</TabName>
-    </Tab.List>
-    <Tab.Panels> 
-        <Tab.Panel>
-```ts 
-// index.js
-const {Snake} = require("tgsnake")
-const bot = new Snake() // isi opsi. Anda dapat menggunakan file tgsnake.config.js.
-// with text 
-bot.hears("halo",(ctx)=>{
-  ctx.reply("Hai") 
-  if(ctx.replyToMessage){ 
-    ctx.replyToMessage.reply("Siapa kamu?")
-  }
-})
-// dengan regex 
-bot.hears(/halo/i,(ctx,match)=>{
-  ctx.reply("Hai") 
-  if(ctx.replyToMessage){ 
-    ctx.replyToMessage.reply("Siapa kamu?")
-  }
-})
-bot.run() // jalankan 🐍
-```
-        </Tab.Panel>
-        <Tab.Panel>
-```ts 
-// index.ts
-import {Snake} from "tgsnake"
-const bot = new Snake() // isi opsi. Anda dapat menggunakan file tgsnake.config.js.
-// with text 
-bot.hears("halo",(ctx)=>{
-  ctx.reply("Hai") 
-  if(ctx.replyToMessage){ 
-    ctx.replyToMessage.reply("Siapa kamu?")
-  }
-})
-// dengan regex 
-bot.hears(/halo/i,(ctx,match)=>{
-  ctx.reply("Hai") 
-  if(ctx.replyToMessage){ 
-    ctx.replyToMessage.reply("Siapa kamu?")
-  }
-})
-bot.run() // jalankan 🐍
-```
-        </Tab.Panel>
-    </Tab.Panels>
-</Tab.Group>
+<TabGroup>
+    <TabContent name="javascript">
+    ```ts
+    // index.js
+    const {Snake} = require("tgsnake")
+    const bot = new Snake() // fill the options. you can use the tgsnake.config.js file.
+    // with text 
+    bot.hears("hello",(ctx)=>{
+      ctx.reply("Hi") 
+      if(ctx.replyToMessage){ 
+        ctx.replyToMessage.reply("Who are you?")
+      }
+    })
+    // with regex 
+    bot.hears(/hello/i,(ctx,match)=>{
+      ctx.reply("Hi") 
+      if(ctx.replyToMessage){ 
+        ctx.replyToMessage.reply("Who are you?")
+      }
+    })
+    bot.run() // running 🐍
+    ```
+    </TabContent>
+    <TabContent name="typescript">
+    ```ts 
+    // index.ts
+    import {Snake} from "tgsnake"
+    const bot = new Snake() // fill the options. you can use the tgsnake.config.js file.
+    // with text 
+    bot.hears("hello",(ctx)=>{
+      ctx.reply("Hi") 
+      if(ctx.replyToMessage){ 
+        ctx.replyToMessage.reply("Who are you?")
+      }
+    })
+    // with regex 
+    bot.hears(/hello/i,(ctx,match)=>{
+      ctx.reply("Hi") 
+      if(ctx.replyToMessage){ 
+        ctx.replyToMessage.reply("Who are you?")
+      }
+    })
+    bot.run() // running 🐍
+    ```
+    </TabContent>
+</TabGroup>
 
 Kemudian kirim pesan `halo`.
 
 ## Menggunakan `command`
 Metode ini hanya memungkinkan Anda untuk menggunakan string atau larik string. Awalannya adalah `.!/`  
 
-<Tab.Group>
-    <Tab.List>
-        <TabName>javascript</TabName> 
-        <TabName>typescript</TabName>
-    </Tab.List>
-    <Tab.Panels> 
-        <Tab.Panel>
-```ts 
-// index.js
-const {Snake} = require("tgsnake")
-const bot = new Snake() // isi opsi. Anda dapat menggunakan file tgsnake.config.js.
-// dengan text 
-bot.command("halo",(ctx)=>{
-  ctx.reply("Hai") 
-  if(ctx.replyToMessage){ 
-    ctx.replyToMessage.reply("Siapa kamu?")
-  }
-})
-// dengan array
-bot.command(["halo","hai"],(ctx)=>{
-  ctx.reply("Hai") 
-  if(ctx.replyToMessage){ 
-    ctx.replyToMessage.reply("Siapa kamu?")
-  }
-})
-bot.run() // jalankan 🐍
-```
-        </Tab.Panel>
-        <Tab.Panel>
-```ts 
-// index.ts
-import {Snake} from "tgsnake"
-const bot = new Snake() // isi opsi. Anda dapat menggunakan file tgsnake.config.js.
-// dengan text 
-bot.command("halo",(ctx)=>{
-  ctx.reply("Hai") 
-  if(ctx.replyToMessage){ 
-    ctx.replyToMessage.reply("Siapa kamu?")
-  }
-})
-// dengan array
-bot.command(["halo","hai"],(ctx)=>{
-  ctx.reply("Hai") 
-  if(ctx.replyToMessage){ 
-    ctx.replyToMessage.reply("Siapa kamu?")
-  }
-})
-bot.run() // jalankan 🐍
-```
-        </Tab.Panel>
-    </Tab.Panels>
-</Tab.Group>
+<TabGroup>
+    <TabContent name="javascript">
+    ```ts
+    // index.js
+    const {Snake} = require("tgsnake")
+    const bot = new Snake() // fill the options. you can use the tgsnake.config.js file.
+    // with text 
+    bot.command("hello",(ctx)=>{
+      ctx.reply("Hi") 
+      if(ctx.replyToMessage){ 
+        ctx.replyToMessage.reply("Who are you?")
+      }
+    })
+    // with array
+    bot.command(["hello","hi"],(ctx)=>{
+      ctx.reply("Hi") 
+      if(ctx.replyToMessage){ 
+        ctx.replyToMessage.reply("Who are you?")
+      }
+    })
+    bot.run() // running 🐍
+    ```
+    </TabContent>
+    <TabContent name="typescript">
+    ```ts 
+    // index.ts
+    import {Snake} from "tgsnake"
+    const bot = new Snake() // fill the options. you can use the tgsnake.config.js file.
+    // with text 
+    bot.command("hello",(ctx)=>{
+      ctx.reply("Hi") 
+      if(ctx.replyToMessage){ 
+        ctx.replyToMessage.reply("Who are you?")
+      }
+    })
+    // with array
+    bot.command(["hello","hi"],(ctx)=>{
+      ctx.reply("Hi") 
+      if(ctx.replyToMessage){ 
+        ctx.replyToMessage.reply("Who are you?")
+      }
+    })
+    bot.run() // running 🐍
+    ```
+    </TabContent>
+</TabGroup>
 
 Kemudian kirim pesan `!halo` atau `!hai` 
 ## Menggunakan `use`
 Ini adalah middleware. Fungsi ini akan dijalankan terlebih dahulu sebelum yang lain. 
 
-<Tab.Group>
-    <Tab.List>
-        <TabName>javascript</TabName> 
-        <TabName>typescript</TabName>
-    </Tab.List>
-    <Tab.Panels> 
-        <Tab.Panel>
-```ts 
-// index.js
-const {Snake} = require("tgsnake")
-const bot = new Snake() 
-bot.use((ctx,next)=>{
-    console.log(ctx)
-    return next()
-})
-bot.run() // jalankan 🐍
-```
-        </Tab.Panel>
-        <Tab.Panel>
-```ts 
-// index.ts
-import {Snake} from "tgsnake"
-const bot = new Snake() 
-bot.use((ctx,next)=>{
-    console.log(ctx)
-    return next()
-})
-bot.run() // jalankan 🐍
-```
-        </Tab.Panel>
-    </Tab.Panels>
-</Tab.Group>
+<TabGroup>
+    <TabContent name="javascript">
+    ```ts 
+    // index.js
+    const {Snake} = require("tgsnake")
+    const bot = new Snake() 
+    bot.use((ctx,next)=>{
+        console.log(ctx)
+        return next()
+    })
+    bot.run() // running 🐍
+    ```
+    </TabContent>
+    <TabContent name="typescript">
+    ```ts 
+    // index.ts
+    import {Snake} from "tgsnake"
+    const bot = new Snake() 
+    bot.use((ctx,next)=>{
+        console.log(ctx)
+        return next()
+    })
+    bot.run() // running 🐍
+    ```
+    </TabContent>
+</TabGroup>
 
 ## Using `on` 
 Ini adalah metode untuk menerima events yang masuk. Kami mengikuti gramjs [TypeUpdate](https://gram.js.org/beta/modules/tl_api.api.html#typeupdate)   
@@ -165,33 +146,27 @@ Event yang tersedia :
 * | connected | message | UpdateNewMessage | UpdateMessageID | UpdateDeleteMessages | UpdateUserTyping | UpdateChatUserTyping | UpdateChatParticipants | UpdateUserStatus | UpdateUserName | UpdateUserPhoto | UpdateNewEncryptedMessage | UpdateEncryptedChatTyping | UpdateEncryption | UpdateEncryptedMessagesRead | UpdateChatParticipantAdd | UpdateChatParticipantDelete | UpdateDcOptions | UpdateNotifySettings | UpdateServiceNotification | UpdatePrivacy | UpdateUserPhone | UpdateReadHistoryInbox | UpdateReadHistoryOutbox | UpdateWebPage | UpdateReadMessagesContents | UpdateChannelTooLong | UpdateChannel | UpdateNewChannelMessage | UpdateReadChannelInbox | UpdateDeleteChannelMessages | UpdateChannelMessageViews | UpdateChatParticipantAdmin | UpdateNewStickerSet | UpdateStickerSetsOrder | UpdateStickerSets | UpdateSavedGifs | UpdateBotInlineQuery | UpdateBotInlineSend | UpdateEditChannelMessage | UpdateBotCallbackQuery | UpdateEditMessage | UpdateInlineBotCallbackQuery | UpdateReadChannelOutbox | UpdateDraftMessage | UpdateReadFeaturedStickers | UpdateRecentStickers | UpdateConfig | UpdatePtsChanged | UpdateChannelWebPage | UpdateDialogPinned | UpdatePinnedDialogs | UpdateBotWebhookJSON | UpdateBotWebhookJSONQuery | UpdateBotShippingQuery | UpdateBotPrecheckoutQuery | UpdatePhoneCall | UpdateLangPackTooLong | UpdateLangPack | UpdateFavedStickers | UpdateChannelReadMessagesContents | UpdateContactsReset | UpdateChannelAvailableMessages | UpdateDialogUnreadMark | UpdateMessagePoll | UpdateChatDefaultBannedRights | UpdateFolderPeers | UpdatePeerSettings | UpdatePeerLocated | UpdateNewScheduledMessage | UpdateDeleteScheduledMessages | UpdateTheme | UpdateGeoLiveViewed | UpdateLoginToken | UpdateMessagePollVote | UpdateDialogFilter | UpdateDialogFilterOrder | UpdateDialogFilters | UpdatePhoneCallSignalingData | UpdateChannelMessageForwards | UpdateReadChannelDiscussionInbox | UpdateReadChannelDiscussionOutbox | UpdatePeerBlocked | UpdateChannelUserTyping | UpdatePinnedMessages | UpdatePinnedChannelMessages | UpdateChat | UpdateGroupCallParticipants | UpdateGroupCall | UpdatePeerHistoryTTL | UpdateChatParticipant | UpdateChannelParticipant | UpdateBotStopped | UpdateGroupCallConnection | UpdateBotCommands
 ```
 
-<Tab.Group>
-    <Tab.List>
-        <TabName>javascript</TabName> 
-        <TabName>typescript</TabName>
-    </Tab.List>
-    <Tab.Panels> 
-        <Tab.Panel>
-```ts 
-// index.js
-const {Snake} = require("tgsnake")
-const bot = new Snake() 
-bot.on("message",(ctx)=>{
-    console.log(ctx)
-})
-bot.run() // jalankan 🐍
-```
-        </Tab.Panel>
-        <Tab.Panel>
-```ts 
-// index.ts
-import {Snake} from "tgsnake"
-const bot = new Snake() 
-bot.on("message",(ctx)=>{
-    console.log(ctx)
-})
-bot.run() // jalankan 🐍
-```
-        </Tab.Panel>
-    </Tab.Panels>
-</Tab.Group>
+<TabGroup>
+    <TabContent name="javascript">
+    ```ts 
+    // index.js
+    const {Snake} = require("tgsnake")
+    const bot = new Snake() 
+    bot.on("message",(ctx)=>{
+        console.log(ctx)
+    })
+    bot.run() // running 🐍
+    ```
+    </TabContent>
+    <TabContent name="typescript">
+    ```ts 
+    // index.ts
+    import {Snake} from "tgsnake"
+    const bot = new Snake() 
+    bot.on("message",(ctx)=>{
+        console.log(ctx)
+    })
+    bot.run() // running 🐍
+    ```
+    </TabContent>
+</TabGroup>

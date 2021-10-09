@@ -1,0 +1,24 @@
+--- 
+title : getMessages 
+--- 
+
+## Overview 
+Returns the list of messages by their IDs. 
+## Parameters 
+```ts 
+ctx.telegram.getMessages(chatId,messageId)
+```
+- `chatId` (_number|string_) 
+    - Chat/Groups/Channel id.
+- `messageId` (_number[]_) 
+    - Message IDs.
+## Example 
+```ts highlight=2
+bot.command("getMessages",async (ctx)=>{
+    let results = await ctx.telegram.getMessages(ctx.chat.id,[ctx.id]) 
+    console.log(results) 
+})
+```
+## Possible Error 
+- 
+## Bot can use this method

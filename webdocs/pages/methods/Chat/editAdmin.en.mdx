@@ -35,7 +35,7 @@ ctx.telegram.editAdmin(chatId,userId,more)
     - `rank` (_string_) 
         - Indicates the role (rank) of the admin in the group: just an arbitrary string.
 ## Example 
-```ts
+```ts highlight=3
 bot.command("promote",async (ctx) => {
     if((!ctx.chat.private) && ctx.replyToMessage){
         let results = await ctx.telegram.editAdmin(ctx.chat.id,ctx.replyToMessage.from.id) 
