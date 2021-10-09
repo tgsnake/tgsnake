@@ -32,8 +32,8 @@
   "readMentions" : {
     "title" : "readMentions"
   },
-  "readmessagecontents": {
-    "title": "readmessagecontents"
+  "readMessageContents": {
+    "title": "readMessageContents"
   },
   "sendMessage" : {
     "title" : "sendMessage"
