@@ -1,6 +1,6 @@
 export default {
   github: 'https://github.com/butthx/tgsnake', // GitHub link in the navbar
-  docsRepositoryBase: 'https://github.com/butthx/tgsnake/blob/dev/webdocs', // base URL for the docs repository
+  docsRepositoryBase: 'https://github.com/butthx/tgsnake/blob/dev/webdocs/pages', // base URL for the docs repository
   titleSuffix: ' | tgsnake',
   nextLinks: true,
   prevLinks: true,

@@ -12,8 +12,9 @@ function classNames(...classes) {
 function TabName({children}){
   return (
       <Tab 
+        as="span"
         className={({ selected }) => classNames(
-           `px-2 mx-1 mt-2 text-md w-auto hover:border-opacity-100 hover:text-blue-500 hover:border-b-2 hover:border-blue-500 hover:transition-all hoverduration-500`,
+           `TabName px-2 mx-1 mt-2 text-md w-auto hover:border-opacity-100 hover:text-blue-500 hover:border-b-2 hover:border-blue-500 hover:transition-all hoverduration-500`,
             selected  
             ? `border-blue-500 border-opacity-100 text-blue-500 border-b-2 transition-all duration-500` 
             : `border-gray-500 border-b-2 border-opacity-50 transition-all duration-500`
@@ -26,8 +27,8 @@ function TabName({children}){
 }
 export function TabGroup ({children}){ 
   return (
-    <Tab.Group> 
-      <Tab.List className="overflow-x-auto">
+    <Tab.Group as="div" className="TabGroup"> 
+      <Tab.List className="TabList overflow-x-auto" as="div">
         {
           children.map((element,index)=>(
             <TabName key={`${element.props.name}_title_${index}`}>
@@ -36,7 +37,7 @@ export function TabGroup ({children}){
           ))
         }
       </Tab.List>
-      <Tab.Panels>
+      <Tab.Panels as="div" className="TabContent">
         {
           children.map((element,index)=>(
             <Tab.Panel key={`${element.props.name}_content_${index}`}> 
