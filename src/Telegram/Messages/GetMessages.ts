@@ -15,7 +15,7 @@ export async function GetMessages(
   snakeClient: Snake,
   chatId: number | string,
   messageId: number[],
-  replies:boolean=true
+  replies: boolean = false
 ) {
   try {
     let messageIds: any = messageId;
@@ -28,7 +28,7 @@ export async function GetMessages(
         })
       );
       let final: ResultsGetMessage = new ResultsGetMessage();
-      await final.init(results, snakeClient,replies);
+      await final.init(results, snakeClient, replies);
       return final;
     } else {
       let results: Api.messages.TypeMessages = await snakeClient.client.invoke(
@@ -37,7 +37,7 @@ export async function GetMessages(
         })
       );
       let final: ResultsGetMessage = new ResultsGetMessage();
-      await final.init(results, snakeClient,replies);
+      await final.init(results, snakeClient, replies);
       return final;
     }
   } catch (error) {
@@ -51,11 +51,14 @@ export class ResultsGetMessage {
   messages!: MessageContext[];
   date: number | Date = Math.floor(Date.now() / 1000);
   constructor() {}
-  async init(results: Api.messages.TypeMessages, SnakeClient: Snake,replies:boolean=true) { 
+  async init(results: Api.messages.TypeMessages, SnakeClient: Snake, replies: boolean = false) {
     let tempMessages: MessageContext[] = [];
     if (results instanceof Api.messages.ChannelMessages) {
       for (let i = 0; i < results.messages.length; i++) {
         let msg = results.messages[i] as Api.Message;
+        if (!replies) {
+          delete msg.replyTo;
+        }
         let msgc = new MessageContext();
         await msgc.init(msg, SnakeClient);
         tempMessages.push(msgc);
@@ -64,6 +67,9 @@ export class ResultsGetMessage {
     if (results instanceof Api.messages.Messages) {
       for (let i = 0; i < results.messages.length; i++) {
         let msg = results.messages[i] as Api.Message;
+        if (!replies) {
+          delete msg.replyTo;
+        }
         let msgc = new MessageContext();
         await msgc.init(msg, SnakeClient);
         tempMessages.push(msgc);

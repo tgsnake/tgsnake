@@ -10,44 +10,20 @@ import {Snake,Wizard,GramJs} from "../src"
 import * as fs from "fs"
 import BigInt from "big-integer"
 const {Api} = GramJs
-interface Data {
-  value?:number;
-}
-const session = new Wizard.Session<Data>("tester",
-  async (ctx) => {
-    session.state = {}
-    return ctx.reply("Hi! Please Choose The Number.\n1. Check my Id\n2.Check my Username.\n3. Check my dcId.")
-  },
-  async (ctx) => {
-    session.state.value = String(ctx.text)[0] 
-    return ctx.reply(`Your choice (${session.state.value})`)
-  }
-)
-const state = new Wizard.State([session])
 const bot = new Snake() 
-bot.use((ctx,next)=> state.init(ctx,next))
-state.use(async (ctx,next) => {
-  if(/^\/cancel/i.exec(String(ctx.text))){ 
-    await ctx.reply("Okay!")
-    return state.quit()
-  }
-  return next()
-})
 bot.on("message",(ctx)=>{
   if("media" in ctx){
     console.log(ctx.media)
   }
   ctx.telegram.readHistory(ctx.chat.id) 
   ctx.telegram.readMentions(ctx.chat.id)
-})
-bot.command("hi",(ctx)=>{
-  ctx.reply("Hi")
-})
-bot.command("info",(ctx)=>{
-  state.launch("tester")
+  console.log(ctx)
 })
 bot.hears("tes",async (ctx)=>{
   let tes = await ctx.telegram.getParticipant(ctx.chat.id,ctx.from.id) 
   console.log("_tes.index",tes)
+})
+bot.command("ct",(ctx)=>{
+  ctx.reply(bot.connectTime)
 })
 bot.run()

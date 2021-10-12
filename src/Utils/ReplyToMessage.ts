@@ -15,7 +15,7 @@ import { Chat } from './Chat';
 import { From } from './From';
 import { Entities } from './Entities';
 import { ForwardMessage } from './ForwardMessage';
-import { Media } from './Media'; 
+import { Media } from './Media';
 let _SnakeClient: Snake;
 export class ReplyToMessage {
   out?: boolean;
@@ -51,7 +51,7 @@ export class ReplyToMessage {
     _SnakeClient = SnakeClient;
     if (messageReplyHeader.replyToMsgId) {
       this.id = messageReplyHeader.replyToMsgId;
-      let message = await this.SnakeClient.telegram.getMessages(chatId, [this.id]);
+      let message = await this.SnakeClient.telegram.getMessages(chatId, [this.id], false);
       if (message.messages[0]) {
         let msg = message.messages[0] as MessageContext;
         this.out = msg.out;
@@ -84,11 +84,11 @@ export class ReplyToMessage {
       }
       return this;
     }
-  } 
-  get SnakeClient(){
-    return _SnakeClient
-  } 
-  get telegram(){
-    return _SnakeClient.telegram
+  }
+  get SnakeClient() {
+    return _SnakeClient;
+  }
+  get telegram() {
+    return _SnakeClient.telegram;
   }
 }

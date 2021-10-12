@@ -31,19 +31,19 @@ import { SendDocument } from './Media/SendDocument';
 import { SendSticker } from './Media/SendSticker';
 import { Snake } from '../client';
 import { Api, TelegramClient } from 'telegram';
-import { Media } from '../Utils/Media';  
-import {GetParticipant} from "./Chats/GetParticipant"
-let _SnakeClient:Snake
+import { Media } from '../Utils/Media';
+import { GetParticipant } from './Chats/GetParticipant';
+let _SnakeClient: Snake;
 export class Telegram {
   constructor(SnakeClient: Snake) {
-    _SnakeClient = SnakeClient
-  } 
-  get SnakeClient(){
-    return _SnakeClient
+    _SnakeClient = SnakeClient;
+  }
+  get SnakeClient() {
+    return _SnakeClient;
   }
   // getEntity
-  async getEntity(chatId: string | number,useCache?:boolean) {
-    return await GetEntity(this.SnakeClient, chatId,useCache);
+  async getEntity(chatId: string | number, useCache?: boolean) {
+    return await GetEntity(this.SnakeClient, chatId, useCache);
   }
   // getMe
   async getMe() {
@@ -76,8 +76,8 @@ export class Telegram {
     return await ForwardMessages(this.SnakeClient, chatId, fromChatId, messageId, more);
   }
   // getMessages
-  async getMessages(chatId: number | string, messageId: number[]) {
-    return await GetMessages(this.SnakeClient, chatId, messageId);
+  async getMessages(chatId: number | string, messageId: number[], replies: boolean = false) {
+    return await GetMessages(this.SnakeClient, chatId, messageId, replies);
   }
   // getMessagesViews
   async getMessagesViews(chatId: number | string, messageId: number[], increment: boolean = false) {
@@ -197,12 +197,9 @@ export class Telegram {
     fileId: string | Buffer | Api.MessageMediaDocument | Api.Document
   ) {
     return await SendSticker(this.SnakeClient, chatId, fileId);
-  } 
-  // getParticipant 
-  /*async getParticipant(
-      chatId:string|number,
-      userId:string|number
-    ){
-      return await GetParticipant(this.SnakeClient,chatId,userId)
-    }*/
+  }
+  // getParticipant
+  async getParticipant(chatId: string | number, userId: string | number) {
+    return await GetParticipant(this.SnakeClient, chatId, userId);
+  }
 }

@@ -18,7 +18,7 @@ import { Api } from 'telegram';
 import fs from 'fs';
 import { Options } from './Interface/Options';
 import { CatchError } from './Interface/CatchError';
-import {ResultGetEntity} from "./Telegram/Users/GetEntity"
+import { ResultGetEntity } from './Telegram/Users/GetEntity';
 
 let api_hash: string;
 let api_id: number;
@@ -32,6 +32,7 @@ let sessionName: string = 'tgsnake';
 let storeSession: boolean = true;
 let catchFunct: CatchError;
 let isBot: boolean = false;
+let connectTime: number = 0;
 function log(...args) {
   if (tgSnakeLog) {
     console.log(...args);
@@ -65,9 +66,15 @@ export class Snake extends MainContext {
     super();
     if (!options) {
       let dir = fs.readdirSync(process.cwd());
+      // tgsnake.config.js
       if (dir.includes('tgsnake.config.js')) {
         let config = require(`${process.cwd()}/tgsnake.config.js`);
         options = config;
+      }
+      // tgsnake.config.json
+      else if (dir.includes('tgsnake.config.json')) {
+        let config = fs.readFileSync(`${process.cwd()}/tgsnake.config.js`, 'utf8');
+        options = JSON.parse(config);
       }
     }
     //default options
@@ -227,6 +234,9 @@ export class Snake extends MainContext {
       this.connected = true;
       this.emit('connected', me);
       this.emit('*', me);
+      setInterval(() => {
+        connectTime++;
+      }, 1000);
       return log('🐍 Connected as ', name);
     } catch (error) {
       this._handleError(error, `Snake.run()`);
@@ -356,18 +366,24 @@ export class Snake extends MainContext {
       return catchFunct(error, this.ctx);
     } else {
       if (this.ctx) {
-        console.log(`🐍 Snake Error (${error.message}) When running: `);
+        console.log(`[🐍 Error] (${error.message}) When running: `);
         console.log(this.ctx);
         if (running) {
-          console.log(`🐍 ${running}`);
+          console.log(`[🐍 Error] ${running}`);
         }
       } else {
-        console.log(`🐍 Snake Error (${error.message}).`);
+        console.log(`[🐍 Error] (${error.message}).`);
         if (running) {
-          console.log(`🐍 ${running}`);
+          console.log(`[🐍 Error] ${running}`);
         }
       }
       throw new Error(error.message);
     }
+  }
+  get connectTime() {
+    let date = new Date(connectTime * 1000).toISOString().substr(9, 10).replace(/t/i, ':');
+    let spl = date.split(':');
+    // days:hours:minutes:seconds
+    return `${Number(spl[0]) - 1}:${spl[1]}:${spl[2]}:${spl[3]}`;
   }
 }

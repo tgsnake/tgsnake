@@ -108,10 +108,21 @@ export type TypeUpdates =
   | 'UpdatesCombined'
   | 'Updates'
   | 'UpdateShortSentMessage';
+
+let _telegram: Telegram;
 export class Update {
   '_'!: TypeUpdates;
-  telegram!: Telegram;
   constructor() {}
+  get telegram() {
+    return _telegram;
+  }
+  set telegram(tg: Telegram) {
+    _telegram = tg;
+  }
+  get SnakeClient() {
+    //@ts-ignore
+    return _telegram.SnakeClient;
+  }
   async reply(text: string, more?: sendMessageMoreParams) {
     //@ts-ignore
     if (this.chat) {
