@@ -16,7 +16,7 @@ import { Api } from 'telegram';
 import { NewMessage } from 'telegram/events';
 import { NewMessageEvent } from 'telegram/events/NewMessage';
 import { MessageContext } from './MessageContext';
-import { Message } from 'telegram/tl/custom/message'; 
+import { Message } from 'telegram/tl/custom/message';
 export type Handler = 'use' | 'hears' | 'command';
 type TypeCmd = string | string[];
 type TypeHears = string | RegExp;
@@ -136,10 +136,11 @@ export interface eventsOn {
 export class MainContext extends (EventEmitter as new () => TypedEmitter<eventsOn>) {
   private middleware: MiddlewareFunction[] = [];
   private handler: HandlerObject[] = [];
+  connected: Boolean = false;
   ctx!: any;
-  nowPrefix: string = '.!/'; 
+  nowPrefix: string = '.!/';
   /**@hidden*/
-  entityCache:Map<number,ResultGetEntity> = new Map()
+  entityCache: Map<number, ResultGetEntity> = new Map();
   constructor() {
     super();
   }
@@ -147,15 +148,12 @@ export class MainContext extends (EventEmitter as new () => TypedEmitter<eventsO
     if (update instanceof NewMessageEvent) {
       update as NewMessageEvent;
       let message: Message = update.message as Message;
-      if(update.originalUpdate){
-        if(update.originalUpdate._entities){
-          let en = update.originalUpdate._entities
-          en.forEach((e,i)=>{
-            this.entityCache.set(
-                i, 
-                new ResultGetEntity(e)
-              )
-          })
+      if (update.originalUpdate) {
+        if (update.originalUpdate._entities) {
+          let en = update.originalUpdate._entities;
+          en.forEach((e, i) => {
+            this.entityCache.set(i, new ResultGetEntity(e));
+          });
         }
       }
       let parse = new MessageContext();
@@ -163,76 +161,80 @@ export class MainContext extends (EventEmitter as new () => TypedEmitter<eventsO
       this.emit('message', parse);
       this.emit('*', parse);
       let runHandler = (updates) => {
-        this.handler.forEach(async (item) => {
-          switch (item.type) {
-            case 'command':
-              let command = item.key as TypeCmd;
-              let me = await SnakeClient.telegram.getEntity('me');
-              let username = '';
-              if (me.username) {
-                username = me.username;
-              }
-              if (Array.isArray(command)) {
-                let regex = new RegExp(
-                  `(?<cmd>^[${this.nowPrefix}](${command
-                    .join('|')
-                    .replace(/\s+/gim, '')})(\@${username})?)$`,
-                  ''
-                );
-                if (parse.text) {
-                  let spl = parse.text.split(' ')[0];
-                  let match = regex.exec(spl) as RegExpExecArray;
-                  if (match as RegExpExecArray) {
-                    return item.run(parse, match);
-                  }
+        if (this.connected) {
+          this.handler.forEach(async (item) => {
+            switch (item.type) {
+              case 'command':
+                let command = item.key as TypeCmd;
+                let me = await SnakeClient.telegram.getEntity('me');
+                let username = '';
+                if (me.username) {
+                  username = me.username;
                 }
-              } else {
-                let regex = new RegExp(
-                  `(?<cmd>^[${this.nowPrefix}]${command.replace(/\s+/gim, '')}(\@${username})?)$`,
-                  ''
-                );
-                if (parse.text) {
-                  let spl = parse.text.split(' ')[0];
-                  let match = regex.exec(spl) as RegExpExecArray;
-                  if (match as RegExpExecArray) {
-                    return item.run(parse, match);
-                  }
-                }
-              }
-              break;
-            case 'hears':
-              let key = item.key as TypeHears;
-              if (key instanceof RegExp) {
-                if (parse) {
+                if (Array.isArray(command)) {
+                  let regex = new RegExp(
+                    `(?<cmd>^[${this.nowPrefix}](${command
+                      .join('|')
+                      .replace(/\s+/gim, '')})(\@${username})?)$`,
+                    ''
+                  );
                   if (parse.text) {
-                    if (key.exec(parse.text)) {
-                      return item.run(parse, key.exec(parse.text) as RegExpExecArray);
+                    let spl = parse.text.split(' ')[0];
+                    let match = regex.exec(spl) as RegExpExecArray;
+                    if (match as RegExpExecArray) {
+                      return item.run(parse, match);
+                    }
+                  }
+                } else {
+                  let regex = new RegExp(
+                    `(?<cmd>^[${this.nowPrefix}]${command.replace(/\s+/gim, '')}(\@${username})?)$`,
+                    ''
+                  );
+                  if (parse.text) {
+                    let spl = parse.text.split(' ')[0];
+                    let match = regex.exec(spl) as RegExpExecArray;
+                    if (match as RegExpExecArray) {
+                      return item.run(parse, match);
                     }
                   }
                 }
-              } else {
-                let regex = new RegExp(key, '');
-                if (parse) {
-                  if (parse.text) {
-                    if (regex.exec(parse.text)) {
-                      return item.run(parse, regex.exec(parse.text) as RegExpExecArray);
+                break;
+              case 'hears':
+                let key = item.key as TypeHears;
+                if (key instanceof RegExp) {
+                  if (parse) {
+                    if (parse.text) {
+                      if (key.exec(parse.text)) {
+                        return item.run(parse, key.exec(parse.text) as RegExpExecArray);
+                      }
+                    }
+                  }
+                } else {
+                  let regex = new RegExp(key, '');
+                  if (parse) {
+                    if (parse.text) {
+                      if (regex.exec(parse.text)) {
+                        return item.run(parse, regex.exec(parse.text) as RegExpExecArray);
+                      }
                     }
                   }
                 }
-              }
-              break;
-            default:
-          }
-        });
-        return this.handler;
+                break;
+              default:
+            }
+          });
+          return this.handler;
+        }
       };
       if (this.middleware.length > 0) {
         let next = (updates, index: number) => {
           return () => {
-            if (this.middleware[index + 1]) {
-              return this.middleware[index + 1](updates, next(updates, index + 1));
-            } else {
-              return runHandler(updates);
+            if (this.connected) {
+              if (this.middleware[index + 1]) {
+                return this.middleware[index + 1](updates, next(updates, index + 1));
+              } else {
+                return runHandler(updates);
+              }
             }
           };
         };
@@ -248,8 +250,10 @@ export class MainContext extends (EventEmitter as new () => TypedEmitter<eventsO
       if (this.middleware.length > 0) {
         let next = (updates, index: number) => {
           return () => {
-            if (this.middleware[index + 1]) {
-              return this.middleware[index + 1](updates, next(updates, index + 1));
+            if (this.connected) {
+              if (this.middleware[index + 1]) {
+                return this.middleware[index + 1](updates, next(updates, index + 1));
+              }
             }
           };
         };
@@ -261,16 +265,13 @@ export class MainContext extends (EventEmitter as new () => TypedEmitter<eventsO
   }
   private async parseUpdate(update: Api.TypeUpdate, SnakeClient: Snake) {
     //@ts-ignore
-    if(update._entities){ 
+    if (update._entities) {
       //@ts-ignore
-        let en = update._entities
-        en.forEach((e,i)=>{
-          this.entityCache.set(
-              i, 
-              new ResultGetEntity(e)
-            )
-        })
-      }
+      let en = update._entities;
+      en.forEach((e, i) => {
+        this.entityCache.set(i, new ResultGetEntity(e));
+      });
+    }
     if (Update[update.className]) {
       let up = new Update[update.className]();
       await up.init(update, SnakeClient);

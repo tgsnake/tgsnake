@@ -76,7 +76,7 @@ export class Telegram {
     return await ForwardMessages(this.SnakeClient, chatId, fromChatId, messageId, more);
   }
   // getMessages
-  async getMessages(chatId: number | string, messageId: number[], replies: boolean = false) {
+  async getMessages(chatId: number | string, messageId: number[], replies: boolean = true) {
     return await GetMessages(this.SnakeClient, chatId, messageId, replies);
   }
   // getMessagesViews

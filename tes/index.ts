@@ -12,12 +12,14 @@ import BigInt from "big-integer"
 const {Api} = GramJs
 const bot = new Snake() 
 bot.on("message",(ctx)=>{
-  if("media" in ctx){
-    console.log(ctx.media)
-  }
-  ctx.telegram.readHistory(ctx.chat.id) 
-  ctx.telegram.readMentions(ctx.chat.id)
-  console.log(ctx)
+//  if(bot.connected){
+    if("media" in ctx){
+      console.log(ctx.media)
+    }
+    ctx.telegram.readHistory(ctx.chat.id) 
+    ctx.telegram.readMentions(ctx.chat.id)
+    console.log(ctx)
+  //}
 })
 bot.hears("tes",async (ctx)=>{
   let tes = await ctx.telegram.getParticipant(ctx.chat.id,ctx.from.id) 
@@ -25,5 +27,10 @@ bot.hears("tes",async (ctx)=>{
 })
 bot.command("ct",(ctx)=>{
   ctx.reply(bot.connectTime)
+})
+bot.command("restart",async (ctx)=>{
+  await ctx.reply(`Restarting after ${bot.connectTime} s connected.`) 
+  let ping = await bot.restart() 
+  return ctx.reply(`Took ${ping}`)
 })
 bot.run()

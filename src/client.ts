@@ -33,6 +33,7 @@ let storeSession: boolean = true;
 let catchFunct: CatchError;
 let isBot: boolean = false;
 let connectTime: number = 0;
+let intervalCT: any;
 function log(...args) {
   if (tgSnakeLog) {
     console.log(...args);
@@ -60,7 +61,7 @@ export class Snake extends MainContext {
   client!: TelegramClient;
   telegram!: Telegram;
   version: string = '1.2.3';
-  connected: Boolean = false;
+
   options!: Options;
   constructor(options?: Options) {
     super();
@@ -234,7 +235,7 @@ export class Snake extends MainContext {
       this.connected = true;
       this.emit('connected', me);
       this.emit('*', me);
-      setInterval(() => {
+      intervalCT = setInterval(() => {
         connectTime++;
       }, 1000);
       return log('🐍 Connected as ', name);
@@ -385,5 +386,17 @@ export class Snake extends MainContext {
     let spl = date.split(':');
     // days:hours:minutes:seconds
     return `${Number(spl[0]) - 1}:${spl[1]}:${spl[2]}:${spl[3]}`;
+  }
+  async restart() {
+    let d = Date.now();
+    await log(`🐍 Restarting after [${this.connectTime}] connected.`);
+    connectTime = 0;
+    this.connected = false;
+    await clearInterval(intervalCT);
+    await this.client.disconnect();
+    await this.run();
+    let p = Date.now();
+    let ping = Number((p - d) / 1000).toFixed(3);
+    return `${ping} s`;
   }
 }
