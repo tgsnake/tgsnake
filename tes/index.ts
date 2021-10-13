@@ -11,6 +11,9 @@ import * as fs from "fs"
 import BigInt from "big-integer"
 const {Api} = GramJs
 const bot = new Snake() 
+bot.catch((error,ctx)=>{
+  ctx.reply(`[🐍 Error] ${error.message}`)
+})
 bot.on("message",(ctx)=>{
 //  if(bot.connected){
     if("media" in ctx){
@@ -23,10 +26,15 @@ bot.on("message",(ctx)=>{
 })
 bot.hears("tes",async (ctx)=>{
   let tes = await ctx.telegram.getParticipant(ctx.chat.id,ctx.from.id) 
-  console.log("_tes.index",tes)
+  console.log("_tes.index",tes) 
+  return ctx.reply("🐍 Check your console")
 })
 bot.command("ct",(ctx)=>{
   ctx.reply(bot.connectTime)
+})
+bot.command("aboutme",async (ctx)=>{
+  let userInfo = await ctx.telegram.getParticipant(ctx.chat.id,ctx.from.id) 
+  ctx.reply(`--- User Info ---\nId : ${userInfo.user.id}\nDcId : ${userInfo.user.dcId}\nName : ${userInfo.user.lastName ? userInfo.user.firstName + " " + userInfo.user.lastName : userInfo.user.firstName}\nStatus : ${userInfo.status}\nLastSeen : ${userInfo.user.status}`)
 })
 bot.command("restart",async (ctx)=>{
   await ctx.reply(`Restarting after ${bot.connectTime} s connected.`) 
