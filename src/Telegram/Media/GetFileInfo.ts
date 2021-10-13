@@ -19,7 +19,8 @@ export async function GetFileInfo(file: string) {
     let res = await axios.get(file, {
       responseType: 'arraybuffer',
     });
-    let basebuffer = Buffer.from(res.data, 'utf-8');
+    let data: any = res.data;
+    let basebuffer = Buffer.from(data, 'utf-8');
     let fileInfo = await FileType.fromBuffer(basebuffer);
     return fileInfo;
   }

@@ -18,9 +18,9 @@ import { Entities } from './Entities';
 import { ForwardMessage } from './ForwardMessage';
 import { Media } from './Media';
 import { Message as MessageEvent } from 'telegram/tl/custom/message';
-import { Telegram } from '../Telegram'; 
-let _SnakeClient:Snake;
-let _telegram:Telegram;
+import { Telegram } from '../Telegram';
+let _SnakeClient: Snake;
+let _telegram: Telegram;
 export class Message {
   out?: boolean;
   mentioned?: boolean;
@@ -83,11 +83,23 @@ export class Message {
       let from = new From();
       await from.init(message.fromId, this.SnakeClient);
       this.from = from;
+    } else {
+      if (message.peerId) {
+        let from = new From();
+        await from.init(message.peerId, this.SnakeClient);
+        this.from = from;
+      }
     }
     if (message.peerId) {
       let chat = new Chat();
       await chat.init(message.peerId, this.SnakeClient);
       this.chat = chat;
+    } else {
+      if (message.fromId) {
+        let chat = new Chat();
+        await chat.init(message.fromId, this.SnakeClient);
+        this.chat = chat;
+      }
     }
     if (message.replyTo) {
       let replyTo = new ReplyToMessageContext();
@@ -126,11 +138,23 @@ export class Message {
       let from = new From();
       await from.init(message.fromId, this.SnakeClient);
       this.from = from;
+    } else {
+      if (message.peerId) {
+        let from = new From();
+        await from.init(message.peerId, this.SnakeClient);
+        this.from = from;
+      }
     }
     if (message.peerId) {
       let chat = new Chat();
       await chat.init(message.peerId, this.SnakeClient);
       this.chat = chat;
+    } else {
+      if (message.fromId) {
+        let chat = new Chat();
+        await chat.init(message.fromId, this.SnakeClient);
+        this.chat = chat;
+      }
     }
     if (message.media) {
       let media = new Media();
@@ -170,11 +194,11 @@ export class Message {
       this.replies = message.replies;
     }
     return this;
-  } 
-  get SnakeClient(){
-    return _SnakeClient
   }
-  get telegram(){
-    return _telegram
+  get SnakeClient() {
+    return _SnakeClient;
+  }
+  get telegram() {
+    return _telegram;
   }
 }

@@ -41,4 +41,7 @@ bot.command("restart",async (ctx)=>{
   let ping = await bot.restart() 
   return ctx.reply(`Took ${ping}`)
 })
+bot.command("pic",async (ctx)=>{
+  ctx.telegram.sendPhoto(ctx.chat.id,"https://raw.githubusercontent.com/butthx/tgsnake/master/media/tgsnake.jpg")
+})
 bot.run()

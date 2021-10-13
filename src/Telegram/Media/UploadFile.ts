@@ -63,7 +63,8 @@ export async function UploadFile(
         let res = await axios.get(file, {
           responseType: 'arraybuffer',
         });
-        let basebuffer = Buffer.from(res.data, 'utf-8');
+        let data: any = res.data;
+        let basebuffer = Buffer.from(data, 'utf-8');
         let file_name = more?.fileName || basename;
         let match = /\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/gim.exec(file_name);
         if (!match) {
