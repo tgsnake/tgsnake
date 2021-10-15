@@ -8,6 +8,7 @@
 
 import { Api } from 'telegram';
 import { BigInteger } from 'big-integer';
+import { Snake } from '../client';
 export type TypeReplyMarkup = inlineKeyboard | replyKeyboard | removeKeyboard | forceReplyMarkup;
 /**
  * Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot's message and tapped 'Reply')
@@ -346,4 +347,165 @@ function replyMarkupForceReply(replyMarkup: forceReplyMarkup) {
     selective: replyMarkup.selective || undefined,
     placeholder: replyMarkup.inputFieldPlaceholder || undefined,
   });
+}
+
+export async function convertReplyMarkup(
+  replyMarkup: Api.TypeReplyMarkup,
+  SnakeClient: Snake
+): Promise<TypeReplyMarkup | undefined> {
+  // force reply
+  if (replyMarkup instanceof Api.ReplyKeyboardForceReply) {
+    replyMarkup as Api.ReplyKeyboardForceReply;
+    let markup: forceReplyMarkup = {
+      forceReply: true,
+      selective: replyMarkup.selective || undefined,
+      singleUse: replyMarkup.singleUse || undefined,
+      inputFieldPlaceholder: replyMarkup.placeholder || undefined,
+    };
+    return markup;
+  }
+  // removeKeyboard
+  if (replyMarkup instanceof Api.ReplyKeyboardHide) {
+    replyMarkup as Api.ReplyKeyboardHide;
+    let markup: removeKeyboard = {
+      removeKeyboard: true,
+      selective: replyMarkup.selective || undefined,
+    };
+  }
+  // KeyboardButton
+  if (replyMarkup instanceof Api.ReplyKeyboardMarkup) {
+    replyMarkup as Api.ReplyKeyboardMarkup;
+    let rows: replyKeyboardButton[][] = [];
+    for (let i = 0; i < replyMarkup.rows.length; i++) {
+      let col: replyKeyboardButton[] = [];
+      let btns: Api.KeyboardButtonRow = replyMarkup.rows[i];
+      for (let j = 0; j < btns.buttons.length; j++) {
+        let btn: Api.TypeKeyboardButton = btns.buttons[j];
+        if (btn instanceof Api.KeyboardButton) {
+          btn as Api.KeyboardButton;
+          let cc: replyKeyboardButton = {
+            text: btn.text,
+          };
+          col.push(cc);
+        }
+        if (btn instanceof Api.KeyboardButtonRequestPhone) {
+          btn as Api.KeyboardButtonRequestPhone;
+          let cc: replyKeyboardButton = {
+            text: btn.text,
+            requestContact: true,
+          };
+          col.push(cc);
+        }
+        if (btn instanceof Api.KeyboardButtonRequestGeoLocation) {
+          btn as Api.KeyboardButtonRequestGeoLocation;
+          let cc: replyKeyboardButton = {
+            text: btn.text,
+            requestLocation: true,
+          };
+          col.push(cc);
+        }
+        if (btn instanceof Api.KeyboardButtonRequestPoll) {
+          btn as Api.KeyboardButtonRequestPoll;
+          let cc: replyKeyboardButton = {
+            text: btn.text,
+            requestPoll: btn.quiz ? 'quiz' : 'regular',
+          };
+          col.push(cc);
+        }
+      }
+      rows.push(col);
+    }
+    let markup: replyKeyboard = {
+      keyboard: rows,
+      resizeKeyboard: replyMarkup.resize || undefined,
+      oneTimeKeyboard: replyMarkup.singleUse || undefined,
+      inputFieldPlaceholder: replyMarkup.placeholder || undefined,
+      selective: replyMarkup.selective || undefined,
+    };
+    return markup;
+  }
+  // inlineKeyboardButton
+  if (replyMarkup instanceof Api.ReplyInlineMarkup) {
+    replyMarkup as Api.ReplyInlineMarkup;
+    let rows: inlineKeyboardButton[][] = [];
+    for (let i = 0; i < replyMarkup.rows.length; i++) {
+      let col: inlineKeyboardButton[] = [];
+      let btns: Api.KeyboardButtonRow = replyMarkup.rows[i];
+      for (let j = 0; j < btns.buttons.length; j++) {
+        let btn: Api.TypeKeyboardButton = btns.buttons[j];
+        if (btn instanceof Api.KeyboardButtonUrl) {
+          btn as Api.KeyboardButtonUrl;
+          let cc: inlineKeyboardButton = {
+            text: btn.text,
+            url: btn.url,
+          };
+          col.push(cc);
+        }
+        if (btn instanceof Api.KeyboardButtonUrlAuth) {
+          btn as Api.KeyboardButtonUrlAuth;
+          let me = await SnakeClient.telegram.getMe();
+          let ee: BotLoginUrl = {
+            id: me.userId,
+            accessHash: me.accessHash,
+          };
+          let dd: loginUrl = {
+            requestWriteAccess: true,
+            forwardText: btn.fwdText || String(btn.text),
+            url: String(btn.url),
+            bot: ee,
+          };
+          let cc: inlineKeyboardButton = {
+            loginUrl: dd,
+            text: btn.text,
+          };
+          col.push(cc);
+        }
+        if (btn instanceof Api.KeyboardButtonCallback) {
+          btn as Api.KeyboardButtonCallback;
+          let cc: inlineKeyboardButton = {
+            text: btn.text,
+            callbackData: btn.data.toString('utf8'),
+          };
+          col.push(cc);
+        }
+        if (btn instanceof Api.KeyboardButtonSwitchInline) {
+          btn as Api.KeyboardButtonSwitchInline;
+          if (btn.samePeer) {
+            let cc: inlineKeyboardButton = {
+              text: btn.text,
+              switchInlineQueryCurrentChat: btn.query,
+            };
+            col.push(cc);
+          } else {
+            let cc: inlineKeyboardButton = {
+              text: btn.text,
+              switchInlineQuery: btn.query,
+            };
+            col.push(cc);
+          }
+        }
+        if (btn instanceof Api.KeyboardButtonGame) {
+          btn as Api.KeyboardButtonGame;
+          let cc: inlineKeyboardButton = {
+            text: btn.text,
+            callbackGame: btn.text,
+          };
+          col.push(cc);
+        }
+        if (btn instanceof Api.KeyboardButtonBuy) {
+          btn as Api.KeyboardButtonBuy;
+          let cc: inlineKeyboardButton = {
+            text: btn.text,
+            buy: btn.text,
+          };
+          col.push(cc);
+        }
+      }
+      rows.push(col);
+    }
+    let markup: inlineKeyboard = {
+      inlineKeyboard: rows,
+    };
+    return markup;
+  }
 }

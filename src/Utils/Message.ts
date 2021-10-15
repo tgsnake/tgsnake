@@ -19,6 +19,7 @@ import { ForwardMessage } from './ForwardMessage';
 import { Media } from './Media';
 import { Message as MessageEvent } from 'telegram/tl/custom/message';
 import { Telegram } from '../Telegram';
+import { convertReplyMarkup, TypeReplyMarkup } from './ReplyMarkup';
 let _SnakeClient: Snake;
 let _telegram: Telegram;
 export class Message {
@@ -42,7 +43,7 @@ export class Message {
   viaBotId?: number;
   text?: string;
   media?: Media;
-  replyMarkup?: Api.TypeReplyMarkup;
+  replyMarkup?: TypeReplyMarkup;
   entities?: Entities[];
   views?: number;
   forwards?: number;
@@ -186,9 +187,9 @@ export class Message {
       this.restrictionReason = temp;
     }
     // todo
-    // change the replyMarkup json and replies json.
+    // change the  replies json.
     if (message.replyMarkup) {
-      this.replyMarkup = message.replyMarkup;
+      this.replyMarkup = await convertReplyMarkup(message.replyMarkup, this.SnakeClient);
     }
     if (message.replies) {
       this.replies = message.replies;

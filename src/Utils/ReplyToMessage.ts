@@ -16,6 +16,7 @@ import { From } from './From';
 import { Entities } from './Entities';
 import { ForwardMessage } from './ForwardMessage';
 import { Media } from './Media';
+import { convertReplyMarkup, TypeReplyMarkup } from './ReplyMarkup';
 let _SnakeClient: Snake;
 export class ReplyToMessage {
   out?: boolean;
@@ -37,7 +38,7 @@ export class ReplyToMessage {
   viaBotId?: number;
   text?: string;
   media?: Media;
-  replyMarkup?: Api.TypeReplyMarkup;
+  replyMarkup?: TypeReplyMarkup;
   entities?: Entities[];
   views?: number;
   forwards?: number;
