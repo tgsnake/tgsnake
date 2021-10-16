@@ -25,9 +25,9 @@ bot.on("message",(ctx)=>{
   //}
 })
 bot.hears("tes",async (ctx)=>{
-  let tes = await ctx.telegram.getChatMembersCount(ctx.chat.id) 
+  let tes = await ctx.telegram.getParticipants(ctx.chat.id) 
   console.log("_tes.index",tes) 
-  return ctx.reply(`🐍 Members in this chat - ${tes}`)
+  return ctx.reply(`🐍 [getParticipants/getChatMembers] - Please Check Your Console!`)
 })
 bot.command("ct",(ctx)=>{
   ctx.reply(bot.connectTime)

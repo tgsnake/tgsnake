@@ -34,6 +34,7 @@ import { Api, TelegramClient } from 'telegram';
 import { Media } from '../Utils/Media';
 import { GetParticipant } from './Chats/GetParticipant';
 import { GetChatMembersCount } from './Chats/GetChatMembersCount';
+import { GetParticipants, GetParticipantMoreParams } from './Chats/GetParticipants';
 let _SnakeClient: Snake;
 export class Telegram {
   constructor(SnakeClient: Snake) {
@@ -203,8 +204,20 @@ export class Telegram {
   async getParticipant(chatId: string | number, userId: string | number) {
     return await GetParticipant(this.SnakeClient, chatId, userId);
   }
+  // getChatMember
+  async getChatMember(chatId: string | number, userId: string | number) {
+    return await GetParticipant(this.SnakeClient, chatId, userId);
+  }
   // getChatMembersCount
   async getChatMembersCount(chatId: number | string) {
     return await GetChatMembersCount(this.SnakeClient, chatId);
+  }
+  // getParticipants
+  async getParticipants(chatId: number | string, more?: GetParticipantMoreParams) {
+    return await GetParticipants(this.SnakeClient, chatId, more);
+  }
+  // getChatMembers
+  async getChatMembers(chatId: number | string, more?: GetParticipantMoreParams) {
+    return await GetParticipants(this.SnakeClient, chatId, more);
   }
 }
