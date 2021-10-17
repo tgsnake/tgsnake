@@ -60,7 +60,7 @@ function makeApiId(length) {
 export class Snake extends MainContext {
   client!: TelegramClient;
   telegram!: Telegram;
-  version: string = '1.2.3';
+  version: string = '2.0.0';
 
   options!: Options;
   constructor(options?: Options) {
@@ -186,12 +186,12 @@ export class Snake extends MainContext {
     try {
       process.once('SIGINT', () => {
         log('🐍 Killing..');
-        this.client.disconnect();
+        if (this.client) this.client.disconnect();
         process.exit(0);
       });
       process.once('SIGTERM', () => {
         log('🐍 Killing..');
-        this.client.disconnect();
+        if (this.client) this.client.disconnect();
         process.exit(0);
       });
       log(`🐍 Welcome To TGSNAKE ${this.version}.`);
@@ -218,6 +218,7 @@ export class Snake extends MainContext {
       }
       let me = await this.telegram.getMe();
       isBot = me.bot;
+      this.aboutMe = me;
       let name = me.lastName
         ? me.firstName + ' ' + me.lastName + ' [' + me.id + ']'
         : me.firstName + ' [' + me.id + ']';
@@ -247,12 +248,12 @@ export class Snake extends MainContext {
     try {
       process.once('SIGINT', () => {
         log('🐍 Killing..');
-        this.client.disconnect();
+        if (this.client) this.client.disconnect();
         process.exit(0);
       });
       process.once('SIGTERM', () => {
         log('🐍 Killing..');
-        this.client.disconnect();
+        if (this.client) this.client.disconnect();
         process.exit(0);
       });
       log(`🐍 Welcome To TGSNAKE ${this.version}.`);
@@ -324,7 +325,8 @@ export class Snake extends MainContext {
             });
             session = String(await this.client.session.save());
             console.log(`🐍 Your string session : ${session}`);
-            let me = (await this.client.getMe()) as Api.User;
+            let me = await this.telegram.getMe();
+            this.aboutMe = me;
             await this.telegram.sendMessage(
               me.id,
               `🐍 Your string session : <code>${session}</code>`,
@@ -353,7 +355,7 @@ export class Snake extends MainContext {
         log(`🐍 You should use the \`Snake.run()\`!`);
       }
       log('🐍 Killing...');
-      this.client.disconnect();
+      if (this.client) this.client.disconnect();
       process.exit(0);
     } catch (error) {
       this._handleError(error, `Snake.generateSession()`);

@@ -139,7 +139,7 @@ export class MainContext extends (EventEmitter as new () => TypedEmitter<eventsO
   connected: Boolean = false;
   ctx!: any;
   nowPrefix: string = '.!/';
-  /**@hidden*/
+  aboutMe!: ResultGetEntity;
   entityCache: Map<number, ResultGetEntity> = new Map();
   constructor() {
     super();
@@ -160,13 +160,14 @@ export class MainContext extends (EventEmitter as new () => TypedEmitter<eventsO
       await parse.init(message, SnakeClient);
       this.emit('message', parse);
       this.emit('*', parse);
+      this.ctx = parse;
       let runHandler = (updates) => {
         if (this.connected) {
           this.handler.forEach(async (item) => {
             switch (item.type) {
               case 'command':
                 let command = item.key as TypeCmd;
-                let me = await SnakeClient.telegram.getEntity('me');
+                let me = this.aboutMe;
                 let username = '';
                 if (me.username) {
                   username = me.username;
@@ -247,6 +248,7 @@ export class MainContext extends (EventEmitter as new () => TypedEmitter<eventsO
       //@ts-ignore
       this.emit(update.className, parse);
       this.emit('*', parse);
+      this.ctx = parse;
       if (this.middleware.length > 0) {
         let next = (updates, index: number) => {
           return () => {
