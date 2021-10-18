@@ -82,12 +82,20 @@ export class Message {
     this.ttlPeriod = message.ttlPeriod;
     if (message.fromId) {
       let from = new From();
-      await from.init(message.fromId, this.SnakeClient);
+      if (!message.out) {
+        await from.init(message.fromId, this.SnakeClient);
+      } else {
+        await from.init(this.SnakeClient.aboutMe.id, this.SnakeClient);
+      }
       this.from = from;
     } else {
       if (message.peerId) {
         let from = new From();
-        await from.init(message.peerId, this.SnakeClient);
+        if (!message.out) {
+          await from.init(message.peerId, this.SnakeClient);
+        } else {
+          await from.init(this.SnakeClient.aboutMe.id, this.SnakeClient);
+        }
         this.from = from;
       }
     }
@@ -137,12 +145,20 @@ export class Message {
     this.editDate = message.editDate;
     if (message.fromId) {
       let from = new From();
-      await from.init(message.fromId, this.SnakeClient);
+      if (!message.out) {
+        await from.init(message.fromId, this.SnakeClient);
+      } else {
+        await from.init(this.SnakeClient.aboutMe.id, this.SnakeClient);
+      }
       this.from = from;
     } else {
       if (message.peerId) {
         let from = new From();
-        await from.init(message.peerId, this.SnakeClient);
+        if (!message.out) {
+          await from.init(message.peerId, this.SnakeClient);
+        } else {
+          await from.init(this.SnakeClient.aboutMe.id, this.SnakeClient);
+        }
         this.from = from;
       }
     }
