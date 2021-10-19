@@ -18,9 +18,9 @@ bot.catch((error,ctx)=>{
     console.log(error)
   }
 })
-bot.on("*",(update)=>{
-  console.log(update)
-})
+//bot.on("*",(update)=>{
+//  console.log(update)
+//})
 bot.on("message",(ctx)=>{
 //  if(bot.connected){
     if("media" in ctx){
@@ -56,7 +56,12 @@ bot.command("restart",async (ctx)=>{
   let ping = await bot.restart() 
   return ctx.reply(`Took ${ping}`)
 })
-bot.command("pic",async (ctx)=>{
-  ctx.telegram.sendPhoto(ctx.chat.id,"https://raw.githubusercontent.com/butthx/tgsnake/master/media/tgsnake.jpg")
+bot.command("parseMd",(ctx)=>{
+  //@ts-ignore
+  let spl = ctx.text.split(" ") 
+  //@ts-ignore
+  let text = ctx.text.replace(spl[0],"").trim()
+  console.log()
+  return ctx.replyWithMarkdown(text)
 })
 bot.run()

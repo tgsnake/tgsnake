@@ -9,8 +9,8 @@
 import { Api } from 'telegram';
 import { Snake } from '../../client';
 import { TypeReplyMarkup, BuildReplyMarkup } from '../../Utils/ReplyMarkup';
-import { Entities, ParseEntities } from '../../Utils/Entities';
-import { _parseMessageText } from 'telegram/client/messageParse';
+import { Entities } from '../../Utils/Entities';
+import { ParseMessage } from '../../Utils/ParseMessage';
 import BigInt from 'big-integer';
 import * as Update from '../../Update';
 export interface editMessageMoreParams {
@@ -36,18 +36,12 @@ export async function EditMessage(
         parseMode = more.parseMode.toLowerCase();
         delete more.parseMode;
       }
-    }
-    let [parseText, entities] = await _parseMessageText(snakeClient.client, text, parseMode);
-    if (more) {
-      if (more.entities) {
-        entities = await ParseEntities(more.entities);
-        parseText = text;
-      }
       if (more.replyMarkup) {
         replyMarkup = BuildReplyMarkup(more.replyMarkup!);
         delete more.replyMarkup;
       }
     }
+    let [parseText, entities] = await ParseMessage(snakeClient, text, parseMode, more?.entities);
     let results: Api.TypeUpdates = await snakeClient.client.invoke(
       new Api.messages.EditMessage({
         peer: chatId,

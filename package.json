@@ -1,6 +1,6 @@
 {
   "name": "tgsnake",
-  "version": "2.0.0",
+  "version": "2.0.0-alpha.0",
   "description": "Telegram MTProto framework base gram.js",
   "main": "./lib/index.js",
   "scripts": {
@@ -28,6 +28,7 @@
     "axios": "^0.23.0",
     "big-integer": "^1.6.48",
     "file-type": "^16.5.0",
+    "marked": "^3.0.7",
     "prompts": "^2.4.1",
     "telegram": "^1.9.0",
     "tg-file-id": "^1.1.1",

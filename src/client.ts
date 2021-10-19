@@ -60,7 +60,7 @@ function makeApiId(length) {
 export class Snake extends MainContext {
   client!: TelegramClient;
   telegram!: Telegram;
-  version: string = '2.0.0';
+  version: string = '2.0.0-alpha.0';
 
   options!: Options;
   constructor(options?: Options) {
