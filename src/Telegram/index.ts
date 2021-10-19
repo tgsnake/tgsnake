@@ -186,11 +186,7 @@ export class Telegram {
     return await SendPhoto(this.SnakeClient, chatId, fileId, more);
   }
   // sendDocument
-  async sendDocument(
-    chatId: number | string,
-    fileId: string | Buffer | Api.MessageMediaDocument | Api.Document,
-    more?: sendMediaMoreParams
-  ) {
+  async sendDocument(chatId: number | string, fileId: string | Buffer, more?: sendMediaMoreParams) {
     return await SendDocument(this.SnakeClient, chatId, fileId, more);
   }
   // sendSticker

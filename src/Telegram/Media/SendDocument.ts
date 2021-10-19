@@ -19,43 +19,53 @@ import path from 'path';
 export async function SendDocument(
   snakeClient: Snake,
   chatId: number | string,
-  fileId: string | Buffer | Api.MessageMediaDocument | Api.Document,
+  fileId: string | Buffer,
   more?: sendMediaMoreParams
 ) {
   try {
-    let final: any;
-    if (fileId instanceof Api.MessageMediaDocument) {
-      final = fileId as Api.MessageMediaDocument;
-    }
-    if (fileId instanceof Api.Document) {
-      final = fileId as Api.Document;
+    if (Buffer.isBuffer(fileId)) {
+      fileId as Buffer;
+      let file = await UploadFile(snakeClient, fileId as Buffer, {
+        workers: more?.workers || 1,
+        fileName: more?.fileName,
+      });
+      let info = await GetFileInfo(fileId as Buffer);
+      let final = new Api.InputMediaUploadedDocument({
+        file: new Api.InputFile({ ...file! }),
+        mimeType: info?.mime || more?.mimeType || 'unknown',
+        attributes: [
+          new Api.DocumentAttributeFilename({
+            fileName: more?.fileName || 'unknown',
+          }),
+        ],
+      });
+      return SendMedia(snakeClient, chatId, final, more);
     }
     if (typeof fileId == 'string') {
-      if (
-        Buffer.isBuffer(fileId) ||
-        /^http/i.exec(String(fileId)) ||
-        /^(\/|\.\.?\/|~\/)/i.exec(String(fileId))
-      ) {
+      fileId as string;
+      if (/^http/i.exec(String(fileId)) || /^(\/|\.\.?\/|~\/)/i.exec(String(fileId))) {
+        //@ts-ignore
         let file = await UploadFile(snakeClient, fileId, {
           workers: more?.workers || 1,
+          fileName: more?.fileName,
         });
         let info = await GetFileInfo(fileId);
-        let basename = path.basename(String(fileId));
+        let basename = path.basename(fileId);
         if (!/\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/gim.exec(basename)) {
           basename = `${basename}.${info?.ext}`;
         }
-        final = new Api.InputMediaUploadedDocument({
+        let final = new Api.InputMediaUploadedDocument({
           file: new Api.InputFile({ ...file! }),
-          mimeType: info?.mime!,
+          mimeType: info?.mime || more?.mimeType || 'unknown',
           attributes: [
             new Api.DocumentAttributeFilename({
               fileName: basename,
             }),
           ],
         });
+        return SendMedia(snakeClient, chatId, final, more);
       }
     }
-    return SendMedia(snakeClient, chatId, final, more);
   } catch (error) {
     return snakeClient._handleError(
       error,

@@ -25,6 +25,8 @@ export interface sendMediaMoreParams {
   scheduleDate?: number;
   caption?: string;
   workers?: number;
+  mimeType?: string;
+  fileName?: string;
 }
 
 export async function SendMedia(
@@ -62,6 +64,12 @@ export async function SendMedia(
       }
       if (more.workers) {
         delete more.workers;
+      }
+      if (more.mimeType) {
+        delete more.mimeType;
+      }
+      if (more.fileName) {
+        delete more.fileName;
       }
     }
     return snakeClient.client.invoke(

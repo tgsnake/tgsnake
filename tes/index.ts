@@ -12,7 +12,14 @@ import BigInt from "big-integer"
 const {Api} = GramJs
 const bot = new Snake() 
 bot.catch((error,ctx)=>{
-  ctx.reply(`[🐍 Error] ${error.message}`)
+  if(ctx.reply){
+    ctx.reply(`[🐍 Error] ${error.message}`)
+  }else{
+    console.log(error)
+  }
+})
+bot.on("*",(update)=>{
+  console.log(update)
 })
 bot.on("message",(ctx)=>{
 //  if(bot.connected){
@@ -25,9 +32,17 @@ bot.on("message",(ctx)=>{
   //}
 })
 bot.hears("tes",async (ctx)=>{
-  let tes = await ctx.telegram.getParticipants(ctx.chat.id) 
-  console.log("_tes.index",tes) 
-  return ctx.reply(`🐍 [getParticipants/getChatMembers] - Please Check Your Console!`)
+  let tes = await ctx.telegram.getParticipants(ctx.chat.id)
+  return ctx.telegram.sendDocument(
+      ctx.chat.id,
+      Buffer.from(
+          JSON.stringify(tes,null,2)
+        ),
+      {
+        fileName : "results.txt",
+        mimeType : "text/plain"
+      }
+    )
 })
 bot.command("ct",(ctx)=>{
   ctx.reply(bot.connectTime)

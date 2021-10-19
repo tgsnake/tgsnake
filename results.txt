@@ -1,0 +1,439 @@
+{
+  "count": 9,
+  "participants": [
+    {
+      "date": 1634600740,
+      "status": "creator",
+      "adminRights": {
+        "changeInfo": true,
+        "postMessages": true,
+        "editMessages": true,
+        "deleteMessages": true,
+        "banUsers": true,
+        "inviteUsers": true,
+        "pinMessages": true,
+        "addAdmins": true,
+        "anonymous": false,
+        "manageCall": true,
+        "other": true
+      },
+      "user": {
+        "id": 1241805547,
+        "username": "butthx",
+        "firstName": "Ice Bear",
+        "lastName": null,
+        "status": "recently",
+        "self": false,
+        "deleted": false,
+        "fake": false,
+        "scam": false,
+        "bot": false,
+        "verified": false,
+        "restricted": false,
+        "dcId": 5,
+        "photo": {
+          "isBig": true,
+          "fileId": "AQADBQADpq0xG26o6FUACAEABwMAA-tyBEoABCgPiLP6Zfx8AAQeBA",
+          "uniqueFileId": "AQADpq0xG26o6FU"
+        }
+      }
+    },
+    {
+      "date": 1634600740,
+      "status": "admin",
+      "adminRights": {
+        "changeInfo": true,
+        "postMessages": false,
+        "editMessages": false,
+        "deleteMessages": true,
+        "banUsers": true,
+        "inviteUsers": true,
+        "pinMessages": true,
+        "addAdmins": true,
+        "anonymous": false,
+        "manageCall": true,
+        "other": true
+      },
+      "canEdit": false,
+      "self": true,
+      "rank": null,
+      "user": {
+        "id": 1843416152,
+        "username": "icebearubot",
+        "firstName": "Ice Bear",
+        "lastName": null,
+        "status": "offline",
+        "self": true,
+        "deleted": false,
+        "fake": false,
+        "scam": false,
+        "bot": false,
+        "verified": false,
+        "restricted": false,
+        "dcId": 1,
+        "photo": {
+          "isBig": true,
+          "fileId": "AQADAQADG6kxG90_8UUACAEABwMAA1hM4G0ABOqPWb7QnHlBAAQeBA",
+          "uniqueFileId": "AQADG6kxG90_8UU"
+        }
+      },
+      "inviter": {
+        "id": 1843416152,
+        "username": "icebearubot",
+        "firstName": "Ice Bear",
+        "lastName": null,
+        "status": "offline",
+        "self": true,
+        "deleted": false,
+        "fake": false,
+        "scam": false,
+        "bot": false,
+        "verified": false,
+        "restricted": false,
+        "dcId": 1,
+        "photo": {
+          "isBig": true,
+          "fileId": "AQADAQADG6kxG90_8UUACAEABwMAA1hM4G0ABOqPWb7QnHlBAAQeBA",
+          "uniqueFileId": "AQADG6kxG90_8UU"
+        }
+      },
+      "promotedBy": {
+        "id": 1241805547,
+        "username": "butthx",
+        "firstName": "Ice Bear",
+        "lastName": null,
+        "status": "recently",
+        "self": false,
+        "deleted": false,
+        "fake": false,
+        "scam": false,
+        "bot": false,
+        "verified": false,
+        "restricted": false,
+        "dcId": 5,
+        "photo": {
+          "isBig": true,
+          "fileId": "AQADBQADpq0xG26o6FUACAEABwMAA-tyBEoABCgPiLP6Zfx8AAQeBA",
+          "uniqueFileId": "AQADpq0xG26o6FU"
+        }
+      }
+    },
+    {
+      "date": 1634600740,
+      "status": "member",
+      "user": {
+        "id": 107550100,
+        "username": "GitHubBot",
+        "firstName": "GitHub",
+        "lastName": null,
+        "self": false,
+        "deleted": false,
+        "fake": false,
+        "scam": false,
+        "bot": true,
+        "verified": false,
+        "restricted": false,
+        "dcId": 1,
+        "photo": {
+          "isBig": true,
+          "fileId": "AQADAQADqqcxG5QVaQYACAEABwMAA5QVaQYABB8jak2qAqgoAAQeBA",
+          "uniqueFileId": "AQADqqcxG5QVaQY"
+        }
+      }
+    },
+    {
+      "date": 1634600740,
+      "status": "admin",
+      "adminRights": {
+        "changeInfo": true,
+        "postMessages": false,
+        "editMessages": false,
+        "deleteMessages": true,
+        "banUsers": true,
+        "inviteUsers": true,
+        "pinMessages": true,
+        "addAdmins": true,
+        "anonymous": true,
+        "manageCall": true,
+        "other": true
+      },
+      "canEdit": false,
+      "self": false,
+      "rank": null,
+      "user": {
+        "id": 2041829864,
+        "username": "dotsrobot",
+        "firstName": "Dots",
+        "lastName": null,
+        "self": false,
+        "deleted": false,
+        "fake": false,
+        "scam": false,
+        "bot": true,
+        "verified": false,
+        "restricted": false,
+        "dcId": 5,
+        "photo": {
+          "isBig": true,
+          "fileId": "AQADBQADyq4xG43SUVcACAEABwMAA-jZs3kABM2KLOs_lXBEAAQeBA",
+          "uniqueFileId": "AQADyq4xG43SUVc"
+        }
+      },
+      "promotedBy": {
+        "id": 1241805547,
+        "username": "butthx",
+        "firstName": "Ice Bear",
+        "lastName": null,
+        "status": "recently",
+        "self": false,
+        "deleted": false,
+        "fake": false,
+        "scam": false,
+        "bot": false,
+        "verified": false,
+        "restricted": false,
+        "dcId": 5,
+        "photo": {
+          "isBig": true,
+          "fileId": "AQADBQADpq0xG26o6FUACAEABwMAA-tyBEoABCgPiLP6Zfx8AAQeBA",
+          "uniqueFileId": "AQADpq0xG26o6FU"
+        }
+      }
+    },
+    {
+      "date": 1634600740,
+      "status": "admin",
+      "adminRights": {
+        "changeInfo": true,
+        "postMessages": false,
+        "editMessages": false,
+        "deleteMessages": true,
+        "banUsers": true,
+        "inviteUsers": true,
+        "pinMessages": true,
+        "addAdmins": true,
+        "anonymous": true,
+        "manageCall": true,
+        "other": true
+      },
+      "canEdit": false,
+      "self": false,
+      "rank": null,
+      "user": {
+        "id": 1061833231,
+        "username": "Miss_DuckBot",
+        "firstName": "DuckBot",
+        "lastName": null,
+        "self": false,
+        "deleted": false,
+        "fake": false,
+        "scam": false,
+        "bot": true,
+        "verified": false,
+        "restricted": false,
+        "dcId": 5,
+        "photo": {
+          "isBig": true,
+          "fileId": "AQADBQADrKcxGw9KSj8ACAEABwMAAw9KSj8ABANFH_KmJ7cIAAQeBA",
+          "uniqueFileId": "AQADrKcxGw9KSj8"
+        }
+      },
+      "promotedBy": {
+        "id": 1241805547,
+        "username": "butthx",
+        "firstName": "Ice Bear",
+        "lastName": null,
+        "status": "recently",
+        "self": false,
+        "deleted": false,
+        "fake": false,
+        "scam": false,
+        "bot": false,
+        "verified": false,
+        "restricted": false,
+        "dcId": 5,
+        "photo": {
+          "isBig": true,
+          "fileId": "AQADBQADpq0xG26o6FUACAEABwMAA-tyBEoABCgPiLP6Zfx8AAQeBA",
+          "uniqueFileId": "AQADpq0xG26o6FU"
+        }
+      }
+    },
+    {
+      "date": 1634600740,
+      "status": "member",
+      "user": {
+        "id": 1901152701,
+        "username": null,
+        "firstName": null,
+        "lastName": null,
+        "self": false,
+        "deleted": true,
+        "fake": false,
+        "scam": false,
+        "bot": false,
+        "verified": false,
+        "restricted": false
+      }
+    },
+    {
+      "date": 1634600740,
+      "status": "admin",
+      "adminRights": {
+        "changeInfo": true,
+        "postMessages": false,
+        "editMessages": false,
+        "deleteMessages": true,
+        "banUsers": true,
+        "inviteUsers": true,
+        "pinMessages": true,
+        "addAdmins": true,
+        "anonymous": true,
+        "manageCall": true,
+        "other": true
+      },
+      "canEdit": false,
+      "self": false,
+      "rank": null,
+      "user": {
+        "id": 1919743851,
+        "username": "unknownrooobot",
+        "firstName": "unknown",
+        "lastName": null,
+        "self": false,
+        "deleted": false,
+        "fake": false,
+        "scam": false,
+        "bot": true,
+        "verified": false,
+        "restricted": false
+      },
+      "promotedBy": {
+        "id": 1241805547,
+        "username": "butthx",
+        "firstName": "Ice Bear",
+        "lastName": null,
+        "status": "recently",
+        "self": false,
+        "deleted": false,
+        "fake": false,
+        "scam": false,
+        "bot": false,
+        "verified": false,
+        "restricted": false,
+        "dcId": 5,
+        "photo": {
+          "isBig": true,
+          "fileId": "AQADBQADpq0xG26o6FUACAEABwMAA-tyBEoABCgPiLP6Zfx8AAQeBA",
+          "uniqueFileId": "AQADpq0xG26o6FU"
+        }
+      }
+    },
+    {
+      "date": 1634600740,
+      "status": "admin",
+      "adminRights": {
+        "changeInfo": true,
+        "postMessages": false,
+        "editMessages": false,
+        "deleteMessages": true,
+        "banUsers": true,
+        "inviteUsers": true,
+        "pinMessages": true,
+        "addAdmins": false,
+        "anonymous": false,
+        "manageCall": true,
+        "other": true
+      },
+      "canEdit": false,
+      "self": false,
+      "rank": null,
+      "user": {
+        "id": 1946678215,
+        "username": "pinguinrobot",
+        "firstName": "pyro",
+        "lastName": null,
+        "self": false,
+        "deleted": false,
+        "fake": false,
+        "scam": false,
+        "bot": true,
+        "verified": false,
+        "restricted": false
+      },
+      "promotedBy": {
+        "id": 1241805547,
+        "username": "butthx",
+        "firstName": "Ice Bear",
+        "lastName": null,
+        "status": "recently",
+        "self": false,
+        "deleted": false,
+        "fake": false,
+        "scam": false,
+        "bot": false,
+        "verified": false,
+        "restricted": false,
+        "dcId": 5,
+        "photo": {
+          "isBig": true,
+          "fileId": "AQADBQADpq0xG26o6FUACAEABwMAA-tyBEoABCgPiLP6Zfx8AAQeBA",
+          "uniqueFileId": "AQADpq0xG26o6FU"
+        }
+      }
+    },
+    {
+      "date": 1634600740,
+      "status": "admin",
+      "adminRights": {
+        "changeInfo": true,
+        "postMessages": false,
+        "editMessages": false,
+        "deleteMessages": true,
+        "banUsers": true,
+        "inviteUsers": true,
+        "pinMessages": true,
+        "addAdmins": true,
+        "anonymous": true,
+        "manageCall": true,
+        "other": true
+      },
+      "canEdit": false,
+      "self": false,
+      "rank": "post",
+      "user": {
+        "id": 1810357159,
+        "username": "butthxbot",
+        "firstName": "butthx post",
+        "lastName": null,
+        "self": false,
+        "deleted": false,
+        "fake": false,
+        "scam": false,
+        "bot": true,
+        "verified": false,
+        "restricted": false
+      },
+      "promotedBy": {
+        "id": 1241805547,
+        "username": "butthx",
+        "firstName": "Ice Bear",
+        "lastName": null,
+        "status": "recently",
+        "self": false,
+        "deleted": false,
+        "fake": false,
+        "scam": false,
+        "bot": false,
+        "verified": false,
+        "restricted": false,
+        "dcId": 5,
+        "photo": {
+          "isBig": true,
+          "fileId": "AQADBQADpq0xG26o6FUACAEABwMAA-tyBEoABCgPiLP6Zfx8AAQeBA",
+          "uniqueFileId": "AQADpq0xG26o6FU"
+        }
+      }
+    }
+  ]
+}

@@ -237,7 +237,9 @@ export class ChatParticipants {
       let participants = participant.participants;
       let temp: TypeChatParticipant[] = [];
       this.count = participants.length;
-      participants.forEach(async (item) => {
+      let i = 0;
+      while (true) {
+        let item = participants[i];
         if (item instanceof Api.ChatParticipant) {
           let selfParticipant = new ChatParticipant();
           await selfParticipant.init(item as Api.ChatParticipant, SnakeClient);
@@ -253,8 +255,12 @@ export class ChatParticipants {
           await selfParticipant.init(item as Api.ChatParticipantAdmin, SnakeClient);
           temp.push(selfParticipant);
         }
-      });
-      this.participants = temp;
+        if (temp.length >= participants.length) {
+          this.participants = temp;
+          return this;
+        }
+        i++;
+      }
     }
     return this;
   }
@@ -267,12 +273,12 @@ export class ChatParticipants {
     let participants: Api.TypeChannelParticipant[] = participant.participants;
     let temp: ChannelParticipant[] = [];
     //@ts-ignore
-    participant.users.forEach((item: Api.User) => {
+    participant.users.map((item: Api.User) => {
       let entity = new ResultGetEntity(item);
       SnakeClient.entityCache.set(entity.id, entity);
     });
     //@ts-ignore
-    participant.chats.forEach((item: Api.TypeChat) => {
+    participant.chats.map((item: Api.TypeChat) => {
       if (item instanceof Api.Chat) {
         item as Api.Chat;
       } else {
@@ -281,14 +287,18 @@ export class ChatParticipants {
       let entity = new ResultGetEntity(item);
       SnakeClient.entityCache.set(entity.id, entity);
     });
-    participants.forEach(async (item: Api.TypeChannelParticipant) => {
+    let i = 0;
+    while (true) {
+      let item: Api.TypeChannelParticipant = participants[i];
       let channelPart = new ChannelParticipant();
       await channelPart.init(item, SnakeClient);
-      console.log(item, channelPart);
       temp.push(channelPart);
-    });
-    this.participants = temp;
-    return this;
+      if (temp.length >= participants.length) {
+        this.participants = temp;
+        return this;
+      }
+      i++;
+    }
   }
   private async _ChannelParticipant(
     participant: Api.channels.ChannelParticipant,
@@ -299,12 +309,12 @@ export class ChatParticipants {
     let participants: Api.TypeChannelParticipant = participant.participant;
     let temp: ChannelParticipant[] = [];
     //@ts-ignore
-    participant.users.forEach((item: Api.User) => {
+    participant.users.map((item: Api.User) => {
       let entity = new ResultGetEntity(item);
       SnakeClient.entityCache.set(entity.id, entity);
     });
     //@ts-ignore
-    participant.chats.forEach((item: Api.TypeChat) => {
+    participant.chats.map((item: Api.TypeChat) => {
       if (item instanceof Api.Chat) {
         item as Api.Chat;
       } else {

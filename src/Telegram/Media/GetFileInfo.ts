@@ -14,18 +14,25 @@ import fs from 'fs';
 import axios from 'axios';
 import FileType from 'file-type';
 
-export async function GetFileInfo(file: string) {
-  if (/^http/i.exec(file)) {
-    let res = await axios.get(file, {
-      responseType: 'arraybuffer',
-    });
-    let data: any = res.data;
-    let basebuffer = Buffer.from(data, 'utf-8');
-    let fileInfo = await FileType.fromBuffer(basebuffer);
+export async function GetFileInfo(file: string | Buffer) {
+  if (Buffer.isBuffer(file)) {
+    let fileInfo = await FileType.fromBuffer(file);
     return fileInfo;
   }
-  if (/^(\/|\.\.?\/|~\/)/i.exec(file)) {
-    let fileInfo = await FileType.fromFile(file);
-    return fileInfo;
+  if (typeof file == 'string') {
+    file as string;
+    if (/^http/i.exec(file)) {
+      let res = await axios.get(file, {
+        responseType: 'arraybuffer',
+      });
+      let data: any = res.data;
+      let basebuffer = Buffer.from(data, 'utf-8');
+      let fileInfo = await FileType.fromBuffer(basebuffer);
+      return fileInfo;
+    }
+    if (/^(\/|\.\.?\/|~\/)/i.exec(file)) {
+      let fileInfo = await FileType.fromFile(file);
+      return fileInfo;
+    }
   }
 }

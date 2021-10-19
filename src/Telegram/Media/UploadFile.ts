@@ -34,7 +34,7 @@ class ResultUploadFile {
     this.name = resultUploadFile.name;
     this.md5Checksum = '';
     if (resultUploadFile instanceof Api.InputFile) {
-      this.md5Checksum = resultUploadFile.md5Checksum;
+      this.md5Checksum = resultUploadFile.md5Checksum || '';
     }
   }
 }
@@ -46,17 +46,17 @@ export async function UploadFile(
   try {
     if (Buffer.isBuffer(file)) {
       let fileInfo = await FileType.fromBuffer(file);
-      if (fileInfo) {
-        let file_name = more?.fileName || `${Date.now() / 1000}.${fileInfo.ext}`;
-        let toUpload = new CustomFile(file_name, Buffer.byteLength(file), '', file);
-        return new ResultUploadFile(
-          await snakeClient.client.uploadFile({
-            file: toUpload,
-            workers: more?.workers || 1,
-            onProgress: more?.onProgress,
-          })
-        );
-      }
+      //if (fileInfo) {
+      let file_name = more?.fileName || `${Date.now() / 1000}.${fileInfo?.ext}`;
+      let toUpload = new CustomFile(file_name, Buffer.byteLength(file), '', file);
+      return new ResultUploadFile(
+        await snakeClient.client.uploadFile({
+          file: toUpload,
+          workers: more?.workers || 1,
+          onProgress: more?.onProgress,
+        })
+      );
+      //}
     } else {
       let basename = path.basename(file);
       if (/^http/i.exec(file)) {
