@@ -1,0 +1,44 @@
+--- 
+title : getChatMembers 
+--- 
+## Overview 
+Getting list from all participants in channel or chats. 
+
+## Parameters
+```ts 
+ctx.telegram.getChatMembers(chatId,filters)
+```
+
+- `chat` (_number|string_) 
+    - Chat or channels id to getting the list of members. 
+- `filters` (_object_) 
+    - offset (_number_) 
+        - From what index to pagination start.
+    - limit (_number_) 
+        - Max list members in pagination, default is `200` members. 
+    - query (_string_) 
+        - Query participants by name
+    - filter (`string`) 
+        - `all` Getting all members. 
+        - `kicked` Getting only kicked members. 
+        - `restricted` Getting only restricted members 
+        - `bots` Getting only bots. 
+        - `recents` Getting only recent members.
+        - `administrators` Getting only administrators.
+
+## Example 
+```ts headlight=2
+bot.command("getChatMembers",async (ctx) => {
+    let results = await ctx.telegram.getParticipants(ctx.chat.id) // getChatMembers and getParticipants is same methods.
+    console.log(results)
+})
+```
+## Possible Error 
+| code | type | description | 
+| :---: | :---: | :------:| 
+| 400 | CHANNEL_INVALID | The provided channel is invalid. | 
+| 400 | CHANNEL_PRIVATE | You haven't joined this channel/supergroup. | 
+| 400 | CHAT_ADMIN_REQUIRED | You must be an admin in this chat to do this. | 
+| 400 | CHAT_ID_INVALID | The provided chat id is invalid. | 
+| 400 | PEER_ID_INVALID | The provided peer id is invalid |
+## Bot can use this methods

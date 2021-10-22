@@ -14,7 +14,8 @@
     "tgsnake",
     "telegram",
     "mtproto",
-    "gramjs"
+    "gramjs",
+    "userbot"
   ],
   "bugs": "https://github.com/butthx/tgsnake/issues",
   "repository": "https://github.com/butthx/tgsnake",
@@ -28,7 +29,6 @@
     "axios": "^0.23.0",
     "big-integer": "^1.6.48",
     "file-type": "^16.5.0",
-    "marked": "^3.0.7",
     "prompts": "^2.4.1",
     "telegram": "^1.9.0",
     "tg-file-id": "^1.1.1",

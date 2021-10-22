@@ -11,13 +11,13 @@ import * as fs from "fs"
 import BigInt from "big-integer"
 const {Api} = GramJs
 const bot = new Snake() 
-bot.catch((error,ctx)=>{
+/*bot.catch((error,ctx)=>{
   if(ctx.reply){
     ctx.reply(`[🐍 Error] ${error.message}`)
   }else{
     console.log(error)
   }
-})
+})*/
 //bot.on("*",(update)=>{
 //  console.log(update)
 //})

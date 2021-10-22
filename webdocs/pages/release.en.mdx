@@ -1,6 +1,34 @@
 --- 
 title : Release 
 ---
+![Linggadjati](./images/20211019_194542.jpg)
+
+<center>
+## Linggadjati
+</center>
+
+The Linggardjati Agreement (Linggarjati in modern Indonesian spelling)[a] was a political accord concluded on 15 November 1946 by the Dutch administration and the unilaterally declared Republic of Indonesia in the village of Linggarjati, Kuningan Regency, near Cirebon in which the Dutch recognised the republic as exercising de facto authority in Java, Madura and Sumatra
+
+Source : [Wikipedia - Linggadjati Agreement](https://en.m.wikipedia.org/wiki/Linggadjati_Agreement)
+
+### 2.0.0 
+- Add 
+  - entityCache to improve the performance.
+  - getChatParticipiant/getChatMember. 
+  - support tgsnake.config.json as config file.
+  - connectTime (connection time to telegram). 
+  - SnakeClient.restart(). 
+  - getChatMembersCount.
+  - getParticipants/getChatMembers.
+- Change
+  - getMessages to improve performance (default not get the nested replyMessage).
+  - sendDocument to improve performance (parameter file now only string and buffer).
+- Fixed 
+  - JSON message (.from) not showing in saved message.
+  - JSON of replyMarkup.
+  - JSON message (.from) in private chat.
+  - Markdown Hyperlink.
+
 ![Rengasdengklok](./images/20210829_181033.jpg) 
 
 <center>

@@ -112,7 +112,7 @@ export class Snake extends MainContext {
         appVersion = options.appVersion;
         delete options.appVersion;
       }
-      if (String(options.tgSnakeLog) == 'false') {
+      if (String(options.tgSnakeLog).toLowerCase() == 'false') {
         tgSnakeLog = Boolean(options.tgSnakeLog);
         delete options.tgSnakeLog;
       }
@@ -123,7 +123,7 @@ export class Snake extends MainContext {
         sessionName = options.sessionName;
         delete options.sessionName;
       }
-      if (String(options.storeSession) !== 'true') {
+      if (String(options.storeSession).toLowerCase() !== 'true') {
         storeSession = Boolean(options.storeSession);
         delete options.storeSession;
       }

@@ -7,10 +7,23 @@
 //  it under the terms of the MIT License as published.
 
 import { Snake } from '../client';
-import marked from 'marked';
 import { Entities, ParseEntities } from './Entities';
 import { _parseMessageText } from 'telegram/client/messageParse';
 import { Api } from 'telegram';
+function toHTML(str){
+  while(true){
+    let regex = /(\[(?<text>[^\[\]]*)\]\((?<url>.*?)\))/gm 
+    let match = regex.exec(str) as RegExpExecArray
+    if(!match){
+      break;
+    }
+    let {text,url} = JSON.parse(JSON.stringify(match.groups))
+    if(text && url){
+      str = str.replace(`[${text}](${url})`,`<a href="${url}">${text}</a>`)
+    }
+  }
+  return str
+}
 export async function ParseMessage(
   SnakeClient: Snake,
   text: string,
@@ -20,7 +33,7 @@ export async function ParseMessage(
   if (parseMode == '') return [text, []];
   let [c, e] = await _parseMessageText(SnakeClient.client, text, parseMode);
   if (parseMode == 'markdown') {
-    let d = await marked(c);
+    let d = await toHTML(c)
     let [f, g] = await _parseMessageText(
       SnakeClient.client,
       d.replace(/\<(\/)?([^a])\>/gim, '').trim(),

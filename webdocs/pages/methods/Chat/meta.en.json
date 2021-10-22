@@ -8,5 +8,6 @@
   "getFullChat" : "getFullChat",
   "getGroupsForDiscussion" : "getGroupsForDiscussion",
   "getInactiveChannels" : "getInactiveChannels",
-  "getLeftChannels" : "getLeftChannels"
+  "getLeftChannels" : "getLeftChannels",
+  "getChatMembers" : "getChatMembers"
 }
