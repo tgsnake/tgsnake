@@ -5,7 +5,11 @@
 "preserve_hierarchy": true
 "files": [
   {
-    "source": "/pages/**/**.en.(js|mdx)",
-    "translation": "/%original_path%/%file_name%.%two_letters_code%.%file_extension%" 
+    "source": "/pages/**/**.en.mdx",
+    "translation": "/%original_path%/%file_name%.%two_letters_code%.mdx" 
+  },
+  {
+    "source": "/pages/**/meta.en.json",
+    "translation": "/%original_path%/meta.%two_letters_code%.json" 
   }
 ]
