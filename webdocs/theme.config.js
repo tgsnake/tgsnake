@@ -21,11 +21,11 @@ export default {
       <meta property="og:type" content="website" />
       <meta property="og:site_name" content="tgsnake.js.org"/>
       <meta property="og:description" content="Telegram MTProto Framework for Typescript/Javascript based on gramjs." /> 
-      <meta property="og:image" content="https://tgsnake.js.org/images/20211019_194542.jpg" key="https://tgsnake.js.org/images/20211019_194542.jpg" />
+      <meta property="og:image" content="https://tgsnake.js.org/images/20210829_181033.jpg" key="https://tgsnake.js.org/images/20210829_181033.jpg" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content="tgsnake.js.org" /> 
       <meta name="twitter:description" content="Telegram MTProto Framework for Typescript/Javascript based on gramjs." />
-      <meta name="twitter:image" content="https://tgsnake.js.org/images/20211019_194542.jpg" />
+      <meta name="twitter:image" content="https://tgsnake.js.org/images/20210829_181033.jpg" />
     </>
   ),
   i18n: [

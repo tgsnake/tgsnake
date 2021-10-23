@@ -9,5 +9,7 @@
   "getGroupsForDiscussion" : "getGroupsForDiscussion",
   "getInactiveChannels" : "getInactiveChannels",
   "getLeftChannels" : "getLeftChannels",
-  "getChatMembers" : "getChatMembers"
+  "getChatMember" : "getChatMember",
+  "getChatMembers" : "getChatMembers",
+  "getChatMembersCount" : "getChatMembersCount"
 }

@@ -5,14 +5,16 @@ title : getEntity
 Getting chat or user info.
 ## Parameters 
 ```ts 
-ctx.telegram.getEntity(chatId)
+ctx.telegram.getEntity(chatId,useCache)
 ```
 - `chatId` (_number|string_) 
-    - Chat/Groups/Channel id.
+    - Chat/Groups/Channel id. 
+- `useCache` (_boolean_) 
+    - Getting the entity from cache. Only work will numbers entity. Default is `false`
 ## Example 
 ```ts headlight=2
 bot.command("me",async (ctx)=>{
-    let results = await ctx.telegram.getEntity(ctx.chat.id) 
+    let results = await ctx.telegram.getEntity(ctx.chat.id,true) 
     console.log(results)
 })
 ```

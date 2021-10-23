@@ -6,12 +6,14 @@ title : getMessages
 Returns the list of messages by their IDs. 
 ## Parameters 
 ```ts 
-ctx.telegram.getMessages(chatId,messageId)
+ctx.telegram.getMessages(chatId,messageId,replies)
 ```
 - `chatId` (_number|string_) 
     - Chat/Groups/Channel id.
 - `messageId` (_number[]_) 
     - Message IDs.
+- `replies` (_boolean_) 
+    - if `true` it will getting the nested reply. and will making floodwait.
 ## Example 
 ```ts highlight=2
 bot.command("getMessages",async (ctx)=>{
