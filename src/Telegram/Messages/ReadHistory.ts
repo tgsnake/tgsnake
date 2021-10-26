@@ -9,6 +9,7 @@
 import { ResultAffectedMessages } from './DeleteMessages';
 import { Api } from 'telegram';
 import { Snake } from '../../client';
+import {toBigInt,toNumber} from "../../Utils/ToBigInt"
 export interface readHistoryMoreParams {
   maxId?: number;
 }
@@ -18,11 +19,11 @@ export async function ReadHistory(
   more?: readHistoryMoreParams
 ) {
   try {
-    let type = await snakeClient.telegram.getEntity(chatId);
-    if (type.type == 'channel') {
+    let [id,type,peer] = await toBigInt(chatId,snakeClient)
+    if (type == 'channel') {
       let results = await snakeClient.client.invoke(
         new Api.channels.ReadHistory({
-          channel: chatId,
+          channel: peer,
           ...more,
         })
       );
@@ -30,7 +31,7 @@ export async function ReadHistory(
     } else {
       let results = await snakeClient.client.invoke(
         new Api.messages.ReadHistory({
-          peer: chatId,
+          peer: peer,
           ...more,
         })
       );

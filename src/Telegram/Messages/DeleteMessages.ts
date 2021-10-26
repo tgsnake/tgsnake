@@ -8,6 +8,7 @@
 
 import { Snake } from '../../client';
 import { Api } from 'telegram';
+import {toBigInt,toNumber} from "../../Utils/ToBigInt"
 export class ResultAffectedMessages {
   pts?: number = 0;
   ptsCount?: number = 0;
@@ -31,12 +32,12 @@ export async function DeleteMessages(
   messageId: number[]
 ) {
   try {
-    let type = await snakeClient.telegram.getEntity(chatId);
-    if (type.type == 'channel') {
+    let [id,type,peer] = await toBigInt(chatId,snakeClient)
+    if (type == 'channel') {
       return new ResultAffectedMessages(
         await snakeClient.client.invoke(
           new Api.channels.DeleteMessages({
-            channel: chatId,
+            channel: peer,
             id: messageId,
           })
         )

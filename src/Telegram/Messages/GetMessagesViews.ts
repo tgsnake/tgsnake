@@ -8,7 +8,7 @@
 
 import { Api } from 'telegram';
 import { Snake } from '../../client';
-
+import {toBigInt,toNumber} from "../../Utils/ToBigInt"
 class ResultsMessagesViews {
   views?: Views[];
   date: Date | number = Math.floor(Date.now() / 1000);
@@ -46,10 +46,11 @@ export async function GetMessagesViews(
   increment: boolean = false
 ) {
   try {
+    let [id,type,peer] = await toBigInt(chatId,snakeClient)
     return new ResultsMessagesViews(
       await snakeClient.client.invoke(
         new Api.messages.GetMessagesViews({
-          peer: chatId,
+          peer: peer,
           id: messageId,
           increment: increment,
         })

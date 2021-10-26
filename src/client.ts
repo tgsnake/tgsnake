@@ -364,7 +364,7 @@ export class Snake extends MainContext {
   async catch(next: CatchError) {
     return (catchFunct = next);
   }
-  async _handleError(error: any, running?: string) {
+  async _handleError(error: any, running:string) {
     if (catchFunct) {
       return catchFunct(error, this.ctx);
     } else {
@@ -380,7 +380,8 @@ export class Snake extends MainContext {
           console.log(`[🐍 Error] ${running}`);
         }
       }
-      throw new Error(error.message);
+      let e = new Error(error.message);
+      throw e
     }
   }
   get connectTime() {

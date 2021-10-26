@@ -10,6 +10,7 @@ import { Api } from 'telegram';
 import { Snake } from '../../client';
 import { UploadFile } from './UploadFile';
 import * as Updates from '../../Update';
+import {toBigInt,toNumber} from "../../Utils/ToBigInt"
 export async function EditPhoto(
   snakeClient: Snake,
   chatId: number | string,
@@ -18,11 +19,11 @@ export async function EditPhoto(
   try {
     let rr = await UploadFile(snakeClient, photo);
     let toUpload = new Api.InputFile({ ...rr! });
-    let type = await snakeClient.telegram.getEntity(chatId);
-    if (type.type == 'channel') {
+    let [id,type,peer] = await toBigInt(chatId,snakeClient)
+    if (type == 'channel') {
       let results: Api.TypeUpdates = await snakeClient.client.invoke(
         new Api.channels.EditPhoto({
-          channel: chatId,
+          channel: peer,
           photo: toUpload,
         })
       );
@@ -30,7 +31,7 @@ export async function EditPhoto(
     } else {
       return snakeClient.client.invoke(
         new Api.messages.EditChatPhoto({
-          chatId: type.id,
+          chatId: peer,
           photo: toUpload,
         })
       );

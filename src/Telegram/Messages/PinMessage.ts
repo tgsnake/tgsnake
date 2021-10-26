@@ -9,7 +9,7 @@
 import { Api } from 'telegram';
 import { Snake } from '../../client';
 import * as Updates from '../../Update';
-
+import {toBigInt,toNumber} from "../../Utils/ToBigInt"
 export interface pinMessageMoreParams {
   silent?: boolean;
   unpin?: boolean;
@@ -22,9 +22,10 @@ export async function PinMessage(
   more?: pinMessageMoreParams
 ) {
   try {
+    let [id,type,peer] = await toBigInt(chatId,snakeClient)
     let results: Api.TypeUpdates = await snakeClient.client.invoke(
       new Api.messages.UpdatePinnedMessage({
-        peer: chatId,
+        peer: peer,
         id: messageId,
         ...more,
       })

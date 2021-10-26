@@ -9,6 +9,7 @@
 import { Api } from 'telegram';
 import { Snake } from '../../client';
 import { ResultAffectedMessages } from './DeleteMessages';
+import {toBigInt,toNumber} from "../../Utils/ToBigInt"
 export interface deleteHistoryMoreParams {
   maxId?: number;
   revoke?: boolean;
@@ -20,11 +21,11 @@ export async function DeleteHistory(
   more?: deleteHistoryMoreParams
 ) {
   try {
-    let type = await snakeClient.telegram.getEntity(chatId);
-    if (type.type == 'channel') {
+    let [id,type,peer] = await toBigInt(chatId,snakeClient)
+    if (type == 'channel') {
       return snakeClient.client.invoke(
         new Api.channels.DeleteHistory({
-          channel: chatId,
+          channel: peer,
           ...more,
         })
       );
@@ -32,7 +33,7 @@ export async function DeleteHistory(
       return new ResultAffectedMessages(
         await snakeClient.client.invoke(
           new Api.messages.DeleteHistory({
-            peer: chatId,
+            peer: peer,
             ...more,
           })
         )

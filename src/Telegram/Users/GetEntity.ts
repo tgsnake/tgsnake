@@ -11,7 +11,8 @@ import { ChatPhoto } from '../../Utils/ChatPhoto';
 import { RestrictionReason } from '../../Utils/RestrictionReason';
 import { AdminRights } from '../../Utils/AdminRights';
 import { Api } from 'telegram';
-import { BigInteger } from 'big-integer';
+import BigInt ,{ BigInteger, isInstance } from 'big-integer';
+import {toBigInt,toNumber} from "../../Utils/ToBigInt"
 import { Snake } from '../../client';
 import * as fs from 'fs';
 export class ResultGetEntity {
@@ -83,7 +84,13 @@ export class ResultGetEntity {
       this.scam = resultsGetEntity.scam;
       this.applyMinPhoto = resultsGetEntity.applyMinPhoto;
       this.fake = resultsGetEntity.fake;
-      this.id = resultsGetEntity.id;
+      if (isInstance(resultsGetEntity.id)){
+        //@ts-ignore
+        this.id = toNumber(resultsGetEntity.id)
+      }else{
+        //@ts-ignore
+        this.id = resultsGetEntity.id;
+      }
       this.accessHash = resultsGetEntity.accessHash;
       this.firstName = resultsGetEntity.firstName;
       this.lastName = resultsGetEntity.lastName;
@@ -135,7 +142,13 @@ export class ResultGetEntity {
       this.deactivated = resultsGetEntity.deactivated;
       this.callActive = resultsGetEntity.callActive;
       this.callNotEmpty = resultsGetEntity.callNotEmpty;
-      this.id = Number(`-${resultsGetEntity.id}`);
+      if (isInstance(resultsGetEntity.id)){
+        //@ts-ignore
+        this.id = Number(`-${toNumber(resultsGetEntity.id)}`)
+      }else{
+        //@ts-ignore
+        this.id = Number(`-${resultsGetEntity.id}`);
+      }
       this.title = resultsGetEntity.title;
       this.participantsCount = resultsGetEntity.participantsCount;
       this.version = resultsGetEntity.version;
@@ -173,7 +186,13 @@ export class ResultGetEntity {
       this.callNotEmpty = resultsGetEntity.callNotEmpty;
       this.fake = resultsGetEntity.fake;
       this.gigagroup = resultsGetEntity.gigagroup;
-      this.id = Number(`-100${resultsGetEntity.id}`);
+      if (isInstance(resultsGetEntity.id)){
+        //@ts-ignore
+        this.id = Number(`-100${toNumber(resultsGetEntity.id)}`)
+      }else{
+        //@ts-ignore
+        this.id = Number(`-100${resultsGetEntity.id}`);
+      }
       this.accessHash = resultsGetEntity.accessHash;
       this.title = resultsGetEntity.title;
       this.username = resultsGetEntity.username;
@@ -211,11 +230,11 @@ export async function GetEntity(snakeClient: Snake, chatId: string | number,useC
         }
       }
     }
-    let e = await snakeClient.client.getEntity(chatId);
+    let e = await snakeClient.client.getEntity(chatId); // change with BigInt(chatId)
     let r = new ResultGetEntity(e) 
     snakeClient.entityCache.set(Number(r.id),r)
     return r
   } catch (error) {
-    return snakeClient._handleError(error, `telegram.getEntity(${chatId})`);
+    return snakeClient._handleError(error,`telegram.getEntity(${chatId},${useCache})`);
   }
 }

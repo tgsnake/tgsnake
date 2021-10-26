@@ -9,7 +9,7 @@ This is a config file for tgsnake. You can pass all option in there to make your
 We have a many option then if you use them together it will make your index file long. The options are:
 | name | type | description | 
 | :---: | :----: |:----------: | 
-| Logger | string | Set Logger level for gramjs. Default is "none". | 
+| logger | string | Set Logger level for gramjs. Default is "none". | 
 | apiHash | string | An api_hash got from [my.telegram.org](my.telegram.org) | 
 | apiId | number | An api_id got from [my.telegram.org](my.telegram.org)
 | session | string | String sessions | 
@@ -58,7 +58,7 @@ Then the index file should be :
     bot.run()
     ```
     </TabContent>
-    <TabContent>
+    <TabContent name="typescript">
     ```ts headlight=2 
     // index.ts
     import {Snake} from "snake" 

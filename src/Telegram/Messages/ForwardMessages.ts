@@ -11,6 +11,7 @@ import { TypeReplyMarkup, BuildReplyMarkup } from '../../Utils/ReplyMarkup';
 import { Entities, ParseEntities } from '../../Utils/Entities';
 import { _parseMessageText } from 'telegram/client/messageParse';
 import BigInt from 'big-integer';
+import {toBigInt,toNumber} from "../../Utils/ToBigInt"
 import * as Update from '../../Update';
 export interface forwardMessageMoreParams {
   withMyScore?: boolean;
@@ -30,10 +31,12 @@ export async function ForwardMessages(
     for (let i = 0; i < messageId.length; i++) {
       randomId.push(BigInt(Math.floor(Math.random() * 10000000000000)));
     }
+    let [id,type,peer] = await toBigInt(chatId,snakeClient)
+    let [fId,fType,fPeer] = await toBigInt(fromChatId,snakeClient)
     let results: Api.TypeUpdates = await snakeClient.client.invoke(
       new Api.messages.ForwardMessages({
-        fromPeer: fromChatId,
-        toPeer: chatId,
+        fromPeer: fPeer,
+        toPeer: peer,
         id: messageId,
         randomId: randomId,
         ...more,

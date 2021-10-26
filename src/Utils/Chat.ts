@@ -10,6 +10,8 @@ import { BannedRights } from './BannedRight';
 import { ChatPhoto } from './ChatPhoto';
 import { Snake } from '../client';
 import { Api } from 'telegram';
+import {toBigInt,toNumber} from "./ToBigInt"
+import {BigInteger,isInstance} from "big-integer"
 export class Chat {
   id!: number;
   title?: string;
@@ -28,15 +30,33 @@ export class Chat {
     if (typeof peer !== 'number') {
       if (peer instanceof Api.PeerUser) {
         peer as Api.PeerUser;
-        this.id = peer.userId;
+        if(isInstance(peer.userId)){
+          //@ts-ignore
+          this.id = toNumber(peer.userId);
+        }else{
+          //@ts-ignore
+          this.id = peer.userId 
+        }
       }
       if (peer instanceof Api.PeerChat) {
         peer as Api.PeerChat;
-        this.id = Number(`-${peer.chatId}`);
+        if(isInstance(peer.chatId)){
+          //@ts-ignore
+          this.id = Number(`-${toNumber(peer.chatId)}`);
+        }else{
+          //@ts-ignore
+          this.id = Number(`-${peer.chatId}`);
+        }
       }
       if (peer instanceof Api.PeerChannel) {
         peer as Api.PeerChannel;
-        this.id = Number(`-100${peer.channelId}`);
+        if(isInstance(peer.channelId)){
+          //@ts-ignore
+          this.id = Number(`-100${toNumber(peer.channelId)}`);
+        }else{
+          //@ts-ignore
+          this.id = Number(`-100${peer.channelId}`);
+        }
       }
     } else {
       this.id = peer;

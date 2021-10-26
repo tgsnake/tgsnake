@@ -9,7 +9,6 @@
     "export": "next export -o ../docs"
   },
   "dependencies": {
-    "@headlessui/react": "^1.4.1",
     "next": "11.1.2",
     "nextra": "^1.1.0",
     "nextra-theme-docs": "^1.2.6",

@@ -8,6 +8,7 @@
 
 import { Api } from 'telegram';
 import { Snake } from '../../client';
+import {toBigInt,toNumber} from "../../Utils/ToBigInt"
 export interface exportMessageLinkMoreParams {
   thread?: boolean;
   grouped?: boolean;
@@ -19,9 +20,10 @@ export async function ExportMessageLink(
   more?: exportMessageLinkMoreParams
 ) {
   try {
+    let [id,type,peer] = await toBigInt(chatId,snakeClient)
     return snakeClient.client.invoke(
       new Api.channels.ExportMessageLink({
-        channel: chatId,
+        channel: peer,
         id: messageId,
         ...more,
       })

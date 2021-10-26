@@ -13,6 +13,7 @@ import { Entities } from '../../Utils/Entities';
 import { ParseMessage } from '../../Utils/ParseMessage';
 import BigInt from 'big-integer';
 import * as Update from '../../Update';
+import {toBigInt,toNumber} from "../../Utils/ToBigInt"
 export interface sendMessageMoreParams {
   noWebpage?: boolean;
   silent?: boolean;
@@ -33,6 +34,7 @@ export async function sendMessage(
   try {
     let parseMode = '';
     let replyMarkup;
+    let [id,type,peer] = await toBigInt(chatId,snakeClient)
     if (more) {
       if (more.parseMode) {
         parseMode = more.parseMode.toLowerCase();
@@ -46,7 +48,7 @@ export async function sendMessage(
     let [parseText, entities] = await ParseMessage(snakeClient, text, parseMode, more?.entities);
     let results: Api.TypeUpdates = await snakeClient.client.invoke(
       new Api.messages.SendMessage({
-        peer: chatId,
+        peer: peer,
         message: parseText,
         randomId: BigInt(-Math.floor(Math.random() * 10000000000000)),
         //@ts-ignore

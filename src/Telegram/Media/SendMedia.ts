@@ -14,6 +14,7 @@ import { _parseMessageText } from 'telegram/client/messageParse';
 import BigInt from 'big-integer';
 import * as Update from '../../Update';
 import path from 'path';
+import {toBigInt,toNumber} from "../../Utils/ToBigInt"
 export interface sendMediaMoreParams {
   silent?: boolean;
   background?: boolean;
@@ -37,6 +38,7 @@ export async function SendMedia(
 ) {
   try {
     let parseMode = '';
+    let [id,type,peer] = await toBigInt(chatId,snakeClient)
     if (more) {
       if (more.parseMode) {
         parseMode = more.parseMode.toLowerCase();
@@ -74,7 +76,7 @@ export async function SendMedia(
     }
     return snakeClient.client.invoke(
       new Api.messages.SendMedia({
-        peer: chatId,
+        peer: peer,
         media: media,
         message: parseText || '',
         randomId: BigInt(-Math.floor(Math.random() * 10000000000000)),

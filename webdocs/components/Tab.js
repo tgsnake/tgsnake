@@ -5,50 +5,56 @@
 //
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
-import { Tab } from '@headlessui/react' 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
-function TabName({children}){
+import {useEffect,useState} from "react"
+export function TabGroup({children}){
+  const [key,setKey] = useState(children[0].props.name)
   return (
-      <Tab 
-        as="span"
-        className={({ selected }) => classNames(
-           `TabName px-2 mx-1 mt-2 text-md w-auto hover:border-opacity-100 hover:text-blue-500 hover:border-b-2 hover:border-blue-500 hover:transition-all hoverduration-500`,
-            selected  
-            ? `border-blue-500 border-opacity-100 text-blue-500 border-b-2 transition-all duration-500` 
-            : `border-gray-500 border-b-2 border-opacity-50 transition-all duration-500`
-          )
-        } 
-      >
-        {children}
-      </Tab>
+      <div className="tabGroup">
+        <div className="tabList overflow-x-auto flex">
+          {
+            children.map((el,i)=>(
+              <span 
+                key={`${el.props.name}_title_${i}`} 
+                id= {`${el.props.name}_title_${i}`} 
+                className={`
+                  tabName px-2 mx-1 mt-2 text-md w-auto hover:border-opacity-100 hover:text-blue-500 hover:border-b-2 hover:border-blue-500 hover:transition-all hover:duration-500 ${
+                    key == el.props.name 
+                      ? `border-blue-500 border-opacity-100 text-blue-500 border-b-2 transition-all duration-500` 
+                      : `border-gray-500 border-b-2 border-opacity-50 transition-all duration-500`
+                  }
+                `}
+                onClick={
+                  (e) => {
+                    e.preventDefault();
+                    setKey(el.props.name);
+                  }
+                }
+              >
+              {el.props.name}
+              </span>
+            ))
+          }
+        </div>
+        <div className="tabContent"> 
+          {
+            children.map((el,i)=>(
+              <span 
+                key={`${el.props.name}_content_${i}`} 
+                id= {`${el.props.name}_content_${i}`}
+                className={
+                  key == el.props.name 
+                    ? "" 
+                    : "hidden"
+                }
+              >
+                {el.props.children}
+              </span>
+            ))
+          }
+        </div>
+      </div>
     )
 }
-export function TabGroup ({children}){ 
-  return (
-    <Tab.Group as="div" className="TabGroup"> 
-      <Tab.List className="TabList overflow-x-auto" as="div">
-        {
-          children.map((element,index)=>(
-            <TabName key={`${element.props.name}_title_${index}`}>
-              {element.props.name}
-            </TabName>
-          ))
-        }
-      </Tab.List>
-      <Tab.Panels as="div" className="TabContent">
-        {
-          children.map((element,index)=>(
-            <Tab.Panel key={`${element.props.name}_content_${index}`}> 
-              {element.props.children}
-            </Tab.Panel>
-          ))
-        }
-      </Tab.Panels>
-    </Tab.Group>
-    )
-} 
 export function TabContent ({children}){
   return <>{children}</>
 }

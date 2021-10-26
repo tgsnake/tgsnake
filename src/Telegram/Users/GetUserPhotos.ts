@@ -9,6 +9,7 @@
 import { Api } from 'telegram';
 import { Snake } from '../../client';
 import {BigInteger} from "big-integer"
+import {toBigInt,toNumber} from "../../Utils/ToBigInt"
 export interface getUserPhotosMoreParams {
   offset?: number;
   maxId?: BigInteger;
@@ -16,13 +17,14 @@ export interface getUserPhotosMoreParams {
 }
 export async function GetUserPhotos(
   snakeClient: Snake,
-  chatId: number | string,
+  userId: number | string,
   more?: getUserPhotosMoreParams
 ) {
   try {
+    let [id,type,peer] = await toBigInt(userId,snakeClient)
     let results: Api.photos.TypePhotos = await snakeClient.client.invoke(
       new Api.photos.GetUserPhotos({
-        userId: chatId,
+        userId: peer,
         ...more,
       })
     );
@@ -30,7 +32,7 @@ export async function GetUserPhotos(
   } catch (error) {
     return snakeClient._handleError(
       error,
-      `telegram.getUserPhotos(${chatId}${more ? ',' + JSON.stringify(more) : ''})`
+      `telegram.getUserPhotos(${userId}${more ? ',' + JSON.stringify(more) : ''})`
     );
   }
 }

@@ -8,7 +8,8 @@
 
 import { Api } from 'telegram';
 import { Snake } from '../../client';
-import { ResultAffectedMessages } from './DeleteMessages';
+import { ResultAffectedMessages } from './DeleteMessages'
+import {toBigInt,toNumber} from "../../Utils/ToBigInt"
 export async function ReadMessageContents(snakeClient: Snake, messageId: number[]) {
   try {
     return new ResultAffectedMessages(

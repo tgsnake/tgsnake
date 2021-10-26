@@ -9,13 +9,14 @@
 import { Api } from 'telegram';
 import { Snake } from '../../client';
 import { ResultAffectedMessages } from './DeleteMessages';
-
+import {toBigInt,toNumber} from "../../Utils/ToBigInt"
 export async function UnpinAllMessages(snakeClient: Snake, chatId: number | string) {
   try {
+    let [id,type,peer] = await toBigInt(chatId,snakeClient)
     return new ResultAffectedMessages(
       await snakeClient.client.invoke(
         new Api.messages.UnpinAllMessages({
-          peer: chatId,
+          peer: peer,
         })
       )
     );
