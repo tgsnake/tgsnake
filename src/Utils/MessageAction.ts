@@ -37,7 +37,7 @@ export class MessageAction {
   credentials!: Api.TypeSecureCredentialsEncrypted;
   types!: Api.TypeSecureValueType[];
   constructor() {}
-  init(messageAction: Api.TypeMessageAction) {
+  async init(messageAction: Api.TypeMessageAction) {
     this['_'] = messageAction.className.replace('MessageAction', '').trim();
     if (messageAction instanceof Api.MessageActionChatCreate) {
       messageAction as Api.MessageActionChatCreate;

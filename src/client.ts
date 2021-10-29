@@ -222,11 +222,11 @@ export class Snake extends MainContext {
       let name = me.lastName
         ? me.firstName + ' ' + me.lastName + ' [' + me.id + ']'
         : me.firstName + ' [' + me.id + ']';
+      if (!isBot) {
+        await this.client.getDialogs({});
+      }
       // new message
-      this.client.addEventHandler(async (event: NewMessageEvent) => {
-        if (!isBot) {
-          await this.client.getDialogs({});
-        }
+      this.client.addEventHandler((event: NewMessageEvent) => {
         return this.handleUpdate(event, this);
       }, new NewMessage({}));
       // new event

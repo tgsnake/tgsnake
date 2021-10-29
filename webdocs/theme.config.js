@@ -1,7 +1,7 @@
 export default {
   github: 'https://github.com/butthx/tgsnake', // GitHub link in the navbar
   docsRepositoryBase: 'https://github.com/butthx/tgsnake/blob/dev/webdocs/pages', // base URL for the docs repository
-  titleSuffix: ' | tgsnake',
+  titleSuffix: '',
   nextLinks: true,
   prevLinks: true,
   search: true,
@@ -26,6 +26,7 @@ export default {
       <meta name="twitter:site" content="tgsnake.js.org" /> 
       <meta name="twitter:description" content="Telegram MTProto Framework for Typescript/Javascript based on gramjs." />
       <meta name="twitter:image" content="https://tgsnake.js.org/images/20210829_181033.jpg" />
+      <meta name="article:author" content="tgsnake"/>
     </>
   ),
   i18n: [

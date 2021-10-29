@@ -10,10 +10,12 @@
   },
   "dependencies": {
     "next": "11.1.2",
+    "nextjs": "^0.0.3",
     "nextra": "^1.1.0",
-    "nextra-theme-docs": "^1.2.6",
+    "nextra-theme-docs": "1.2.6",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "tailwind": "^4.0.0"
   },
   "devDependencies": {
     "@types/react": "17.0.19",

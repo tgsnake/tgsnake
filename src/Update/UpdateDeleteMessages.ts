@@ -12,14 +12,14 @@ import { Snake } from '../client';
 import { Telegram } from '../Telegram';
 
 export class UpdateDeleteMessages extends Update {
-  messages!: number[];
+  id!: number[];
   constructor() {
     super();
     this['_'] = 'UpdateDeleteMessages';
   }
   async init(update: Api.UpdateDeleteMessages, SnakeClient: Snake) {
     this.telegram = SnakeClient.telegram;
-    this.messages = update.messages;
+    this.id = update.messages;
     return this;
   }
 }

@@ -18,10 +18,10 @@ const bot = new Snake()
     console.log(error)
   }
 })*/
-//bot.on("*",(update)=>{
-//  console.log(update)
-//})
-bot.on("message",(ctx)=>{
+bot.on("*",(update)=>{
+  console.log(new Date().toLocaleString(),update)
+})
+/*bot.on("message",(ctx)=>{
 //  if(bot.connected){
     if("media" in ctx){
       console.log(ctx.media)
@@ -30,38 +30,5 @@ bot.on("message",(ctx)=>{
     ctx.telegram.readMentions(ctx.chat.id)
     console.log(ctx)
   //}
-})
-bot.hears("tes",async (ctx)=>{
-  let tes = await ctx.telegram.getParticipants(ctx.chat.id)
-  return ctx.telegram.sendDocument(
-      ctx.chat.id,
-      Buffer.from(
-          JSON.stringify(tes,null,2)
-        ),
-      {
-        fileName : "results.txt",
-        mimeType : "text/plain"
-      }
-    )
-})
-bot.command("ct",(ctx)=>{
-  ctx.reply(bot.connectTime)
-})
-bot.command("aboutme",async (ctx)=>{
-  let userInfo = await ctx.telegram.getParticipant(ctx.chat.id,ctx.from.id) 
-  ctx.reply(`--- User Info ---\nId : ${userInfo.user.id}\nDcId : ${userInfo.user.dcId}\nName : ${userInfo.user.lastName ? userInfo.user.firstName + " " + userInfo.user.lastName : userInfo.user.firstName}\nStatus : ${userInfo.status}\nLastSeen : ${userInfo.user.status}`)
-})
-bot.command("restart",async (ctx)=>{
-  await ctx.reply(`Restarting after ${bot.connectTime} s connected.`) 
-  let ping = await bot.restart() 
-  return ctx.reply(`Took ${ping}`)
-})
-bot.command("parseMd",(ctx)=>{
-  //@ts-ignore
-  let spl = ctx.text.split(" ") 
-  //@ts-ignore
-  let text = ctx.text.replace(spl[0],"").trim()
-  console.log()
-  return ctx.replyWithMarkdown(text)
-})
+})*/
 bot.run()
