@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// Copyright (C) 2021 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -12,6 +12,7 @@ import { Update } from './Update';
 import { Telegram } from '../Telegram';
 import { Snake } from '../client';
 import { Chat } from '../Utils/Chat';
+import { sendMessageMoreParams } from '../Telegram/Messages/sendMessage';
 
 export class UpdateChatUserTyping extends Update {
   user!: From;

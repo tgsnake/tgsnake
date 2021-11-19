@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// Copyright (C) 2021 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -8,8 +8,8 @@
 
 import { Api } from 'telegram';
 import { Snake } from '../../client';
-import {BigInteger} from "big-integer"
-import {toBigInt,toNumber} from "../../Utils/ToBigInt"
+import { BigInteger } from 'big-integer';
+import { toBigInt, toNumber } from '../../Utils/ToBigInt';
 export interface getUserPhotosMoreParams {
   offset?: number;
   maxId?: BigInteger;
@@ -21,7 +21,7 @@ export async function GetUserPhotos(
   more?: getUserPhotosMoreParams
 ) {
   try {
-    let [id,type,peer] = await toBigInt(userId,snakeClient)
+    let [id, type, peer] = await toBigInt(userId, snakeClient);
     let results: Api.photos.TypePhotos = await snakeClient.client.invoke(
       new Api.photos.GetUserPhotos({
         userId: peer,

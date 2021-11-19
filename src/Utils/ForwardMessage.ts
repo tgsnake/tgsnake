@@ -9,6 +9,7 @@ import { Api } from 'telegram';
 import { Chat } from './Chat';
 import { From } from './From';
 import { Snake } from '../client';
+import { Cleaning } from './CleanObject';
 export class ForwardMessage {
   imported?: boolean;
   from!: From;
@@ -38,6 +39,7 @@ export class ForwardMessage {
       await chat.init(forwardHeader.savedFromPeer, snakeClient);
       this.savedFromChat = chat;
     }
+    await Cleaning(this);
     return this;
   }
 }

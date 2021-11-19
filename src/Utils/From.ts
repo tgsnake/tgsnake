@@ -9,10 +9,11 @@
 import { Api } from 'telegram';
 import { Snake } from '../client';
 import { ChatPhoto } from './ChatPhoto';
-import {ResultGetEntity} from "../Telegram/Users/GetEntity"
+import { ResultGetEntity } from '../Telegram/Users/GetEntity';
 import { RestrictionReason } from './RestrictionReason';
-import {toBigInt,toNumber} from "./ToBigInt"
-import BigInt,{BigInteger,isInstance} from "big-integer"
+import { toBigInt, toNumber } from './ToBigInt';
+import BigInt, { BigInteger, isInstance } from 'big-integer';
+import { Cleaning } from './CleanObject';
 export class From {
   id!: number;
   firstName?: string;
@@ -30,34 +31,34 @@ export class From {
   photo?: ChatPhoto;
   restrictionReason?: RestrictionReason[];
   constructor() {}
-  async init(peer:Api.TypePeer|number, snakeClient: Snake) { 
+  async init(peer: Api.TypePeer | number, snakeClient: Snake) {
     if (typeof peer !== 'number') {
       if (peer instanceof Api.PeerUser) {
         peer as Api.PeerUser;
-        if(isInstance(peer.userId)){
+        if (isInstance(peer.userId)) {
           //@ts-ignore
           this.id = toNumber(peer.userId);
-        }else{
+        } else {
           //@ts-ignore
-          this.id = peer.userId 
+          this.id = peer.userId;
         }
       }
       if (peer instanceof Api.PeerChat) {
         peer as Api.PeerChat;
-        if(isInstance(peer.chatId)){
+        if (isInstance(peer.chatId)) {
           //@ts-ignore
           this.id = Number(`-${toNumber(peer.chatId)}`);
-        }else{
+        } else {
           //@ts-ignore
           this.id = Number(`-${peer.chatId}`);
         }
       }
       if (peer instanceof Api.PeerChannel) {
         peer as Api.PeerChannel;
-        if(isInstance(peer.channelId)){
+        if (isInstance(peer.channelId)) {
           //@ts-ignore
           this.id = Number(`-100${toNumber(peer.channelId)}`);
-        }else{
+        } else {
           //@ts-ignore
           this.id = Number(`-100${peer.channelId}`);
         }
@@ -65,8 +66,8 @@ export class From {
     } else {
       this.id = peer;
     }
-    if(this.id){
-      let entity = await snakeClient.telegram.getEntity(this.id,true)
+    if (this.id) {
+      let entity = await snakeClient.telegram.getEntity(this.id, true);
       this.id = entity.id;
       this.username = entity.username;
       this.firstName = entity.firstName;
@@ -89,6 +90,7 @@ export class From {
         this.restrictionReason = entity.restrictionReason;
       }
     }
+    await Cleaning(this);
     return this;
   }
 }

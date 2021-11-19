@@ -1,10 +1,10 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// Copyright (C) 2021 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
 // Tgsnake is a free software : you can redistribute it and/or modify
-//  it under the terms of the MIT License as published.
+//  it under the terms of the MIT License as published..
 
 import { Api } from 'telegram';
 import { Snake } from '../../client';
@@ -13,7 +13,7 @@ import { Entities } from '../../Utils/Entities';
 import { ParseMessage } from '../../Utils/ParseMessage';
 import BigInt from 'big-integer';
 import * as Update from '../../Update';
-import {toBigInt,toNumber} from "../../Utils/ToBigInt"
+import { toBigInt, toNumber } from '../../Utils/ToBigInt';
 export interface sendMessageMoreParams {
   noWebpage?: boolean;
   silent?: boolean;
@@ -34,7 +34,7 @@ export async function sendMessage(
   try {
     let parseMode = '';
     let replyMarkup;
-    let [id,type,peer] = await toBigInt(chatId,snakeClient)
+    let [id, type, peer] = await toBigInt(chatId, snakeClient);
     if (more) {
       if (more.parseMode) {
         parseMode = more.parseMode.toLowerCase();

@@ -11,3 +11,11 @@ center {
 body {
   @apply transition duration-500
 }
+details > summary {
+  list-style: none;
+}
+/**
+details > summary::marker {
+  display: none;
+}
+*/

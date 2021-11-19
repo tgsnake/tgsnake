@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// Copyright (C) 2021 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -11,8 +11,8 @@ import { ChatPhoto } from '../../Utils/ChatPhoto';
 import { RestrictionReason } from '../../Utils/RestrictionReason';
 import { AdminRights } from '../../Utils/AdminRights';
 import { Api } from 'telegram';
-import BigInt ,{ BigInteger, isInstance } from 'big-integer';
-import {toBigInt,toNumber} from "../../Utils/ToBigInt"
+import BigInt, { BigInteger, isInstance } from 'big-integer';
+import { toBigInt, toNumber } from '../../Utils/ToBigInt';
 import { Snake } from '../../client';
 import * as fs from 'fs';
 export class ResultGetEntity {
@@ -65,7 +65,7 @@ export class ResultGetEntity {
   restrictionReason?: RestrictionReason[];
   dcId?: number;
   photo?: ChatPhoto;
-  constructor(resultsGetEntity: Api.User | Api.Chat | Api.Channel) {
+  constructor(resultsGetEntity: Api.TypeUser | Api.TypeChat | Api.Channel) {
     if (resultsGetEntity instanceof Api.User) {
       resultsGetEntity as Api.User;
       this.type = 'user';
@@ -84,10 +84,10 @@ export class ResultGetEntity {
       this.scam = resultsGetEntity.scam;
       this.applyMinPhoto = resultsGetEntity.applyMinPhoto;
       this.fake = resultsGetEntity.fake;
-      if (isInstance(resultsGetEntity.id)){
+      if (isInstance(resultsGetEntity.id)) {
         //@ts-ignore
-        this.id = toNumber(resultsGetEntity.id)
-      }else{
+        this.id = toNumber(resultsGetEntity.id);
+      } else {
         //@ts-ignore
         this.id = resultsGetEntity.id;
       }
@@ -142,10 +142,10 @@ export class ResultGetEntity {
       this.deactivated = resultsGetEntity.deactivated;
       this.callActive = resultsGetEntity.callActive;
       this.callNotEmpty = resultsGetEntity.callNotEmpty;
-      if (isInstance(resultsGetEntity.id)){
+      if (isInstance(resultsGetEntity.id)) {
         //@ts-ignore
-        this.id = Number(`-${toNumber(resultsGetEntity.id)}`)
-      }else{
+        this.id = Number(`-${toNumber(resultsGetEntity.id)}`);
+      } else {
         //@ts-ignore
         this.id = Number(`-${resultsGetEntity.id}`);
       }
@@ -186,10 +186,10 @@ export class ResultGetEntity {
       this.callNotEmpty = resultsGetEntity.callNotEmpty;
       this.fake = resultsGetEntity.fake;
       this.gigagroup = resultsGetEntity.gigagroup;
-      if (isInstance(resultsGetEntity.id)){
+      if (isInstance(resultsGetEntity.id)) {
         //@ts-ignore
-        this.id = Number(`-100${toNumber(resultsGetEntity.id)}`)
-      }else{
+        this.id = Number(`-100${toNumber(resultsGetEntity.id)}`);
+      } else {
         //@ts-ignore
         this.id = Number(`-100${resultsGetEntity.id}`);
       }
@@ -221,20 +221,20 @@ export class ResultGetEntity {
     }
   }
 }
-export async function GetEntity(snakeClient: Snake, chatId: string | number,useCache?:boolean) {
+export async function GetEntity(snakeClient: Snake, chatId: string | number, useCache?: boolean) {
   try {
-    if(useCache){
-      if(typeof chatId == "number"){
-        if(snakeClient.entityCache.get(Number(chatId))){
-          return snakeClient.entityCache.get(Number(chatId))
+    if (useCache) {
+      if (typeof chatId == 'number') {
+        if (snakeClient.entityCache.get(Number(chatId))) {
+          return snakeClient.entityCache.get(Number(chatId));
         }
       }
     }
     let e = await snakeClient.client.getEntity(chatId); // change with BigInt(chatId)
-    let r = new ResultGetEntity(e) 
-    snakeClient.entityCache.set(Number(r.id),r)
-    return r
+    let r = new ResultGetEntity(e);
+    snakeClient.entityCache.set(Number(r.id), r);
+    return r;
   } catch (error) {
-    return snakeClient._handleError(error,`telegram.getEntity(${chatId},${useCache})`);
+    return snakeClient._handleError(error, `telegram.getEntity(${chatId},${useCache})`);
   }
 }

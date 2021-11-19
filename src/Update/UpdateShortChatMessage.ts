@@ -15,62 +15,57 @@ import { Entities } from '../Utils/Entities';
 import { ForwardMessage } from '../Utils/ForwardMessage';
 import { From } from '../Utils/From';
 import { Chat } from '../Utils/Chat';
+import { MessageContext } from '../Context/MessageContext';
 export class UpdateShortChatMessage extends Update {
-  out?: boolean;
-  mentioned?: boolean;
-  mediaUnread?: boolean;
-  silent?: boolean;
-  id!: number;
-  from!: From;
-  chat!: Chat;
-  text!: string;
-  date!: number;
-  fwdFrom?: ForwardMessage;
-  viaBotId?: number;
-  replyToMessage?: ReplyToMessageContext;
-  entities?: Entities[];
-  ttlPeriod?: number;
+  message!: MessageContext;
   constructor() {
     super();
     this['_'] = 'UpdateShortChatMessage';
   }
   async init(update: Api.UpdateShortChatMessage, SnakeClient: Snake) {
     this.telegram = SnakeClient.telegram;
-    this.out = update.out;
-    this.mentioned = update.mentioned;
-    this.mediaUnread = update.mediaUnread;
-    this.silent = update.silent;
-    this.id = update.id;
-    this.text = update.message;
-    this.date = update.date;
-    this.viaBotId = update.viaBotId;
-    this.ttlPeriod = update.ttlPeriod;
+    this.message = new MessageContext();
+    this.message.out = update.out;
+    this.message.mentioned = update.mentioned;
+    this.message.mediaUnread = update.mediaUnread;
+    this.message.silent = update.silent;
+    this.message.id = update.id;
+    this.message.text = update.message;
+    this.message.date = update.date;
+    this.message.viaBotId = update.viaBotId;
+    this.message.ttlPeriod = update.ttlPeriod;
+    this.message.telegram = this.telegram;
+    this.message.SnakeClient = SnakeClient;
     if (update.fromId) {
       let from = new From();
-      await from.init(update.fromId, SnakeClient);
-      this.from = from;
+      if (!update.out) {
+        await from.init(update.fromId, SnakeClient);
+      } else {
+        await from.init(SnakeClient.aboutMe.id, SnakeClient);
+      }
+      this.message.from = from;
     }
     if (update.chatId) {
       let chat = new Chat();
       await chat.init(update.chatId, SnakeClient);
-      this.chat = chat;
+      this.message.chat = chat;
     }
     if (update.fwdFrom) {
       let fwd = new ForwardMessage();
       await fwd.init(update.fwdFrom, SnakeClient);
-      this.fwdFrom = fwd;
+      this.message.fwdFrom = fwd;
     }
     if (update.replyTo) {
       let replyTo = new ReplyToMessageContext();
-      await replyTo.init(update.replyTo, SnakeClient, this.chat.id);
-      this.replyToMessage = replyTo;
+      await replyTo.init(update.replyTo, SnakeClient, this.message.chat.id);
+      this.message.replyToMessage = replyTo;
     }
     if (update.entities) {
       let temp: Entities[] = [];
       update.entities.forEach((item) => {
         temp.push(new Entities(item!));
       });
-      this.entities = temp;
+      this.message.entities = temp;
     }
     return this;
   }

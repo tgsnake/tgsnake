@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// Copyright (C) 2021 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -122,14 +122,5 @@ export class Update {
   get SnakeClient() {
     //@ts-ignore
     return _telegram.SnakeClient;
-  }
-  async reply(text: string, more?: sendMessageMoreParams) {
-    //@ts-ignore
-    if (this.chat) {
-      if (this.telegram) {
-        //@ts-ignore
-        return await this.telegram.sendMessage(this.chat.id, text, more);
-      }
-    }
   }
 }

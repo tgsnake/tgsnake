@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// Copyright (C) 2021 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -16,7 +16,7 @@ import { Api } from 'telegram';
 import { NewMessage } from 'telegram/events';
 import { NewMessageEvent } from 'telegram/events/NewMessage';
 import { MessageContext } from './MessageContext';
-import { Message } from 'telegram/tl/custom/message';
+import { CustomMessage as Message } from 'telegram/tl/custom/message';
 export type Handler = 'use' | 'hears' | 'command';
 type TypeCmd = string | string[];
 type TypeHears = string | RegExp;
@@ -152,7 +152,15 @@ export class MainContext extends (EventEmitter as new () => TypedEmitter<eventsO
         if (update.originalUpdate._entities) {
           let en = update.originalUpdate._entities;
           en.forEach((e, i) => {
-            this.entityCache.set(i, new ResultGetEntity(e));
+            if (e instanceof Api.Chat) {
+              this.entityCache.set(i, new ResultGetEntity(e as Api.Chat));
+            }
+            if (e instanceof Api.User) {
+              this.entityCache.set(i, new ResultGetEntity(e as Api.User));
+            }
+            if (e instanceof Api.Channel) {
+              this.entityCache.set(i, new ResultGetEntity(e as Api.Channel));
+            }
           });
         }
       }
@@ -271,7 +279,15 @@ export class MainContext extends (EventEmitter as new () => TypedEmitter<eventsO
       //@ts-ignore
       let en = update._entities;
       en.forEach((e, i) => {
-        this.entityCache.set(i, new ResultGetEntity(e));
+        if (e instanceof Api.Chat) {
+          this.entityCache.set(i, new ResultGetEntity(e as Api.Chat));
+        }
+        if (e instanceof Api.User) {
+          this.entityCache.set(i, new ResultGetEntity(e as Api.User));
+        }
+        if (e instanceof Api.Channel) {
+          this.entityCache.set(i, new ResultGetEntity(e as Api.Channel));
+        }
       });
     }
     if (Update[update.className]) {

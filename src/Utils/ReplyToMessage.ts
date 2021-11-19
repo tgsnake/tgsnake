@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// Copyright (C) 2021 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -17,6 +17,7 @@ import { Entities } from './Entities';
 import { ForwardMessage } from './ForwardMessage';
 import { Media } from './Media';
 import { convertReplyMarkup, TypeReplyMarkup } from './ReplyMarkup';
+import { Cleaning } from './CleanObject';
 let _SnakeClient: Snake;
 export class ReplyToMessage {
   out?: boolean;
@@ -83,6 +84,7 @@ export class ReplyToMessage {
         this.mediaGroupId = msg.mediaGroupId;
         this.restrictionReason = msg.restrictionReason;
       }
+      await Cleaning(this);
       return this;
     }
   }

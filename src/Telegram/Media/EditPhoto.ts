@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// Copyright (C) 2021 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -10,7 +10,7 @@ import { Api } from 'telegram';
 import { Snake } from '../../client';
 import { UploadFile } from './UploadFile';
 import * as Updates from '../../Update';
-import {toBigInt,toNumber} from "../../Utils/ToBigInt"
+import { toBigInt, toNumber } from '../../Utils/ToBigInt';
 export async function EditPhoto(
   snakeClient: Snake,
   chatId: number | string,
@@ -19,12 +19,14 @@ export async function EditPhoto(
   try {
     let rr = await UploadFile(snakeClient, photo);
     let toUpload = new Api.InputFile({ ...rr! });
-    let [id,type,peer] = await toBigInt(chatId,snakeClient)
+    let [id, type, peer] = await toBigInt(chatId, snakeClient);
     if (type == 'channel') {
       let results: Api.TypeUpdates = await snakeClient.client.invoke(
         new Api.channels.EditPhoto({
           channel: peer,
-          photo: toUpload,
+          photo: new Api.InputChatUploadedPhoto({
+            file: toUpload,
+          }),
         })
       );
       return await generateResults(results, snakeClient);
@@ -32,7 +34,9 @@ export async function EditPhoto(
       return snakeClient.client.invoke(
         new Api.messages.EditChatPhoto({
           chatId: peer,
-          photo: toUpload,
+          photo: new Api.InputChatUploadedPhoto({
+            file: toUpload,
+          }),
         })
       );
     }

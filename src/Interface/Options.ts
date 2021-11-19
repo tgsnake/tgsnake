@@ -1,11 +1,11 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// Copyright (C) 2021 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
-import {ProxyInterface} from "telegram/network/connection/TCPMTProxy"
+import { ProxyInterface } from 'telegram/network/connection/TCPMTProxy';
 export interface Options {
   /**
    * Set Logger level for gramjs. Default is "none".

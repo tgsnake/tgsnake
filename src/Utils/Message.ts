@@ -17,9 +17,10 @@ import { ReplyToMessageContext } from '../Context/ReplyToMessageContext';
 import { Entities } from './Entities';
 import { ForwardMessage } from './ForwardMessage';
 import { Media } from './Media';
-import { Message as MessageEvent } from 'telegram/tl/custom/message';
+import { CustomMessage } from 'telegram/tl/custom/message';
 import { Telegram } from '../Telegram';
 import { convertReplyMarkup, TypeReplyMarkup } from './ReplyMarkup';
+import { Cleaning } from './CleanObject';
 let _SnakeClient: Snake;
 let _telegram: Telegram;
 export class Message {
@@ -53,17 +54,18 @@ export class Message {
   mediaGroupId?: BigInteger | number;
   restrictionReason?: RestrictionReason[];
   constructor() {}
-  async init(message: MessageEvent | Api.MessageService | Api.Message, SnakeClient: Snake) {
+  async init(message: CustomMessage | Api.MessageService | Api.Message, SnakeClient: Snake) {
     _SnakeClient = SnakeClient;
     _telegram = SnakeClient.telegram;
-    if (message instanceof MessageEvent || message.className == 'Message') {
-      return await this.parseMessage(message as MessageEvent);
-    }
     if (message instanceof Api.Message) {
       return await this.parseMessage(message as Api.Message);
     }
     if (message instanceof Api.MessageService) {
       return await this.parseMessageService(message as Api.MessageService);
+    }
+    //@ts-ignore
+    if (message instanceof CustomMessage || message.className == 'Message') {
+      return await this.parseMessage(message as CustomMessage);
     }
   }
   // only parse Message Service
@@ -115,14 +117,15 @@ export class Message {
       await replyTo.init(message.replyTo, this.SnakeClient, this.chat.id);
       this.replyToMessage = replyTo;
     }
+    await Cleaning(this);
     return this;
   }
   // only parse Message
-  private async parseMessage(message: Api.Message | MessageEvent) {
+  private async parseMessage(message: Api.Message | CustomMessage) {
     if (message instanceof Api.Message) {
       message as Api.Message;
     } else {
-      message as MessageEvent;
+      message as CustomMessage;
     }
     this.out = message.out;
     this.mentioned = message.mentioned;
@@ -210,6 +213,7 @@ export class Message {
     if (message.replies) {
       this.replies = message.replies;
     }
+    await Cleaning(this);
     return this;
   }
   get SnakeClient() {
@@ -217,5 +221,11 @@ export class Message {
   }
   get telegram() {
     return _telegram;
+  }
+  set telegram(_tg) {
+    _telegram = _tg;
+  }
+  set SnakeClient(_snake) {
+    _SnakeClient = _snake;
   }
 }

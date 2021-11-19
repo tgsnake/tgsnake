@@ -9,6 +9,7 @@
 import { Api } from 'telegram';
 import { BigInteger } from 'big-integer';
 import { FileId, decodeFileId } from 'tg-file-id';
+import { Cleaning } from './CleanObject';
 export let typeId = {
   THUMBNAIL: 0,
   CHAT_PHOTO: 1, // ProfilePhoto

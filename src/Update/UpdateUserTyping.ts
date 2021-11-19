@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// Copyright (C) 2021 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -23,7 +23,7 @@ export class UpdateUserTyping extends Update {
   async init(update: Api.UpdateUserTyping, SnakeClient: Snake) {
     this.telegram = SnakeClient.telegram;
     if (update.userId) {
-      let user = new From(); 
+      let user = new From();
       await user.init(update.userId, SnakeClient);
       this.user = user;
     }

@@ -1,12 +1,12 @@
 {
   "name": "tgsnake",
-  "version": "2.0.0-alpha.0",
+  "version": "2.0.0-alpha.3",
   "description": "Telegram MTProto framework base gram.js",
   "main": "./lib/index.js",
   "scripts": {
     "dev": "ts-node ./tes/index.ts",
     "prepare": "echo \"🐍 Building snake package.\" && tsc",
-    "build": "tsc",
+    "build": "rm -rf ./lib && tsc",
     "prettier": "pretty-quick --staged --pattern \"src/**/*.*(js|jsx|ts|tsx)\""
   },
   "homepage": "https://tgsnake.js.org",

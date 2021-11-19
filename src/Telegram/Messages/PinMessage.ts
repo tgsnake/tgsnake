@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// Copyright (C) 2021 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -9,7 +9,7 @@
 import { Api } from 'telegram';
 import { Snake } from '../../client';
 import * as Updates from '../../Update';
-import {toBigInt,toNumber} from "../../Utils/ToBigInt"
+import { toBigInt, toNumber } from '../../Utils/ToBigInt';
 export interface pinMessageMoreParams {
   silent?: boolean;
   unpin?: boolean;
@@ -22,7 +22,7 @@ export async function PinMessage(
   more?: pinMessageMoreParams
 ) {
   try {
-    let [id,type,peer] = await toBigInt(chatId,snakeClient)
+    let [id, type, peer] = await toBigInt(chatId, snakeClient);
     let results: Api.TypeUpdates = await snakeClient.client.invoke(
       new Api.messages.UpdatePinnedMessage({
         peer: peer,

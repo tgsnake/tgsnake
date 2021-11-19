@@ -10,7 +10,7 @@ export function TabGroup({children}){
   const [key,setKey] = useState(children[0].props.name)
   return (
       <div className="tabGroup">
-        <div className="tabList overflow-x-auto flex">
+        <div className="tabList mb-2 pb-2 overflow-x-auto flex">
           {
             children.map((el,i)=>(
               <span 

@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// Copyright (C) 2021 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -8,8 +8,8 @@
 
 import { Api } from 'telegram';
 import { Snake } from '../../client';
-import { ResultAffectedMessages } from './DeleteMessages'
-import {toBigInt,toNumber} from "../../Utils/ToBigInt"
+import { ResultAffectedMessages } from './DeleteMessages';
+import { toBigInt, toNumber } from '../../Utils/ToBigInt';
 export async function ReadMessageContents(snakeClient: Snake, messageId: number[]) {
   try {
     return new ResultAffectedMessages(

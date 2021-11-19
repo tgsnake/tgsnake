@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// Copyright (C) 2021 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -60,7 +60,7 @@ function makeApiId(length) {
 export class Snake extends MainContext {
   client!: TelegramClient;
   telegram!: Telegram;
-  version: string = '2.0.0-alpha.0';
+  version: string = '2.0.0-alpha.3';
 
   options!: Options;
   constructor(options?: Options) {
@@ -364,7 +364,7 @@ export class Snake extends MainContext {
   async catch(next: CatchError) {
     return (catchFunct = next);
   }
-  async _handleError(error: any, running:string) {
+  async _handleError(error: any, running: string) {
     if (catchFunct) {
       return catchFunct(error, this.ctx);
     } else {
@@ -381,7 +381,7 @@ export class Snake extends MainContext {
         }
       }
       let e = new Error(error.message);
-      throw e
+      throw e;
     }
   }
   get connectTime() {

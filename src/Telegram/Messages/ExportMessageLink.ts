@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// Copyright (C) 2021 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -8,7 +8,7 @@
 
 import { Api } from 'telegram';
 import { Snake } from '../../client';
-import {toBigInt,toNumber} from "../../Utils/ToBigInt"
+import { toBigInt, toNumber } from '../../Utils/ToBigInt';
 export interface exportMessageLinkMoreParams {
   thread?: boolean;
   grouped?: boolean;
@@ -20,7 +20,7 @@ export async function ExportMessageLink(
   more?: exportMessageLinkMoreParams
 ) {
   try {
-    let [id,type,peer] = await toBigInt(chatId,snakeClient)
+    let [id, type, peer] = await toBigInt(chatId, snakeClient);
     return snakeClient.client.invoke(
       new Api.channels.ExportMessageLink({
         channel: peer,

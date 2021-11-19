@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// Copyright (C) 2021 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -12,35 +12,34 @@ import { Snake } from '../client';
 import { Telegram } from '../Telegram';
 import { Entities } from '../Utils/Entities';
 import { Media } from '../Utils/Media';
+import { MessageContext } from '../Context/MessageContext';
 export class UpdateShortSentMessage extends Update {
-  out?: boolean;
-  id!: number;
-  date!: number;
-  media?: Media;
-  entities?: Entities[];
-  ttlPeriod?: number;
+  message!: MessageContext;
   constructor() {
     super();
     this['_'] = 'UpdateShortSentMessage';
   }
   async init(update: Api.UpdateShortSentMessage, SnakeClient: Snake) {
+    this.message = new MessageContext();
     this.telegram = SnakeClient.telegram;
-    this.out = update.out;
-    this.id = update.id;
-    this.date = update.date;
-    this.ttlPeriod = update.ttlPeriod;
+    this.message.out = update.out;
+    this.message.id = update.id;
+    this.message.date = update.date;
+    this.message.ttlPeriod = update.ttlPeriod;
     if (update.media) {
       let media = new Media();
       await media.encode(await media.parseMedia(update.media));
-      this.media = media;
+      this.message.media = media;
     }
     if (update.entities) {
       let temp: Entities[] = [];
       update.entities.forEach((item) => {
         temp.push(new Entities(item!));
       });
-      this.entities = temp;
+      this.message.entities = temp;
     }
+    this.message.telegram = this.telegram;
+    this.message.SnakeClient = SnakeClient;
     return this;
   }
 }

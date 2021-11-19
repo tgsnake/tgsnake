@@ -18,8 +18,10 @@ const bot = new Snake()
     console.log(error)
   }
 })*/
-bot.on("*",(update)=>{
-  console.log(new Date().toLocaleString(),update)
+bot.on("UpdateEditChannelMessage",(update)=>{
+  //@ts-ignore
+  //console.log(new Date().toLocaleString(),(update.className ? update.className : update["_"] ? update["_"] : "undefined")) 
+  console.log(update)
 })
 /*bot.on("message",(ctx)=>{
 //  if(bot.connected){
@@ -30,5 +32,9 @@ bot.on("*",(update)=>{
     ctx.telegram.readMentions(ctx.chat.id)
     console.log(ctx)
   //}
-})*/
+})*/ 
+bot.on("message",(ctx)=>{
+  ctx.telegram.readHistory(ctx.chat.id) 
+  console.log(ctx)
+})
 bot.run()
