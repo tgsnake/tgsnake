@@ -17,7 +17,6 @@ import { ReplyToMessageContext } from '../Context/ReplyToMessageContext';
 import { Entities } from './Entities';
 import { ForwardMessage } from './ForwardMessage';
 import { Media } from './Media';
-import { CustomMessage } from 'telegram/tl/custom/message';
 import { Telegram } from '../Telegram';
 import { convertReplyMarkup, TypeReplyMarkup } from './ReplyMarkup';
 import { Cleaning } from './CleanObject';
@@ -54,7 +53,7 @@ export class Message {
   mediaGroupId?: BigInteger | number;
   restrictionReason?: RestrictionReason[];
   constructor() {}
-  async init(message: CustomMessage | Api.MessageService | Api.Message, SnakeClient: Snake) {
+  async init(message: Api.MessageService | Api.Message, SnakeClient: Snake) {
     let mode = ['debug', 'info'];
     if (mode.includes(SnakeClient.logger)) {
       console.log(
@@ -70,10 +69,6 @@ export class Message {
     }
     if (message instanceof Api.MessageService) {
       return await this.parseMessageService(message as Api.MessageService);
-    }
-    //@ts-ignore
-    if (message instanceof CustomMessage || message.className == 'Message') {
-      return await this.parseMessage(message as CustomMessage);
     }
   }
   // only parse Message Service
@@ -129,12 +124,7 @@ export class Message {
     return this;
   }
   // only parse Message
-  private async parseMessage(message: Api.Message | CustomMessage) {
-    if (message instanceof Api.Message) {
-      message as Api.Message;
-    } else {
-      message as CustomMessage;
-    }
+  private async parseMessage(message: Api.Message) {
     this.out = message.out;
     this.mentioned = message.mentioned;
     this.mediaUnread = message.mediaUnread;

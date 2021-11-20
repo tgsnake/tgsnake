@@ -1,6 +1,6 @@
 {
   "name": "tgsnake",
-  "version": "2.0.0-alpha.3",
+  "version": "2.0.0-alpha.4",
   "description": "Telegram MTProto framework base gram.js",
   "main": "./lib/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "prepare": "echo \"🐍 Building snake package.\" && tsc",
     "build": "tsc",
     "prettier": "pretty-quick --staged --pattern \"src/**/*.*(js|jsx|ts|tsx)\"",
-    "upgrade" : "yarn upgrade-interactive --latest"
+    "upgrade": "yarn upgrade-interactive --latest"
   },
   "homepage": "https://tgsnake.js.org",
   "keywords": [

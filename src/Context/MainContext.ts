@@ -28,7 +28,15 @@ export class MainContext extends Composer {
   constructor() {
     super();
   }
-  async handleUpdate(update: Api.TypeUpdate | ResultGetEntity, SnakeClient: Snake) {
+  async handleUpdate(update: Api.TypeUpdate | ResultGetEntity, SnakeClient: Snake) { 
+    if(!update) return false
+    this.use = () => {
+      let botError = new BotError() 
+      botError.error = new Error(`bot.use is unavailable when bot running. so kill bot first then add bot.use in your source code then running again.`)
+      botError.functionName = "Composer" 
+      botError.functionArgs = ``
+      throw botError
+    }
     if (update instanceof ResultGetEntity) {
       try {
         return run(this.middleware(), update as ResultGetEntity);
@@ -40,20 +48,22 @@ export class MainContext extends Composer {
         //@ts-ignore
         return this.errorHandler(botError, update);
       }
-    } else {
-      if (Updates[update.className]) {
-        try {
-          let jsonUpdate = new Updates[update.className]();
-          await jsonUpdate.init(update, SnakeClient);
-          return run(this.middleware(), jsonUpdate);
-        } catch (error) {
-          let botError = new BotError();
-          botError.error = error;
-          botError.functionName = 'handleUpdate';
-          botError.functionArgs = `[update data]`;
-          //@ts-ignore
-          return this.errorHandler(botError, update);
-        }
+    } else { 
+      if(update.className){
+        if (Updates[update.className]) {
+          try {
+            let jsonUpdate = new Updates[update.className]();
+            await jsonUpdate.init(update, SnakeClient);
+            return run(this.middleware(), jsonUpdate);
+          } catch (error) {
+            let botError = new BotError();
+            botError.error = error;
+            botError.functionName = 'handleUpdate';
+            botError.functionArgs = `[update data]`;
+            //@ts-ignore
+            return this.errorHandler(botError, update);
+          }
+        } 
       }
     }
   }
