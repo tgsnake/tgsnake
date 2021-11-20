@@ -6,35 +6,16 @@
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published. 
 
-import {Snake,Wizard,GramJs} from "../src" 
+import {Snake,Wizard,GramJs,Composer} from "../src" 
 import * as fs from "fs"
 import BigInt from "big-integer"
 const {Api} = GramJs
 const bot = new Snake() 
-/*bot.catch((error,ctx)=>{
-  if(ctx.reply){
-    ctx.reply(`[🐍 Error] ${error.message}`)
-  }else{
-    console.log(error)
-  }
-})*/
-bot.on("UpdateEditChannelMessage",(update)=>{
-  //@ts-ignore
-  //console.log(new Date().toLocaleString(),(update.className ? update.className : update["_"] ? update["_"] : "undefined")) 
-  console.log(update)
+bot.on("message",(ctx)=>{ 
+  //console.log(ctx.SnakeClient.entityCache)
+  return ctx.telegram.readHistory(ctx.message.chat.id)
 })
-/*bot.on("message",(ctx)=>{
-//  if(bot.connected){
-    if("media" in ctx){
-      console.log(ctx.media)
-    }
-    ctx.telegram.readHistory(ctx.chat.id) 
-    ctx.telegram.readMentions(ctx.chat.id)
-    console.log(ctx)
-  //}
-})*/ 
-bot.on("message",(ctx)=>{
-  ctx.telegram.readHistory(ctx.chat.id) 
-  console.log(ctx)
+bot.cmd("start",(ctx)=>{
+  ctx.reply("hai")
 })
 bot.run()

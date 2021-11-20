@@ -15,6 +15,7 @@ import BigInt from 'big-integer';
 import * as Update from '../../Update';
 import path from 'path';
 import { toBigInt, toNumber } from '../../Utils/ToBigInt';
+import BotError from '../../Context/Error';
 export interface sendMediaMoreParams {
   silent?: boolean;
   background?: boolean;
@@ -37,6 +38,16 @@ export async function SendMedia(
   more?: sendMediaMoreParams
 ) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.sendMedia`,
+        '\x1b[0m'
+      );
+    }
     let parseMode = '';
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
     if (more) {
@@ -86,11 +97,12 @@ export async function SendMedia(
       })
     );
   } catch (error) {
-    return snakeClient._handleError(
-      error,
-      `telegram.sendMedia(${chatId},${JSON.stringify(media)}${
-        more ? ',' + JSON.stringify(more) : ''
-      })`
-    );
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.sendMedia';
+    botError.functionArgs = `${chatId},${JSON.stringify(media)}${
+      more ? ',' + JSON.stringify(more) : ''
+    }`;
+    throw botError;
   }
 }

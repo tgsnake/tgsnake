@@ -19,6 +19,16 @@ export class UpdateMessageID extends Update {
     this['_'] = 'UpdateMessageID';
   }
   async init(update: Api.UpdateMessageID, SnakeClient: Snake) {
+    let mode = ['debug', 'info'];
+    if (mode.includes(SnakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${SnakeClient.connectTime}] - [${new Date().toLocaleString()}] - Creating update ${
+          this['_']
+        }`,
+        '\x1b[0m'
+      );
+    }
     this.telegram = SnakeClient.telegram;
     this.id = update.id;
     this.randomId = update.randomId;

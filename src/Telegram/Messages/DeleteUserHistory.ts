@@ -10,12 +10,23 @@ import { Snake } from '../../client';
 import { Api } from 'telegram';
 import { ResultAffectedMessages } from './DeleteMessages';
 import { toBigInt, toNumber } from '../../Utils/ToBigInt';
+import BotError from '../../Context/Error';
 export async function DeleteUserHistory(
   snakeClient: Snake,
   chatId: number | string,
   userId: number | string
 ) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.deleteUserHistory`,
+        '\x1b[0m'
+      );
+    }
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
     let [uId, uType, uPeer] = await toBigInt(userId, snakeClient);
     return new ResultAffectedMessages(
@@ -27,6 +38,10 @@ export async function DeleteUserHistory(
       )
     );
   } catch (error) {
-    return snakeClient._handleError(error, `telegram.deleteUserHistory(${chatId}${userId})`);
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.deleteUserHistory';
+    botError.functionArgs = `${chatId}${userId}`;
+    throw botError;
   }
 }

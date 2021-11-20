@@ -14,6 +14,7 @@ import { ParseMessage } from '../../Utils/ParseMessage';
 import BigInt from 'big-integer';
 import * as Update from '../../Update';
 import { toBigInt, toNumber } from '../../Utils/ToBigInt';
+import BotError from '../../Context/Error';
 export interface editMessageMoreParams {
   noWebpage?: boolean;
   media?: Api.TypeInputMedia;
@@ -30,6 +31,16 @@ export async function EditMessage(
   more?: editMessageMoreParams
 ) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.editMessage`,
+        '\x1b[0m'
+      );
+    }
     let parseMode = '';
     let replyMarkup;
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
@@ -57,15 +68,26 @@ export async function EditMessage(
     );
     return await createResults(results, snakeClient);
   } catch (error) {
-    return snakeClient._handleError(
-      error,
-      `telegram.editMessage(${chatId},${messageId},${text},${
-        more ? JSON.stringify(more, null, 2) : ''
-      })`
-    );
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.editMessage';
+    botError.functionArgs = `${chatId},${messageId},${text},${
+      more ? JSON.stringify(more, null, 2) : ''
+    }`;
+    throw botError;
   }
 }
 async function createResults(results: Api.TypeUpdates, snakeClient: Snake) {
+  let mode = ['debug', 'info'];
+  if (mode.includes(snakeClient.logger)) {
+    console.log(
+      '\x1b[31m',
+      `[${
+        snakeClient.connectTime
+      }] - [${new Date().toLocaleString()}] - Creating results telegram.editMessage`,
+      '\x1b[0m'
+    );
+  }
   if (results instanceof Api.Updates) {
     results as Api.Updates;
     if (results.updates?.length > 0) {

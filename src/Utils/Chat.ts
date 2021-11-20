@@ -63,6 +63,16 @@ export class Chat {
       this.id = peer;
     }
     if (this.id) {
+      let mode = ['debug', 'info'];
+      if (mode.includes(snakeClient.logger)) {
+        console.log(
+          '\x1b[31m',
+          `[${snakeClient.connectTime}] - [${new Date().toLocaleString()}] - Creating chat ${
+            this.id
+          }`,
+          '\x1b[0m'
+        );
+      }
       let tg = snakeClient.telegram;
       let entity = await tg.getEntity(this.id, true);
       this.id = entity.id;

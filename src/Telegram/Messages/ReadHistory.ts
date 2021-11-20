@@ -10,6 +10,7 @@ import { ResultAffectedMessages } from './DeleteMessages';
 import { Api } from 'telegram';
 import { Snake } from '../../client';
 import { toBigInt, toNumber } from '../../Utils/ToBigInt';
+import BotError from '../../Context/Error';
 export interface readHistoryMoreParams {
   maxId?: number;
 }
@@ -19,6 +20,16 @@ export async function ReadHistory(
   more?: readHistoryMoreParams
 ) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.readHistory`,
+        '\x1b[0m'
+      );
+    }
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
     if (type == 'channel') {
       let results = await snakeClient.client.invoke(
@@ -38,9 +49,10 @@ export async function ReadHistory(
       return new ResultAffectedMessages(results);
     }
   } catch (error) {
-    return snakeClient._handleError(
-      error,
-      `telegram.readHistory(${chatId}${more ? ',' + JSON.stringify(more) : ''})`
-    );
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.readHistory';
+    botError.functionArgs = `${chatId}${more ? ',' + JSON.stringify(more) : ''}`;
+    throw botError;
   }
 }

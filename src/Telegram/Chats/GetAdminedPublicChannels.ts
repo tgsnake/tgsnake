@@ -7,12 +7,23 @@
 //  it under the terms of the MIT License as published.
 import { Api } from 'telegram';
 import { Snake } from '../../client';
+import BotError from '../../Context/Error';
 export async function GetAdminedPublicChannels(
   snakeClient: Snake,
   byLocation: boolean = true,
   checkLimit: boolean = true
 ) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.getAdminedPublicChannels`,
+        '\x1b[0m'
+      );
+    }
     let results: Api.messages.TypeChats = await snakeClient.client.invoke(
       new Api.channels.GetAdminedPublicChannels({
         byLocation: byLocation,
@@ -23,9 +34,10 @@ export async function GetAdminedPublicChannels(
     // change the json results
     return results;
   } catch (error) {
-    return snakeClient._handleError(
-      error,
-      `telegram.getAdminedPublicChannels(${byLocation},${checkLimit})`
-    );
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.getAdminedPublicChannels';
+    botError.functionArgs = `${byLocation},${checkLimit}`;
+    throw botError;
   }
 }

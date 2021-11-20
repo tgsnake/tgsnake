@@ -51,6 +51,14 @@ export class ReplyToMessage {
   constructor() {}
   async init(messageReplyHeader: Api.MessageReplyHeader, SnakeClient: Snake, chatId: number) {
     _SnakeClient = SnakeClient;
+    let mode = ['debug', 'info'];
+    if (mode.includes(SnakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${SnakeClient.connectTime}] - [${new Date().toLocaleString()}] - Creating replyToMessage`,
+        '\x1b[0m'
+      );
+    }
     if (messageReplyHeader.replyToMsgId) {
       this.id = messageReplyHeader.replyToMsgId;
       let message = await this.SnakeClient.telegram.getMessages(chatId, [this.id], false);

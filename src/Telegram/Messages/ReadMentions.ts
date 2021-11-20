@@ -10,8 +10,19 @@ import { Api } from 'telegram';
 import { Snake } from '../../client';
 import { ResultAffectedMessages } from './DeleteMessages';
 import { toBigInt, toNumber } from '../../Utils/ToBigInt';
+import BotError from '../../Context/Error';
 export async function ReadMentions(snakeClient: Snake, chatId: number | string) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.readMentions`,
+        '\x1b[0m'
+      );
+    }
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
     return new ResultAffectedMessages(
       await snakeClient.client.invoke(
@@ -21,6 +32,10 @@ export async function ReadMentions(snakeClient: Snake, chatId: number | string) 
       )
     );
   } catch (error) {
-    return snakeClient._handleError(error, `telegram.readMentions(${chatId})`);
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.readMentions';
+    botError.functionArgs = ``;
+    throw botError;
   }
 }

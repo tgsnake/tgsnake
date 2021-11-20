@@ -13,13 +13,23 @@ import { UploadFile } from './UploadFile';
 import { decodeFileId } from 'tg-file-id';
 import { Media } from '../../Utils/Media';
 import BigInt from 'big-integer';
-
+import BotError from '../../Context/Error';
 export async function SendSticker(
   snakeClient: Snake,
   chatId: number | string,
   fileId: string | Buffer | Api.MessageMediaDocument | Api.Document
 ) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.sendSticker`,
+        '\x1b[0m'
+      );
+    }
     let final: any;
     if (fileId instanceof Api.MessageMediaDocument) {
       final = fileId as Api.MessageMediaDocument;
@@ -100,11 +110,12 @@ export async function SendSticker(
       }
     }
   } catch (error) {
-    return snakeClient._handleError(
-      error,
-      `telegram.sendSticker(${chatId},${
-        Buffer.isBuffer(fileId) ? `<Buffer ${fileId.toString('hex')}>` : JSON.stringify(fileId)
-      })`
-    );
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.sendSticker';
+    botError.functionArgs = `${chatId},${
+      Buffer.isBuffer(fileId) ? `<Buffer ${fileId.toString('hex')}>` : JSON.stringify(fileId)
+    }`;
+    throw botError;
   }
 }

@@ -10,6 +10,7 @@ import { Api } from 'telegram';
 import { Snake } from '../../client';
 import { BigInteger } from 'big-integer';
 import { toBigInt, toNumber } from '../../Utils/ToBigInt';
+import BotError from '../../Context/Error';
 export interface getUserPhotosMoreParams {
   offset?: number;
   maxId?: BigInteger;
@@ -21,6 +22,16 @@ export async function GetUserPhotos(
   more?: getUserPhotosMoreParams
 ) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.getUserPhotos`,
+        '\x1b[0m'
+      );
+    }
     let [id, type, peer] = await toBigInt(userId, snakeClient);
     let results: Api.photos.TypePhotos = await snakeClient.client.invoke(
       new Api.photos.GetUserPhotos({
@@ -30,9 +41,10 @@ export async function GetUserPhotos(
     );
     return results;
   } catch (error) {
-    return snakeClient._handleError(
-      error,
-      `telegram.getUserPhotos(${userId}${more ? ',' + JSON.stringify(more) : ''})`
-    );
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.getUserPhotos';
+    botError.functionArgs = `${userId}${more ? ',' + JSON.stringify(more) : ''}`;
+    throw botError;
   }
 }

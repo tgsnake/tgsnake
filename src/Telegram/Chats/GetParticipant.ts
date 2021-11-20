@@ -10,12 +10,23 @@ import { Snake } from '../../client';
 import { ResultGetEntity } from '../Users/GetEntity';
 import { Api } from 'telegram';
 import { ChatParticipants } from '../../Utils/ChatParticipants';
+import BotError from '../../Context/Error';
 export async function GetParticipant(
   snakeClient: Snake,
   chatId: number | string,
   userId: number | string
 ) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.getParticipant`,
+        '\x1b[0m'
+      );
+    }
     let { client } = snakeClient;
     let result: Api.channels.ChannelParticipant = await client.invoke(
       new Api.channels.GetParticipant({
@@ -27,6 +38,10 @@ export async function GetParticipant(
     await _results.init(result, snakeClient);
     return _results.participants[0];
   } catch (error) {
-    return snakeClient._handleError(error, `telegram.getParticipant(${chatId},${userId}})`);
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.getParticipant';
+    botError.functionArgs = `${chatId},${userId}`;
+    throw botError;
   }
 }

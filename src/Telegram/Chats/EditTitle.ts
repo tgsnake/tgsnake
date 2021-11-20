@@ -9,8 +9,19 @@
 import { Snake } from '../../client';
 import { Api } from 'telegram';
 import * as Updates from '../../Update';
+import BotError from '../../Context/Error';
 export async function EditTitle(snakeClient: Snake, chatId: number | string, title: string) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.editTitle`,
+        '\x1b[0m'
+      );
+    }
     let type = await snakeClient.telegram.getEntity(chatId);
     if (type.type == 'channel') {
       let results: Api.TypeUpdates = await snakeClient.client.invoke(
@@ -29,10 +40,24 @@ export async function EditTitle(snakeClient: Snake, chatId: number | string, tit
       );
     }
   } catch (error) {
-    return snakeClient._handleError(error, `telegram.editTitle(${chatId},${title})`);
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.editTitle';
+    botError.functionArgs = `${chatId},${title}`;
+    throw botError;
   }
 }
 async function generateResults(results: Api.TypeUpdates, SnakeClient: Snake) {
+  let mode = ['debug', 'info'];
+  if (mode.includes(SnakeClient.logger)) {
+    console.log(
+      '\x1b[31m',
+      `[${
+        SnakeClient.connectTime
+      }] - [${new Date().toLocaleString()}] - Creating results telegram.editTitle`,
+      '\x1b[0m'
+    );
+  }
   if (results instanceof Api.Updates) {
     results as Api.Updates;
     if (results.updates.length > 0) {
@@ -46,9 +71,9 @@ async function generateResults(results: Api.TypeUpdates, SnakeClient: Snake) {
         }
         if (update instanceof Api.UpdateNewChannelMessage) {
           update as Api.UpdateNewChannelMessage;
-          //todo
-          // using Updates.UpdateNewChannelMessage
-          return update;
+          let res = new Updates.UpdateNewChannelMessage();
+          await res.init(update, SnakeClient);
+          return res;
         }
       }
     }

@@ -11,6 +11,7 @@ import BigInt from 'big-integer';
 import { MessageContext } from '../../Context/MessageContext';
 import * as Update from '../../Update';
 import { toBigInt, toNumber } from '../../Utils/ToBigInt';
+import BotError from '../../Context/Error';
 export async function GetMessages(
   snakeClient: Snake,
   chatId: number | string,
@@ -18,6 +19,16 @@ export async function GetMessages(
   replies: boolean = false
 ) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.getMessages`,
+        '\x1b[0m'
+      );
+    }
     let messageIds: any = messageId;
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
     if (type == 'channel') {
@@ -41,10 +52,11 @@ export async function GetMessages(
       return final;
     }
   } catch (error) {
-    return snakeClient._handleError(
-      error,
-      `telegram.getMessages(${chatId},${JSON.stringify(messageId)})`
-    );
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.getMessages';
+    botError.functionArgs = `${chatId},${JSON.stringify(messageId)}`;
+    throw botError;
   }
 }
 export class ResultsGetMessage {
@@ -52,6 +64,16 @@ export class ResultsGetMessage {
   date: number | Date = Math.floor(Date.now() / 1000);
   constructor() {}
   async init(results: Api.messages.TypeMessages, SnakeClient: Snake, replies: boolean = false) {
+    let mode = ['debug', 'info'];
+    if (mode.includes(SnakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          SnakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Creating results telegram.getMessages`,
+        '\x1b[0m'
+      );
+    }
     let tempMessages: MessageContext[] = [];
     if (results instanceof Api.messages.ChannelMessages) {
       for (let i = 0; i < results.messages.length; i++) {

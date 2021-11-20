@@ -13,7 +13,7 @@ import fs from 'fs';
 import axios from 'axios';
 import FileType from 'file-type';
 import { Snake } from '../../client';
-
+import BotError from '../../Context/Error';
 export interface uploadFileMoreParams {
   fileName?: string;
   workers?: number;
@@ -44,6 +44,16 @@ export async function UploadFile(
   more?: uploadFileMoreParams
 ) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.uploadFile`,
+        '\x1b[0m'
+      );
+    }
     if (Buffer.isBuffer(file)) {
       let fileInfo = await FileType.fromBuffer(file);
       //if (fileInfo) {
@@ -102,11 +112,12 @@ export async function UploadFile(
       }
     }
   } catch (error) {
-    return snakeClient._handleError(
-      error,
-      `telegram.uploadFile(${Buffer.isBuffer(file) ? `<Buffer ${file.toString('hex')}>` : file}${
-        more ? ',' + JSON.stringify(more) : ''
-      })`
-    );
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.uploadFile';
+    botError.functionArgs = `${Buffer.isBuffer(file) ? `<Buffer ${file.toString('hex')}>` : file}${
+      more ? ',' + JSON.stringify(more) : ''
+    }`;
+    throw botError;
   }
 }

@@ -13,6 +13,7 @@ import { _parseMessageText } from 'telegram/client/messageParse';
 import BigInt from 'big-integer';
 import { toBigInt, toNumber } from '../../Utils/ToBigInt';
 import * as Update from '../../Update';
+import BotError from '../../Context/Error';
 export interface forwardMessageMoreParams {
   withMyScore?: boolean;
   silent?: boolean;
@@ -27,6 +28,16 @@ export async function ForwardMessages(
   more?: forwardMessageMoreParams
 ) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.forwardMessages`,
+        '\x1b[0m'
+      );
+    }
     let randomId: any = [];
     for (let i = 0; i < messageId.length; i++) {
       randomId.push(BigInt(Math.floor(Math.random() * 10000000000000)));
@@ -44,15 +55,26 @@ export async function ForwardMessages(
     );
     return await createResults(results, snakeClient);
   } catch (error) {
-    return snakeClient._handleError(
-      error,
-      `telegram.forwardMessages(${chatId},${fromChatId},${JSON.stringify(messageId)},${
-        more ? JSON.stringify(more, null, 2) : ''
-      })`
-    );
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.forwardMessages';
+    botError.functionArgs = `${chatId},${fromChatId},${JSON.stringify(messageId)},${
+      more ? JSON.stringify(more, null, 2) : ''
+    }`;
+    throw botError;
   }
 }
 async function createResults(results: Api.TypeUpdates, snakeClient: Snake) {
+  let mode = ['debug', 'info'];
+  if (mode.includes(snakeClient.logger)) {
+    console.log(
+      '\x1b[31m',
+      `[${
+        snakeClient.connectTime
+      }] - [${new Date().toLocaleString()}] - Creating results telegram.forwardMessages`,
+      '\x1b[0m'
+    );
+  }
   if (results instanceof Api.Updates) {
     results as Api.Updates;
     if (results.updates?.length > 0) {
@@ -63,11 +85,11 @@ async function createResults(results: Api.TypeUpdates, snakeClient: Snake) {
           await update.init(arc, snakeClient);
           return update;
         }
-        //todo
-        // using UpdateNewChannelMessage
         if (results.updates[i] instanceof Api.UpdateNewChannelMessage) {
           let arc = results.updates[i] as Api.UpdateNewChannelMessage;
-          return arc;
+          let res = new Update.UpdateNewChannelMessage();
+          await res.init(arc, snakeClient);
+          return res;
         }
       }
     }

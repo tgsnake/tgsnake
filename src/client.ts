@@ -9,8 +9,6 @@
 import { Logger } from 'telegram/extensions';
 import { TelegramClient } from 'telegram';
 import { StringSession, StoreSession } from 'telegram/sessions';
-import { NewMessage } from 'telegram/events';
-import { NewMessageEvent } from 'telegram/events/NewMessage';
 import { Telegram } from './Telegram';
 import { MainContext } from './Context/MainContext';
 import prompts from 'prompts';
@@ -19,12 +17,11 @@ import fs from 'fs';
 import { Options } from './Interface/Options';
 import { CatchError } from './Interface/CatchError';
 import { ResultGetEntity } from './Telegram/Users/GetEntity';
-
+import BotError from './Context/Error';
 let api_hash: string;
 let api_id: number;
 let session: string;
 let bot_token: string;
-let logger: string;
 let tgSnakeLog: boolean | undefined = true;
 let connectionRetries: number;
 let appVersion: string;
@@ -60,11 +57,16 @@ function makeApiId(length) {
 export class Snake extends MainContext {
   client!: TelegramClient;
   telegram!: Telegram;
-  version: string = '2.0.0-alpha.3';
-
+  version: string = '2.0.0-alpha.4';
+  logger: string = 'none';
   options!: Options;
   constructor(options?: Options) {
     super();
+    console.log(
+      '\x1b[31m',
+      `Warning\nYou are using tgsnake 2.0.0-alpha.4 which is still in the testing phase. Some update events may not be available. Please use the version below (2.0.0-alpha.3) or above (2.0.0.alpha.5).\n`,
+      '\x1b[0m'
+    );
     if (!options) {
       let dir = fs.readdirSync(process.cwd());
       // tgsnake.config.js
@@ -81,11 +83,10 @@ export class Snake extends MainContext {
     //default options
     session = '';
     connectionRetries = 5;
-    logger = 'none';
     // custom options
     if (options) {
       if (options.logger) {
-        logger = options.logger;
+        this.logger = options.logger;
         delete options.logger;
       }
       if (options.apiHash) {
@@ -132,7 +133,7 @@ export class Snake extends MainContext {
       }
       this.options = options;
     }
-    Logger.setLevel(logger);
+    Logger.setLevel(this.logger);
   }
   private async _convertString() {
     let stringsession = new StringSession(session);
@@ -179,7 +180,11 @@ export class Snake extends MainContext {
       );
       return this.client;
     } catch (error) {
-      this._handleError(error, `Snake._createClient()`);
+      let botError = new BotError();
+      botError.error = error;
+      botError.functionName = '_createClient';
+      botError.functionArgs = ``;
+      throw botError;
     }
   }
   async run() {
@@ -195,7 +200,7 @@ export class Snake extends MainContext {
         process.exit(0);
       });
       log(`🐍 Welcome To TGSNAKE ${this.version}.`);
-      log(`🐍 Setting Logger level to "${logger}"`);
+      log(`🐍 Setting Logger level to "${this.logger}"`);
       if (bot_token) {
         if (session == '') {
           storeSession = false;
@@ -217,7 +222,7 @@ export class Snake extends MainContext {
         await this.client.connect();
       }
       let me = await this.telegram.getMe();
-      isBot = me.bot;
+      isBot = me.bot!;
       this.aboutMe = me;
       let name = me.lastName
         ? me.firstName + ' ' + me.lastName + ' [' + me.id + ']'
@@ -225,23 +230,22 @@ export class Snake extends MainContext {
       if (!isBot) {
         await this.client.getDialogs({});
       }
-      // new message
-      this.client.addEventHandler((event: NewMessageEvent) => {
-        return this.handleUpdate(event, this);
-      }, new NewMessage({}));
       // new event
       this.client.addEventHandler((update: Api.TypeUpdate) => {
         return this.handleUpdate(update, this);
       });
       this.connected = true;
-      this.emit('connected', me);
-      this.emit('*', me);
+      this.handleUpdate(me, this);
       intervalCT = setInterval(() => {
         connectTime++;
       }, 1000);
       return log('🐍 Connected as ', name);
     } catch (error) {
-      this._handleError(error, `Snake.run()`);
+      let botError = new BotError();
+      botError.error = error;
+      botError.functionName = 'run';
+      botError.functionArgs = ``;
+      throw botError;
     }
   }
   async generateSession() {
@@ -257,7 +261,7 @@ export class Snake extends MainContext {
         process.exit(0);
       });
       log(`🐍 Welcome To TGSNAKE ${this.version}.`);
-      log(`🐍 Setting Logger level to "${logger}"`);
+      log(`🐍 Setting Logger level to "${this.logger}"`);
       if (!api_hash) {
         let input_api_hash = await prompts({
           type: 'text',
@@ -358,30 +362,11 @@ export class Snake extends MainContext {
       if (this.client) this.client.disconnect();
       process.exit(0);
     } catch (error) {
-      this._handleError(error, `Snake.generateSession()`);
-    }
-  }
-  async catch(next: CatchError) {
-    return (catchFunct = next);
-  }
-  async _handleError(error: any, running: string) {
-    if (catchFunct) {
-      return catchFunct(error, this.ctx);
-    } else {
-      if (this.ctx) {
-        console.log(`[🐍 Error] (${error.message}) When running: `);
-        console.log(this.ctx);
-        if (running) {
-          console.log(`[🐍 Error] ${running}`);
-        }
-      } else {
-        console.log(`[🐍 Error] (${error.message}).`);
-        if (running) {
-          console.log(`[🐍 Error] ${running}`);
-        }
-      }
-      let e = new Error(error.message);
-      throw e;
+      let botError = new BotError();
+      botError.error = error;
+      botError.functionName = 'generateSession';
+      botError.functionArgs = ``;
+      throw botError;
     }
   }
   get connectTime() {

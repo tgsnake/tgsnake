@@ -9,7 +9,8 @@
 import { Api } from 'telegram';
 import { Snake } from '../../client';
 import { BigInteger } from 'big-integer';
-class ClassResultGetAdminLog {
+import BotError from '../../Context/Error';
+export class ClassResultGetAdminLog {
   log!: ClassLogGetAdminLog[];
   constructor(resultGetAdminLog: any) {
     if (resultGetAdminLog) {
@@ -77,6 +78,16 @@ export async function GetAdminLog(
   more?: getAdminLogMoreParams
 ) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.getAdminLog`,
+        '\x1b[0m'
+      );
+    }
     let filter = {
       join: more?.join || true,
       leave: more?.leave || true,
@@ -108,9 +119,10 @@ export async function GetAdminLog(
       )
     );
   } catch (error) {
-    return snakeClient._handleError(
-      error,
-      `telegram.getAdminLog(${chatId}${more ? ',' + JSON.stringify(more) : ''})`
-    );
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.getAdminLog';
+    botError.functionArgs = `${chatId}${more ? ',' + JSON.stringify(more) : ''}`;
+    throw botError;
   }
 }

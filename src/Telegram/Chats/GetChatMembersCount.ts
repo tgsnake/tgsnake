@@ -9,9 +9,19 @@
 import { Snake } from '../../client';
 import { ResultGetEntity } from '../Users/GetEntity';
 import { Api } from 'telegram';
-
+import BotError from '../../Context/Error';
 export async function GetChatMembersCount(snakeClient: Snake, chatId: number | string) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.getChatMembersCount`,
+        '\x1b[0m'
+      );
+    }
     let chat = await snakeClient.telegram.getEntity(chatId, true);
     if (chat.type === 'user') {
       throw new Error('Typeof chatId must be channel or chat, not a user.');
@@ -42,6 +52,10 @@ export async function GetChatMembersCount(snakeClient: Snake, chatId: number | s
       return s.participantsCount;
     }
   } catch (error) {
-    return snakeClient._handleError(error, `telegram.getChatMembersCount(${chatId})`);
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.getChatMembersCount';
+    botError.functionArgs = `${chatId}`;
+    throw botError;
   }
 }

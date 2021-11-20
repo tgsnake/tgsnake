@@ -15,7 +15,7 @@ import { Media } from '../../Utils/Media';
 import BigInt from 'big-integer';
 import { GetFileInfo } from './GetFileInfo';
 import path from 'path';
-
+import BotError from '../../Context/Error';
 export async function SendDocument(
   snakeClient: Snake,
   chatId: number | string,
@@ -23,6 +23,16 @@ export async function SendDocument(
   more?: sendMediaMoreParams
 ) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.sendDocument`,
+        '\x1b[0m'
+      );
+    }
     if (Buffer.isBuffer(fileId)) {
       fileId as Buffer;
       let file = await UploadFile(snakeClient, fileId as Buffer, {
@@ -67,11 +77,12 @@ export async function SendDocument(
       }
     }
   } catch (error) {
-    return snakeClient._handleError(
-      error,
-      `telegram.sendDocument(${chatId},${
-        Buffer.isBuffer(fileId) ? `<Buffer ${fileId.toString('hex')}>` : JSON.stringify(fileId)
-      }${more ? ',' + JSON.stringify(more) : ''})`
-    );
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.sendDocument';
+    botError.functionArgs = `${chatId},${
+      Buffer.isBuffer(fileId) ? `<Buffer ${fileId.toString('hex')}>` : JSON.stringify(fileId)
+    }${more ? ',' + JSON.stringify(more) : ''}`;
+    throw botError;
   }
 }

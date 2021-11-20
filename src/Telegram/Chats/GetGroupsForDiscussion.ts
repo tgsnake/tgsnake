@@ -8,14 +8,28 @@
 
 import { Api } from 'telegram';
 import { Snake } from '../../client';
-
+import BotError from '../../Context/Error';
 export async function GetGroupsForDiscussion(snakeClient: Snake) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.getGroupsForDiscussion`,
+        '\x1b[0m'
+      );
+    }
     let results: Api.messages.TypeChats = await snakeClient.client.invoke(
       new Api.channels.GetGroupsForDiscussion()
     );
     return results;
   } catch (error) {
-    return snakeClient._handleError(error, `telegram.getGroupsForDiscussion()`);
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.getGroupsForDiscussion';
+    botError.functionArgs = ``;
+    throw botError;
   }
 }

@@ -9,7 +9,8 @@
 import { Api } from 'telegram';
 import { Snake } from '../../client';
 import { toBigInt, toNumber } from '../../Utils/ToBigInt';
-class ResultsMessagesViews {
+import BotError from '../../Context/Error';
+export class ResultsMessagesViews {
   views?: Views[];
   date: Date | number = Math.floor(Date.now() / 1000);
   constructor(results: Api.messages.MessageViews) {
@@ -46,6 +47,16 @@ export async function GetMessagesViews(
   increment: boolean = false
 ) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.getMessagesViews`,
+        '\x1b[0m'
+      );
+    }
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
     return new ResultsMessagesViews(
       await snakeClient.client.invoke(
@@ -57,9 +68,10 @@ export async function GetMessagesViews(
       )
     );
   } catch (error) {
-    return snakeClient._handleError(
-      error,
-      `telegram.getMessagesViews(${chatId},${JSON.stringify(messageId)},${increment})`
-    );
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.getMessagesViews';
+    botError.functionArgs = `${chatId},${JSON.stringify(messageId)},${increment}`;
+    throw botError;
   }
 }

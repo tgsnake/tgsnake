@@ -8,15 +8,29 @@
 
 import { Api } from 'telegram';
 import { Snake } from '../../client';
-
+import BotError from '../../Context/Error';
 export async function GetLeftChannels(snakeClient: Snake, offset: number = 0) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.getLeftChannels`,
+        '\x1b[0m'
+      );
+    }
     return await snakeClient.client.invoke(
       new Api.channels.GetLeftChannels({
         offset: offset,
       })
     );
   } catch (error) {
-    return snakeClient._handleError(error, `telegram.getLeftChannels(${offset})`);
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.getLeftChannels';
+    botError.functionArgs = `${offset}`;
+    throw botError;
   }
 }

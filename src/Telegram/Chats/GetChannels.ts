@@ -8,9 +8,19 @@
 
 import { Api } from 'telegram';
 import { Snake } from '../../client';
-
+import BotError from '../../Context/Error';
 export async function GetChannels(snakeClient: Snake, chatId: number[] | string[]) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.getChannels`,
+        '\x1b[0m'
+      );
+    }
     let results: Api.messages.TypeChats = await snakeClient.client.invoke(
       new Api.channels.GetChannels({
         id: chatId,
@@ -20,6 +30,10 @@ export async function GetChannels(snakeClient: Snake, chatId: number[] | string[
     //change the json results.
     return results;
   } catch (error) {
-    return snakeClient._handleError(error, `telegram.getChannels(${chatId})`);
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.getChannels';
+    botError.functionArgs = `${chatId}`;
+    throw botError;
   }
 }

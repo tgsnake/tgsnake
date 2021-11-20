@@ -9,7 +9,7 @@ import { Snake } from '../../client';
 import { Api } from 'telegram';
 import { ResultGetEntity } from '../Users/GetEntity';
 import { ChatParticipants } from '../../Utils/ChatParticipants';
-
+import BotError from '../../Context/Error';
 export interface GetParticipantMoreParams {
   offset?: number;
   limit?: number;
@@ -28,6 +28,16 @@ export async function GetParticipants(
   more: GetParticipantMoreParams = defaultOptions
 ): Promise<ChatParticipants | undefined> {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.getParticipants`,
+        '\x1b[0m'
+      );
+    }
     let chat: ResultGetEntity = await snakeClient.telegram.getEntity(chatId, true);
     if (chat.type == 'user') {
       throw new Error('Typeof chatId must be channel or chat, not a user.');
@@ -81,9 +91,10 @@ export async function GetParticipants(
       return participant;
     }
   } catch (error) {
-    return snakeClient._handleError(
-      error,
-      `telegram.getParticipants(${chatId},${JSON.stringify(more)})`
-    );
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.getParticipants';
+    botError.functionArgs = `${chatId},${JSON.stringify(more)}`;
+    throw botError;
   }
 }

@@ -10,6 +10,7 @@ import { Api } from 'telegram';
 import { Snake } from '../../client';
 import * as Updates from '../../Update';
 import { toBigInt, toNumber } from '../../Utils/ToBigInt';
+import BotError from '../../Context/Error';
 export interface pinMessageMoreParams {
   silent?: boolean;
   unpin?: boolean;
@@ -22,6 +23,16 @@ export async function PinMessage(
   more?: pinMessageMoreParams
 ) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.pinMessage`,
+        '\x1b[0m'
+      );
+    }
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
     let results: Api.TypeUpdates = await snakeClient.client.invoke(
       new Api.messages.UpdatePinnedMessage({
@@ -32,13 +43,24 @@ export async function PinMessage(
     );
     return await generateResults(results, snakeClient);
   } catch (error) {
-    return snakeClient._handleError(
-      error,
-      `telegram.pinMessage(${chatId},${messageId}${more ? ',' + JSON.stringify(more) : ''})`
-    );
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.pinMessage';
+    botError.functionArgs = `${chatId},${messageId}${more ? ',' + JSON.stringify(more) : ''}`;
+    throw botError;
   }
 }
 async function generateResults(results: Api.TypeUpdates, SnakeClient: Snake) {
+  let mode = ['debug', 'info'];
+  if (mode.includes(SnakeClient.logger)) {
+    console.log(
+      '\x1b[31m',
+      `[${
+        SnakeClient.connectTime
+      }] - [${new Date().toLocaleString()}] - Creating results telegram.pinMessage`,
+      '\x1b[0m'
+    );
+  }
   if (results instanceof Api.Updates) {
     results as Api.Updates;
     if (results.updates.length > 0) {
@@ -52,9 +74,9 @@ async function generateResults(results: Api.TypeUpdates, SnakeClient: Snake) {
         }
         if (update instanceof Api.UpdateNewChannelMessage) {
           update as Api.UpdateNewChannelMessage;
-          //todo
-          //using Updates.UpdateNewChannelMessage
-          return update;
+          let res = new Updates.UpdateNewChannelMessage();
+          await res.init(update, SnakeClient);
+          return res;
         }
         if (update instanceof Api.UpdatePinnedMessages) {
           update as Api.UpdatePinnedMessages;

@@ -8,6 +8,7 @@
 
 import { Snake } from '../../client';
 import { Api } from 'telegram';
+import BotError from '../../Context/Error';
 import * as Updates from '../../Update';
 
 export interface editBannedMoreParams {
@@ -32,6 +33,16 @@ export async function EditBanned(
   more?: editBannedMoreParams
 ) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.editBanned`,
+        '\x1b[0m'
+      );
+    }
     let permissions = {
       untilDate: more?.untilDate || 0,
       viewMessages: more?.viewMessages || true,
@@ -56,13 +67,24 @@ export async function EditBanned(
     );
     return await generateResults(results, snakeClient);
   } catch (error) {
-    return snakeClient._handleError(
-      error,
-      `telegram.editBanned(${chatId},${userId}${more ? ',' + JSON.stringify(more) : ''})`
-    );
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.editBanned';
+    botError.functionArgs = `${chatId},${userId}${more ? ',' + JSON.stringify(more) : ''}`;
+    throw botError;
   }
 }
 async function generateResults(results: Api.TypeUpdates, SnakeClient: Snake) {
+  let mode = ['debug', 'info'];
+  if (mode.includes(SnakeClient.logger)) {
+    console.log(
+      '\x1b[31m',
+      `[${
+        SnakeClient.connectTime
+      }] - [${new Date().toLocaleString()}] - Creating results telegram.editBanned`,
+      '\x1b[0m'
+    );
+  }
   if (results instanceof Api.Updates) {
     results as Api.Updates;
     if (results.updates.length > 0) {
@@ -76,9 +98,9 @@ async function generateResults(results: Api.TypeUpdates, SnakeClient: Snake) {
         }
         if (update instanceof Api.UpdateNewChannelMessage) {
           update as Api.UpdateNewChannelMessage;
-          //todo
-          // using Updates.UpdateNewChannelMessage
-          return update;
+          let res = new Updates.UpdateNewChannelMessage();
+          await res.init(update, SnakeClient);
+          return res;
         }
       }
     }

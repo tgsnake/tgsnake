@@ -67,6 +67,16 @@ export class From {
       this.id = peer;
     }
     if (this.id) {
+      let mode = ['debug', 'info'];
+      if (mode.includes(snakeClient.logger)) {
+        console.log(
+          '\x1b[31m',
+          `[${snakeClient.connectTime}] - [${new Date().toLocaleString()}] - Creating chat ${
+            this.id
+          }`,
+          '\x1b[0m'
+        );
+      }
       let entity = await snakeClient.telegram.getEntity(this.id, true);
       this.id = entity.id;
       this.username = entity.username;

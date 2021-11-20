@@ -445,8 +445,8 @@ export async function convertReplyMarkup(
           btn as Api.KeyboardButtonUrlAuth;
           let me = await SnakeClient.telegram.getMe();
           let ee: BotLoginUrl = {
-            id: me.userId,
-            accessHash: me.accessHash,
+            id: me.id!,
+            accessHash: me.accessHash!,
           };
           let dd: loginUrl = {
             requestWriteAccess: true,

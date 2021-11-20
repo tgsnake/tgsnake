@@ -15,6 +15,7 @@ import BigInt, { BigInteger, isInstance } from 'big-integer';
 import { toBigInt, toNumber } from '../../Utils/ToBigInt';
 import { Snake } from '../../client';
 import * as fs from 'fs';
+import BotError from '../../Context/Error';
 export class ResultGetEntity {
   type?: string;
   self?: boolean;
@@ -221,11 +222,26 @@ export class ResultGetEntity {
     }
   }
 }
-export async function GetEntity(snakeClient: Snake, chatId: string | number, useCache?: boolean) {
+export async function GetEntity(
+  snakeClient: Snake,
+  chatId: string | number,
+  useCache?: boolean
+): Promise<ResultGetEntity> {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.getEntity`,
+        '\x1b[0m'
+      );
+    }
     if (useCache) {
       if (typeof chatId == 'number') {
         if (snakeClient.entityCache.get(Number(chatId))) {
+          //@ts-ignore
           return snakeClient.entityCache.get(Number(chatId));
         }
       }
@@ -235,6 +251,10 @@ export async function GetEntity(snakeClient: Snake, chatId: string | number, use
     snakeClient.entityCache.set(Number(r.id), r);
     return r;
   } catch (error) {
-    return snakeClient._handleError(error, `telegram.getEntity(${chatId},${useCache})`);
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.getEntity';
+    botError.functionArgs = `${chatId},${useCache}`;
+    throw botError;
   }
 }

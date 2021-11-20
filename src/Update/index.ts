@@ -5,7 +5,8 @@
 //
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
-
+import { ResultGetEntity } from '../Telegram/Users/GetEntity';
+import { MessageContext } from '../Context/MessageContext';
 import { UpdateChatParticipants } from './UpdateChatParticipants';
 import { UpdateChatUserTyping } from './UpdateChatUserTyping';
 import { UpdateDeleteMessages } from './UpdateDeleteMessages';
@@ -16,8 +17,11 @@ import { UpdateShortMessage } from './UpdateShortMessage';
 import { UpdateShortSentMessage } from './UpdateShortSentMessage';
 import { UpdateUserStatus } from './UpdateUserStatus';
 import { UpdateUserTyping } from './UpdateUserTyping';
+import { UpdateNewChannelMessage } from './UpdateNewChannelMessage';
 
 type TypeUpdate =
+  | ResultGetEntity
+  | MessageContext
   | UpdateChatParticipants
   | UpdateChatUserTyping
   | UpdateDeleteMessages
@@ -27,8 +31,24 @@ type TypeUpdate =
   | UpdateShortMessage
   | UpdateShortSentMessage
   | UpdateUserStatus
-  | UpdateUserTyping;
-
+  | UpdateUserTyping
+  | UpdateNewChannelMessage;
+interface Context {
+  '*': TypeUpdate;
+  connected: ResultGetEntity;
+  message: UpdateNewMessage | UpdateNewChannelMessage | UpdateShortMessage | UpdateShortChatMessage;
+  UpdateChatParticipants: UpdateChatParticipants;
+  UpdateChatUserTyping: UpdateUserTyping;
+  UpdateDeleteMessages: UpdateDeleteMessages;
+  UpdateMessageID: UpdateMessageID;
+  UpdateNewMessage: UpdateNewMessage;
+  UpdateShortChatMessage: UpdateShortChatMessage;
+  UpdateShortMessage: UpdateShortMessage;
+  UpdateShortSentMessage: UpdateShortSentMessage;
+  UpdateUserStatus: UpdateUserStatus;
+  UpdateUserTyping: UpdateUserTyping;
+  UpdateNewChannelMessage: UpdateNewChannelMessage;
+}
 export {
   TypeUpdate,
   UpdateChatParticipants,
@@ -41,4 +61,6 @@ export {
   UpdateShortSentMessage,
   UpdateUserStatus,
   UpdateUserTyping,
+  UpdateNewChannelMessage,
+  Context,
 };

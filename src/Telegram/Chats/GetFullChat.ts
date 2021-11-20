@@ -8,9 +8,19 @@
 
 import { Api } from 'telegram';
 import { Snake } from '../../client';
-
+import BotError from '../../Context/Error';
 export async function GetFullChat(snakeClient: Snake, chatId: number | string) {
   try {
+    let mode = ['debug', 'info'];
+    if (mode.includes(snakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          snakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Running telegram.getFullChat`,
+        '\x1b[0m'
+      );
+    }
     let type = await snakeClient.telegram.getEntity(chatId);
     if (type.type == 'channel') {
       return snakeClient.client.invoke(
@@ -26,6 +36,10 @@ export async function GetFullChat(snakeClient: Snake, chatId: number | string) {
       );
     }
   } catch (error) {
-    return snakeClient._handleError(error, `telegram.getFullChat(${chatId})`);
+    let botError = new BotError();
+    botError.error = error;
+    botError.functionName = 'telegram.getFullChat';
+    botError.functionArgs = `${chatId}`;
+    throw botError;
   }
 }

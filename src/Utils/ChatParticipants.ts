@@ -210,6 +210,16 @@ export class ChatParticipants {
       | Api.channels.ChannelParticipant,
     SnakeClient: Snake
   ) {
+    let mode = ['debug', 'info'];
+    if (mode.includes(SnakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${
+          SnakeClient.connectTime
+        }] - [${new Date().toLocaleString()}] - Creating ChatParticipants`,
+        '\x1b[0m'
+      );
+    }
     if (participant instanceof Api.ChatParticipants) {
       return await this._ChatParticipants(participant as Api.ChatParticipants, SnakeClient);
     }

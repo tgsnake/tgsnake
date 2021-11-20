@@ -10,16 +10,15 @@ import { Update } from './Update';
 import { Api } from 'telegram';
 import { Snake } from '../client';
 import { Telegram } from '../Telegram';
-import { Entities } from '../Utils/Entities';
-import { Media } from '../Utils/Media';
 import { MessageContext } from '../Context/MessageContext';
-export class UpdateShortSentMessage extends Update {
+
+export class UpdateNewChannelMessage extends Update {
   message!: MessageContext;
   constructor() {
     super();
-    this['_'] = 'UpdateShortSentMessage';
+    this['_'] = 'UpdateNewChannelMessage';
   }
-  async init(update: Api.UpdateShortSentMessage, SnakeClient: Snake) {
+  async init(update: Api.UpdateNewChannelMessage, SnakeClient: Snake) {
     let mode = ['debug', 'info'];
     if (mode.includes(SnakeClient.logger)) {
       console.log(
@@ -30,26 +29,16 @@ export class UpdateShortSentMessage extends Update {
         '\x1b[0m'
       );
     }
-    this.message = new MessageContext();
     this.telegram = SnakeClient.telegram;
-    this.message.out = update.out;
-    this.message.id = update.id;
-    this.message.date = update.date;
-    this.message.ttlPeriod = update.ttlPeriod;
-    if (update.media) {
-      let media = new Media();
-      await media.encode(await media.parseMedia(update.media));
-      this.message.media = media;
+    this.message = new MessageContext();
+    if (update.message instanceof Api.Message) {
+      await this.message.init(update.message as Api.Message, SnakeClient);
+      return this;
     }
-    if (update.entities) {
-      let temp: Entities[] = [];
-      update.entities.forEach((item) => {
-        temp.push(new Entities(item!));
-      });
-      this.message.entities = temp;
+    if (update.message instanceof Api.MessageService) {
+      await this.message.init(update.message as Api.MessageService, SnakeClient);
+      return this;
     }
-    this.message.telegram = this.telegram;
-    this.message.SnakeClient = SnakeClient;
     return this;
   }
 }
