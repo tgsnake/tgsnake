@@ -81,7 +81,7 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
       if (ctx instanceof ResultGetEntity) h.push('connected');
       if (ctx instanceof MessageContext) h.push('message');
       let msg = [
-        'UpdateNewMesssage',
+        'UpdateNewMessage',
         'UpdateShortMessage',
         'UpdateShortChatMessage',
         'UpdateNewChannelMessage',
@@ -124,7 +124,7 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
     return this.use(async (context, next) => {
       let ctx = context 
       let msg = [
-        'UpdateNewMesssage',
+        'UpdateNewMessage',
         'UpdateShortMessage',
         'UpdateShortChatMessage',
         'UpdateNewChannelMessage',
