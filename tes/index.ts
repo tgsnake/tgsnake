@@ -13,9 +13,12 @@ const {Api} = GramJs
 const bot = new Snake() 
 bot.on("message",(ctx)=>{ 
   //console.log(ctx.SnakeClient.entityCache)
-  return ctx.telegram.readHistory(ctx.message.chat.id)
+  return ctx.telegram.readHistory(ctx.chat.id)
 })
 bot.cmd("start",(ctx)=>{
   ctx.reply("hai")
+})
+bot.cmd("help",(ctx)=>{
+  ctx.reply("help")
 })
 bot.run()

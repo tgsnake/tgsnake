@@ -36,7 +36,7 @@ type TypeUpdate =
 interface Context {
   '*': TypeUpdate;
   connected: ResultGetEntity;
-  message: UpdateNewMessage | UpdateNewChannelMessage | UpdateShortMessage | UpdateShortChatMessage;
+  message: MessageContext;
   UpdateChatParticipants: UpdateChatParticipants;
   UpdateChatUserTyping: UpdateUserTyping;
   UpdateDeleteMessages: UpdateDeleteMessages;

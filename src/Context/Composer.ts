@@ -73,7 +73,7 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
     this.handler = concat(this.handler, flatten(composer));
     return composer;
   }
-  on<K extends keyof Context>(filter: K, ...middleware: Array<MiddlewareFn<Context[K]>>) {
+  on<K extends keyof Context>(filter: K, ...middleware: Array<MiddlewareFn<Context[K]>>):Composer{
     return this.filter((ctx) => {
       let filters = toArray(filter);
       let h: Array<string> = [];
@@ -81,7 +81,7 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
       if (ctx instanceof ResultGetEntity) h.push('connected');
       if (ctx instanceof MessageContext) h.push('message');
       let msg = [
-        'UpdateNewMsssage',
+        'UpdateNewMesssage',
         'UpdateShortMessage',
         'UpdateShortChatMessage',
         'UpdateNewChannelMessage',
@@ -105,7 +105,7 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
       }
     }, ...middleware);
   }
-  filter(predicate, ...middleware) {
+  filter(predicate, ...middleware):Composer{
     const composer = new Composer(...middleware);
     this.branch(predicate, composer, pass);
     return composer;
@@ -121,7 +121,20 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
     return composer;
   }
   lazy(middlewareFactory) {
-    return this.use(async (ctx, next) => {
+    return this.use(async (context, next) => {
+      let ctx = context 
+      let msg = [
+        'UpdateNewMesssage',
+        'UpdateShortMessage',
+        'UpdateShortChatMessage',
+        'UpdateNewChannelMessage',
+      ];
+      if(context["_"]){
+        if(msg.includes(context["_"])){ 
+          //@ts-ignore
+          ctx = context.message as MessageContext
+        }
+      } 
       const middleware = await middlewareFactory(ctx);
       const arr = toArray(middleware);
       await flatten(new Composer(...arr))(ctx, next);
@@ -144,65 +157,40 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
   command(
     trigger: MaybeArray<string | RegExp>,
     ...middleware: Array<MiddlewareFn<MessageContext>>
-  ) {
-    let t = toArray(trigger);
-    return this.on('message', (ctx) => {
-      t.forEach((cmd: string | RegExp) => {
-        const { text } = ctx.message;
-        const { aboutMe } = ctx.SnakeClient;
-        if (typeof cmd == 'string') {
-          cmd as string;
+  ):Composer {
+    let key = toArray(trigger); 
+    let filterCmd = (ctx) => {
+      const {text} = ctx
+      const {aboutMe} = ctx.SnakeClient 
+      for(let cmd of key){
+        if(typeof cmd == 'string'){
+          cmd as string 
           let r = new RegExp(
             `^[${this.prefix}](${cmd})${aboutMe.username ? `(@${aboutMe.username})?` : ``}$`,
             'i'
-          );
-          if (r.test(String(text))) {
-            let next = (context: MessageContext, index: number) => {
-              return () => {
-                if (middleware[index + 1]) {
-                  return middleware[index + 1](context, next(context, index + 1));
-                }
-              };
-            };
-            middleware[0](ctx.message as MessageContext, next(ctx.message as MessageContext, 0));
-          }
-        }
-        if (cmd instanceof RegExp) {
-          cmd as RegExp;
-          if (cmd.test(String(text))) {
-            let next = (context: MessageContext, index: number) => {
-              return () => {
-                if (middleware[index + 1]) {
-                  return middleware[index + 1](context, next(context, index + 1));
-                }
-              };
-            };
-            middleware[0](ctx.message as MessageContext, next(ctx.message as MessageContext, 0));
-          }
-        }
-      });
-    });
+          ); 
+          return r.test(String(text))
+        } 
+        if(cmd instanceof RegExp){
+          cmd as RegExp 
+          return cmd.test(String(text))
+        } 
+      }
+      return false
+    }
+    return this.on("message").filter(filterCmd,...middleware)
   }
-  cmd(trigger: MaybeArray<string | RegExp>, ...middleware: Array<MiddlewareFn<MessageContext>>) {
+  cmd(trigger: MaybeArray<string | RegExp>, ...middleware: Array<MiddlewareFn<MessageContext>>):Composer {
     return this.command(trigger, ...middleware);
   }
-  hears(trigger: MaybeArray<string | RegExp>, ...middleware: Array<MiddlewareFn<MessageContext>>) {
+  hears(trigger: MaybeArray<string | RegExp>, ...middleware: Array<MiddlewareFn<MessageContext>>):Composer {
     let tgr = triggerFn(trigger);
-    return this.on('message', (ctx) => {
-      const { text } = ctx.message;
-      if (match(ctx, String(text), tgr)) {
-        let next = (context: MessageContext, index: number) => {
-          return () => {
-            if (middleware[index + 1]) {
-              return middleware[index + 1](context, next(context, index + 1));
-            }
-          };
-        };
-        middleware[0](ctx.message as MessageContext, next(ctx.message as MessageContext, 0));
-      }
-    });
+    return this.on("message").filter((ctx)=>{
+      const { text } = ctx.message; 
+      return match(ctx, String(text), tgr)
+    },...middleware)
   }
-  hear(trigger: MaybeArray<string | RegExp>, ...middleware: Array<MiddlewareFn<MessageContext>>) {
+  hear(trigger: MaybeArray<string | RegExp>, ...middleware: Array<MiddlewareFn<MessageContext>>):Composer{
     return this.hears(trigger, ...middleware);
   }
 }
