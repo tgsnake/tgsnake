@@ -1,32 +1,32 @@
---- 
-title : getMessagesViews 
---- 
-## Overview 
-Get and increase the view counter of a message sent or forwarded from a channel. 
-## Parameters 
+---
+title : getMessagesViews
+---
+## Overview
+Get and increase the view counter of a message sent or forwarded from a channel.
+## Parameters
 ```ts 
 ctx.telegram.getMessagesViews(chatId,messageId,increment)
 ```
-- `chatId` (_number|string_) 
+- `chatId` (_number|string_)
     - Where the message was found.
-- `messageId` (_number[]_) 
+- `messageId` (_number[]_)
     - IDs of message.
-- `increment` (_boolean_) 
-    - Whether to mark the message as viewed and increment the view counter 
-## Example 
+- `increment` (_boolean_)
+    - Whether to mark the message as viewed and increment the view counter
+## Example
 ```ts headlight=2
 bot.command("getMessagesViews",async (ctx)=>{
     let results = await ctx.telegram.getMessagesViews(ctx.chat.id,[ctx.id]) 
     console.log(results) 
 })
 ```
-## Possible Error 
-| code | type | description | 
-| :---: | :---: | :------:| 
-| 400 | CHANNEL_INVALID | The provided channel is invalid | 
-| 400 | CHANNEL_PRIVATE | You haven't joined this channel/supergroup | 
-| 400 | CHAT_ID_INVALID | The provided chat id is invalid | 
-| 400 | MSG_ID_INVALID | Invalid message ID provided | 
-| 400 | PEER_ID_INVALID | The provided peer id is invalid | 
+## Possible Error
+| code |       type        |                description                 |
+|:----:|:-----------------:|:------------------------------------------:|
+| 400  |  CHANNEL_INVALID  |      The provided channel is invalid       |
+| 400  |  CHANNEL_PRIVATE  | You haven't joined this channel/supergroup |
+| 400  | CHAT_ID_INVALID |      The provided chat id is invalid       |
+| 400  | MSG_ID_INVALID  |        Invalid message ID provided         |
+| 400  | PEER_ID_INVALID |      The provided peer id is invalid       |
 
 ## Bot can't use this method.

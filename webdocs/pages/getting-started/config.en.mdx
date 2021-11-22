@@ -1,60 +1,60 @@
---- 
-title : Using tgsnake.config.js 
---- 
+---
+title : Menggunakan tgsnake.config.js
+---
 import {TabGroup,TabContent} from "@/components/Tab"
 
-This is a config file for tgsnake. You can pass all option in there to make your index file is clean. 
+Ini adalah file konfigurasi untuk tgsnake. Kamu bisa melewati semua opsi di sana agar file indeks kamu bersih.
 
-## Option 
-We have a many option then if you use them together it will make your index file long. The options are:
-| name | type | description | 
-| :---: | :----: |:----------: | 
-| logger | string | Set Logger level for gramjs. Default is "none". | 
-| apiHash | string | An api_hash got from [my.telegram.org](my.telegram.org) | 
-| apiId | number | An api_id got from [my.telegram.org](my.telegram.org)
-| session | string | String sessions | 
-| botToken | string | Bot Token from botFather. If you need to login as bot this required | 
-| tgSnakeLog | boolean | If set, tgsnake will showing the message in console like welcome to tgsnake or anything |  
-| sessionName | string | To save the string session. | 
-| storeSession | boolean | Using store session | 
-| connection | any | The connection instance to be used when creating a new connection to the servers. It must be a type. Defaults to  ConnectionTCPFull on Node and ConnectionTCPObfuscated on browsers. | 
-| useIPV6 | boolean | Whether to connect to the servers through IPv6 or not. By default this is false. | 
-| timeout | number | The timeout in seconds to be used when connecting. This does nothing for now. | 
-| requestRetries | number | How many times a request should be retried. Request are retried when Telegram is having internal issues (due to INTERNAL error or RPC_CALL_FAIL error), when there is a errors.FloodWaitError less than floodSleepThreshold, or when there's a migrate error. defaults to 5. | 
-| connectionRetries | number | How many times the reconnection should retry, either on the initial connection or when Telegram disconnects us. May be set to a negative or undefined value for infinite retries, but this is not recommended, since the program can get stuck in an infinite loop. defaults to 5 | 
-| proxy | ProxyInterface | Experimental proxy to be used for the connection. (only supports MTProxies) | 
-| downloadRetries | number | How many times we should retry borrowing a sender from another DC when it fails. defaults to 5 |  
-| retryDelay | number | The delay in milliseconds to sleep between automatic reconnections. defaults to 1000 | 
-| autoReconnect | boolean | Whether reconnection should be retried connection_retries times automatically if Telegram disconnects us or not. defaults to true | 
-| sequentialUpdates | boolean | does nothing for now | 
-| floodSleepThreshold | number | The threshold below which the library should automatically sleep on flood wait and slow mode wait errors (inclusive). For instance, if a FloodWaitError for 17s occurs and floodSleepThreshold is 20s, the library will sleep automatically. If the error was for 21s, it would raise FloodWaitError instead. defaults to 60 sec. | 
-| deviceModel | string | Device model to be sent when creating the initial connection. Defaults to os.type().toString(). | 
-| systemVersion | string | System version to be sent when creating the initial connection. defaults to os.release().toString() -. | 
-| appVersion | string | App version to be sent when creating the initial connection. Defaults to 1.0. | 
-| langCode | string | Language code to be sent when creating the initial connection. Defaults to 'en'. |
-| systemLangCode | string | System lang code to be sent when creating the initial connection. Defaults to 'en'. | 
-| baseLogger | string | Does nothing for now. don't change. | 
-| useWSS | boolean | Whether to try to connect over Wss (or 443 port) or not. |   
+## Opsi
+Kita memiliki banyak opsi jika kamu menggunakannya bersamaan ini akan membuat file indeksmu panjang. Opsinya diantaranya:
+|        nama         |      tipe      |                                                                                                                                                              deskripsi                                                                                                                                                              |
+|:-------------------:|:--------------:|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+|       logger        |     string     |                                                                                                                                       Mengatur level logging untuk gramjs. Defaultnya "none".                                                                                                                                       |
+|       apiHash       |     string     |                                                                                                                                Sebuah api_hash yang didapat dari [my.telegram.org](my.telegram.org)                                                                                                                                 |
+|        apiId        |     number     |                                                                                                                                 Sebuah api_id yang didapat dari [my.telegram.org](my.telegram.org)                                                                                                                                  |
+|       session       |     string     |                                                                                                                                                             Sesi string                                                                                                                                                             |
+|      botToken       |     string     |                                                                                                                             Token Bot dari botFather. Ini diperlukan jika kamu butuh login sebagai bot                                                                                                                              |
+|     tgSnakeLog      |    boolean     |                                                                                                              Jika diatur, tgsnake akan menampilkan pesan di konsol seperti selamat datang di tgsnake atau yang lainnya                                                                                                              |
+|     sessionName     |     string     |                                                                                                                                                    Untuk menyimpan sesi string.                                                                                                                                                     |
+|    storeSession     |    boolean     |                                                                                                                                                      Menggunakan store session                                                                                                                                                      |
+|     connection      |      any       |                                                                             Instansi koneksi yang akan digunakan saat membuat konekasi baru ke server. Harus berupa type. Defaultnya ConnectionTCPFull di Node dan ConnectionTCPObfuscated di browser.                                                                              |
+|       useIPV6       |    boolean     |                                                                                                                            Apakan hubungkan ke server melalui IPv6 atau tidak. Secara default ini false.                                                                                                                            |
+|       timeout       |     number     |                                                                                                               Batas waktu dalam detik untuk digunakan saat menghubungkan. Ini tidak melakukan apapun untuk sekarang.                                                                                                                |
+|   requestRetries    |     number     |                 Berapa kali permintaan yang harus di coba lagi. Permintaan di coba lagi ketika Telegram mengalami masalah internal (karena error INTERNAL atau error RPC_CALL_FAIL), ketika ada errors.FloodWaitError yang lebih kecil dari floodSleepThresold, atau ketika ada kesalahan migrasi. defaultnya 5.                  |
+|  connectionRetries  |     number     |              Berapa kali pengkoneksian ulang harus di coba lagi, baik pada koneksi awal atau ketika Telegram memutuskan kita. Dapat disetel ke nilai negatif atau tidak terdefinisi untuk percobaan ulang tak terbatas, tetapi ini tidak disarankan, karena program dapat stuck dalam loop tak terbatas. defaultnya 5               |
+|        proxy        | ProxyInterface |                                                                                                                        Proxy experimental yang akan digunakan untuk pengkoneksian. (hanya mendukung MTProxy)                                                                                                                        |
+|   downloadRetries   |     number     |                                                                                                                      Berapa kali kita harus mencoba meminjam pengirim dari DC lain ketika gagal. defaultnya 5                                                                                                                       |
+|     retryDelay      |     number     |                                                                                                                         Penundaan dalam milidetik untuk sleep diantara rekoneksi otomatis. defaultnya 1000                                                                                                                          |
+|    autoReconnect    |    boolean     |                                                                                              Apakah rekoneksi harus dicoba lagi sebanyak connection_retries secara otomatis jika Telegram memutuskan kita atau tidak. defaultnya true                                                                                               |
+|  sequentialUpdates  |    boolean     |                                                                                                                                                tidak melakukan apapun untuk sekarang                                                                                                                                                |
+| floodSleepThreshold |     number     | Ambang dibawah yang mana library harus sleep otomatis saat flood wait dan error slow mode wait (termasuk). Sebagai contoh, jika FloodWaitError terjadi selama 17d dan floodSleepThresold 20d, library akan sleep secara otomatis. Jika errornya selama 21d, akan me-raise FloodWaitError sebagai penggantinya. defaultnya 60 detik. |
+|     deviceModel     |     string     |                                                                                                                   Model perangkat yang akan dikirim ketika membuat koneksi awal. Defaultnya os.type().toString().                                                                                                                   |
+|    systemVersion    |     string     |                                                                                                                  Versi sistem yang akan dikirim ketika membuat koneksi awal. defaultnya os.release().toString() -.                                                                                                                  |
+|     appVersion      |     string     |                                                                                                                            Versi aplikasi yang akan dikirim ketika membuat koneksi awal. Defaultnya 1.0.                                                                                                                            |
+|      langCode       |     string     |                                                                                                                             Kode bahasa yang akan dikirim ketika membuat koneksi awal. Defaultnya 'en'.                                                                                                                             |
+|   systemLangCode    |     string     |                                                                                                                         Kode bahasa sistem yang akan dikirim ketika membuat koneksi awal. Defaultnya 'en'.                                                                                                                          |
+|     baseLogger      |     string     |                                                                                                                                         Tidak melakukan apapun untuk sekarang. jangan ubah.                                                                                                                                         |
+|       useWSS        |    boolean     |                                                                                                                                Apakah mencoba menghubungkan melalui Wss (atau port 443) atau tidak.                                                                                                                                 |
 
-## Example Using 
-First you must to create a `tgsnake.config.js` in root directory (where package.json is available).   
-Then copy this code 
+## Contoh Penggunaan
+Pertama kamu harus membuat `tgsnake.config.js` di direktory root (dimana package.json tersedia).   
+Kemudian salin kode ini
 ```js
 // tgsnake.config.js
 module.exports = {
-    apiHash : "your api hash" 
-    // fill with available options in here.
+    apiHash : "api hash kamu" 
+    // isi opsi yang tersedia disini.
 }
 ```
 
-Then the index file should be :  
+Kemudian file indeks seharusnya :
 <TabGroup>
     <TabContent name="javascript">
     ```ts headlight=2 
     // index.js
     const {Snake} = require("snake")
-    const bot = new Snake() // don't pass the option in here because you already pass in config file.
-    // ...your code...
+    const bot = new Snake() // jangan isi opsi disini karena kamu sudah mengisinya di file config.
+    // ...kode kamu...
     bot.run()
     ```
     </TabContent>
@@ -62,11 +62,11 @@ Then the index file should be :
     ```ts headlight=2 
     // index.ts
     import {Snake} from "snake" 
-    const bot = new Snake() // don't pass the option in here because you already pass in config file.
-    // ...your code...
+    const bot = new Snake() // jangan isi opsi disini karena kamu sudah mengisinya di file config.
+    // ...kode kamu...
     bot.run()
     ```
     </TabContent>
-</TabGroup> 
+</TabGroup>
 
-Done. 
+Selesai. 

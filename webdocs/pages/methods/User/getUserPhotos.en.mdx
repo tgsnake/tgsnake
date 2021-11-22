@@ -1,33 +1,33 @@
---- 
-title : getUserPhotos 
---- 
-## Overview 
-Getting all user profile photos. 
-## Parameters 
+---
+title : getUserPhotos
+---
+## Overview
+Getting all user profile photos.
+## Parameters
 ```ts 
 ctx.telegram.getUserPhotos(chatId,more)
 ```
-- `chatId` (_number|string_) 
+- `chatId` (_number|string_)
     - id of user.
 - `more` (_object_)
-    - `offset` (_number_) 
+    - `offset` (_number_)
         - Number of list elements to be skipped.
-    - `maxId` (_BigInteger_) 
+    - `maxId` (_BigInteger_)
         - If a positive value was transferred, the method will return only photos with IDs less than the set one.
-    - `limit` (_number_) 
+    - `limit` (_number_)
         - Number of list elements to be returned
-## Example 
+## Example
 ```ts headlight=2
 bot.command("getUserPhotos",async (ctx)=>{
     let results = await ctx.telegram.getUserPhotos(ctx.from.id)
     console.log(results)
 })
 ```
-## Possible Error 
+## Possible Error
 
-| code | type | description | 
-| :---: | :---: | :------:| 
-| 400 | MAX_ID_INVALID | The provided max ID is invalid | 
-| 400 | USER_ID_INVALID | The provided user ID is invalid | 
+| code |       type        |           description           |
+|:----:|:-----------------:|:-------------------------------:|
+| 400  | MAX_ID_INVALID  | The provided max ID is invalid  |
+| 400  | USER_ID_INVALID | The provided user ID is invalid |
 
 ## Bot can use this method.

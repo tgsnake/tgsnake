@@ -1,27 +1,27 @@
---- 
+---
 title : getChannels
---- 
-## Overview 
-Get info about channels/supergroups. 
-## Parameters 
+---
+## Overview
+Get info about channels/supergroups.
+## Parameters
 ```ts 
 ctx.telegram.getChannels(chatId)
 ```
-- `chatId` (_number[]|string[]_) 
+- `chatId` (_number[]|string[]_)
     - List of channel ids.
-## Example 
+## Example
 ```ts:index.ts headlight=2
 bot.command("getChannels",async (ctx) => {
     let results = await ctx.telegram.getChannels([ctx.chat.id]) 
     console.log(results)
 })
 ```
-## Possible Error 
+## Possible Error
 
-| code | type | description | 
-| :---: | :---: | :------:| 
-| 400 | CHANNEL_INVALID | The provided channel is invalid |
-| 400 | CHANNEL_PRIVATE | You haven't joined this channel/supergroup |
-| 400 | MSG_ID_INVALID | Invalid message ID provided | 
+| code |       type       |                description                 |
+|:----:|:----------------:|:------------------------------------------:|
+| 400  | CHANNEL_INVALID  |      The provided channel is invalid       |
+| 400  | CHANNEL_PRIVATE  | You haven't joined this channel/supergroup |
+| 400  | MSG_ID_INVALID |        Invalid message ID provided         |
 
 ## Bot can use this method.

@@ -1,26 +1,27 @@
 ---
-title : getAdminLog
+title: getAdminLog
 ---
-## Overview 
+
+## Overview
 Get the admin log of a channel/supergroup
-## Parameters 
+## Parameters
 ```ts 
 ctx.telegram.getAdminLog(chatId,more)
 ```
-- `chatId` (_number|string_) 
-    - Chat/Channel/Group id. 
-- `more` (_object_) 
-    - `q` (_string_) 
+- `chatId` (_number|string_)
+    - Chat/Channel/Group id.
+- `more` (_object_)
+    - `q` (_string_)
         - Search query, can be empty.
-    - `maxId` (_BigInteger_) 
+    - `maxId` (_BigInteger_)
         - Maximum ID of message to return.
-    - `minId` (_BigInteger_) 
+    - `minId` (_BigInteger_)
         - Minimum ID of message to return.
-    - `limit` (_number_) 
-        - Maximum number of results to return. 
-          
+    - `limit` (_number_)
+        - Maximum number of results to return.
+
     _below are the available filters. You can find the explanation [here](https://core.telegram.org/constructor/channelAdminLogEventsFilter)._
-    - `join` (_boolean_) 
+    - `join` (_boolean_)
     - `leave` (_boolean_)
     - `invite` (_boolean_)
     - `ban` (_boolean_)
@@ -36,7 +37,7 @@ ctx.telegram.getAdminLog(chatId,more)
     - `invites` (_boolean_)
     - `edit` (_boolean_)
     - `delete` (_boolean_)
-## Example 
+## Example
 ```ts headlight=3
 bot.command("getAdminLog",async (ctx) => {
     if(!ctx.chat.private){
@@ -45,14 +46,14 @@ bot.command("getAdminLog",async (ctx) => {
     }
 })
 ```
-## Possible Error 
+## Possible Error
 
-| code | type | description | 
-| :---: | :---: | :------:| 
-| 400 | CHANNEL_INVALID | The provided channel is invalid |
-| 400 | CHANNEL_PRIVATE | You haven't joined this channel/supergroup |
-| 400 | CHAT_ADMIN_REQUIRED | You must be an admin in this chat to do this | 
-| 403 | CHAT_WRITE_FORBIDDEN | You can't write in this chat | 
-| 400 | MSG_ID_INVALID | Invalid message ID provided | 
+| code |          type          |                 description                  |
+|:----:|:----------------------:|:--------------------------------------------:|
+| 400  |    CHANNEL_INVALID     |       The provided channel is invalid        |
+| 400  |    CHANNEL_PRIVATE     |  You haven't joined this channel/supergroup  |
+| 400  | CHAT_ADMIN_REQUIRED  | You must be an admin in this chat to do this |
+| 403  | CHAT_WRITE_FORBIDDEN |         You can't write in this chat         |
+| 400  |    MSG_ID_INVALID    |         Invalid message ID provided          |
 
 ## Bot can't use this method.

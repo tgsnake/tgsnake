@@ -1,23 +1,23 @@
---- 
+---
 title : sendDocument
---- 
-## Overview 
-Sending Document file location/url/buffer. 
-## Parameters 
+---
+## Overview
+Sending Document file location/url/buffer.
+## Parameters
 ```ts  
 ctx.telegram.sendDocument(chatId,document,more)
 ```
-- `chatId` (_number|string_) 
-    - Chat/Groups/Channel id. 
-- `document` (_string|Buffer_) 
-    - File Location/Url/Buffer 
+- `chatId` (_number|string_)
+    - Chat/Groups/Channel id.
+- `document` (_string|Buffer_)
+    - File Location/Url/Buffer
 - `more` (_[sendMediaMoreParams](/en/telegram/media/SendMedia#parameters)_)
-## Example 
+## Example
 ```ts headlight=2
 bot.command("doc",async (ctx) => {
     let results = await ctx.telegram.sendDocument(ctx.chat.id,"https://tgsnake.js.org/images/tgsnake.jpg")
 })
 ```
-## Possible Error 
+## Possible Error
 Same as [sendMedia](/methods/Media/sendMedia#possibleerror)
 ## Bot can use this method.

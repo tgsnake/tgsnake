@@ -1,44 +1,44 @@
 {
-  "deleteHistory" : {
-    "title" : "deleteHistory"
+  "deleteHistory": {
+    "title": "deleteHistory"
   },
-  "deleteMessages" : {
-    "title" : "deleteMessages"
+  "deleteMessages": {
+    "title": "deleteMessages"
   },
-  "deleteUserHistory" : {
-    "title" : "deleteUserHistory"
+  "deleteUserHistory": {
+    "title": "deleteUserHistory"
   },
-  "editMessage" : {
-    "title" : "editMessage"
+  "editMessage": {
+    "title": "editMessage"
   },
-  "exportMessageLink" : {
-    "title" : "exportMessageLink"
+  "exportMessageLink": {
+    "title": "exportMessageLink"
   },
-  "forwardMessages" : {
-    "title" : "forwardMessages"
+  "forwardMessages": {
+    "title": "forwardMessages"
   },
-  "getMessages" : {
-    "title" : "getMessages"
+  "getMessages": {
+    "title": "getMessages"
   },
-  "getMessagesViews" : {
-    "title" : "getMessagesViews"
+  "getMessagesViews": {
+    "title": "getMessagesViews"
   },
-  "pinMessage" : {
-    "title" : "pinMessage"
+  "pinMessage": {
+    "title": "pinMessage"
   },
-  "readHistory" : {
-    "title" : "readHistory"
+  "readHistory": {
+    "title": "readHistory"
   },
-  "readMentions" : {
-    "title" : "readMentions"
+  "readMentions": {
+    "title": "readMentions"
   },
   "readMessageContents": {
     "title": "readMessageContents"
   },
-  "sendMessage" : {
-    "title" : "sendMessage"
+  "sendMessage": {
+    "title": "sendMessage"
   },
-  "unpinAllMessages" : {
-    "title" : "unpinAllMessages"
+  "unpinAllMessages": {
+    "title": "unpinAllMessages"
   }
 }

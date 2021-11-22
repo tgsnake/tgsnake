@@ -1,7 +1,7 @@
 {
-  "editPhoto" : "editPhoto",
-  "sendDocument" : "sendDocument",
-  "sendPhoto" : "sendPhoto",
-  "sendSticker" : "sendSticker",
-  "sendMedia" : "sendMedia"
+  "editPhoto": "editPhoto",
+  "sendDocument": "sendDocument",
+  "sendPhoto": "sendPhoto",
+  "sendSticker": "sendSticker",
+  "sendMedia": "sendMedia"
 }
