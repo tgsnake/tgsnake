@@ -1,0 +1,63 @@
+---
+title : editBanned
+---
+## Overview
+Ban/unban/kick a user in a supergroup/channel.
+## Parameters
+```ts 
+ctx.telegram.editBanned(chatId,userId,more)
+```
+- `chatId` (_number|string_)
+    - Chat/Group/Channel id.
+- `userId` (_number|string_)
+    - User id.
+- `more` (_object_)
+    - `untilDate` (_number_)
+      - Validity of said permissions (it is considered forever any value less then 30 seconds or more then 366 days).
+    - `viewMessages` (_boolean_)
+      - If set, does not allow a user to view messages in a supergroup/channel/chat.
+    - `sendMessages` (_boolean_)
+      - If set, does not allow a user to send messages in a supergroup/chat.
+    - `sendMedia` (_boolean_)
+      - If set, does not allow a user to send any media in a supergroup/chat.
+    - `sendStickers` (_boolean_)
+      - If set, does not allow a user to send stickers in a supergroup/chat.
+    - `sendGifs` (_boolean_)
+      - If set, does not allow a user to send gifs in a supergroup/chat.
+    - `sendGames` (_boolean_)
+      - If set, does not allow a user to send games in a supergroup/chat.
+    - `sendInline` (_boolean_)
+      - If set, does not allow a user to use inline bots in a supergroup/chat.
+    - `sendPolls` (_boolean_)
+      - If set, does not allow a user to send stickers in a supergroup/chat.
+    - `changeInfo` (_boolean_)
+      - If set, does not allow any user to change the description of a supergroup/chat.
+    - `inviteUsers` (_boolean_)
+      - If set, does not allow any user to invite users in a supergroup/chat.
+    - `pinMessages` (_boolean_)
+      - If set, does not allow any user to pin messages in a supergroup/chat.
+    - `embedLinks` (_boolean_)
+      - If set, does not allow a user to embed links in the messages of a supergroup/chat.
+## Example
+```ts highlight=3
+bot.command("ban",async (ctx) => {
+  if((!ctx.chat.private) && ctx.replyToMessage){
+    let results = await ctx.telegram.editBanned(ctx.chat.id,ctx.replyToMessage.from.id) 
+    console.log(results)
+  }
+})
+```
+## Possible Error
+
+|                                  code                                  |           type            |                description                 |
+|:----------------------------------------------------------------------:|:-------------------------:|:------------------------------------------:|
+|                                  400                                   |      CHANNEL_INVALID      |      The provided channel is invalid       |
+|                                  400                                   |      CHANNEL_PRIVATE      | You haven't joined this channel/supergroup |
+| 400 CHAT_ADMIN_REQUIRED You must be an admin in this chat to do this |                           |                                            |
+|                                  403                                   |  CHAT_WRITE_FORBIDDEN   |        You can't write in this chat        |
+|                                  400                                   |     MSG_ID_INVALID      |        Invalid message ID provided         |
+|                                  400                                   | PINNED_DIALOGS_TOO_MUCH |          Too many pinned dialogs           |
+|                                  400                                   |   USER_ADMIN_INVALID    |            You're not an admin             |
+|                                  400                                   |     USER_ID_INVALID     |      The provided user ID is invalid       |
+
+## Bot can use this method.

@@ -1,0 +1,29 @@
+---
+title : deleteMessages
+---
+## Overview
+This method allow you to deletes messages by their identifiers
+## Parameters
+```ts 
+ctx.telegram.deleteMessages(chatId,mesageId)
+```
+- `chatId` (_number|string_)
+    - User or chat, where is the message located.
+- `messageId` (_number[]_)
+    - Message ID list which will be deleted.
+## Example
+```ts headlight=2
+bot.command("delete", async (ctx) => {
+    let results = await ctx.telegram.deleteMessages(ctx.chat.id,[ctx.id]) 
+    return console.log(results)
+})
+```
+## Possible Error
+| code |            type            |                                              description                                               |
+|:----:|:--------------------------:|:------------------------------------------------------------------------------------------------------:|
+| 400  |      CHANNEL_INVALID       |                                    The provided channel is invalid.                                    |
+| 400  |      CHANNEL_PRIVATE       |                              You haven't joined this channel/supergroup.                               |
+| 403  | MESSAGE_DELETE_FORBIDDEN | You can't delete one of the messages you tried to delete, most likely because it is a service message. |
+| 400  |      MSG_ID_INVALID      |                                      Invalid message ID provided.                                      |
+
+## Bot can use this method.

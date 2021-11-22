@@ -1,16 +1,16 @@
 {
-  "index" : {
-    "title" : "Perkenalan",
-    "type" : "nav",
-    "hidden" : true
+  "index": {
+    "title": "Perkenalan",
+    "type": "nav",
+    "hidden": true
   },
-  "release" : {
-    "title" : "Catatan Perubahan"
+  "release": {
+    "title": "Catatan Perubahan"
   },
-  "getting-started" : {
-    "title" : "Memulai"
+  "getting-started": {
+    "title": "Memulai"
   },
-  "methods" : {
-    "title" : "Metode"
+  "methods": {
+    "title": "Metode"
   }
 }
