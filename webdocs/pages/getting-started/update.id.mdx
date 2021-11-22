@@ -137,6 +137,35 @@ Ini perangkat tengah. Fungsi ini akan di jalankan lebih dahulu sebelum yang lain
     ```
     </TabContent>
 </TabGroup>
+Kamu dapat menggunakan `Composer` sebagai perangkat tengah.
+<TabGroup>
+    <TabContent name="javascript">
+    ```ts 
+    // index.js
+    const {Snake,Composer} = require("tgsnake")
+    const bot = new Snake() 
+    const startComposer = new Composer() 
+    startComposer.command("start",(ctx)=>{
+        ctx.reply("Welcome")
+    })
+    bot.use(startComposer.middleware())
+    bot.run() // jalankan 🐍
+    ```
+    </TabContent>
+    <TabContent name="typescript">
+    ```ts 
+    // index.ts
+    import {Snake,Composer} from "tgsnake"
+    const bot = new Snake() 
+    const startComposer = new Composer() 
+    startComposer.command("start",(ctx)=>{
+        ctx.reply("Welcome")
+    })
+    bot.use(startComposer.middleware())
+    bot.run() // jalankan 🐍
+    ```
+    </TabContent>
+</TabGroup>
 
 ## Menggunakan `on`
 Method ini untuk menerima event yang datang. Kami mengikuti gramjs [TypeUpdate](https://gram.js.org/beta/modules/tl_api.api.html#typeupdate)
@@ -152,8 +181,9 @@ Event tersedia :
     // index.js
     const {Snake} = require("tgsnake")
     const bot = new Snake() 
-    bot.on("message",(ctx)=>{
+    bot.use((ctx,next)=>{
         console.log(ctx)
+        return next()
     })
     bot.run() // jalankan 🐍
     ```
@@ -163,8 +193,9 @@ Event tersedia :
     // index.ts
     import {Snake} from "tgsnake"
     const bot = new Snake() 
-    bot.on("message",(ctx)=>{
+    bot.use((ctx,next)=>{
         console.log(ctx)
+        return next()
     })
     bot.run() // jalankan 🐍
     ```

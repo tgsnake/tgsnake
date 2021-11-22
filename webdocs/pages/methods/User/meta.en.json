@@ -1,8 +1,8 @@
 {
-  "getEntity": {
-    "title": "getEntity"
+  "getEntity" : {
+    "title" : "getEntity"
   },
-  "getUserPhotos": {
-    "title": "getUserPhotos"
+  "getUserPhotos" : {
+    "title" : "getUserPhotos"
   }
 }

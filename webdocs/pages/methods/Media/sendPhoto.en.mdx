@@ -1,18 +1,18 @@
----
-title : sendPhoto
----
-## Overview
-Sending photo with fileId/file location/url/buffer.
-## Parameters
+--- 
+title : sendPhoto 
+--- 
+## Overview 
+Sending photo with fileId/file location/url/buffer. 
+## Parameters 
 ```ts  
 ctx.telegram.sendPhoto(chatId,photo,more)
 ```
-- `chatId` (_number|string_)
-    - Chat/Groups/Channel id.
-- `photo` (_string|Buffer_)
-    - FileId/File Location/Url/Buffer
+- `chatId` (_number|string_) 
+    - Chat/Groups/Channel id. 
+- `photo` (_string|Buffer_) 
+    - FileId/File Location/Url/Buffer 
 - `more` (_[sendMediaMoreParams](/en/telegram/media/SendMedia#parameters)_)
-## Example
+## Example 
 ```ts highlight=3
 bot.on("message",async (ctx) => {
     if(ctx.media && ctx.media.type == "photo"){
@@ -21,6 +21,6 @@ bot.on("message",async (ctx) => {
     }
 })
 ```
-## Possible Error
+## Possible Error 
 Same as [sendMedia](/methods/Media/sendMedia#possibleerror)
 ## Bot can use this method.
