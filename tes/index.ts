@@ -18,7 +18,7 @@ bot.cmd("help",(ctx)=>{
   ctx.reply("help")
 })
 bot.cmd("getChatMember",async (ctx)=>{
-  let member = await ctx.telegram.getChatMember(ctx.chat.id,ctx.from.id) 
+  let member = await ctx.telegram.getChatMembers(ctx.chat.id) 
   console.log(member)
 })
 /*bot.catch(error => {
