@@ -19,8 +19,8 @@ interface MiddlewareObj<C> {
 }
 export type ErrorHandler = (
   error: BotError,
-  context: Updates.TypeUpdate | ResultGetEntity
-) => MaybePromise<Updates.TypeUpdate | ResultGetEntity>;
+  context: Updates.TypeUpdate
+) => MaybePromise<any>;
 type Middleware<C> = MiddlewareFn<C> | MiddlewareObj<C>;
 function flatten<C>(mw: Middleware<C>) {
   return typeof mw === 'function' ? mw : (ctx, next) => mw.middleware()(ctx, next);

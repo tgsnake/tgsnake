@@ -37,16 +37,25 @@ export class MainContext extends Composer {
       botError.functionArgs = ``
       throw botError
     }
+    let parsed:boolean = false 
+    let parsedUpdate:Updates.TypeUpdate
     if (update instanceof ResultGetEntity) {
       try {
-        return run(this.middleware(), update as ResultGetEntity);
+        parsed = true 
+        parsedUpdate = update as ResultGetEntity
+        await run(this.middleware(), update as ResultGetEntity); 
+        return update
       } catch (error) {
-        let botError = new BotError();
-        botError.error = error;
-        botError.functionName = 'handleUpdate';
-        botError.functionArgs = `[update data]`;
+        if(error instanceof BotError){ 
+          //@ts-ignore
+          return this.errorHandler(error as BotError, parsed ? parsedUpdate : update);
+        }
+        let botError = new BotError() 
+        botError.error = error 
+        botError.functionName = `handleUpdate`
+        botError.functionArgs = `[Update]` 
         //@ts-ignore
-        return this.errorHandler(botError, update);
+        return this.errorHandler(botError,parsed ? parsedUpdate : update);
       }
     } else { 
       if(update.className){
@@ -54,14 +63,21 @@ export class MainContext extends Composer {
           try {
             let jsonUpdate = new Updates[update.className]();
             await jsonUpdate.init(update, SnakeClient);
-            return run(this.middleware(), jsonUpdate);
-          } catch (error) {
-            let botError = new BotError();
-            botError.error = error;
-            botError.functionName = 'handleUpdate';
-            botError.functionArgs = `[update data]`;
+            parsed = true 
+            parsedUpdate = jsonUpdate
+            await run(this.middleware(), jsonUpdate); 
+            return jsonUpdate
+          } catch (error) { 
+            if(error instanceof BotError){ 
+              //@ts-ignore
+              return this.errorHandler(error as BotError, parsed ? parsedUpdate : update);
+            }
+            let botError = new BotError() 
+            botError.error = error 
+            botError.functionName = `handleUpdate`
+            botError.functionArgs = `[Update]` 
             //@ts-ignore
-            return this.errorHandler(botError, update);
+            return this.errorHandler(botError,parsed ? parsedUpdate : update);
           }
         } 
       }
