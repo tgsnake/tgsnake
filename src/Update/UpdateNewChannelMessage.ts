@@ -16,7 +16,7 @@ export class UpdateNewChannelMessage extends Update {
   message!: MessageContext;
   constructor() {
     super();
-    this['_'] = 'UpdateNewChannelMessage';
+    this['_'] = 'updateNewChannelMessage';
   }
   async init(update: Api.UpdateNewChannelMessage, SnakeClient: Snake) {
     let mode = ['debug', 'info'];

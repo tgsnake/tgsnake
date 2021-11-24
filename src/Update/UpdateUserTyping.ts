@@ -18,7 +18,7 @@ export class UpdateUserTyping extends Update {
   progress!: number;
   constructor() {
     super();
-    this['_'] = 'UpdateUserTyping';
+    this['_'] = 'updateUserTyping';
   }
   async init(update: Api.UpdateUserTyping, SnakeClient: Snake) {
     let mode = ['debug', 'info'];

@@ -20,7 +20,7 @@ export class UpdateChatParticipants extends Update {
   participants!: TypeChatParticipants;
   constructor() {
     super();
-    this['_'] = 'UpdateChatParticipants';
+    this['_'] = 'updateChatParticipants';
   }
   async init(update: Api.UpdateChatParticipants, SnakeClient: Snake) {
     let mode = ['debug', 'info'];

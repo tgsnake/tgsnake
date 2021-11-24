@@ -17,7 +17,7 @@ export class UpdateShortSentMessage extends Update {
   message!: MessageContext;
   constructor() {
     super();
-    this['_'] = 'UpdateShortSentMessage';
+    this['_'] = 'updateShortSentMessage';
   }
   async init(update: Api.UpdateShortSentMessage, SnakeClient: Snake) {
     let mode = ['debug', 'info'];

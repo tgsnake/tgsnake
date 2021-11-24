@@ -17,7 +17,7 @@ export class UpdateUserStatus extends Update {
   status!: string;
   constructor() {
     super();
-    this['_'] = 'UpdateUserStatus';
+    this['_'] = 'updateUserStatus';
   }
   async init(update: Api.UpdateUserStatus, SnakeClient: Snake) {
     let mode = ['debug', 'info'];

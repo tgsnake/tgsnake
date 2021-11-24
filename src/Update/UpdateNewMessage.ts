@@ -15,7 +15,7 @@ export class UpdateNewMessage extends Update {
   message!: MessageContext;
   constructor() {
     super();
-    this['_'] = 'UpdateNewMessage';
+    this['_'] = 'updateNewMessage';
   }
   async init(update: Api.UpdateNewMessage, SnakeClient: Snake) {
     let mode = ['debug', 'info'];

@@ -16,7 +16,7 @@ export class UpdateMessageID extends Update {
   randomId!: BigInteger;
   constructor() {
     super();
-    this['_'] = 'UpdateMessageID';
+    this['_'] = 'updateMessageID';
   }
   async init(update: Api.UpdateMessageID, SnakeClient: Snake) {
     let mode = ['debug', 'info'];

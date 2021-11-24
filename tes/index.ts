@@ -11,6 +11,10 @@ import * as fs from "fs"
 import BigInt from "big-integer"
 const {Api} = GramJs
 const bot = new Snake() 
+bot.use((ctx,next)=>{
+  console.log(ctx) 
+  return next()
+})
 bot.cmd("start",(ctx)=>{
   ctx.reply("hai")
 })
@@ -21,7 +25,5 @@ bot.cmd("getChatMember",async (ctx)=>{
   let member = await ctx.telegram.getChatMembers(ctx.chat.id) 
   console.log(member)
 })
-/*bot.catch(error => {
-  console.log(error.message)
-})*/
+
 bot.run()

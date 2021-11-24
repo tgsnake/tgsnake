@@ -79,15 +79,29 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
       let h: Array<string> = [];
       h.push('*');
       if (ctx instanceof ResultGetEntity) h.push('connected');
-      if (ctx instanceof MessageContext) h.push('message');
+      if (ctx instanceof MessageContext) {
+        ctx as MessageContext
+        h.push('message');
+        if(ctx.action){
+          h.push(ctx.action["_"])
+        }
+      }
       let msg = [
-        'UpdateNewMessage',
-        'UpdateShortMessage',
-        'UpdateShortChatMessage',
-        'UpdateNewChannelMessage',
+        'updateNewMessage',
+        'updateShortMessage',
+        'updateShortChatMessage',
+        'updateNewChannelMessage',
       ];
       if (ctx['_']) {
-        if (msg.includes(ctx['_'])) h.push('message');
+        if (msg.includes(ctx['_'])){ 
+          h.push('message');
+          if(ctx.message){
+            ctx.message as MessageContext 
+            if(ctx.message.action){
+              h.push(ctx.message.action["_"])
+            }
+          }
+        }
         h.push(ctx['_']);
         let logger = ['info', 'debug'];
         if (logger.includes(ctx.SnakeClient.logger)) {
@@ -99,7 +113,7 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
             '\x1b[0m'
           );
         }
-      }
+      } 
       for (let f of filters) {
         return h.includes(f);
       }
@@ -124,10 +138,10 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
     return this.use(async (context, next) => {
       let ctx = context 
       let msg = [
-        'UpdateNewMessage',
-        'UpdateShortMessage',
-        'UpdateShortChatMessage',
-        'UpdateNewChannelMessage',
+        'updateNewMessage',
+        'updateShortMessage',
+        'updateShortChatMessage',
+        'updateNewChannelMessage',
       ];
       if(context["_"]){
         if(msg.includes(context["_"])){ 

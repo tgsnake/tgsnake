@@ -20,7 +20,7 @@ export class UpdateShortChatMessage extends Update {
   message!: MessageContext;
   constructor() {
     super();
-    this['_'] = 'UpdateShortChatMessage';
+    this['_'] = 'updateShortChatMessage';
   }
   async init(update: Api.UpdateShortChatMessage, SnakeClient: Snake) {
     let mode = ['debug', 'info'];

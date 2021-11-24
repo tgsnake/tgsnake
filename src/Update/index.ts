@@ -36,18 +36,43 @@ type TypeUpdate =
 interface Context {
   '*': TypeUpdate;
   connected: ResultGetEntity;
+  // message update
   message: MessageContext;
-  UpdateChatParticipants: UpdateChatParticipants;
-  UpdateChatUserTyping: UpdateUserTyping;
-  UpdateDeleteMessages: UpdateDeleteMessages;
-  UpdateMessageID: UpdateMessageID;
-  UpdateNewMessage: UpdateNewMessage;
-  UpdateShortChatMessage: UpdateShortChatMessage;
-  UpdateShortMessage: UpdateShortMessage;
-  UpdateShortSentMessage: UpdateShortSentMessage;
-  UpdateUserStatus: UpdateUserStatus;
-  UpdateUserTyping: UpdateUserTyping;
-  UpdateNewChannelMessage: UpdateNewChannelMessage;
+  newChatMember : MessageContext;
+  migrateTo : MessageContext; 
+  chatCreate : MessageContext; 
+  editChatTitle : MessageContext; 
+  editChatPhoto : MessageContext; 
+  leftChatMember : MessageContext; 
+  channelCreate : MessageContext; 
+  migrateFrom : MessageContext; 
+  gameScore : MessageContext; 
+  paymentSentMe : MessageContext; 
+  paymentSent : MessageContext; 
+  phoneCall : MessageContext; 
+  customAction : MessageContext;
+  botAllowed : MessageContext; 
+  secureValuesSentMe : MessageContext; 
+  secureValuesSent : MessageContext; 
+  deleteChatPhoto : MessageContext; 
+  pinMessage : MessageContext; 
+  historyClear : MessageContext; 
+  screenshotTaken : MessageContext; 
+  contactSingUp : MessageContext;
+  groupCall : MessageContext; 
+  groupCallScheduled : MessageContext; 
+  // another update
+  updateChatParticipants: UpdateChatParticipants;
+  updateChatUserTyping: UpdateUserTyping;
+  updateDeleteMessages: UpdateDeleteMessages;
+  updateMessageID: UpdateMessageID;
+  updateNewMessage: UpdateNewMessage;
+  updateShortChatMessage: UpdateShortChatMessage;
+  updateShortMessage: UpdateShortMessage;
+  updateShortSentMessage: UpdateShortSentMessage;
+  updateUserStatus: UpdateUserStatus;
+  updateUserTyping: UpdateUserTyping;
+  updateNewChannelMessage: UpdateNewChannelMessage;
 }
 export {
   TypeUpdate,

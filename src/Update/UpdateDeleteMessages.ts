@@ -15,7 +15,7 @@ export class UpdateDeleteMessages extends Update {
   id!: number[];
   constructor() {
     super();
-    this['_'] = 'UpdateDeleteMessages';
+    this['_'] = 'updateDeleteMessages';
   }
   async init(update: Api.UpdateDeleteMessages, SnakeClient: Snake) {
     let mode = ['debug', 'info'];
