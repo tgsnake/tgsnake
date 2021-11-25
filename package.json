@@ -29,7 +29,7 @@
   "dependencies": {
     "axios": "0.24.0",
     "big-integer": "1.6.51",
-    "file-type": "16.5.3",
+    "file-type": "17.0.0",
     "prompts": "2.4.2",
     "telegram": "1.10.8",
     "tg-file-id": "1.1.2"
