@@ -14,9 +14,5 @@ updates:
       prefix: "npm"
     target-branch: "dev"
     ignore: 
-      - dependency-name: "typescript"
-      - dependency-name: "@types/node"
-      - dependency-name: "ts-node" 
-      - dependency-name: "nodemon" 
-      - dependency-name: "dotenv" 
-      - dependency-name: "unist-util-visit"
+      - dependency-name: "file-type"
+      

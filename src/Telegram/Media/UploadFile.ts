@@ -11,9 +11,9 @@ import { CustomFile } from 'telegram/client/uploads';
 import path from 'path';
 import fs from 'fs';
 import axios from 'axios';
-import {fileTypeFromBuffer,fileTypeFromFile} from 'file-type';
 import { Snake } from '../../client';
 import BotError from '../../Context/Error';
+import {fromBuffer,fromFile} from 'file-type';
 export interface uploadFileMoreParams {
   fileName?: string;
   workers?: number;
@@ -55,7 +55,7 @@ export async function UploadFile(
       );
     }
     if (Buffer.isBuffer(file)) {
-      let fileInfo = await fileTypeFromBuffer(file);
+      let fileInfo = await fromBuffer(file);
       //if (fileInfo) {
       let file_name = more?.fileName || `${Date.now() / 1000}.${fileInfo?.ext}`;
       let toUpload = new CustomFile(file_name, Buffer.byteLength(file), '', file);
@@ -78,7 +78,7 @@ export async function UploadFile(
         let file_name = more?.fileName || basename;
         let match = /\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/gim.exec(file_name);
         if (!match) {
-          let fileInfo = await fileTypeFromBuffer(basebuffer);
+          let fileInfo = await fromBuffer(basebuffer);
           if (fileInfo) {
             file_name = `${file_name}.${fileInfo.ext}`;
           }
@@ -96,7 +96,7 @@ export async function UploadFile(
         let file_name = more?.fileName || basename;
         let match = /\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/gim.exec(file_name);
         if (!match) {
-          let fileInfo = await fileTypeFromFile(file);
+          let fileInfo = await fromFile(file);
           if (fileInfo) {
             file_name = `${file_name}.${fileInfo.ext}`;
           }

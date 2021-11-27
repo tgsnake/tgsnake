@@ -6,9 +6,7 @@
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published. 
 
-import {Snake,Wizard,GramJs,Composer} from "../src" 
-import * as fs from "fs"
-import BigInt from "big-integer"
+const {Snake,Wizard,GramJs,Composer} = require("../lib")
 const {Api} = GramJs
 const bot = new Snake() 
 bot.on("callbackQuery",(ctx)=>{

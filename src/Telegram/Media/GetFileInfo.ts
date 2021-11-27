@@ -12,11 +12,11 @@ import { CustomFile } from 'telegram/client/uploads';
 import path from 'path';
 import fs from 'fs';
 import axios from 'axios';
-import {fileTypeFromBuffer,fileTypeFromFile} from 'file-type';
+import {fromBuffer,fromFile} from 'file-type';
 
 export async function GetFileInfo(file: string | Buffer){
   if (Buffer.isBuffer(file)) {
-    let fileInfo = await fileTypeFromBuffer(file);
+    let fileInfo = await fromBuffer(file);
     return fileInfo;
   }
   if (typeof file == 'string') {
@@ -27,11 +27,11 @@ export async function GetFileInfo(file: string | Buffer){
       });
       let data: any = res.data;
       let basebuffer = Buffer.from(data, 'utf-8');
-      let fileInfo = await fileTypeFromBuffer(basebuffer);
+      let fileInfo = await fromBuffer(basebuffer);
       return fileInfo;
     }
     if (/^(\/|\.\.?\/|~\/)/i.exec(file)) {
-      let fileInfo = await fileTypeFromFile(file);
+      let fileInfo = await fromFile(file);
       return fileInfo;
     }
   }
