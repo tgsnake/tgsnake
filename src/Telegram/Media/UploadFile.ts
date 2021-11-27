@@ -11,7 +11,7 @@ import { CustomFile } from 'telegram/client/uploads';
 import path from 'path';
 import fs from 'fs';
 import axios from 'axios';
-import FileType from 'file-type';
+import {fileTypeFromBuffer,fileTypeFromFile} from 'file-type';
 import { Snake } from '../../client';
 import BotError from '../../Context/Error';
 export interface uploadFileMoreParams {
@@ -42,7 +42,7 @@ export async function UploadFile(
   snakeClient: Snake,
   file: string | Buffer,
   more?: uploadFileMoreParams
-) {
+):Promise<ResultUploadFile|undefined>{
   try {
     let mode = ['debug', 'info'];
     if (mode.includes(snakeClient.logger)) {
@@ -55,7 +55,7 @@ export async function UploadFile(
       );
     }
     if (Buffer.isBuffer(file)) {
-      let fileInfo = await FileType.fromBuffer(file);
+      let fileInfo = await fileTypeFromBuffer(file);
       //if (fileInfo) {
       let file_name = more?.fileName || `${Date.now() / 1000}.${fileInfo?.ext}`;
       let toUpload = new CustomFile(file_name, Buffer.byteLength(file), '', file);
@@ -78,7 +78,7 @@ export async function UploadFile(
         let file_name = more?.fileName || basename;
         let match = /\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/gim.exec(file_name);
         if (!match) {
-          let fileInfo = await FileType.fromBuffer(basebuffer);
+          let fileInfo = await fileTypeFromBuffer(basebuffer);
           if (fileInfo) {
             file_name = `${file_name}.${fileInfo.ext}`;
           }
@@ -96,7 +96,7 @@ export async function UploadFile(
         let file_name = more?.fileName || basename;
         let match = /\.([0-9a-z]+)(?=[?#])|(\.)(?:[\w]+)$/gim.exec(file_name);
         if (!match) {
-          let fileInfo = await FileType.fromFile(file);
+          let fileInfo = await fileTypeFromFile(file);
           if (fileInfo) {
             file_name = `${file_name}.${fileInfo.ext}`;
           }
