@@ -13,7 +13,7 @@ import fs from 'fs';
 import axios from 'axios';
 import { Snake } from '../../client';
 import BotError from '../../Context/Error';
-import {fromBuffer,fromFile} from 'file-type';
+import { fromBuffer, fromFile } from 'file-type';
 export interface uploadFileMoreParams {
   fileName?: string;
   workers?: number;
@@ -42,7 +42,7 @@ export async function UploadFile(
   snakeClient: Snake,
   file: string | Buffer,
   more?: uploadFileMoreParams
-):Promise<ResultUploadFile|undefined>{
+): Promise<ResultUploadFile | undefined> {
   try {
     let mode = ['debug', 'info'];
     if (mode.includes(snakeClient.logger)) {

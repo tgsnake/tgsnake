@@ -17,10 +17,7 @@ type MiddlewareFn<C> = (ctx: C, next: NextFn) => MaybePromise<any>;
 interface MiddlewareObj<C> {
   middleware: () => MiddlewareFn<C>;
 }
-export type ErrorHandler = (
-  error: BotError,
-  context: Updates.TypeUpdate
-) => MaybePromise<any>;
+export type ErrorHandler = (error: BotError, context: Updates.TypeUpdate) => MaybePromise<any>;
 type Middleware<C> = MiddlewareFn<C> | MiddlewareObj<C>;
 function flatten<C>(mw: Middleware<C>) {
   return typeof mw === 'function' ? mw : (ctx, next) => mw.middleware()(ctx, next);
@@ -59,6 +56,52 @@ function toArray(e) {
 export async function run<C>(middleware: MiddlewareFn<C>, ctx: C) {
   await middleware(ctx, leaf);
 }
+function filterEvent(filter, ctx) {
+  let filters = toArray(filter);
+  let h: Array<string> = [];
+  h.push('*');
+  if (ctx instanceof ResultGetEntity) h.push('connected');
+  if (ctx instanceof MessageContext) {
+    ctx as MessageContext;
+    h.push('message');
+    if (ctx.action) {
+      h.push(ctx.action['_']);
+    }
+  }
+  let msg = [
+    'updateNewMessage',
+    'updateShortMessage',
+    'updateShortChatMessage',
+    'updateNewChannelMessage',
+  ];
+  let callbackQuery = ['updateBotCallbackQuery', 'updateInlineBotCallbackQuery'];
+  if (ctx['_']) {
+    if (msg.includes(ctx['_'])) {
+      h.push('message');
+      if (ctx.message) {
+        ctx.message as MessageContext;
+        if (ctx.message.action) {
+          h.push(ctx.message.action['_']);
+        }
+      }
+    }
+    if (callbackQuery.includes(ctx['_'])) {
+      h.push('callbackQuery');
+    }
+    h.push(ctx['_']);
+    let logger = ['info', 'debug'];
+    if (logger.includes(ctx.SnakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${ctx.SnakeClient.connectTime}] - [${new Date().toLocaleString()}] - Receive ${ctx['_']}`,
+        '\x1b[0m'
+      );
+    }
+  }
+  for (let f of filters) {
+    return h.includes(f);
+  }
+}
 export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
   private handler!: MiddlewareFn<Updates.TypeUpdate>;
   prefix: string = '.!/';
@@ -73,53 +116,13 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
     this.handler = concat(this.handler, flatten(composer));
     return composer;
   }
-  on<K extends keyof Context>(filter: K, ...middleware: Array<MiddlewareFn<Context[K]>>):Composer{
-    return this.filter((ctx) => {
-      let filters = toArray(filter);
-      let h: Array<string> = [];
-      h.push('*');
-      if (ctx instanceof ResultGetEntity) h.push('connected');
-      if (ctx instanceof MessageContext) {
-        ctx as MessageContext
-        h.push('message');
-        if(ctx.action){
-          h.push(ctx.action["_"])
-        }
-      }
-      let msg = [
-        'updateNewMessage',
-        'updateShortMessage',
-        'updateShortChatMessage',
-        'updateNewChannelMessage',
-      ];
-      if (ctx['_']) {
-        if (msg.includes(ctx['_'])){ 
-          h.push('message');
-          if(ctx.message){
-            ctx.message as MessageContext 
-            if(ctx.message.action){
-              h.push(ctx.message.action["_"])
-            }
-          }
-        }
-        h.push(ctx['_']);
-        let logger = ['info', 'debug'];
-        if (logger.includes(ctx.SnakeClient.logger)) {
-          console.log(
-            '\x1b[31m',
-            `[${ctx.SnakeClient.connectTime}] - [${new Date().toLocaleString()}] - Receive ${
-              ctx['_']
-            }`,
-            '\x1b[0m'
-          );
-        }
-      } 
-      for (let f of filters) {
-        return h.includes(f);
-      }
-    }, ...middleware);
+  on<K extends keyof Context>(
+    filter: MaybeArray<K>,
+    ...middleware: Array<MiddlewareFn<Context[K]>>
+  ): Composer {
+    return this.filter((ctx) => filterEvent(filter, ctx), ...middleware);
   }
-  filter(predicate, ...middleware):Composer{
+  filter(predicate, ...middleware): Composer {
     const composer = new Composer(...middleware);
     this.branch(predicate, composer, pass);
     return composer;
@@ -136,19 +139,19 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
   }
   lazy(middlewareFactory) {
     return this.use(async (context, next) => {
-      let ctx = context 
+      let ctx = context;
       let msg = [
         'updateNewMessage',
         'updateShortMessage',
         'updateShortChatMessage',
         'updateNewChannelMessage',
       ];
-      if(context["_"]){
-        if(msg.includes(context["_"])){ 
+      if (context['_']) {
+        if (msg.includes(context['_'])) {
           //@ts-ignore
-          ctx = context.message as MessageContext
+          ctx = context.message as MessageContext;
         }
-      } 
+      }
       const middleware = await middlewareFactory(ctx);
       const arr = toArray(middleware);
       await flatten(new Composer(...arr))(ctx, next);
@@ -171,40 +174,72 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
   command(
     trigger: MaybeArray<string | RegExp>,
     ...middleware: Array<MiddlewareFn<MessageContext>>
-  ):Composer {
-    let key = toArray(trigger); 
+  ): Composer {
+    let key = toArray(trigger);
     let filterCmd = (ctx) => {
-      const {text} = ctx
-      const {aboutMe} = ctx.SnakeClient 
-      for(let cmd of key){
-        if(typeof cmd == 'string'){
-          cmd as string 
+      const { text } = ctx;
+      const { aboutMe } = ctx.SnakeClient;
+      for (let cmd of key) {
+        if (typeof cmd == 'string') {
+          cmd as string;
           let r = new RegExp(
             `^[${this.prefix}](${cmd})${aboutMe.username ? `(@${aboutMe.username})?` : ``}$`,
             'i'
-          ); 
-          return r.test(String(text))
-        } 
-        if(cmd instanceof RegExp){
-          cmd as RegExp 
-          return cmd.test(String(text))
-        } 
+          );
+          return r.test(String(text));
+        }
+        if (cmd instanceof RegExp) {
+          cmd as RegExp;
+          return cmd.test(String(text));
+        }
       }
-      return false
-    }
-    return this.on("message").filter(filterCmd,...middleware)
+      return false;
+    };
+    return this.on('message').filter(filterCmd, ...middleware);
   }
-  cmd(trigger: MaybeArray<string | RegExp>, ...middleware: Array<MiddlewareFn<MessageContext>>):Composer {
+  cmd(
+    trigger: MaybeArray<string | RegExp>,
+    ...middleware: Array<MiddlewareFn<MessageContext>>
+  ): Composer {
     return this.command(trigger, ...middleware);
   }
-  hears(trigger: MaybeArray<string | RegExp>, ...middleware: Array<MiddlewareFn<MessageContext>>):Composer {
+  hears(
+    trigger: MaybeArray<string | RegExp>,
+    ...middleware: Array<MiddlewareFn<MessageContext>>
+  ): Composer {
     let tgr = triggerFn(trigger);
-    return this.on("message").filter((ctx)=>{
-      const { text } = ctx.message; 
-      return match(ctx, String(text), tgr)
-    },...middleware)
+    return this.on('message').filter((ctx) => {
+      const { text } = ctx.message;
+      return match(ctx, String(text), tgr);
+    }, ...middleware);
   }
-  hear(trigger: MaybeArray<string | RegExp>, ...middleware: Array<MiddlewareFn<MessageContext>>):Composer{
+  hear(
+    trigger: MaybeArray<string | RegExp>,
+    ...middleware: Array<MiddlewareFn<MessageContext>>
+  ): Composer {
     return this.hears(trigger, ...middleware);
+  }
+  action(
+    trigger: MaybeArray<string | RegExp>,
+    ...middleware: Array<
+      MiddlewareFn<Updates.UpdateBotCallbackQuery | Updates.UpdateInlineBotCallbackQuery>
+    >
+  ): Composer {
+    let key = toArray(trigger);
+    let filterCmd = (ctx) => {
+      const { data } = ctx;
+      for (let cmd of key) {
+        if (typeof cmd == 'string') {
+          cmd as string;
+          return Boolean(cmd == data);
+        }
+        if (cmd instanceof RegExp) {
+          cmd as RegExp;
+          return cmd.test(String(data));
+        }
+      }
+      return false;
+    };
+    return this.on('callbackQuery').filter(filterCmd, ...middleware);
   }
 }

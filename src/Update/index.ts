@@ -18,8 +18,8 @@ import { UpdateShortSentMessage } from './UpdateShortSentMessage';
 import { UpdateUserStatus } from './UpdateUserStatus';
 import { UpdateUserTyping } from './UpdateUserTyping';
 import { UpdateNewChannelMessage } from './UpdateNewChannelMessage';
-import {UpdateInlineBotCallbackQuery} from "./UpdateInlineBotCallbackQuery" 
-import {UpdateBotCallbackQuery} from "./UpdateBotCallbackQuery"
+import { UpdateInlineBotCallbackQuery } from './UpdateInlineBotCallbackQuery';
+import { UpdateBotCallbackQuery } from './UpdateBotCallbackQuery';
 type TypeUpdate =
   | ResultGetEntity
   | MessageContext
@@ -33,38 +33,38 @@ type TypeUpdate =
   | UpdateShortSentMessage
   | UpdateUserStatus
   | UpdateUserTyping
-  | UpdateNewChannelMessage 
-  | UpdateInlineBotCallbackQuery 
+  | UpdateNewChannelMessage
+  | UpdateInlineBotCallbackQuery
   | UpdateBotCallbackQuery;
 interface Context {
   '*': TypeUpdate;
   connected: ResultGetEntity;
   // message update
   message: MessageContext;
-  newChatMember : MessageContext;
-  migrateTo : MessageContext; 
-  chatCreate : MessageContext; 
-  editChatTitle : MessageContext; 
-  editChatPhoto : MessageContext; 
-  leftChatMember : MessageContext; 
-  channelCreate : MessageContext; 
-  migrateFrom : MessageContext; 
-  gameScore : MessageContext; 
-  paymentSentMe : MessageContext; 
-  paymentSent : MessageContext; 
-  phoneCall : MessageContext; 
-  customAction : MessageContext;
-  botAllowed : MessageContext; 
-  secureValuesSentMe : MessageContext; 
-  secureValuesSent : MessageContext; 
-  deleteChatPhoto : MessageContext; 
-  pinMessage : MessageContext; 
-  historyClear : MessageContext; 
-  screenshotTaken : MessageContext; 
-  contactSingUp : MessageContext;
-  groupCall : MessageContext; 
-  groupCallScheduled : MessageContext; 
-  callbackQuery : UpdateInlineBotCallbackQuery | UpdateBotCallbackQuery;
+  newChatMember: MessageContext;
+  migrateTo: MessageContext;
+  chatCreate: MessageContext;
+  editChatTitle: MessageContext;
+  editChatPhoto: MessageContext;
+  leftChatMember: MessageContext;
+  channelCreate: MessageContext;
+  migrateFrom: MessageContext;
+  gameScore: MessageContext;
+  paymentSentMe: MessageContext;
+  paymentSent: MessageContext;
+  phoneCall: MessageContext;
+  customAction: MessageContext;
+  botAllowed: MessageContext;
+  secureValuesSentMe: MessageContext;
+  secureValuesSent: MessageContext;
+  deleteChatPhoto: MessageContext;
+  pinMessage: MessageContext;
+  historyClear: MessageContext;
+  screenshotTaken: MessageContext;
+  contactSingUp: MessageContext;
+  groupCall: MessageContext;
+  groupCallScheduled: MessageContext;
+  callbackQuery: UpdateInlineBotCallbackQuery | UpdateBotCallbackQuery;
   // another update
   updateChatParticipants: UpdateChatParticipants;
   updateChatUserTyping: UpdateUserTyping;
@@ -77,8 +77,8 @@ interface Context {
   updateUserStatus: UpdateUserStatus;
   updateUserTyping: UpdateUserTyping;
   updateNewChannelMessage: UpdateNewChannelMessage;
-  updateInlineBotCallbackQuery : UpdateInlineBotCallbackQuery; 
-  updateBotCallbackQuery : UpdateBotCallbackQuery;
+  updateInlineBotCallbackQuery: UpdateInlineBotCallbackQuery;
+  updateBotCallbackQuery: UpdateBotCallbackQuery;
 }
 export {
   TypeUpdate,

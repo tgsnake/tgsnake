@@ -315,8 +315,7 @@ export class ChatParticipants {
     SnakeClient: Snake
   ) {
     //@ts-ignore
-    this.count = participant.count || participant.participants?.length 
-    || 1;
+    this.count = participant.count || participant.participants?.length || 1;
     let participants: Api.TypeChannelParticipant = participant.participant;
     let temp: ChannelParticipant[] = [];
     //@ts-ignore

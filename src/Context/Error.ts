@@ -9,8 +9,8 @@
 export default class BotError extends Error {
   functionName!: string;
   functionArgs!: string;
-  error!: any; 
-  date:number = Math.floor(Date.now() / 1000)
+  error!: any;
+  date: number = Math.floor(Date.now() / 1000);
   constructor() {
     super();
   }

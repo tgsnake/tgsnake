@@ -12,9 +12,9 @@ import { CustomFile } from 'telegram/client/uploads';
 import path from 'path';
 import fs from 'fs';
 import axios from 'axios';
-import {fromBuffer,fromFile} from 'file-type';
+import { fromBuffer, fromFile } from 'file-type';
 
-export async function GetFileInfo(file: string | Buffer){
+export async function GetFileInfo(file: string | Buffer) {
   if (Buffer.isBuffer(file)) {
     let fileInfo = await fromBuffer(file);
     return fileInfo;

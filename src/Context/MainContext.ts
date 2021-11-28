@@ -28,58 +28,60 @@ export class MainContext extends Composer {
   constructor() {
     super();
   }
-  async handleUpdate(update: Api.TypeUpdate | ResultGetEntity, SnakeClient: Snake) { 
-    if(!update) return false
+  async handleUpdate(update: Api.TypeUpdate | ResultGetEntity, SnakeClient: Snake) {
+    if (!update) return false;
     this.use = () => {
-      let botError = new BotError() 
-      botError.error = new Error(`bot.use is unavailable when bot running. so kill bot first then add bot.use in your source code then running again.`)
-      botError.functionName = "Composer" 
-      botError.functionArgs = ``
-      throw botError
-    }
-    let parsed:boolean = false 
-    let parsedUpdate:Updates.TypeUpdate
+      let botError = new BotError();
+      botError.error = new Error(
+        `bot.use is unavailable when bot running. so kill bot first then add bot.use in your source code then running again.`
+      );
+      botError.functionName = 'Composer';
+      botError.functionArgs = ``;
+      throw botError;
+    };
+    let parsed: boolean = false;
+    let parsedUpdate: Updates.TypeUpdate;
     if (update instanceof ResultGetEntity) {
       try {
-        parsed = true 
-        parsedUpdate = update as ResultGetEntity
-        await run(this.middleware(), update as ResultGetEntity); 
-        return update
+        parsed = true;
+        parsedUpdate = update as ResultGetEntity;
+        await run(this.middleware(), update as ResultGetEntity);
+        return update;
       } catch (error) {
-        if(error instanceof BotError){ 
+        if (error instanceof BotError) {
           //@ts-ignore
           return this.errorHandler(error as BotError, parsed ? parsedUpdate : update);
         }
-        let botError = new BotError() 
-        botError.error = error 
-        botError.functionName = `handleUpdate`
-        botError.functionArgs = `[Update]` 
+        let botError = new BotError();
+        botError.error = error;
+        botError.functionName = `handleUpdate`;
+        botError.functionArgs = `[Update]`;
         //@ts-ignore
-        return this.errorHandler(botError,parsed ? parsedUpdate : update);
+        return this.errorHandler(botError, parsed ? parsedUpdate : update);
       }
-    } else { 
-      if(update.className){
+    } else {
+      if (update.className) {
         if (Updates[update.className]) {
           try {
             let jsonUpdate = new Updates[update.className]();
             await jsonUpdate.init(update, SnakeClient);
-            parsed = true 
-            parsedUpdate = jsonUpdate
-            await run(this.middleware(), jsonUpdate); 
-            return jsonUpdate
-          } catch (error) { 
-            if(error instanceof BotError){ 
+            parsed = true;
+            parsedUpdate = jsonUpdate;
+            await run(this.middleware(), jsonUpdate);
+            return jsonUpdate;
+          } catch (error) {
+            if (error instanceof BotError) {
               //@ts-ignore
               return this.errorHandler(error as BotError, parsed ? parsedUpdate : update);
             }
-            let botError = new BotError() 
-            botError.error = error 
-            botError.functionName = `handleUpdate`
-            botError.functionArgs = `[Update]` 
+            let botError = new BotError();
+            botError.error = error;
+            botError.functionName = `handleUpdate`;
+            botError.functionArgs = `[Update]`;
             //@ts-ignore
-            return this.errorHandler(botError,parsed ? parsedUpdate : update);
+            return this.errorHandler(botError, parsed ? parsedUpdate : update);
           }
-        } 
+        }
       }
     }
   }

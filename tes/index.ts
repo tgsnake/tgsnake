@@ -11,8 +11,8 @@ import * as fs from "fs"
 import BigInt from "big-integer"
 const {Api} = GramJs
 const bot = new Snake() 
-bot.on("callbackQuery",(ctx)=>{
-  return console.log(ctx)
+bot.action("clicked",(ctx)=>{
+  return ctx.message.reply("callbackQuery now supported.")
 })
 bot.cmd("start",(ctx)=>{
   ctx.reply("hai",{
