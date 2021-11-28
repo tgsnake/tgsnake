@@ -41,7 +41,7 @@ type TypeUpdate =
 interface Context {
   '*': TypeUpdate;
   connected: ResultGetEntity;
-  // message update
+  // shorthand event
   message: MessageContext;
   newChatMember: MessageContext;
   migrateTo: MessageContext;
@@ -68,7 +68,7 @@ interface Context {
   groupCallScheduled: MessageContext;
   callbackQuery: UpdateInlineBotCallbackQuery | UpdateBotCallbackQuery;
   inlineQuery: UpdateBotInlineQuery;
-  // another update
+  // original names
   updateChatParticipants: UpdateChatParticipants;
   updateChatUserTyping: UpdateUserTyping;
   updateDeleteMessages: UpdateDeleteMessages;

@@ -1,0 +1,95 @@
+--- 
+title : Release 
+---
+import {Details,DetailsGroups} from "@/components/Details" 
+import {TabGroup,TabContent} from "@/components/Tab"
+
+<TabGroup>
+    <TabContent name="Linggardjati (2.0.x)"> 
+        
+        ![Linggardjati](./images/20211122_200419.jpg)
+    
+        The Linggardjati Agreement (Linggarjati in modern Indonesian spelling)[a] was a political accord concluded on 15 November 1946 by the Dutch administration and the unilaterally declared Republic of Indonesia in the village of Linggarjati, Kuningan Regency, near Cirebon in which the Dutch recognised the republic as exercising de facto authority in Java, Madura and Sumatra
+        
+        Source : [Wikipedia - Linggardjati Agreement](https://en.m.wikipedia.org/wiki/Linggadjati_Agreement)
+        
+        <DetailsGroups>
+            <Details summary="2.0.0"> 
+            - Add 
+              - entityCache to improve the performance.
+              - getChatParticipiant/getChatMember. 
+              - support tgsnake.config.json as config file.
+              - connectTime (connection time to telegram). 
+              - SnakeClient.restart(). 
+              - getChatMembersCount.
+              - getParticipants/getChatMembers.
+              - more JSON updates and Event which i can't name because there are too many.
+            - Change
+              - getMessages to improve performance (default not get the nested replyMessage).
+              - sendDocument to improve performance (parameter file now only string and buffer).
+            - Fixed 
+              - JSON message (.from) not showing in saved message.
+              - JSON of replyMarkup.
+              - JSON message (.from) in private chat.
+              - Markdown Hyperlink. 
+              - Flood Wait when receive message. 
+           - New 
+              - Composer 
+              - Logger (set logger to info or debug you will see changes.)
+
+            </Details>
+        </DetailsGroups>
+    </TabContent> 
+    <TabContent name="Rengasdengklok (1.2.x)"> 
+        
+        ![Rengasdengklok](./images/20210829_181033.jpg) 
+        
+        The Rengasdengklok Incident (Indonesian: Peristiwa Rengasdengklok) was the kidnapping of Sukarno and Hatta done by several pemuda, including Sukarni, Wikana, Aidit and Chairul Saleh. This incident occurred on August 16, 1945 in the early hours of the morning, around 04.00 WIB. Sukarno and Hatta were taken to Rengasdengklok, Karawang, to then be urged to accelerate the proclamation of the independence of the Republic of Indonesia, until an agreement was reached between the elderly groups represented by Sukarno, Hatta and Achmad Soebardjo with the pemuda group about when the proclamation will be carried out, especially after Japan suffered defeat in the Pacific War.
+        
+        Source : [Wikipedia - Rengasdengklok Incident](https://en.m.wikipedia.org/wiki/Rengasdengklok_Incidenthttps://en.m.wikipedia.org/wiki/Rengasdengklok_Incident)
+        
+        <DetailsGroups>
+            <Details summary="1.2.1"> 
+            - Add
+               - Any event ("*") 
+               - JSON Media of 
+                 - Dice 
+                 - Poll 
+                 - Location 
+               - Proxy support.
+             - Bug Fixed.
+               - Snake.on is undefined on typescript. 
+               - For javascript can't handle new update from telegram.
+            </Details>
+            <Details summary="1.2.0">
+                - Update version to 1.2.0 (Rengasdengklok)
+                - Introducing Wizard Class
+                - Bug Fixed 
+                    - Could not find the input entity for userbot when receive new message. 
+                    - sendSticker.  
+                - Change 
+                    - options storeSession default is true. 
+                    - JSON results of some methods.
+                    - JSON of message entities.
+                    - JSON message media. 
+                    - JSON of update event.
+                    - catchError to catch.
+                    - sendPhoto now support with fileId.
+                    - 90% source code.
+                - New 
+                    - Error Log. better for development. 
+                    - JSON replyToMessage.
+                - Remove 
+                    - JSON replyToMessageId. 
+                    - onNewEvent.
+                    - onNewMessage.
+                    - Filters Class.
+                    - some shortcut. 
+                  
+                **Note**
+                    - Some media may not appear in json message.
+        
+            </Details>
+        </DetailsGroups>
+    </TabContent>
+</TabGroup>
