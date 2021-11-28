@@ -14,6 +14,9 @@ const bot = new Snake()
 bot.action("clicked",(ctx)=>{
   return ctx.message.reply("callbackQuery now supported.")
 })
+bot.on("inlineQuery",(ctx)=>{
+  console.log(ctx)
+})
 bot.cmd("start",(ctx)=>{
   ctx.reply("hai",{
     replyMarkup : {

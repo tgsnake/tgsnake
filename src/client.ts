@@ -27,7 +27,6 @@ let connectionRetries: number;
 let appVersion: string;
 let sessionName: string = 'tgsnake';
 let storeSession: boolean = true;
-let catchFunct: CatchError;
 let isBot: boolean = false;
 let connectTime: number = 0;
 let intervalCT: any;

@@ -1,0 +1,68 @@
+// Tgsnake - Telegram MTProto framework developed based on gram.js.
+// Copyright (C) 2021 Butthx <https://github.com/butthx>
+//
+// This file is part of Tgsnake
+//
+// Tgsnake is a free software : you can redistribute it and/or modify
+//  it under the terms of the MIT License as published.
+
+import { Api } from 'telegram';
+import { From } from '../Utils/From';
+import { Update } from './Update';
+import { Telegram } from '../Telegram';
+import { Snake } from '../client';
+import { BigInteger } from 'big-integer';
+import { Media } from '../Utils/Media';
+
+export class UpdateBotInlineQuery extends Update {
+  id!: BigInteger;
+  from!: From;
+  query!: string;
+  location?: Media;
+  chatType?: string;
+  offset!: string;
+  constructor() {
+    super();
+    this['_'] = 'updateBotInlineQuery';
+  }
+  async init(update: Api.UpdateBotInlineQuery, SnakeClient: Snake) {
+    let mode = ['debug', 'info'];
+    if (mode.includes(SnakeClient.logger)) {
+      console.log(
+        '\x1b[31m',
+        `[${SnakeClient.connectTime}] - [${new Date().toLocaleString()}] - Creating update ${
+          this['_']
+        }`,
+        '\x1b[0m'
+      );
+    }
+    this.telegram = SnakeClient.telegram;
+    this.id = update.queryId;
+    this.query = update.query;
+    this.offset = update.offset;
+    if (update.peerType instanceof Api.InlineQueryPeerTypeSameBotPM) {
+      this.chatType = 'sender';
+    }
+    if (update.peerType instanceof Api.InlineQueryPeerTypePM) {
+      this.chatType = 'private';
+    }
+    if (update.peerType instanceof Api.InlineQueryPeerTypeChat) {
+      this.chatType = 'group';
+    }
+    if (update.peerType instanceof Api.InlineQueryPeerTypeMegagroup) {
+      this.chatType = 'superGroup';
+    }
+    if (update.peerType instanceof Api.InlineQueryPeerTypeBroadcast) {
+      this.chatType = 'channel';
+    }
+    if (update.geo) {
+      this.location = new Media();
+      if (update.geo instanceof Api.GeoPoint) {
+        await this.location.encode(update.geo as Api.GeoPoint);
+      }
+    }
+    this.from = new From();
+    await this.from.init(update.userId, SnakeClient);
+    return this;
+  }
+}

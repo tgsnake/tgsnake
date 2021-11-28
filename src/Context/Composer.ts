@@ -68,25 +68,28 @@ function filterEvent(filter, ctx) {
       h.push(ctx.action['_']);
     }
   }
-  let msg = [
-    'updateNewMessage',
-    'updateShortMessage',
-    'updateShortChatMessage',
-    'updateNewChannelMessage',
-  ];
-  let callbackQuery = ['updateBotCallbackQuery', 'updateInlineBotCallbackQuery'];
   if (ctx['_']) {
-    if (msg.includes(ctx['_'])) {
-      h.push('message');
-      if (ctx.message) {
-        ctx.message as MessageContext;
-        if (ctx.message.action) {
-          h.push(ctx.message.action['_']);
+    switch (ctx['_']) {
+      case 'updateNewMessage':
+      case 'updateShortMessage':
+      case 'updateShortChatMessage':
+      case 'updateNewChannelMessage':
+        h.push('message');
+        if (ctx.message) {
+          ctx.message as MessageContext;
+          if (ctx.message.action) {
+            h.push(ctx.message.action['_']);
+          }
         }
-      }
-    }
-    if (callbackQuery.includes(ctx['_'])) {
-      h.push('callbackQuery');
+        break;
+      case 'updateInlineBotCallbackQuery':
+      case 'updateBotCallbackQuery':
+        h.push('callbackQuery');
+        break;
+      case 'updateBotInlineQuery':
+        h.push('inlineQuery');
+        break;
+      default:
     }
     h.push(ctx['_']);
     let logger = ['info', 'debug'];
@@ -140,16 +143,16 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
   lazy(middlewareFactory) {
     return this.use(async (context, next) => {
       let ctx = context;
-      let msg = [
-        'updateNewMessage',
-        'updateShortMessage',
-        'updateShortChatMessage',
-        'updateNewChannelMessage',
-      ];
       if (context['_']) {
-        if (msg.includes(context['_'])) {
-          //@ts-ignore
-          ctx = context.message as MessageContext;
+        switch (context['_']) {
+          case 'updateNewMessage':
+          case 'updateShortMessage':
+          case 'updateShortChatMessage':
+          case 'updateNewChannelMessage':
+            //@ts-ignore
+            ctx = context.message as MessageContext;
+            break;
+          default:
         }
       }
       const middleware = await middlewareFactory(ctx);
