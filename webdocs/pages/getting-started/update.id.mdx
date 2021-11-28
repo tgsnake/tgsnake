@@ -170,7 +170,50 @@ Kamu dapat menggunakan `Composer` sebagai perangkat tengah.
 ## Menggunakan `on`
 Method ini untuk menerima event yang datang. Kami mengikuti gramjs [TypeUpdate](https://gram.js.org/beta/modules/tl_api.api.html#typeupdate)
 ```ts 
-* | connected | message | UpdateNewMessage | UpdateMessageID | UpdateDeleteMessages | UpdateUserTyping | UpdateChatUserTyping | UpdateChatParticipants | UpdateUserStatus | UpdateUserName | UpdateUserPhoto | UpdateNewEncryptedMessage | UpdateEncryptedChatTyping | UpdateEncryption | UpdateEncryptedMessagesRead | UpdateChatParticipantAdd | UpdateChatParticipantDelete | UpdateDcOptions | UpdateNotifySettings | UpdateServiceNotification | UpdatePrivacy | UpdateUserPhone | UpdateReadHistoryInbox | UpdateReadHistoryOutbox | UpdateWebPage | UpdateReadMessagesContents | UpdateChannelTooLong | UpdateChannel | UpdateNewChannelMessage | UpdateReadChannelInbox | UpdateDeleteChannelMessages | UpdateChannelMessageViews | UpdateChatParticipantAdmin | UpdateNewStickerSet | UpdateStickerSetsOrder | UpdateStickerSets | UpdateSavedGifs | UpdateBotInlineQuery | UpdateBotInlineSend | UpdateEditChannelMessage | UpdateBotCallbackQuery | UpdateEditMessage | UpdateInlineBotCallbackQuery | UpdateReadChannelOutbox | UpdateDraftMessage | UpdateReadFeaturedStickers | UpdateRecentStickers | UpdateConfig | UpdatePtsChanged | UpdateChannelWebPage | UpdateDialogPinned | UpdatePinnedDialogs | UpdateBotWebhookJSON | UpdateBotWebhookJSONQuery | UpdateBotShippingQuery | UpdateBotPrecheckoutQuery | UpdatePhoneCall | UpdateLangPackTooLong | UpdateLangPack | UpdateFavedStickers | UpdateChannelReadMessagesContents | UpdateContactsReset | UpdateChannelAvailableMessages | UpdateDialogUnreadMark | UpdateMessagePoll | UpdateChatDefaultBannedRights | UpdateFolderPeers | UpdatePeerSettings | UpdatePeerLocated | UpdateNewScheduledMessage | UpdateDeleteScheduledMessages | UpdateTheme | UpdateGeoLiveViewed | UpdateLoginToken | UpdateMessagePollVote | UpdateDialogFilter | UpdateDialogFilterOrder | UpdateDialogFilters | UpdatePhoneCallSignalingData | UpdateChannelMessageForwards | UpdateReadChannelDiscussionInbox | UpdateReadChannelDiscussionOutbox | UpdatePeerBlocked | UpdateChannelUserTyping | UpdatePinnedMessages | UpdatePinnedChannelMessages | UpdateChat | UpdateGroupCallParticipants | UpdateGroupCall | UpdatePeerHistoryTTL | UpdateChatParticipant | UpdateChannelParticipant | UpdateBotStopped | UpdateGroupCallConnection | UpdateBotCommands
+interface Context {
+  '*': TypeUpdate;
+  connected: ResultGetEntity;
+  message: MessageContext;
+  newChatMember: MessageContext;
+  migrateTo: MessageContext;
+  chatCreate: MessageContext;
+  editChatTitle: MessageContext;
+  editChatPhoto: MessageContext;
+  leftChatMember: MessageContext;
+  channelCreate: MessageContext;
+  migrateFrom: MessageContext;
+  gameScore: MessageContext;
+  paymentSentMe: MessageContext;
+  paymentSent: MessageContext;
+  phoneCall: MessageContext;
+  customAction: MessageContext;
+  botAllowed: MessageContext;
+  secureValuesSentMe: MessageContext;
+  secureValuesSent: MessageContext;
+  deleteChatPhoto: MessageContext;
+  pinMessage: MessageContext;
+  historyClear: MessageContext;
+  screenshotTaken: MessageContext;
+  contactSingUp: MessageContext;
+  groupCall: MessageContext;
+  groupCallScheduled: MessageContext;
+  callbackQuery: UpdateInlineBotCallbackQuery | UpdateBotCallbackQuery;
+  inlineQuery: UpdateBotInlineQuery;
+  updateChatParticipants: UpdateChatParticipants;
+  updateChatUserTyping: UpdateUserTyping;
+  updateDeleteMessages: UpdateDeleteMessages;
+  updateMessageID: UpdateMessageID;
+  updateNewMessage: UpdateNewMessage;
+  updateShortChatMessage: UpdateShortChatMessage;
+  updateShortMessage: UpdateShortMessage;
+  updateShortSentMessage: UpdateShortSentMessage;
+  updateUserStatus: UpdateUserStatus;
+  updateUserTyping: UpdateUserTyping;
+  updateNewChannelMessage: UpdateNewChannelMessage;
+  updateInlineBotCallbackQuery: UpdateInlineBotCallbackQuery;
+  updateBotCallbackQuery: UpdateBotCallbackQuery;
+  updateBotInlineQuery: UpdateBotInlineQuery;
+}
 ```
 
 <TabGroup>
