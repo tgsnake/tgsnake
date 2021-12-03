@@ -17,7 +17,7 @@ import Util from 'tg-file-id/dist/Util';
 export class UpdateInlineBotCallbackQuery extends Update {
   id!: BigInteger;
   data?: string;
-  message!: MessageContext;
+  message?: MessageContext;
   from!: From;
   chatInstance!: BigInteger;
   inlineMessageId?: string;
@@ -30,13 +30,14 @@ export class UpdateInlineBotCallbackQuery extends Update {
     let mode = ['debug', 'info'];
     if (mode.includes(SnakeClient.logger)) {
       console.log(
-        '\x1b[31m',
+        '\x1b[33m',
         `[${SnakeClient.connectTime}] - [${new Date().toLocaleString()}] - Creating update ${
           this['_']
         }`,
         '\x1b[0m'
       );
     }
+    console.log(update);
     this.telegram = SnakeClient.telegram;
     this.data = update.data?.toString('utf8');
     this.id = update.queryId;
@@ -46,11 +47,17 @@ export class UpdateInlineBotCallbackQuery extends Update {
     this.inlineMessageId += Util.to32bitBuffer(update.msgId.dcId);
     let id = BigInt(String(update.msgId.id));
     let accessHash = BigInt(String(update.msgId.accessHash));
-    this.inlineMessageId += Util.to64bitBuffer(id);
+    //accessHash
     if (accessHash < BigInt(0)) {
       this.inlineMessageId += Util.to64bitBuffer(accessHash * BigInt(-1));
     } else {
       this.inlineMessageId += Util.to64bitBuffer(accessHash);
+    }
+    //id
+    if (id < BigInt(0)) {
+      this.inlineMessageId += Util.to64bitBuffer(id * BigInt(-1));
+    } else {
+      this.inlineMessageId += Util.to64bitBuffer(id);
     }
     this.inlineMessageId = Util.base64UrlEncode(Util.rleEncode(this.inlineMessageId));
     this.from = new From();

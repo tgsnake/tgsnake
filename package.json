@@ -8,7 +8,7 @@
     "prepare": "husky install && echo \"🐍 Building snake package.\" && tsc",
     "build": "tsc",
     "pretty-quick": "pretty-quick --staged --pattern \"src/**/*.*(js|jsx|ts|tsx)\"",
-    "prettier":"prettier -w ./src",
+    "prettier": "prettier -w ./src",
     "update": "yarn upgrade-interactive --latest"
   },
   "homepage": "https://tgsnake.js.org",
@@ -31,12 +31,13 @@
     "axios": "0.24.0",
     "big-integer": "1.6.51",
     "file-type": "16.5.3",
+    "husky": "6",
     "prompts": "2.4.2",
     "telegram": "1.10.8",
     "tg-file-id": "1.1.2"
   },
   "devDependencies": {
-    "@types/node": "16.11.10",
+    "@types/node": "16.11.11",
     "dotenv": "10.0.0",
     "prettier": "2.5.0",
     "pretty-quick": "3.1.2",
@@ -45,5 +46,8 @@
   },
   "engines": {
     "node": ">=14"
+  },
+  "resolutions": {
+    "type": "1.2.0"
   }
 }

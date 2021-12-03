@@ -15,7 +15,7 @@ import { BigInteger } from 'big-integer';
 import { Media } from '../Utils/Media';
 
 export class UpdateBotInlineQuery extends Update {
-  id!: BigInteger;
+  id!: bigint;
   from!: From;
   query!: string;
   location?: Media;
@@ -37,7 +37,7 @@ export class UpdateBotInlineQuery extends Update {
       );
     }
     this.telegram = SnakeClient.telegram;
-    this.id = update.queryId;
+    this.id = BigInt(String(update.queryId));
     this.query = update.query;
     this.offset = update.offset;
     if (update.peerType instanceof Api.InlineQueryPeerTypeSameBotPM) {

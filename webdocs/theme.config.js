@@ -33,5 +33,5 @@ export default {
     { locale: 'en', text: 'English' }, 
     { locale : 'id',text: 'Indonesia' }
   ],
-  unstable_staticImage: true
+  unstable_staticImage: true,
 }

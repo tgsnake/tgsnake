@@ -42,6 +42,7 @@ import { Media } from '../Utils/Media';
 import { GetParticipant } from './Chats/GetParticipant';
 import { GetChatMembersCount } from './Chats/GetChatMembersCount';
 import { GetParticipants, GetParticipantMoreParams } from './Chats/GetParticipants';
+import { AnswerInlineQuery, AnswerInlineQueryMoreParams } from './Bots/AnswerInlineQuery';
 let _SnakeClient: Snake;
 export class Telegram {
   constructor(SnakeClient: Snake) {
@@ -222,5 +223,13 @@ export class Telegram {
   // getChatMembers
   async getChatMembers(chatId: number | string, more?: GetParticipantMoreParams) {
     return await GetParticipants(this.SnakeClient, chatId, more);
+  }
+  // answerInlineQuery
+  async answerInlineQuery(
+    queryId: bigint,
+    results: Array<Api.TypeInputBotInlineResult>,
+    more?: AnswerInlineQueryMoreParams
+  ) {
+    return await AnswerInlineQuery(this.SnakeClient, queryId, results, more);
   }
 }

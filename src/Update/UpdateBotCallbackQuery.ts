@@ -17,7 +17,7 @@ import Util from 'tg-file-id/dist/Util';
 export class UpdateBotCallbackQuery extends Update {
   id!: BigInteger;
   data?: string;
-  message!: MessageContext;
+  message?: MessageContext;
   from!: From;
   chatInstance!: BigInteger;
   inlineMessageId?: string;

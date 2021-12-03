@@ -7,15 +7,46 @@
 //  it under the terms of the MIT License as published. 
 
 import {Snake,Wizard,GramJs,Composer} from "../src" 
+import { TypeReplyMarkup, BuildReplyMarkup } from '../src/Utils/ReplyMarkup';
+import { ParseMessage } from '../src/Utils/ParseMessage'
 import * as fs from "fs"
 import BigInt from "big-integer"
+import {ResultGetEntity} from "../src/Telegram/Users/GetEntity"
+import Util from 'tg-file-id/dist/Util';
 const {Api} = GramJs
 const bot = new Snake() 
-bot.action("clicked",(ctx)=>{
-  return ctx.message.reply("callbackQuery now supported.")
-})
-bot.on("inlineQuery",(ctx)=>{
-  console.log(ctx)
+/*bot.catch((error,ctx)=>{
+  console.log(error)
+  let file = Buffer.from(`Update :\n${JSON.stringify(ctx,null,2)}\n\nError :\n${error.message}\n${JSON.stringify(error,null,2)}`) 
+  bot.telegram.sendDocument(-1001467257798,file,{
+    fileName : `${Date.now()}.txt`,
+    mimeType : `text/plain`,
+    caption : `**New Error!**`,
+    parseMode : `markdown`
+  })
+})*/
+bot.on("inlineQuery",async (ctx)=>{
+  console.log(ctx) 
+  let [text,entities] = await ParseMessage(bot,"**Testing inline callback query and answerInlineQuery.**","markdown")
+  await ctx.telegram.answerInlineQuery(ctx.id,[
+    new Api.InputBotInlineResult({
+      id : `${Date.now()}`,
+      type : "article",
+      title : "tester",
+      sendMessage : new Api.InputBotInlineMessageText({
+        message : text,
+        replyMarkup : await BuildReplyMarkup({
+          inlineKeyboard : [
+              [{
+                text : "click me",
+                callbackData : "clicked"
+              }]
+            ]
+        }),
+        entities : entities
+      })
+    })
+  ])
 })
 bot.cmd("start",(ctx)=>{
   ctx.reply("hai",{

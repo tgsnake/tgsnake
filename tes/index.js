@@ -9,7 +9,7 @@
 const {Snake,Wizard,GramJs,Composer} = require("../lib")
 const {Api} = GramJs
 const bot = new Snake() 
-bot.on("callbackQuery",(ctx)=>{
+bot.on("message",(ctx)=>{
   return console.log(ctx)
 })
 bot.cmd("start",(ctx)=>{
