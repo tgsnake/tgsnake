@@ -14,12 +14,10 @@ export async function EditTitle(snakeClient: Snake, chatId: number | string, tit
   try {
     let mode = ['debug', 'info'];
     if (mode.includes(snakeClient.logger)) {
-      console.log(
-        '\x1b[31m',
+      snakeClient.log(
         `[${
           snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.editTitle`,
-        '\x1b[0m'
+        }] - [${new Date().toLocaleString()}] - Running telegram.editTitle`
       );
     }
     let type = await snakeClient.telegram.getEntity(chatId);
@@ -50,12 +48,10 @@ export async function EditTitle(snakeClient: Snake, chatId: number | string, tit
 async function generateResults(results: Api.TypeUpdates, SnakeClient: Snake) {
   let mode = ['debug', 'info'];
   if (mode.includes(SnakeClient.logger)) {
-    console.log(
-      '\x1b[31m',
+    SnakeClient.log(
       `[${
         SnakeClient.connectTime
-      }] - [${new Date().toLocaleString()}] - Creating results telegram.editTitle`,
-      '\x1b[0m'
+      }] - [${new Date().toLocaleString()}] - Creating results telegram.editTitle`
     );
   }
   if (results instanceof Api.Updates) {

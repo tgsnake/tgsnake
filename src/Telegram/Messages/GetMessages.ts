@@ -21,12 +21,10 @@ export async function GetMessages(
   try {
     let mode = ['debug', 'info'];
     if (mode.includes(snakeClient.logger)) {
-      console.log(
-        '\x1b[31m',
+      snakeClient.log(
         `[${
           snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.getMessages`,
-        '\x1b[0m'
+        }] - [${new Date().toLocaleString()}] - Running telegram.getMessages`
       );
     }
     let messageIds: any = messageId;
@@ -66,12 +64,10 @@ export class ResultsGetMessage {
   async init(results: Api.messages.TypeMessages, SnakeClient: Snake, replies: boolean = false) {
     let mode = ['debug', 'info'];
     if (mode.includes(SnakeClient.logger)) {
-      console.log(
-        '\x1b[31m',
+      SnakeClient.log(
         `[${
           SnakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Creating results telegram.getMessages`,
-        '\x1b[0m'
+        }] - [${new Date().toLocaleString()}] - Creating results telegram.getMessages`
       );
     }
     let tempMessages: MessageContext[] = [];

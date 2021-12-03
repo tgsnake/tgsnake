@@ -15,4 +15,4 @@ updates:
     target-branch: "dev"
     ignore: 
       - dependency-name: "file-type"
-      
+      - dependency-name: "chalk"

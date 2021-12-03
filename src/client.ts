@@ -22,7 +22,6 @@ let api_hash: string;
 let api_id: number;
 let session: string;
 let bot_token: string;
-let tgSnakeLog: boolean | undefined = true;
 let connectionRetries: number;
 let appVersion: string;
 let sessionName: string = 'tgsnake';
@@ -30,11 +29,6 @@ let storeSession: boolean = true;
 let isBot: boolean = false;
 let connectTime: number = 0;
 let intervalCT: any;
-function log(...args) {
-  if (tgSnakeLog) {
-    console.log(...args);
-  }
-}
 function makeApiHash(length) {
   var result = '';
   var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -53,6 +47,7 @@ function makeApiId(length) {
   }
   return result;
 }
+
 export class Snake extends MainContext {
   client!: TelegramClient;
   telegram!: Telegram;
@@ -117,7 +112,7 @@ export class Snake extends MainContext {
         delete options.appVersion;
       }
       if (String(options.tgSnakeLog).toLowerCase() == 'false') {
-        tgSnakeLog = Boolean(options.tgSnakeLog);
+        this.tgSnakeLog = Boolean(options.tgSnakeLog);
         delete options.tgSnakeLog;
       }
       if (options.tgSnakeLog) {
@@ -193,17 +188,21 @@ export class Snake extends MainContext {
   async run() {
     try {
       process.once('SIGINT', () => {
-        log('🐍 Killing..');
+        this.consoleColor = 'reset';
+        this.log('🐍 Killing..');
         if (this.client) this.client.disconnect();
         process.exit(0);
       });
       process.once('SIGTERM', () => {
-        log('🐍 Killing..');
+        this.consoleColor = 'reset';
+        this.log('🐍 Killing..');
         if (this.client) this.client.disconnect();
         process.exit(0);
       });
-      log(`🐍 Welcome To TGSNAKE ${this.version}.`);
-      log(`🐍 Setting Logger level to "${this.logger}"`);
+      this.consoleColor = 'reset';
+      this.log(`🐍 Welcome To TGSNAKE ${this.version}.`);
+      this.log(`🐍 Setting Logger level to "${this.logger}"`);
+      this.consoleColor = 'green';
       if (bot_token) {
         if (session == '') {
           storeSession = false;
@@ -242,7 +241,9 @@ export class Snake extends MainContext {
       intervalCT = setInterval(() => {
         connectTime++;
       }, 1000);
-      return log('🐍 Connected as ', name);
+      this.consoleColor = 'reset';
+      this.log('🐍 Connected as ', name);
+      return (this.consoleColor = 'green');
     } catch (error) {
       let botError = new BotError();
       botError.error = error;
@@ -254,17 +255,21 @@ export class Snake extends MainContext {
   async generateSession() {
     try {
       process.once('SIGINT', () => {
-        log('🐍 Killing..');
+        this.consoleColor = 'reset';
+        this.log('🐍 Killing..');
         if (this.client) this.client.disconnect();
         process.exit(0);
       });
       process.once('SIGTERM', () => {
-        log('🐍 Killing..');
+        this.consoleColor = 'reset';
+        this.log('🐍 Killing..');
         if (this.client) this.client.disconnect();
         process.exit(0);
       });
-      log(`🐍 Welcome To TGSNAKE ${this.version}.`);
-      log(`🐍 Setting Logger level to "${this.logger}"`);
+      this.consoleColor = 'reset';
+      this.log(`🐍 Welcome To TGSNAKE ${this.version}.`);
+      this.log(`🐍 Setting Logger level to "${this.logger}"`);
+      this.consoleColor = 'green';
       if (!api_hash) {
         let input_api_hash = await prompts({
           type: 'text',
@@ -359,9 +364,11 @@ export class Snake extends MainContext {
           console.log(`🐍 Your string session : ${session}`);
         }
       } else {
-        log(`🐍 You should use the \`Snake.run()\`!`);
+        this.consoleColor = 'reset';
+        this.log(`🐍 You should use the \`Snake.run()\`!`);
       }
-      log('🐍 Killing...');
+      this.consoleColor = 'reset';
+      this.log('🐍 Killing...');
       if (this.client) this.client.disconnect();
       process.exit(0);
     } catch (error) {
@@ -380,7 +387,9 @@ export class Snake extends MainContext {
   }
   async restart() {
     let d = Date.now();
-    await log(`🐍 Restarting after [${this.connectTime}] connected.`);
+    this.consoleColor = 'reset';
+    await this.log(`🐍 Restarting after [${this.connectTime}] connected.`);
+    this.consoleColor = 'green';
     connectTime = 0;
     this.connected = false;
     await clearInterval(intervalCT);

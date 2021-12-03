@@ -94,10 +94,8 @@ function filterEvent(filter, ctx) {
     h.push(ctx['_']);
     let logger = ['info', 'debug'];
     if (logger.includes(ctx.SnakeClient.logger)) {
-      console.log(
-        '\x1b[31m',
-        `[${ctx.SnakeClient.connectTime}] - [${new Date().toLocaleString()}] - Receive ${ctx['_']}`,
-        '\x1b[0m'
+      ctx.SnakeClient.log(
+        `[${ctx.SnakeClient.connectTime}] - [${new Date().toLocaleString()}] - Receive ${ctx['_']}`
       );
     }
   }

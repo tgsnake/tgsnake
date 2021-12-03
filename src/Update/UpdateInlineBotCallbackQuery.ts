@@ -29,15 +29,12 @@ export class UpdateInlineBotCallbackQuery extends Update {
   async init(update: Api.UpdateInlineBotCallbackQuery, SnakeClient: Snake) {
     let mode = ['debug', 'info'];
     if (mode.includes(SnakeClient.logger)) {
-      console.log(
-        '\x1b[33m',
+      SnakeClient.log(
         `[${SnakeClient.connectTime}] - [${new Date().toLocaleString()}] - Creating update ${
           this['_']
-        }`,
-        '\x1b[0m'
+        }`
       );
     }
-    console.log(update);
     this.telegram = SnakeClient.telegram;
     this.data = update.data?.toString('utf8');
     this.id = update.queryId;

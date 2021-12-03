@@ -25,12 +25,10 @@ export async function PinMessage(
   try {
     let mode = ['debug', 'info'];
     if (mode.includes(snakeClient.logger)) {
-      console.log(
-        '\x1b[31m',
+      snakeClient.log(
         `[${
           snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.pinMessage`,
-        '\x1b[0m'
+        }] - [${new Date().toLocaleString()}] - Running telegram.pinMessage`
       );
     }
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
@@ -53,12 +51,10 @@ export async function PinMessage(
 async function generateResults(results: Api.TypeUpdates, SnakeClient: Snake) {
   let mode = ['debug', 'info'];
   if (mode.includes(SnakeClient.logger)) {
-    console.log(
-      '\x1b[31m',
+    SnakeClient.log(
       `[${
         SnakeClient.connectTime
-      }] - [${new Date().toLocaleString()}] - Creating results telegram.pinMessage`,
-      '\x1b[0m'
+      }] - [${new Date().toLocaleString()}] - Creating results telegram.pinMessage`
     );
   }
   if (results instanceof Api.Updates) {

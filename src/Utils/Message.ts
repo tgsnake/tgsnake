@@ -56,10 +56,8 @@ export class Message {
   async init(message: Api.MessageService | Api.Message, SnakeClient: Snake) {
     let mode = ['debug', 'info'];
     if (mode.includes(SnakeClient.logger)) {
-      console.log(
-        '\x1b[31m',
-        `[${SnakeClient.connectTime}] - [${new Date().toLocaleString()}] - Creating message`,
-        '\x1b[0m'
+      SnakeClient.log(
+        `[${SnakeClient.connectTime}] - [${new Date().toLocaleString()}] - Creating message`
       );
     }
     _SnakeClient = SnakeClient;

@@ -14,15 +14,28 @@ import { Api } from 'telegram';
 import { MessageContext } from './MessageContext';
 import { Composer, run, ErrorHandler } from './Composer';
 import BotError from './Error';
-
+import chalk from 'chalk';
+export type LoggerInfo = (...args: Array<any>) => void;
 export class MainContext extends Composer {
   connected: Boolean = false;
   aboutMe!: ResultGetEntity;
   entityCache: Map<number, ResultGetEntity> = new Map();
+  consoleColor: string = 'green';
+  tgSnakeLog: boolean = true;
+  log: LoggerInfo = (...args: Array<any>) => {
+    if (this.tgSnakeLog) {
+      console.log(chalk[this.consoleColor](...args));
+    }
+    return args;
+  };
   errorHandler: ErrorHandler = (error, update) => {
-    console.log(`🐍 Snake error (${error.message}) when processing update : `);
-    console.log(update);
-    console.log(`🐍 ${error.functionName}(${error.functionArgs})`);
+    this.consoleColor = 'red';
+    this.log(`🐍 Snake error (${error.message}) when processing update : `);
+    this.consoleColor = 'reset';
+    this.log(update);
+    this.consoleColor = 'red';
+    this.log(`🐍 ${error.functionName}(${error.functionArgs})`);
+    this.consoleColor = 'green';
     throw error;
   };
   constructor() {
@@ -86,6 +99,6 @@ export class MainContext extends Composer {
     }
   }
   catch(errorHandler: ErrorHandler) {
-    this.errorHandler = errorHandler;
+    return (this.errorHandler = errorHandler);
   }
 }

@@ -80,12 +80,10 @@ export async function GetAdminLog(
   try {
     let mode = ['debug', 'info'];
     if (mode.includes(snakeClient.logger)) {
-      console.log(
-        '\x1b[31m',
+      snakeClient.log(
         `[${
           snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.getAdminLog`,
-        '\x1b[0m'
+        }] - [${new Date().toLocaleString()}] - Running telegram.getAdminLog`
       );
     }
     let filter = {

@@ -24,12 +24,10 @@ export class UpdateShortMessage extends Update {
   async init(update: Api.UpdateShortMessage, SnakeClient: Snake) {
     let mode = ['debug', 'info'];
     if (mode.includes(SnakeClient.logger)) {
-      console.log(
-        '\x1b[31m',
+      SnakeClient.log(
         `[${SnakeClient.connectTime}] - [${new Date().toLocaleString()}] - Creating update ${
           this['_']
-        }`,
-        '\x1b[0m'
+        }`
       );
     }
     this.message = new MessageContext();

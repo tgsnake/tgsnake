@@ -15,12 +15,10 @@ export async function UnpinAllMessages(snakeClient: Snake, chatId: number | stri
   try {
     let mode = ['debug', 'info'];
     if (mode.includes(snakeClient.logger)) {
-      console.log(
-        '\x1b[31m',
+      snakeClient.log(
         `[${
           snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.unpinAllMessages`,
-        '\x1b[0m'
+        }] - [${new Date().toLocaleString()}] - Running telegram.unpinAllMessages`
       );
     }
     let [id, type, peer] = await toBigInt(chatId, snakeClient);

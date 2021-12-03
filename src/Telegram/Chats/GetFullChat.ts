@@ -13,12 +13,10 @@ export async function GetFullChat(snakeClient: Snake, chatId: number | string) {
   try {
     let mode = ['debug', 'info'];
     if (mode.includes(snakeClient.logger)) {
-      console.log(
-        '\x1b[31m',
+      snakeClient.log(
         `[${
           snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.getFullChat`,
-        '\x1b[0m'
+        }] - [${new Date().toLocaleString()}] - Running telegram.getFullChat`
       );
     }
     let type = await snakeClient.telegram.getEntity(chatId);

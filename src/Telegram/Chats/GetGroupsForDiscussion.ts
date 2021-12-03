@@ -13,12 +13,10 @@ export async function GetGroupsForDiscussion(snakeClient: Snake) {
   try {
     let mode = ['debug', 'info'];
     if (mode.includes(snakeClient.logger)) {
-      console.log(
-        '\x1b[31m',
+      snakeClient.log(
         `[${
           snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.getGroupsForDiscussion`,
-        '\x1b[0m'
+        }] - [${new Date().toLocaleString()}] - Running telegram.getGroupsForDiscussion`
       );
     }
     let results: Api.messages.TypeChats = await snakeClient.client.invoke(

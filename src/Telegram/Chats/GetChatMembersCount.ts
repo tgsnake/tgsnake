@@ -14,12 +14,10 @@ export async function GetChatMembersCount(snakeClient: Snake, chatId: number | s
   try {
     let mode = ['debug', 'info'];
     if (mode.includes(snakeClient.logger)) {
-      console.log(
-        '\x1b[31m',
+      snakeClient.log(
         `[${
           snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.getChatMembersCount`,
-        '\x1b[0m'
+        }] - [${new Date().toLocaleString()}] - Running telegram.getChatMembersCount`
       );
     }
     let chat = await snakeClient.telegram.getEntity(chatId, true);

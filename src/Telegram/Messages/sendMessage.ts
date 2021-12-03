@@ -35,12 +35,10 @@ export async function sendMessage(
   try {
     let mode = ['debug', 'info'];
     if (mode.includes(snakeClient.logger)) {
-      console.log(
-        '\x1b[31m',
+      snakeClient.log(
         `[${
           snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.sendMessage`,
-        '\x1b[0m'
+        }] - [${new Date().toLocaleString()}] - Running telegram.sendMessage`
       );
     }
     let parseMode = '';
@@ -80,12 +78,10 @@ export async function sendMessage(
 async function createResults(results: Api.TypeUpdates, snakeClient: Snake) {
   let mode = ['debug', 'info'];
   if (mode.includes(snakeClient.logger)) {
-    console.log(
-      '\x1b[31m',
+    snakeClient.log(
       `[${
         snakeClient.connectTime
-      }] - [${new Date().toLocaleString()}] - Creating results telegram.sendMessage`,
-      '\x1b[0m'
+      }] - [${new Date().toLocaleString()}] - Creating results telegram.sendMessage`
     );
   }
   if (results instanceof Api.UpdateShortSentMessage) {

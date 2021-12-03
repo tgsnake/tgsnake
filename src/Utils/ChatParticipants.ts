@@ -212,12 +212,10 @@ export class ChatParticipants {
   ) {
     let mode = ['debug', 'info'];
     if (mode.includes(SnakeClient.logger)) {
-      console.log(
-        '\x1b[31m',
+      SnakeClient.log(
         `[${
           SnakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Creating ChatParticipants`,
-        '\x1b[0m'
+        }] - [${new Date().toLocaleString()}] - Creating ChatParticipants`
       );
     }
     if (participant instanceof Api.ChatParticipants) {

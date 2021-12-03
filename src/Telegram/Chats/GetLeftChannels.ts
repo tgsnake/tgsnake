@@ -13,12 +13,10 @@ export async function GetLeftChannels(snakeClient: Snake, offset: number = 0) {
   try {
     let mode = ['debug', 'info'];
     if (mode.includes(snakeClient.logger)) {
-      console.log(
-        '\x1b[31m',
+      snakeClient.log(
         `[${
           snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.getLeftChannels`,
-        '\x1b[0m'
+        }] - [${new Date().toLocaleString()}] - Running telegram.getLeftChannels`
       );
     }
     return await snakeClient.client.invoke(

@@ -30,12 +30,10 @@ export async function ForwardMessages(
   try {
     let mode = ['debug', 'info'];
     if (mode.includes(snakeClient.logger)) {
-      console.log(
-        '\x1b[31m',
+      snakeClient.log(
         `[${
           snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.forwardMessages`,
-        '\x1b[0m'
+        }] - [${new Date().toLocaleString()}] - Running telegram.forwardMessages`
       );
     }
     let randomId: any = [];
@@ -67,12 +65,10 @@ export async function ForwardMessages(
 async function createResults(results: Api.TypeUpdates, snakeClient: Snake) {
   let mode = ['debug', 'info'];
   if (mode.includes(snakeClient.logger)) {
-    console.log(
-      '\x1b[31m',
+    snakeClient.log(
       `[${
         snakeClient.connectTime
-      }] - [${new Date().toLocaleString()}] - Creating results telegram.forwardMessages`,
-      '\x1b[0m'
+      }] - [${new Date().toLocaleString()}] - Creating results telegram.forwardMessages`
     );
   }
   if (results instanceof Api.Updates) {

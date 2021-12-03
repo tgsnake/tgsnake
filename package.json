@@ -30,6 +30,7 @@
   "dependencies": {
     "axios": "0.24.0",
     "big-integer": "1.6.51",
+    "chalk": "4",
     "file-type": "16.5.3",
     "husky": "6",
     "prompts": "2.4.2",

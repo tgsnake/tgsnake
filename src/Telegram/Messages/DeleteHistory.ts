@@ -24,12 +24,10 @@ export async function DeleteHistory(
   try {
     let mode = ['debug', 'info'];
     if (mode.includes(snakeClient.logger)) {
-      console.log(
-        '\x1b[31m',
+      snakeClient.log(
         `[${
           snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.deleteHistory`,
-        '\x1b[0m'
+        }] - [${new Date().toLocaleString()}] - Running telegram.deleteHistory`
       );
     }
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
