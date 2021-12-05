@@ -11,10 +11,22 @@ import { Api } from 'telegram';
 import { ResultAffectedMessages } from './DeleteMessages';
 import { toBigInt, toNumber } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
+/**
+ * Delete all messages sent by a certain user in a supergroup
+ * @param snakeClient - client.
+ * @param {number|string|bigint} chatId - supergroup id.
+ * @param {number|string|bigint} userId - User whose messages should be deleted.
+ * ```ts
+ * bot.command("deleteMe", async (ctx) => {
+ *     let results = await ctx.telegram.deleteUserHistory(ctx.chat.id,ctx.from.id)
+ *     return console.log(results)
+ * })
+ * ```
+ */
 export async function DeleteUserHistory(
   snakeClient: Snake,
-  chatId: number | string,
-  userId: number | string
+  chatId: number | string | bigint,
+  userId: number | string | bigint
 ) {
   try {
     let mode = ['debug', 'info'];
@@ -29,6 +41,7 @@ export async function DeleteUserHistory(
     let [uId, uType, uPeer] = await toBigInt(userId, snakeClient);
     return new ResultAffectedMessages(
       await snakeClient.client.invoke(
+        //@ts-ignore
         new Api.channels.DeleteUserHistory({
           channel: peer,
           userId: uPeer,

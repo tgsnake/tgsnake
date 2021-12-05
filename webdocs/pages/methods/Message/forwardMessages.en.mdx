@@ -7,9 +7,9 @@ Forwards messages by their IDs.
 ```ts 
 ctx.telegram.forwardMessages(chatId,fromChatId,messageId,more)
 ```
-- `chatId` (_number|string_)
+- `chatId` (_number|string|bigint_)
     - Destination.
-- `fromChatId` (_number|string_)
+- `fromChatId` (_number|string|bigint_)
     - Source of messages.
 - `messageId` (_number[]_)
     - IDs of messages which will forwarded.

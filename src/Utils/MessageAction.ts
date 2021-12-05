@@ -10,25 +10,26 @@ import { Snake } from '../client';
 import { BigInteger } from 'big-integer';
 import { PaymentRequestedInfo, PaymentCharge } from './Payment';
 import { Media } from './Media';
+import { toNumber } from './ToBigInt';
 export class MessageAction {
   '_'!: string;
   title!: string;
-  users!: number[];
+  users!: bigint[];
   photo!: Media;
-  userId!: number;
-  inviterId!: number;
-  channelId!: number;
-  chatId!: number;
-  gameId!: BigInteger;
+  userId!: bigint;
+  inviterId!: bigint;
+  channelId!: bigint;
+  chatId!: bigint;
+  gameId!: bigint;
   score!: number;
   currency!: string;
-  totalAmount!: BigInteger;
+  totalAmount!: bigint;
   payload!: string;
   info?: PaymentRequestedInfo;
   shippingOptionId?: string;
   charge!: PaymentCharge;
   video?: boolean;
-  callId!: BigInteger;
+  callId!: bigint;
   reason?: string;
   duration?: number;
   message!: string;
@@ -44,7 +45,11 @@ export class MessageAction {
       messageAction as Api.MessageActionChatCreate;
       this['_'] = 'chatCreate';
       this.title = messageAction.title;
-      this.users = messageAction.users;
+      let c: bigint[] = [];
+      for (let users of messageAction.users) {
+        c.push(BigInt(toNumber(users) as number));
+      }
+      this.users = c;
       return this;
     }
     if (messageAction instanceof Api.MessageActionChatEditTitle) {
@@ -64,19 +69,23 @@ export class MessageAction {
     if (messageAction instanceof Api.MessageActionChatAddUser) {
       this['_'] = 'newChatMember';
       messageAction as Api.MessageActionChatAddUser;
-      this.users = messageAction.users;
+      let c: bigint[] = [];
+      for (let users of messageAction.users) {
+        c.push(BigInt(toNumber(users) as number));
+      }
+      this.users = c;
       return this;
     }
     if (messageAction instanceof Api.MessageActionChatDeleteUser) {
       messageAction as Api.MessageActionChatDeleteUser;
       this['_'] = 'leftChatMember';
-      this.userId = messageAction.userId;
+      this.userId = BigInt(toNumber(messageAction.userId) as number);
       return this;
     }
     if (messageAction instanceof Api.MessageActionChatJoinedByLink) {
       messageAction as Api.MessageActionChatJoinedByLink;
       this['_'] = 'newChatMember';
-      this.inviterId = messageAction.inviterId;
+      this.inviterId = BigInt(toNumber(messageAction.inviterId) as number);
       return this;
     }
     if (messageAction instanceof Api.MessageActionChannelCreate) {
@@ -88,20 +97,20 @@ export class MessageAction {
     if (messageAction instanceof Api.MessageActionChatMigrateTo) {
       messageAction as Api.MessageActionChatMigrateTo;
       this['_'] = 'migrateTo';
-      this.channelId = Number(`-100${messageAction.channelId}`);
+      this.channelId = BigInt(Number(`-100${toNumber(messageAction.channelId)}`) as number);
       return this;
     }
     if (messageAction instanceof Api.MessageActionChannelMigrateFrom) {
       messageAction as Api.MessageActionChannelMigrateFrom;
       this['_'] = 'migrateFrom';
       this.title = messageAction.title;
-      this.chatId = Number(`-${messageAction.chatId}`);
+      this.chatId = BigInt(Number(`-${toNumber(messageAction.chatId)}`) as number);
       return this;
     }
     if (messageAction instanceof Api.MessageActionGameScore) {
       messageAction as Api.MessageActionGameScore;
       this['_'] = 'gameScore';
-      this.gameId = messageAction.gameId;
+      this.gameId = BigInt(toNumber(messageAction.gameId) as number);
       this.score = messageAction.score;
       return this;
     }
@@ -109,7 +118,7 @@ export class MessageAction {
       messageAction as Api.MessageActionPaymentSentMe;
       this['_'] = 'paymentSentMe';
       this.currency = messageAction.currency;
-      this.totalAmount = messageAction.totalAmount;
+      this.totalAmount = BigInt(toNumber(messageAction.totalAmount) as number);
       this.payload = messageAction.payload.toString('utf8');
       if (messageAction.info) this.info = new PaymentRequestedInfo(messageAction.info);
       if (messageAction.shippingOptionId) this.shippingOptionId = messageAction.shippingOptionId;
@@ -120,14 +129,14 @@ export class MessageAction {
       messageAction as Api.MessageActionPaymentSent;
       this['_'] = 'paymentSent';
       this.currency = messageAction.currency;
-      this.totalAmount = messageAction.totalAmount;
+      this.totalAmount = BigInt(toNumber(messageAction.totalAmount) as number);
       return this;
     }
     if (messageAction instanceof Api.MessageActionPhoneCall) {
       messageAction as Api.MessageActionPhoneCall;
       this['_'] = 'phoneCall';
       this.video = messageAction.video;
-      this.callId = messageAction.callId;
+      this.callId = BigInt(toNumber(messageAction.callId) as number);
       if (messageAction.reason) {
         this.reason = messageAction.reason.className
           .replace('PhoneCallDiscardReason', '')

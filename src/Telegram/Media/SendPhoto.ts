@@ -14,9 +14,24 @@ import { decodeFileId } from 'tg-file-id';
 import { Media } from '../../Utils/Media';
 import BigInt from 'big-integer';
 import BotError from '../../Context/Error';
+/**
+ * Sending photo with fileId/file location/url/buffer.
+ * @param snakeClient - client
+ * @param {number|string|bigint} chatId - Chat/Groups/Channel id.
+ * @param {string|Buffer|Object} fileId - FileId/File Location/Url/Buffer
+ * @param {Object} more - more parameters to use.
+ * ```ts
+ * bot.on("message",async (ctx) => {
+ *     if(ctx.media && ctx.media.type == "photo"){
+ *         let results = await ctx.telegram.sendPhoto(ctx.chat.id,ctx.media.fileId)
+ *         console.log(results)
+ *     }
+ * })
+ * ```
+ */
 export async function SendPhoto(
   snakeClient: Snake,
-  chatId: number | string,
+  chatId: number | string | bigint,
   fileId: string | Buffer | Media,
   more?: sendMediaMoreParams
 ) {

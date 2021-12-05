@@ -14,9 +14,23 @@ import { decodeFileId } from 'tg-file-id';
 import { Media } from '../../Utils/Media';
 import BigInt from 'big-integer';
 import BotError from '../../Context/Error';
+/**
+ * Sending sticker with fileId/file location/url/buffer.
+ * @param snakeClient - client
+ * @param {bigint|number|string} chatId - Chat/Groups/Channel id.
+ * @param {string|Buffer|Object} fileId - Path file/FileId/Buffer.
+ * ```ts
+ * bot.on("message",async (ctx) => {
+ *     if(ctx.media && ctx.media.type == "sticker"){
+ *         let results = await ctx.telegram.sendSticker(ctx.chat.id,ctx.media.fileId)
+ *         console.log(results)
+ *     }
+ * })
+ * ```
+ */
 export async function SendSticker(
   snakeClient: Snake,
-  chatId: number | string,
+  chatId: number | string | bigint,
   fileId: string | Buffer | Api.MessageMediaDocument | Api.Document
 ) {
   try {

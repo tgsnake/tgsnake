@@ -7,9 +7,9 @@ Modify the admin rights of a user in a supergroup/channel.
 ```ts 
 ctx.telegram.editAdmin(chatId,userId,more)
 ```
-- `chatId` (_number|string_)
+- `chatId` (_number|string|bigint_)
     - Chat/Channel/Group id. 
-- `userId` (_number|string_) 
+- `userId` (_number|string|bigint_) 
     - User id. 
 - `more` (_object_) 
     - `changeInfo` (_boolean_) 

@@ -11,10 +11,23 @@ import { ResultGetEntity } from '../Users/GetEntity';
 import { Api } from 'telegram';
 import { ChatParticipants } from '../../Utils/ChatParticipants';
 import BotError from '../../Context/Error';
+import bigInt from 'big-integer';
+/**
+ * Get info about a channel/supergroup participant.
+ * @param snakeClient - Client.
+ * @param {number|string|bigint} - Chat or channels id to getting the list of members.
+ * @param {number|string|bigint} - Participant to get info about.
+ * ```ts
+ * bot.command("getChatMember",async (ctx) => {
+ *     let results = await ctx.telegram.getParticipant(ctx.chat.id,ctx.from.id) // getChatMember and getParticipant.is same methods.
+ *     console.log(results)
+ * })
+ * ```
+ */
 export async function GetParticipant(
   snakeClient: Snake,
-  chatId: number | string,
-  userId: number | string
+  chatId: number | string | bigint,
+  userId: number | string | bigint
 ) {
   try {
     let mode = ['debug', 'info'];
@@ -28,8 +41,18 @@ export async function GetParticipant(
     let { client } = snakeClient;
     let result: Api.channels.ChannelParticipant = await client.invoke(
       new Api.channels.GetParticipant({
-        channel: chatId,
-        participant: userId,
+        channel:
+          typeof chatId == 'string'
+            ? (chatId as string)
+            : typeof chatId == 'number'
+            ? bigInt(chatId as number)
+            : bigInt(chatId as bigint),
+        participant:
+          typeof userId == 'string'
+            ? (userId as string)
+            : typeof userId == 'number'
+            ? bigInt(userId as number)
+            : bigInt(userId as bigint),
       })
     );
     let _results = new ChatParticipants();

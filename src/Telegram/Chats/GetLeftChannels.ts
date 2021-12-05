@@ -9,6 +9,17 @@
 import { Api } from 'telegram';
 import { Snake } from '../../client';
 import BotError from '../../Context/Error';
+/**
+ * Get a list of channels/supergroups we left.
+ * @param snakeClient - Client.
+ * @param {number} offset - offset of pagination.
+ * ```ts
+ * bot.command("getLeftChannels",async (ctx) => {
+ *     let results = await ctx.telegram.getLeftChannels()
+ *     console.log(results)
+ * })
+ * ```
+ */
 export async function GetLeftChannels(snakeClient: Snake, offset: number = 0) {
   try {
     let mode = ['debug', 'info'];

@@ -1,40 +1,40 @@
----
+--- 
 title : editAdmin
----
-## Overview
-Modify the admin rights of a user in a supergroup/channel.
-## Parameters
+--- 
+## Gambaran
+Ubah hak admin pengguna di grup/saluran..
+## Parameters 
 ```ts 
 ctx.telegram.editAdmin(chatId,userId,more)
 ```
-- `chatId` (_number|string_)
-    - Chat/Channel/Group id.
-- `userId` (_number|string_)
-    - User id.
-- `more` (_object_)
-    - `changeInfo` (_boolean_)
-        - If set, allows the admin to modify the description of the channel/supergroup
+- `chatId` (_number|string|bigint_)
+    - Id Obrolan/Saluran/Grup. 
+- `userId` (_number|string|bigint_) 
+    - User id. 
+- `more` (_object_) 
+    - `changeInfo` (_boolean_) 
+        - Jika disetel, izinkan admin untuk mengubah deskripsi saluran/grup.
     - `postMessages` (_boolean_)
-        - If set, allows the admin to post messages in the channel.
-    - `editMessages` (_boolean_)
-        - If set, allows the admin to also edit messages from other admins in the channel.
-    - `deleteMessages` (_boolean_)
-        - If set, allows the admin to also delete messages from other admins in the channel.
-    - `banUsers` (_boolean_)
-        - If set, allows the admin to ban users from the channel/supergroup.
-    - `inviteUsers` (_boolean_)
-        - If set, allows the admin to invite users in the channel/supergroup.
-    - `pinMessages` (_boolean_)
-        - If set, allows the admin to pin messages in the channel/supergroup.
-    - `addAdmins` (_boolean_)
-        - If set, allows the admin to add other admins with the same (or more limited) permissions in the channel/supergroup.
-    - `anonymous` (_boolean_)
-        - Whether this admin is anonymous.
-    - `manageCall` (_boolean_)
-        - If set, allows the admin to manage the call in group/channel.
-    - `rank` (_string_)
-        - Indicates the role (rank) of the admin in the group: just an arbitrary string.
-## Example
+        - Jika disetel, izinkan admin memposting pesan di saluran.
+    - `editMessages` (_boolean_) 
+        - Jika disetel, izinkan admin juga mengedit pesan dari admin lain di saluran.
+    - `deleteMessages` (_boolean_) 
+        - Jika disetel, izinkan admin juga menghapus pesan dari admin lain di saluran.
+    - `banUsers` (_boolean_) 
+        - Jika disetel, izinkan admin untuk mengeluarkan pengguna dari saluran/grup.
+    - `inviteUsers` (_boolean_) 
+        - Jika disetel, izinkan admin mengundang pengguna di saluran/grup.
+    - `pinMessages` (_boolean_) 
+        - Jika disetel, izinkan admin untuk menyematkan pesan di saluran/grup.
+    - `addAdmins` (_boolean_) 
+        - Jika disetel, izinkan admin untuk menambahkan admin lain dengan izin yang sama (atau lebih terbatas) di saluran/grup.
+    - `anonymous` (_boolean_) 
+        - Apakah admin ini anonim.
+    - `manageCall` (_boolean_) 
+        - Jika disetel, izinkan admin mengelola panggilan di grup/saluran.
+    - `rank` (_string_) 
+        - Menunjukkan peran (peringkat) admin dalam grup: hanya string arbitrer.
+## Example 
 ```ts highlight=3
 bot.command("promote",async (ctx) => {
     if((!ctx.chat.private) && ctx.replyToMessage){
@@ -43,31 +43,31 @@ bot.command("promote",async (ctx) => {
     }
 })
 ```
-## Possible Error
+## Kemungkinan Error
 
-| code |              tipe               |                                   deskripsi                                   |
-|:----:|:-------------------------------:|:-----------------------------------------------------------------------------:|
-| 400  |        ADMINS_TOO_MUCH        |                           There are too many admins                           |
-| 400  |         BOTS_TOO_MUCH         |                 There are too many bots in this chat/channel                  |
-| 400  |        BOT_CHANNELS_NA        |                       Bots can't edit admin privileges                        |
-| 400  |      BOT_GROUPS_BLOCKED       |                       This bot can't be added to groups                       |
-| 400  |         CHANNEL_INVALID         |                        The provided channel is invalid                        |
-| 400  |         CHANNEL_PRIVATE         |                  You haven't joined this channel/supergroup                   |
-| 403  |  CHAT_ADMIN_INVITE_REQUIRED   |                     You do not have the rights to do this                     |
-| 400  |      CHAT_ADMIN_REQUIRED      |                 You must be an admin in this chat to do this                  |
-| 403  |     CHAT_WRITE_FORBIDDEN      |                         You can't write in this chat                          |
-| 406  | FRESH_CHANGE_ADMINS_FORBIDDEN |     You were just elected admin, you can't add or modify other admins yet     |
-| 400  |    INPUT_USER_DEACTIVATED     |                        The specified user was deleted                         |
-| 400  |        PEER_ID_INVALID        |                        The provided peer id is invalid                        |
-| 403  |         RIGHT_FORBIDDEN         |                 Your admin rights do not allow you to do this                 |
-| 400  |        USERS_TOO_MUCH         | The maximum number of users has been exceeded (to create a chat, for example) |
-| 400  |          USER_BLOCKED           |                                 User blocked                                  |
-| 403  |    USER_CHANNELS_TOO_MUCH     | One of the users you tried to add is already in too many channels/supergroups |
-| 400  |          USER_CREATOR           |           You can't leave this channel, because you're its creator            |
-| 400  |        USER_ID_INVALID        |                        The provided user ID is invalid                        |
-| 400  |    USER_NOT_MUTUAL_CONTACT    |                   The provided user is not a mutual contact                   |
-| 403  |    USER_PRIVACY_RESTRICTED    |            The user's privacy settings do not allow you to do this            |
-| 403  |         USER_RESTRICTED         |           You're spamreported, you can't create channels or chats.            |
+| code | type | description | 
+| :---: | :---: | :------:| 
+| 400 | ADMINS_TOO_MUCH | Adminnya banyak | 
+| 400 | BOTS_TOO_MUCH | Terlalu banyak bot di chat/channel ini | 
+| 400 | BOT_CHANNELS_NA | Bot tidak dapat mengedit hak istimewa admin | 
+| 400 | BOT_GROUPS_BLOCKED | Bot ini tidak dapat ditambahkan ke grup |
+| 400 | CHANNEL_INVALID | Saluran yang disediakan tidak valid |
+| 400 | CHANNEL_PRIVATE | Anda belum bergabung dengan saluran/supergrup ini |
+| 403 | CHAT_ADMIN_INVITE_REQUIRED | Anda tidak memiliki hak untuk melakukan ini |
+| 400 | CHAT_ADMIN_REQUIRED | Anda harus menjadi admin dalam obrolan ini untuk melakukan ini |
+| 403 | CHAT_WRITE_FORBIDDEN | Anda tidak dapat menulis di obrolan ini |
+| 406 | FRESH_CHANGE_ADMINS_FORBIDDEN | Anda baru saja terpilih sebagai admin, Anda belum bisa menambah atau mengubah admin lainnya |
+| 400 | INPUT_USER_DEACTIVATED | Pengguna yang ditentukan telah dihapus |
+| 400 | PEER_ID_INVALID | ID rekan yang diberikan tidak valid | 
+| 403 | RIGHT_FORBIDDEN | Hak admin Anda tidak mengizinkan Anda melakukan ini | 
+| 400 | USERS_TOO_MUCH | Jumlah maksimum pengguna telah terlampaui (untuk membuat obrolan, misalnya) | 
+| 400 | USER_BLOCKED | Pengguna diblokir | 
+| 403 | USER_CHANNELS_TOO_MUCH | Salah satu pengguna yang Anda coba tambahkan sudah berada di terlalu banyak saluran/grup super | 
+| 400 | USER_CREATOR | Anda tidak dapat meninggalkan saluran ini, karena Anda adalah penciptanya | 
+| 400 | USER_ID_INVALID | ID pengguna yang diberikan tidak valid | 
+| 400 | USER_NOT_MUTUAL_CONTACT | Pengguna yang disediakan bukan kontak timbal balik | 
+| 403 | USER_PRIVACY_RESTRICTED | Pengaturan privasi pengguna tidak mengizinkan Anda melakukan ini | 
+| 403 | USER_RESTRICTED | Anda dilaporkan spam, Anda tidak dapat membuat saluran atau obrolan. | 
 
 
-## Bot can use this method
+## Bot dapat menggunakan metode ini.

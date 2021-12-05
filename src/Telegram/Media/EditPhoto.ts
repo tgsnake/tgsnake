@@ -12,9 +12,24 @@ import { UploadFile } from './UploadFile';
 import * as Updates from '../../Update';
 import { toBigInt, toNumber } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
+import bigInt, { BigInteger } from 'big-integer';
+/**
+ * Change the profile picture of chat.
+ * @param snakeClient - Client
+ * @param {number|string|bigint} chatId - Chat/Groups/Channel which will change the profile picture.
+ * @param {string|Buffer} photo - The location where the file is located/Url/The buffer of the file.
+ * ```ts
+ * bot.command("editPhoto", async (ctx)=>{
+ *     if(!ctx.chat.private){
+ *         let results = await ctx.telegram.editPhoto(ctx.chat.id,"https://tgsnake.js.org/images/tgsnake.jpg")
+ *         console.log(results)
+ *     }
+ * })
+ * ```
+ */
 export async function EditPhoto(
   snakeClient: Snake,
-  chatId: number | string,
+  chatId: number | string | bigint,
   photo: string | Buffer
 ) {
   try {
@@ -32,7 +47,7 @@ export async function EditPhoto(
     if (type == 'channel') {
       let results: Api.TypeUpdates = await snakeClient.client.invoke(
         new Api.channels.EditPhoto({
-          channel: peer,
+          channel: id as BigInteger,
           photo: new Api.InputChatUploadedPhoto({
             file: toUpload,
           }),
@@ -42,7 +57,7 @@ export async function EditPhoto(
     } else {
       return snakeClient.client.invoke(
         new Api.messages.EditChatPhoto({
-          chatId: Number(id!),
+          chatId: id as BigInteger,
           photo: new Api.InputChatUploadedPhoto({
             file: toUpload,
           }),

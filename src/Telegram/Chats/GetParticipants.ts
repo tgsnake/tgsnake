@@ -10,6 +10,8 @@ import { Api } from 'telegram';
 import { ResultGetEntity } from '../Users/GetEntity';
 import { ChatParticipants } from '../../Utils/ChatParticipants';
 import BotError from '../../Context/Error';
+import { toBigInt } from '../../Utils/ToBigInt';
+import bigInt from 'big-integer';
 export interface GetParticipantMoreParams {
   offset?: number;
   limit?: number;
@@ -22,9 +24,21 @@ let defaultOptions: GetParticipantMoreParams = {
   query: '',
   filter: 'all',
 };
+/**
+ * Getting list from all participants in channel or chats.
+ * @param snakeClient - Client
+ * @param {number|string|bigint} chatId - Chat or channels id to getting the list of members.
+ * @param {Object} more - more parameters to use.
+ * ```ts
+ * bot.command("getChatMembers",async (ctx) => {
+ *     let results = await ctx.telegram.getParticipants(ctx.chat.id) // getChatMembers and getParticipants is same methods.
+ *     console.log(results)
+ * })
+ * ```
+ */
 export async function GetParticipants(
   snakeClient: Snake,
-  chatId: number | string,
+  chatId: number | string | bigint,
   more: GetParticipantMoreParams = defaultOptions
 ): Promise<ChatParticipants | undefined> {
   try {
@@ -43,7 +57,7 @@ export async function GetParticipants(
     if (chat.type == 'chat') {
       let r: Api.messages.ChatFull = await snakeClient.client.invoke(
         new Api.messages.GetFullChat({
-          chatId: chat.id,
+          chatId: bigInt(chat.id as bigint),
         })
       );
       let cf: Api.ChatFull = r.fullChat as Api.ChatFull;
@@ -76,11 +90,11 @@ export async function GetParticipants(
       }
       let r: Api.channels.ChannelParticipants = (await snakeClient.client.invoke(
         new Api.channels.GetParticipants({
-          channel: chat.id,
+          channel: bigInt(chat.id as bigint),
           filter: filter,
           offset: more.offset,
           limit: more.limit,
-          hash: 0,
+          hash: bigInt(0),
         })
       )) as Api.channels.ChannelParticipants;
       let participant: ChatParticipants = new ChatParticipants();

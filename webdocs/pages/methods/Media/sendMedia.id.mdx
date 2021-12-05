@@ -1,83 +1,83 @@
 ---
 title : sendMedia
 ---
-## Overview
-Sending message media.
-## Parameters
-```ts 
+## Gambaran
+Media pengirim pesan.
+## Parameter
+```ts
 ctx.telegram.sendMedia(chatId,media,more)
 ```
-- `chatId` (_number|string_)
-    - Chat/Groups/Channel id.
+- `chatId` (_number|string|bigint_)
+    - Obrolan/Grup/Id Saluran.
 - `media` (_[Api.TypeInputMedia](https://gram.js.org/beta/modules/tl_api.api.html#typeinputmedia)_)
-    - Message Media.
-- `more` (_object_)
+    - Media Pesan.
+- `more` (_objek_)
     - `silent` (_boolean_)
-        - send message without notification.
+        - kirim pesan tanpa pemberitahuan.
     - `background` (_boolean_)
-        - send as background message.
+        - kirim sebagai pesan latar belakang.
     - `parseMode` (_string_)
-        - parse mode to style the caption.
+        - mode parse untuk mengatur gaya teks.
     - `clearDraft` (_boolean_)
-        - clear the draf field.
+        - kosongkan bidang draf.
     - `replyToMsgId` (_number_)
-        - send with reply a message.
+        - kirim dengan membalas pesan.
     - `replyMarkup` (_TypeReplyMarkup_)
-        - Reply markup for sending bot buttons.
+        - Markup balasan untuk mengirim tombol bot.
     - `entities` (_Entities[]_)
-        - message entities to style the caption.
+        - entitas pesan untuk memberi gaya pada teks.
     - `scheduleDate` (_number_)
-        - create a schedule message.
+        - membuat pesan jadwal.
     - `caption` (_string_)
-        - media caption.
+        - keterangan media.
     - `workers` (_number_)
-        - workers to uploading media.
-## Example
-_Example Not Found!_
-## Possible Error
-| code |                                tipe                                |                                                            deskripsi                                                            |
-|:----:|:------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------------------------:|
-| 400  |                BROADCAST_PUBLIC_VOTERS_FORBIDDEN                 |                                           You can't forward polls with public voters                                            |
-| 400  |                       BUTTON_DATA_INVALID                        |                                 The data of one or more of the buttons you provided is invalid                                  |
-| 400  |                       BUTTON_TYPE_INVALID                        |                                 The type of one or more of the buttons you provided is invalid                                  |
-| 400  |                        BUTTON_URL_INVALID                        |                                                       Button URL invalid                                                        |
-| 400  |                          CHANNEL_INVALID                           |                                                 The provided channel is invalid                                                 |
-| 400  |                          CHANNEL_PRIVATE                           |                                           You haven't joined this channel/supergroup                                            |
-| 400  |                       CHAT_ADMIN_REQUIRED                        |                                          You must be an admin in this chat to do this                                           |
-| 400  |                          CHAT_RESTRICTED                           |                                    You can't send messages in this chat, you were restricted                                    |
-| 403  |                     CHAT_SEND_GIFS_FORBIDDEN                     |                                                You can't send gifs in this chat                                                 |
-| 403  |                    CHAT_SEND_MEDIA_FORBIDDEN                     |                                                You can't send media in this chat                                                |
-| 403  |                   CHAT_SEND_STICKERS_FORBIDDEN                   |                                              You can't send stickers in this chat.                                              |
-| 403  |                       CHAT_WRITE_FORBIDDEN                       |                                                  You can't write in this chat                                                   |
-| 400  |                       EXTERNAL_URL_INVALID                       |                                                      External URL invalid                                                       |
-| 400  |                        FILE_PARTS_INVALID                        |                                               The number of file parts is invalid                                               |
-| 400  |                     FILE_PART_LENGTH_INVALID                     |                                              The length of a file part is invalid                                               |
-| 400  |                       IMAGE_PROCESS_FAILED                       |                                                 Failure while processing image                                                  |
-| 400  |                      INPUT_USER_DEACTIVATED                      |                                                 The specified user was deleted                                                  |
-| 400  |                       MD5_CHECKSUM_INVALID                       |                                                 The MD5 checksums do not match                                                  |
-| 400  |                      MEDIA_CAPTION_TOO_LONG                      |                                                     The caption is too long                                                     |
-| 400  |                            MEDIA_EMPTY                             |                                              The provided media object is invalid                                               |
-| 400  |                           MEDIA_INVALID                            |                                                          Media invalid                                                          |
-| 400  |                          MSG_ID_INVALID                          |                                                   Invalid message ID provided                                                   |
-| 400  |                         PEER_ID_INVALID                          |                                                 The provided peer id is invalid                                                 |
-| 400  |     PHOTO_EXT_INVALID The extension of the photo is invalid      |                                                                                                                                 |
-| 400  |                     PHOTO_INVALID_DIMENSIONS                     |                                                The photo dimensions are invalid                                                 |
-| 400  |                     PHOTO_SAVE_FILE_INVALID                      |                                                Internal issues, try again later                                                 |
-| 400  |                       POLL_ANSWERS_INVALID                       |                                               Invalid poll answers were provided                                                |
-| 400  |                      POLL_OPTION_DUPLICATE                       |                                                 Duplicate poll options provided                                                 |
-| 400  |                       POLL_OPTION_INVALID                        |                                                  Invalid poll option provided                                                   |
-| 400  |                    QUIZ_CORRECT_ANSWERS_EMPTY                    |                                              No correct quiz answer was specified                                               |
-| 400  |                   QUIZ_CORRECT_ANSWER_INVALID                    |                                   An invalid value was provided to the correct_answers field                                    |
-| 400  |                      REPLY_MARKUP_BUY_EMPTY                      |                                                Reply markup for buy button empty                                                |
-| 400  |                       REPLY_MARKUP_INVALID                       |                                              The provided reply markup is invalid                                               |
-| 400  |                        SCHEDULE_TOO_MUCH                         |                                              There are too many scheduled messages                                              |
-| 420  |                         SLOWMODE_WAIT_X                          | Slowmode is enabled in this chat: you must wait for the specified number of seconds before sending another message to the chat. |
-| 400  |                        TTL_MEDIA_INVALID                         |                                             Invalid media Time To Live was provided                                             |
-| 400  |                      USER_BANNED_IN_CHANNEL                      |                                   You're banned from sending messages in supergroups/channels                                   |
-| 400  |                         USER_IS_BLOCKED                          |                                                  You were blocked by this user                                                  |
-| 400  |                           USER_IS_BOT                            |                                             Bots can't send messages to other bots                                              |
-| 400  | WEBPAGE_CURL_FAILED Failure while fetching the webpage with cURL |                                                                                                                                 |
-| 400  |                       WEBPAGE_MEDIA_EMPTY                        |                                                       Webpage media empty                                                       |
-| 400  |                         YOU_BLOCKED_USER                         |                                                      You blocked this user                                                      |
+        - pekerja untuk mengunggah media.
+## Contoh
+_Contoh Tidak Ditemukan!_
+## Kemungkinan Kesalahan
+| kode | ketik | deskripsi |
+| :---: | :---: | :------:|
+| 400 | BROADCAST_PUBLIC_VOTERS_FORBIDDEN | Anda tidak dapat meneruskan jajak pendapat dengan pemilih publik |
+| 400 | BUTTON_DATA_INVALID | Data dari satu atau lebih tombol yang Anda berikan tidak valid |
+| 400 | BUTTON_TYPE_INVALID | Jenis satu atau beberapa tombol yang Anda berikan tidak valid |
+| 400 | BUTTON_URL_INVALID | URL tombol tidak valid |
+| 400 | CHANNEL_INVALID | Saluran yang disediakan tidak valid |
+| 400 | CHANNEL_PRIVATE | Anda belum bergabung dengan saluran/supergrup ini |
+| 400 | CHAT_ADMIN_REQUIRED | Anda harus menjadi admin dalam obrolan ini untuk melakukan ini |
+| 400 | CHAT_RESTRICTED | Anda tidak dapat mengirim pesan dalam obrolan ini, Anda dibatasi |
+| 403 | CHAT_SEND_GIFS_FORBIDDEN | Anda tidak dapat mengirim gif dalam obrolan ini |
+| 403 | CHAT_SEND_MEDIA_FORBIDDEN | Anda tidak dapat mengirim media dalam obrolan ini |
+| 403 | CHAT_SEND_STICKERS_FORBIDDEN | Anda tidak dapat mengirim stiker dalam obrolan ini. |
+| 403 | CHAT_WRITE_FORBIDDEN | Anda tidak dapat menulis di obrolan ini |
+| 400 | EXTERNAL_URL_INVALID | URL eksternal tidak valid |
+| 400 | FILE_PARTS_INVALID | Jumlah bagian file tidak valid |
+| 400 | FILE_PART_LENGTH_INVALID | Panjang bagian file tidak valid |
+| 400 | IMAGE_PROCESS_FAILED | Kegagalan saat memproses gambar |
+| 400 | INPUT_USER_DEACTIVATED | Pengguna yang ditentukan telah dihapus |
+| 400 | MD5_CHECKSUM_INVALID | Checksum MD5 tidak cocok |
+| 400 | MEDIA_CAPTION_TOO_LONG | Captionnya terlalu panjang |
+| 400 | MEDIA_KOSONG | Objek media yang disediakan tidak valid |
+| 400 | MEDIA_INVALID | Media tidak valid |
+| 400 | MSG_ID_INVALID | ID pesan yang diberikan tidak valid |
+| 400 | PEER_ID_INVALID | ID rekan yang diberikan tidak valid |
+| 400 | PHOTO_EXT_INVALID Ekstensi foto tidak valid |
+| 400 | PHOTO_INVALID_DIMENSIONS | Dimensi foto tidak valid |
+| 400 | PHOTO_SAVE_FILE_INVALID | Masalah internal, coba lagi nanti |
+| 400 | POLL_ANSWERS_INVALID | Jawaban polling yang diberikan tidak valid |
+| 400 | POLL_OPTION_DUPLICATE | Opsi jajak pendapat duplikat disediakan |
+| 400 | POLL_OPTION_INVALID | Opsi jajak pendapat tidak valid disediakan |
+| 400 | QUIZ_CORRECT_ANSWERS_EMPTY | Tidak ada jawaban kuis yang benar yang ditentukan |
+| 400 | QUIZ_CORRECT_ANSWER_INVALID | Nilai yang tidak valid diberikan ke bidang correct_answers |
+| 400 | REPLY_MARKUP_BUY_EMPTY | Balas markup untuk tombol beli kosong |
+| 400 | REPLY_MARKUP_INVALID | Markup balasan yang diberikan tidak valid |
+| 400 | SCHEDULE_TOO_MUCH | Ada terlalu banyak pesan terjadwal |
+| 420 | SLOWMODE_WAIT_X | Mode lambat diaktifkan dalam obrolan ini: Anda harus menunggu beberapa detik yang ditentukan sebelum mengirim pesan lain ke obrolan. |
+| 400 | TTL_MEDIA_INVALID | Time To Live media yang tidak valid disediakan
+| 400 | USER_BANNED_IN_CHANNEL | Anda dilarang mengirim pesan di supergrup/saluran
+| 400 | USER_IS_BLOCKED | Anda diblokir oleh pengguna ini |
+| 400 | USER_IS_BOT | Bot tidak dapat mengirim pesan ke bot lain |
+| 400 | WEBPAGE_CURL_FAILED Kegagalan saat mengambil halaman web dengan cURL |
+| 400 | WEBPAGE_MEDIA_KOSONG | Media halaman web kosong |
+| 400 | YOU_BLOCKED_USER | Anda memblokir pengguna ini |
 
-## Bot can use this method.
+## Bot dapat menggunakan metode ini.

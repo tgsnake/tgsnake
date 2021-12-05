@@ -18,7 +18,7 @@ export interface getUserPhotosMoreParams {
 }
 export async function GetUserPhotos(
   snakeClient: Snake,
-  userId: number | string,
+  userId: number | string | bigint,
   more?: getUserPhotosMoreParams
 ) {
   try {

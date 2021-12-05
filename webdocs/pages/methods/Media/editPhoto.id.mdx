@@ -1,39 +1,39 @@
 ---
 title : editPhoto
 ---
-## Overview
-Change the profile picture of chat.
-## Parameters
-```ts 
-ctx.telegram.editPhoto(chatId,photo)
+## Gambaran
+Ubah gambar profil obrolan.
+## Parameter
+```ts
+ctx.telegram.editFoto(chatId,foto)
 ```
-- `chatId` (_number|string_)
-    - Chat/Groups/Channel which will change the profile picture.
-- `photo` (_string|Buffer_)
-    - The location where the file is located/Url/The buffer of the file.
-## Example
-```ts headlight=3
+- `chatId` (_number|string|bigint_)
+    - Obrolan/Grup/Channel yang akan mengubah gambar profil.
+- `foto` (_string|Penyangga_)
+    - Lokasi file berada/Url/Buffer file.
+## Contoh
+```ts highlight=3
 bot.command("editPhoto", async (ctx)=>{
     if(!ctx.chat.private){
-        let results = await ctx.telegram.editPhoto(ctx.chat.id,"https://tgsnake.js.org/images/tgsnake.jpg") 
-        console.log(results)
+        let hasil = await ctx.telegram.editPhoto(ctx.chat.id,"https://tgsnake.js.org/images/tgsnake.jpg")
+        console.log(hasil)
     }
 })
 ```
-## Possible Error
+## Kemungkinan Kesalahan
 
-| code |            tipe             |                  deskripsi                   |
-|:----:|:---------------------------:|:--------------------------------------------:|
-| 400  |       CHANNEL_INVALID       |       The provided channel is invalid        |
-| 400  |    CHAT_ADMIN_REQUIRED    | You must be an admin in this chat to do this |
-| 400  |     CHAT_NOT_MODIFIED     |      The pinned message wasn't modified      |
-| 403  |   CHAT_WRITE_FORBIDDEN    |         You can't write in this chat         |
-| 400  |   PHOTO_CROP_SIZE_SMALL   |              Photo is too small              |
-| 400  |     PHOTO_EXT_INVALID     |    The extension of the photo is invalid     |
-| 400  |        PHOTO_INVALID        |                Photo invalid                 |
-| 400  |      CHAT_ID_INVALID      |       The provided chat id is invalid        |
-| 400  |     CHAT_NOT_MODIFIED     |      The pinned message wasn't modified      |
-| 400  | INPUT_CONSTRUCTOR_INVALID |     The provided constructor is invalid      |
-| 400  |      PEER_ID_INVALID      |       The provided peer id is invalid        |
+| kode | tipe | deskripsi |
+| :---: | :---: | :------:|
+| 400 | CHANNEL_INVALID | Saluran yang disediakan tidak valid |
+| 400 | CHAT_ADMIN_REQUIRED | Anda harus menjadi admin dalam obrolan ini untuk melakukan ini |
+| 400 | CHAT_NOT_MODIFIED | Pesan yang disematkan tidak diubah |
+| 403 | CHAT_WRITE_FORBIDDEN | Anda tidak dapat menulis di obrolan ini |
+| 400 | PHOTO_CROP_SIZE_SMALL | Foto terlalu kecil |
+| 400 | PHOTO_EXT_INVALID | Ekstensi foto tidak valid |
+| 400 | PHOTO_INVALID | Foto tidak valid |
+| 400 | CHAT_ID_INVALID | Id obrolan yang diberikan tidak valid |
+| 400 | CHAT_NOT_MODIFIED | Pesan yang disematkan tidak diubah |
+| 400 | INPUT_CONSTRUCTOR_INVALID | Konstruktor yang diberikan tidak valid |
+| 400 | PEER_ID_INVALID | ID rekan yang diberikan tidak valid |
 
-## Bot can use this method.
+## Bot dapat menggunakan metode ini.

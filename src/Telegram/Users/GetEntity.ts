@@ -11,8 +11,8 @@ import { ChatPhoto } from '../../Utils/ChatPhoto';
 import { RestrictionReason } from '../../Utils/RestrictionReason';
 import { AdminRights } from '../../Utils/AdminRights';
 import { Api } from 'telegram';
-import BigInt, { BigInteger, isInstance } from 'big-integer';
-import { toBigInt, toNumber } from '../../Utils/ToBigInt';
+import bigInt, { BigInteger, isInstance } from 'big-integer';
+import { toBigInt, toNumber, convertId } from '../../Utils/ToBigInt';
 import { Snake } from '../../client';
 import * as fs from 'fs';
 import BotError from '../../Context/Error';
@@ -33,7 +33,7 @@ export class ResultGetEntity {
   scam?: boolean;
   applyMinPhoto?: boolean;
   fake?: boolean;
-  id!: number;
+  id!: bigint;
   accessHash?: BigInteger;
   firstName?: string;
   lastName?: string;
@@ -87,10 +87,10 @@ export class ResultGetEntity {
       this.fake = resultsGetEntity.fake;
       if (isInstance(resultsGetEntity.id)) {
         //@ts-ignore
-        this.id = toNumber(resultsGetEntity.id);
+        this.id = convertId(toNumber(resultsGetEntity.id));
       } else {
         //@ts-ignore
-        this.id = resultsGetEntity.id;
+        this.id = convertId(resultsGetEntity.id);
       }
       this.accessHash = resultsGetEntity.accessHash;
       this.firstName = resultsGetEntity.firstName;
@@ -145,10 +145,10 @@ export class ResultGetEntity {
       this.callNotEmpty = resultsGetEntity.callNotEmpty;
       if (isInstance(resultsGetEntity.id)) {
         //@ts-ignore
-        this.id = Number(`-${toNumber(resultsGetEntity.id)}`);
+        this.id = convertId(Number(`-${toNumber(resultsGetEntity.id)}`));
       } else {
         //@ts-ignore
-        this.id = Number(`-${resultsGetEntity.id}`);
+        this.id = convertId(Number(`-${resultsGetEntity.id}`));
       }
       this.title = resultsGetEntity.title;
       this.participantsCount = resultsGetEntity.participantsCount;
@@ -189,10 +189,10 @@ export class ResultGetEntity {
       this.gigagroup = resultsGetEntity.gigagroup;
       if (isInstance(resultsGetEntity.id)) {
         //@ts-ignore
-        this.id = Number(`-100${toNumber(resultsGetEntity.id)}`);
+        this.id = convertId(Number(`-100${toNumber(resultsGetEntity.id)}`));
       } else {
         //@ts-ignore
-        this.id = Number(`-100${resultsGetEntity.id}`);
+        this.id = convertId(Number(`-100${resultsGetEntity.id}`));
       }
       this.accessHash = resultsGetEntity.accessHash;
       this.title = resultsGetEntity.title;
@@ -224,7 +224,7 @@ export class ResultGetEntity {
 }
 export async function GetEntity(
   snakeClient: Snake,
-  chatId: string | number,
+  chatId: bigint | string | number,
   useCache?: boolean
 ): Promise<ResultGetEntity> {
   try {
@@ -238,15 +238,21 @@ export async function GetEntity(
     }
     if (useCache) {
       if (typeof chatId == 'number') {
-        if (snakeClient.entityCache.get(Number(chatId))) {
+        if (snakeClient.entityCache.get(BigInt(chatId))) {
           //@ts-ignore
-          return snakeClient.entityCache.get(Number(chatId));
+          return snakeClient.entityCache.get(convertId(chatId));
+        }
+      }
+      if (typeof chatId == 'bigint') {
+        if (snakeClient.entityCache.get(chatId)) {
+          //@ts-ignore
+          return snakeClient.entityCache.get(chatId);
         }
       }
     }
-    let e = await snakeClient.client.getEntity(chatId); // change with BigInt(chatId)
+    let e = await snakeClient.client.getEntity(convertId(chatId));
     let r = new ResultGetEntity(e);
-    snakeClient.entityCache.set(Number(r.id), r);
+    snakeClient.entityCache.set(r.id, r);
     return r;
   } catch (error) {
     let botError = new BotError();

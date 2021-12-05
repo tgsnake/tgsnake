@@ -9,7 +9,19 @@
 import { Api } from 'telegram';
 import { Snake } from '../../client';
 import BotError from '../../Context/Error';
-export async function GetFullChat(snakeClient: Snake, chatId: number | string) {
+import { toBigInt } from '../../Utils/ToBigInt';
+import { BigInteger } from 'big-integer';
+/**
+ * Returns full chat/channel info according to its ID.
+ * @param snakeClient - Client
+ * @param {number|string|bigint} chatId - Chat/Groups/Channel id.
+ * ```ts
+ * bot.command("getFullChat",async (ctx) => {
+ *     let results = await ctx.telegram.getFullChat(ctx.chat.id)
+ * })
+ * ```
+ */
+export async function GetFullChat(snakeClient: Snake, chatId: number | string | bigint) {
   try {
     let mode = ['debug', 'info'];
     if (mode.includes(snakeClient.logger)) {
@@ -19,17 +31,17 @@ export async function GetFullChat(snakeClient: Snake, chatId: number | string) {
         }] - [${new Date().toLocaleString()}] - Running telegram.getFullChat`
       );
     }
-    let type = await snakeClient.telegram.getEntity(chatId);
-    if (type.type == 'channel') {
+    let [id, type] = await toBigInt(chatId, snakeClient);
+    if (type == 'channel') {
       return snakeClient.client.invoke(
         new Api.channels.GetFullChannel({
-          channel: chatId,
+          channel: id as BigInteger,
         })
       );
     } else {
       return snakeClient.client.invoke(
         new Api.messages.GetFullChat({
-          chatId: type.id,
+          chatId: id as BigInteger,
         })
       );
     }

@@ -28,7 +28,7 @@ export interface sendMessageMoreParams {
 }
 export async function sendMessage(
   snakeClient: Snake,
-  chatId: number | string,
+  chatId: number | string | bigint,
   text: string,
   more?: sendMessageMoreParams
 ) {

@@ -1,29 +1,29 @@
 ---
 title : getFullChat
 ---
-## Overview
-Returns full chat/channel info according to its ID.
-## Parameters
-```ts 
+## Gambaran
+Mengembalikan info obrolan/saluran lengkap sesuai dengan ID-nya.
+## Parameter
+```ts
 ctx.telegram.getFullChat(chatId)
 ```
-- `chatId` (_number|string_)
-    - Chat/Groups/Channel id.
-## Example
-```ts:index.ts highlight=2
+- `chatId` (_number|string|bigint_)
+     - Obrolan/Grup/Id Saluran.
+## Contoh
+```ts highlight=2
 bot.command("getFullChat",async (ctx) => {
-    let results = await ctx.telegram.getFullChat(ctx.chat.id)
+     let hasil = await ctx.telegram.getFullChat(ctx.chat.id)
 })
 ```
-## Possible Error
+## Kemungkinan Kesalahan
 
-|             code              |                    tipe                    |            deskripsi            |
-|:-----------------------------:|:------------------------------------------:|:-------------------------------:|
-|              400              |             CHAT_ID_INVALID              | The provided chat id is invalid |
-|     400 PEER_ID_INVALID     |      The provided peer id is invalid       |                                 |
-|      400 CHANNEL_INVALID      |      The provided channel is invalid       |                                 |
-|      400 CHANNEL_PRIVATE      | You haven't joined this channel/supergroup |                                 |
-| 403 CHANNEL_PUBLIC_GROUP_NA |      channel/supergroup not available      |                                 |
-|              400              |              MSG_ID_INVALID              |   Invalid message ID provided   |
+| kode | tipe | deskripsi |
+| :---: | :---: | :------:|
+| 400 | CHAT_ID_INVALID | Id obrolan yang diberikan tidak valid |
+| 400 PEER_ID_INVALID | ID rekan yang diberikan tidak valid |
+| 400 CHANNEL_INVALID | Saluran yang disediakan tidak valid |
+| 400 CHANNEL_PRIVATE | Anda belum bergabung dengan saluran/supergrup ini |
+| 403 CHANNEL_PUBLIC_GROUP_NA | saluran/supergrup tidak tersedia |
+| 400 | MSG_ID_INVALID | ID pesan yang diberikan tidak valid
 
-## Bot can use this method
+## Bot dapat menggunakan metode ini

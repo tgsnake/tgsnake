@@ -11,9 +11,10 @@ import { Api } from 'telegram';
 import { Snake } from '../client';
 import { Telegram } from '../Telegram';
 import { BigInteger } from 'big-integer';
+import { toNumber } from '../Utils/ToBigInt';
 export class UpdateMessageID extends Update {
   id!: number;
-  randomId!: BigInteger;
+  randomId!: bigint;
   constructor() {
     super();
     this['_'] = 'updateMessageID';
@@ -29,7 +30,7 @@ export class UpdateMessageID extends Update {
     }
     this.telegram = SnakeClient.telegram;
     this.id = update.id;
-    this.randomId = update.randomId;
+    this.randomId = BigInt(toNumber(update.randomId!) as number);
     return this;
   }
 }

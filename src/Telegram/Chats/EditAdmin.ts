@@ -10,6 +10,8 @@ import { Snake } from '../../client';
 import { Api } from 'telegram';
 import BotError from '../../Context/Error';
 import * as Updates from '../../Update';
+import bigInt, { BigInteger } from 'big-integer';
+import { convertId } from '../../Utils/ToBigInt';
 
 export interface editAdminMoreParams {
   changeInfo?: boolean;
@@ -24,10 +26,26 @@ export interface editAdminMoreParams {
   manageCall?: boolean;
   rank?: string;
 }
+/**
+ * Modify the admin rights of a user in a supergroup/channel.
+ * @param snakeClient - Client
+ * @param {bigint|number|string} chatId - Chat/Channel/Group id.
+ * @param {bigint|number|string} userId - User id.
+ * @param {Object} - more parameters to use.
+ *```ts
+ * bot.command("promote",async (ctx) => {
+ *    if((!ctx.chat.private) && ctx.replyToMessage){
+ *        let results = await ctx.telegram.editAdmin(ctx.chat.id,ctx.replyToMessage.from.id)
+ *        console.log(results)
+ *    }
+ * })
+ *```
+ * This method will return UpdateNewMessage or UpdateNewChannelMessage if success.
+ */
 export async function EditAdmin(
   snakeClient: Snake,
-  chatId: number | string,
-  userId: number | string,
+  chatId: bigint | number | string,
+  userId: bigint | number | string,
   more?: editAdminMoreParams
 ) {
   try {
@@ -53,8 +71,8 @@ export async function EditAdmin(
     };
     let results: Api.TypeUpdates = await snakeClient.client.invoke(
       new Api.channels.EditAdmin({
-        channel: chatId,
-        userId: userId,
+        channel: convertId(chatId),
+        userId: convertId(userId),
         adminRights: new Api.ChatAdminRights(permissions),
         rank: more?.rank || '',
       })

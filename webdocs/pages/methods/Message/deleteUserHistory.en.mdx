@@ -1,16 +1,23 @@
 --- 
 title : deleteUserHistory 
 --- 
+import Callout from 'nextra-theme-docs/callout'
+
 
 ## Overview 
-Delete all messages sent by a certain user in a supergroup. 
+Delete all messages sent by a certain user in a supergroup.
+
+<Callout type="error" emoji="⚠️">
+Maybe this method doesn't work in this version which uses gramjs version `2.0.8` where `Api.channels.DeleteUserHistory` is undefined or does not exist.
+</Callout>
+
 ## Parameters 
 ```ts 
 ctx.telegram.deleteUserHistory(chatId,userId)
 ```
-- `chatId` (_number|string_) 
+- `chatId` (_number|string|bigint_) 
     - supergroup id. 
-- `userId` (_number|string_) 
+- `userId` (_number|string|bigint_) 
     - User whose messages should be deleted. 
 
 ## Example 

@@ -1,33 +1,33 @@
 ---
 title : getChatMembersCount
 ---
-## Overview
-Get the number of members in a chat.
+## Gambaran
+Dapatkan jumlah anggota dalam obrolan.
 
-## Parameters
-```ts 
+## Parameter
+```ts
 ctx.telegram.getChatMembersCount(chatId)
 ```
 
-- `chat` (_number|string_)
-    - Chat or channels id to getting the number of members.
+- `obrolan` (_number|string|bigint_)
+     - Obrolan atau id saluran untuk mendapatkan jumlah anggota.
 
-## Example
-```ts headlight=2
+## Contoh
+```ts highlight= 2
 bot.command("getChatMembersCount",async (ctx) => {
-    let results = await ctx.telegram.getChatMembersCount(ctx.chat.id)
-    console.log(results)
+     let hasil = await ctx.telegram.getChatMembersCount(ctx.chat.id)
+     console.log(hasil)
 })
 ```
-## Possible Error
-| code |           tipe            |                  deskripsi                  |
-|:----:|:-------------------------:|:-------------------------------------------:|
-| 400  |      CHANNEL_INVALID      |      The provided channel is invalid.       |
-| 400  |      CHANNEL_PRIVATE      | You haven't joined this channel/supergroup. |
-| 403  | CHANNEL_PUBLIC_GROUP_NA |      channel/supergroup not available.      |
-| 400  |    CHAT_NOT_MODIFIED    |     The pinned message wasn't modified.     |
-| 400  |     MSG_ID_INVALID      |        Invalid message ID provided.         |
-| 400  |     CHAT_ID_INVALID     |      The provided chat id is invalid.       |
-| 400  |     PEER_ID_INVALID     |       The provided peer id is invpeer       |
+## Kemungkinan Kesalahan
+| kode | tipe | deskripsi |
+| :---: | :---: | :------:|
+| 400 | CHANNEL_INVALID | Saluran yang disediakan tidak valid. |
+| 400 | CHANNEL_PRIVATE | Anda belum bergabung dengan saluran/supergrup ini. |
+| 403 | CHANNEL_PUBLIC_GROUP_NA | saluran/supergrup tidak tersedia. |
+| 400 | CHAT_NOT_MODIFIED | Pesan yang dipasangi pin tidak diubah. |
+| 400 | MSG_ID_INVALID | ID pesan yang diberikan tidak valid. |
+| 400 | CHAT_ID_INVALID | ID obrolan yang diberikan tidak valid. |
+| 400 | PEER_ID_INVALID | Id rekan yang disediakan adalah invpeer |
 
-## Bot can use this methods
+## Bot dapat menggunakan metode ini

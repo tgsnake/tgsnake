@@ -7,17 +7,17 @@ Get the admin log of a channel/supergroup
 ```ts 
 ctx.telegram.getAdminLog(chatId,more)
 ```
-- `chatId` (_number|string_) 
+- `chatId` (_number|string|bigint_) 
     - Chat/Channel/Group id. 
 - `more` (_object_) 
     - `q` (_string_) 
         - Search query, can be empty.
-    - `maxId` (_BigInteger_) 
-        - Maximum ID of message to return.
-    - `minId` (_BigInteger_) 
-        - Minimum ID of message to return.
+    - `maxId` (_bigint_) 
+        - Maximum ID of message to return. _(>=1)_
+    - `minId` (_bigint_) 
+        - Minimum ID of message to return. _(>=1)_
     - `limit` (_number_) 
-        - Maximum number of results to return. 
+        - Maximum number of results to return. _(>=1)_
           
     _below are the available filters. You can find the explanation [here](https://core.telegram.org/constructor/channelAdminLogEventsFilter)._
     - `join` (_boolean_) 

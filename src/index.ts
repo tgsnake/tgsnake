@@ -8,7 +8,6 @@
 
 export { Snake } from './client';
 export { Telegram } from './Telegram';
-export * as Wizard from './wizard';
 export * as Update from './Update';
 export * as GramJs from 'telegram';
 export { Composer } from './Context/Composer';

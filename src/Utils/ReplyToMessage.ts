@@ -36,7 +36,7 @@ export class ReplyToMessage {
   editHide?: boolean;
   pinned?: boolean;
   fwdFrom?: ForwardMessage;
-  viaBotId?: number;
+  viaBotId?: bigint;
   text?: string;
   media?: Media;
   replyMarkup?: TypeReplyMarkup;
@@ -49,7 +49,11 @@ export class ReplyToMessage {
   mediaGroupId?: BigInteger | number;
   restrictionReason?: RestrictionReason[];
   constructor() {}
-  async init(messageReplyHeader: Api.MessageReplyHeader, SnakeClient: Snake, chatId: number) {
+  async init(
+    messageReplyHeader: Api.MessageReplyHeader,
+    SnakeClient: Snake,
+    chatId: number | bigint
+  ) {
     _SnakeClient = SnakeClient;
     let mode = ['debug', 'info'];
     if (mode.includes(SnakeClient.logger)) {

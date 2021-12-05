@@ -42,7 +42,7 @@ class Views {
 }
 export async function GetMessagesViews(
   snakeClient: Snake,
-  chatId: number | string,
+  chatId: number | string | bigint,
   messageId: number[],
   increment: boolean = false
 ) {

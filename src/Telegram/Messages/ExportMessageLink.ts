@@ -14,9 +14,16 @@ export interface exportMessageLinkMoreParams {
   thread?: boolean;
   grouped?: boolean;
 }
+/**
+ * Get link and embed info of a message in a channel/supergroup
+ * @param snakeClient - client
+ * @param {number|string|bigint} chatId - supergroup/channel id.
+ * @param {number} messageId - message id.
+ * @param {Object} more - more paramaters to use.
+ */
 export async function ExportMessageLink(
   snakeClient: Snake,
-  chatId: number | string,
+  chatId: number | string | bigint,
   messageId: number,
   more?: exportMessageLinkMoreParams
 ) {

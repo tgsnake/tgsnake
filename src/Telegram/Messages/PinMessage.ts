@@ -18,7 +18,7 @@ export interface pinMessageMoreParams {
 }
 export async function PinMessage(
   snakeClient: Snake,
-  chatId: number | string,
+  chatId: number | string | bigint,
   messageId: number,
   more?: pinMessageMoreParams
 ) {

@@ -11,7 +11,7 @@ import { Snake } from '../../client';
 import { ResultAffectedMessages } from './DeleteMessages';
 import { toBigInt, toNumber } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
-export async function ReadMentions(snakeClient: Snake, chatId: number | string) {
+export async function ReadMentions(snakeClient: Snake, chatId: number | string | bigint) {
   try {
     let mode = ['debug', 'info'];
     if (mode.includes(snakeClient.logger)) {

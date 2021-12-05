@@ -16,7 +16,7 @@ export interface readHistoryMoreParams {
 }
 export async function ReadHistory(
   snakeClient: Snake,
-  chatId: number | string,
+  chatId: number | string | bigint,
   more?: readHistoryMoreParams
 ) {
   try {

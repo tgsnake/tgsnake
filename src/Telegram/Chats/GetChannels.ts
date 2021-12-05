@@ -9,7 +9,19 @@
 import { Api } from 'telegram';
 import { Snake } from '../../client';
 import BotError from '../../Context/Error';
-export async function GetChannels(snakeClient: Snake, chatId: number[] | string[]) {
+import bigInt, { BigInteger } from 'big-integer';
+/**
+ * Get info about channels/supergroups.
+ * @param snakeClient - Client
+ * @param {Array} chatId - List of channel ids.
+ * ```ts
+ * bot.command("getChannels",async (ctx) => {
+ *     let results = await ctx.telegram.getChannels([ctx.chat.id])
+ *     console.log(results)
+ * })
+ * ```
+ */
+export async function GetChannels(snakeClient: Snake, chatId: number[] | string[] | bigint[]) {
   try {
     let mode = ['debug', 'info'];
     if (mode.includes(snakeClient.logger)) {
@@ -19,9 +31,24 @@ export async function GetChannels(snakeClient: Snake, chatId: number[] | string[
         }] - [${new Date().toLocaleString()}] - Running telegram.getChannels`
       );
     }
+    let id: BigInteger[] | string[] = [];
+    for (let ids of chatId) {
+      if (typeof ids == 'string') {
+        //@ts-ignore
+        id.push(ids as string);
+      }
+      if (typeof ids == 'bigint') {
+        //@ts-ignore
+        id.push(bigInt(ids as bigint) as BigInteger);
+      }
+      if (typeof ids == 'number') {
+        //@ts-ignore
+        id.push(bigInt(ids as number) as BigInteger);
+      }
+    }
     let results: Api.messages.TypeChats = await snakeClient.client.invoke(
       new Api.channels.GetChannels({
-        id: chatId,
+        id: id,
       })
     );
     //todo

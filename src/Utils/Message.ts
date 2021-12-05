@@ -19,6 +19,7 @@ import { ForwardMessage } from './ForwardMessage';
 import { Media } from './Media';
 import { Telegram } from '../Telegram';
 import { convertReplyMarkup, TypeReplyMarkup } from './ReplyMarkup';
+import { toNumber } from './ToBigInt';
 import { Cleaning } from './CleanObject';
 let _SnakeClient: Snake;
 let _telegram: Telegram;
@@ -40,7 +41,7 @@ export class Message {
   editHide?: boolean;
   pinned?: boolean;
   fwdFrom?: ForwardMessage;
-  viaBotId?: number;
+  viaBotId?: bigint;
   text?: string;
   media?: Media;
   replyMarkup?: TypeReplyMarkup;
@@ -134,7 +135,10 @@ export class Message {
     this.fromScheduled = message.fromScheduled;
     this.editHide = message.editHide;
     this.pinned = message.pinned;
-    this.viaBotId = message.viaBotId;
+    this.viaBotId =
+      message.viaBotId !== null || message.viaBotId !== undefined
+        ? BigInt(toNumber(message.viaBotId!) as number)
+        : BigInt(0);
     this.text = message.message;
     this.views = message.views;
     this.forwards = message.forwards;

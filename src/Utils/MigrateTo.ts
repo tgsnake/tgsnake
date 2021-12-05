@@ -7,11 +7,12 @@
 //  it under the terms of the MIT License as published.
 import { Api } from 'telegram';
 import { BigInteger } from 'big-integer';
+import { toNumber } from './ToBigInt';
 export class MigrateTo {
-  id!: number;
-  accessHash!: BigInteger;
+  id!: bigint;
+  accessHash!: bigint;
   constructor(migratedTo: Api.InputChannel) {
-    this.id = migratedTo.channelId;
-    this.accessHash = migratedTo.accessHash;
+    this.id = BigInt(toNumber(migratedTo.channelId) as number);
+    this.accessHash = BigInt(toNumber(migratedTo.accessHash) as number);
   }
 }

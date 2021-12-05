@@ -1,37 +1,35 @@
 ---
 title : editTitle
 ---
-## Overview
-edit chat/group/channel title.
-## Parameters
-```ts 
-ctx.telegram.editTitle(chatId,title) 
+## Gambaran
+edit judul obrolan/grup/saluran.
+## Parameter
+```ts
+ctx.telegram.editTitle(chatId,title)
 ```
-- `chatId` (_number|string_)
-    - Chat/Groups/Channel id.
+- `chatId` (_number|string|bigint_)
+    - Obrolan/Grup/Id Saluran.
 - `title` (_string_)
-    - New title
-## Example
+    - Judul baru
+## Contoh
 ```ts highlight=3
 bot.command("editTitle",async (ctx) => {
     if(!ctx.chat.private){
-        let results = await ctx.telegram.editTitle(ctx.chat.id,"hey new title") 
-        console.log(results)
+        let hasil = await ctx.telegram.editTitle(ctx.chat.id,"hei judul baru")
+        console.log(hasil)
     }
 })
 ```
-## Possible Error
+## Kemungkinan Kesalahan
 
-| code |                          tipe                          |                  deskripsi                   |
-|:----:|:------------------------------------------------------:|:--------------------------------------------:|
-| 400  |                    CHANNEL_INVALID                     |       The provided channel is invalid        |
-| 400  |                 CHAT_ADMIN_REQUIRED                  | You must be an admin in this chat to do this |
-| 400  | CHAT_NOT_MODIFIED The pinned message wasn't modified |                                              |
-| 400  |                   CHAT_TITLE_EMPTY                   |            No chat title provided            |
-| 403  |                 CHAT_WRITE_FORBIDDEN                 |         You can't write in this chat         |
-| 400  |                   CHAT_ID_INVALID                    |       The provided chat id is invalid        |
-| 400  |                  CHAT_NOT_MODIFIED                   |      The pinned message wasn't modified      |
-| 400  |                   CHAT_TITLE_EMPTY                   |            No chat title provided            |
-| 400  |                   PEER_ID_INVALID                    |       The provided peer id is invalid        |
+| kode | tipe | deskripsi |
+| :---: | :---: | :------:|
+| 400 | CHANNEL_INVALID | Saluran yang disediakan tidak valid |
+| 400 | CHAT_ADMIN_REQUIRED | Anda harus menjadi admin dalam obrolan ini untuk melakukan ini |
+| 400 | CHAT_NOT_MODIFIED Pesan yang disematkan tidak diubah |
+| 400 | CHAT_TITLE_EMPTY | Tidak ada judul obrolan yang disediakan |
+| 403 | CHAT_WRITE_FORBIDDEN | Anda tidak dapat menulis di obrolan ini |
+| 400 | CHAT_ID_INVALID | Id obrolan yang diberikan tidak valid |
+| 400 | PEER_ID_INVALID | ID yang diberikan tidak valid |
 
-## Bot can use this method
+## Bot dapat menggunakan metode ini

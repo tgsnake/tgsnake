@@ -13,7 +13,7 @@ import { Chat } from './Chat';
 import { AdminRights } from './AdminRights';
 import { BannedRights } from './BannedRight';
 import { ResultGetEntity } from '../Telegram/Users/GetEntity';
-
+import { toNumber } from './ToBigInt';
 export type UserStatus = 'self' | 'creator' | 'admin' | 'banned' | 'left' | 'member' | 'restricted';
 export class ChannelParticipant {
   user!: From;
@@ -34,7 +34,7 @@ export class ChannelParticipant {
       this.status = 'creator';
       this.adminRights = new AdminRights(participant.adminRights);
       this.user = new From();
-      await this.user.init(participant.userId, SnakeClient);
+      await this.user.init(BigInt(toNumber(participant.userId) as number), SnakeClient);
       return this;
     }
     if (participant instanceof Api.ChannelParticipantAdmin) {
@@ -45,14 +45,14 @@ export class ChannelParticipant {
       this.self = participant.self;
       this.rank = participant.rank;
       this.user = new From();
-      await this.user.init(participant.userId, SnakeClient);
+      await this.user.init(BigInt(toNumber(participant.userId) as number), SnakeClient);
       if (participant.inviterId) {
         this.inviter = new From();
-        await this.inviter.init(participant.inviterId, SnakeClient);
+        await this.inviter.init(BigInt(toNumber(participant.inviterId) as number), SnakeClient);
       }
       if (participant.promotedBy) {
         this.promotedBy = new From();
-        await this.promotedBy.init(participant.promotedBy, SnakeClient);
+        await this.promotedBy.init(BigInt(toNumber(participant.promotedBy) as number), SnakeClient);
       }
       return this;
     }
@@ -65,10 +65,10 @@ export class ChannelParticipant {
       }
       this.user = new From();
       //@ts-ignore
-      await this.user.init(participant.peer.userId, SnakeClient);
+      await this.user.init(BigInt(toNumber(participant.peer.userId!) as number), SnakeClient);
       if (participant.kickedBy) {
         this.kickedBy = new From();
-        await this.kickedBy.init(participant.kickedBy, SnakeClient);
+        await this.kickedBy.init(BigInt(toNumber(participant.kickedBy) as number), SnakeClient);
       }
       return this;
     }
@@ -77,17 +77,17 @@ export class ChannelParticipant {
       this.status = 'left';
       this.user = new From();
       //@ts-ignore
-      await this.user.init(participant.peer.userId, SnakeClient);
+      await this.user.init(BigInt(toNumber(participant.peer.userId) as number), SnakeClient);
       return this;
     }
     if (participant instanceof Api.ChannelParticipantSelf) {
       participant as Api.ChannelParticipantSelf;
       this.status = 'self';
       this.user = new From();
-      await this.user.init(participant.userId, SnakeClient);
+      await this.user.init(BigInt(toNumber(participant.userId) as number), SnakeClient);
       if (participant.inviterId) {
         this.inviter = new From();
-        await this.inviter.init(participant.inviterId, SnakeClient);
+        await this.inviter.init(BigInt(toNumber(participant.inviterId) as number), SnakeClient);
       }
       return this;
     }
@@ -95,7 +95,7 @@ export class ChannelParticipant {
       participant as Api.ChannelParticipant;
       this.status = 'member';
       this.user = new From();
-      await this.user.init(participant.userId, SnakeClient);
+      await this.user.init(BigInt(toNumber(participant.userId) as number), SnakeClient);
       return this;
     }
   }
@@ -110,12 +110,12 @@ export class ChatParticipant {
     this.date = participant.date;
     if (participant.userId) {
       let user = new From();
-      await user.init(participant.userId, SnakeClient);
+      await user.init(BigInt(toNumber(participant.userId) as number), SnakeClient);
       this.user = user;
     }
     if (participant.inviterId) {
       let inviter = new From();
-      await inviter.init(participant.inviterId, SnakeClient);
+      await inviter.init(BigInt(toNumber(participant.inviterId) as number), SnakeClient);
       this.inviter = inviter;
     }
     return this;
@@ -128,7 +128,7 @@ export class ChatParticipantCreator {
   async init(participant: Api.ChatParticipantCreator, SnakeClient: Snake) {
     if (participant.userId) {
       let user = new From();
-      await user.init(participant.userId, SnakeClient);
+      await user.init(BigInt(toNumber(participant.userId) as number), SnakeClient);
       this.user = user;
     }
     return this;
@@ -144,12 +144,12 @@ export class ChatParticipantAdmin {
     this.date = participant.date;
     if (participant.userId) {
       let user = new From();
-      await user.init(participant.userId, SnakeClient);
+      await user.init(BigInt(toNumber(participant.userId) as number), SnakeClient);
       this.user = user;
     }
     if (participant.inviterId) {
       let inviter = new From();
-      await inviter.init(participant.inviterId, SnakeClient);
+      await inviter.init(BigInt(toNumber(participant.inviterId) as number), SnakeClient);
       this.inviter = inviter;
     }
     return this;
@@ -168,7 +168,7 @@ export class ChatParticipantsForbidden {
   async init(participant: Api.ChatParticipantsForbidden, SnakeClient: Snake) {
     if (participant.chatId) {
       let chat = new Chat();
-      await chat.init(participant.chatId, SnakeClient);
+      await chat.init(BigInt(toNumber(participant.chatId) as number), SnakeClient);
       this.chat = chat;
     }
     if (participant.selfParticipant) {
@@ -238,7 +238,7 @@ export class ChatParticipants {
     this.version = participant.version;
     if (participant.chatId) {
       let chat = new Chat();
-      await chat.init(participant.chatId, SnakeClient);
+      await chat.init(BigInt(toNumber(participant.chatId) as number), SnakeClient);
       this.chat = chat;
     }
     if (participant.participants) {

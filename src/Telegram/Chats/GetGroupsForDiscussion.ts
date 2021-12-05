@@ -9,6 +9,18 @@
 import { Api } from 'telegram';
 import { Snake } from '../../client';
 import BotError from '../../Context/Error';
+/**
+ * Get all groups that can be used as discussion groups.<br/>
+ * Returned legacy group chats must be first upgraded to supergroups before they can be set as a discussion group.<br/>
+ * To set a returned supergroup as a discussion group, access to its old messages must be enabled using channels.togglePreHistoryHidden, first. <br/>
+ * @param snakeClient - client
+ * ```ts
+ * bot.command("getGroupsForDiscussion",async (ctx) => {
+ *     let results = await ctx.telegram.getGroupsForDiscussion()
+ *     console.log(results)
+ * })
+ * ```
+ */
 export async function GetGroupsForDiscussion(snakeClient: Snake) {
   try {
     let mode = ['debug', 'info'];

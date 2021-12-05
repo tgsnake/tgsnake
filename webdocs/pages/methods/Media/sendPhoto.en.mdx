@@ -7,10 +7,10 @@ Sending photo with fileId/file location/url/buffer.
 ```ts  
 ctx.telegram.sendPhoto(chatId,photo,more)
 ```
-- `chatId` (_number|string_) 
+- `chatId` (_number|string|bigint_) 
     - Chat/Groups/Channel id. 
-- `photo` (_string|Buffer_) 
-    - FileId/File Location/Url/Buffer 
+- `photo` (_string|Buffer|Media_) 
+    - FileId/File Location/Url/Buffer
 - `more` (_[sendMediaMoreParams](/en/telegram/media/SendMedia#parameters)_)
 ## Example 
 ```ts highlight=3

@@ -9,6 +9,16 @@
 import { Api } from 'telegram';
 import { Snake } from '../../client';
 import BotError from '../../Context/Error';
+/**
+ * Get inactive channels and supergroups.
+ * @param snakeClient - Client
+ * ```ts
+ * bot.command("getInactiveChannels",async (ctx) => {
+ *     let results = await ctx.telegram.getInactiveChannels()
+ *     console.log(results)
+ * })
+ * ```
+ */
 export async function GetInactiveChannels(snakeClient: Snake) {
   try {
     let mode = ['debug', 'info'];

@@ -5,12 +5,12 @@
 //
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
-import BigInt, { BigInteger, isInstance } from 'big-integer';
+import bigInt, { BigInteger, isInstance } from 'big-integer';
 import { Api } from 'telegram';
 import { Snake } from '../client';
-export async function toBigInt(Ids: number | string, SnakeClient: Snake) {
+export async function toBigInt(Ids: bigint | number | string, SnakeClient: Snake) {
   let e = await SnakeClient.telegram.getEntity(Ids, true);
-  let id = e.id; // change with BigInt if gramjs support layer 133
+  let id = bigInt(e.id);
   let d =
     e.type == 'channel'
       ? new Api.PeerChannel({
@@ -23,7 +23,7 @@ export async function toBigInt(Ids: number | string, SnakeClient: Snake) {
       : new Api.PeerUser({
           userId: id,
         });
-  return [id, e.type, d];
+  return [id as BigInteger, e.type, d];
 }
 export function toNumber(Ids: BigInteger | number) {
   if (isInstance(Ids)) {
@@ -32,4 +32,13 @@ export function toNumber(Ids: BigInteger | number) {
   }
   //@ts-ignore
   return Ids as Number;
+}
+export function convertId(ids: bigint | number | string) {
+  if (typeof ids == 'bigint') {
+    return bigInt(ids as bigint) as BigInteger;
+  }
+  if (typeof ids == 'number') {
+    return bigInt(String(ids)) as BigInteger;
+  }
+  return String(ids) as string;
 }

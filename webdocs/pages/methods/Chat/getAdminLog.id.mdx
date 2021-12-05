@@ -1,27 +1,26 @@
 ---
-title: getAdminLog
+title : getAdminLog
 ---
-
-## Overview
-Get the admin log of a channel/supergroup
-## Parameters
-```ts 
-ctx.telegram.getAdminLog(chatId,more)
+## Gambaran
+Dapatkan log admin saluran/supergrup
+## Parameter
+```ts
+ctx.telegram.getAdminLog(chatId, more)
 ```
-- `chatId` (_number|string_)
-    - Chat/Channel/Group id.
-- `more` (_object_)
+- `chatId` (_number|string|bigint_)
+    - Id Obrolan/Saluran/Grup.
+- `more` (_Object_)
     - `q` (_string_)
-        - Search query, can be empty.
-    - `maxId` (_BigInteger_)
-        - Maximum ID of message to return.
-    - `minId` (_BigInteger_)
-        - Minimum ID of message to return.
+        - Permintaan pencarian, boleh kosong.
+    - `maxId` (_bigint_)
+        - ID maksimum pesan yang akan dikembalikan. _(>=1)_
+    - `minId` (_bigint_)
+        - Minimum ID pesan untuk dikembalikan. _(>=1)_
     - `limit` (_number_)
-        - Maximum number of results to return.
-
-    _below are the available filters. You can find the explanation [here](https://core.telegram.org/constructor/channelAdminLogEventsFilter)._
-    - `join` (_boolean_)
+        - Jumlah maksimum hasil untuk kembali. _(>=1)_
+          
+    _di bawah ini adalah filter yang tersedia. Anda dapat menemukan penjelasannya [di sini](https://core.telegram.org/constructor/channelAdminLogEventsFilter)._
+    - `join` (_boolean_) 
     - `leave` (_boolean_)
     - `invite` (_boolean_)
     - `ban` (_boolean_)
@@ -37,23 +36,23 @@ ctx.telegram.getAdminLog(chatId,more)
     - `invites` (_boolean_)
     - `edit` (_boolean_)
     - `delete` (_boolean_)
-## Example
-```ts headlight=3
+## Contoh
+```ts highlight= 3
 bot.command("getAdminLog",async (ctx) => {
     if(!ctx.chat.private){
-        let results = await ctx.telegram.getAdminLog(ctx.chat.id)
-        console.log(results)
+        let hasil = await ctx.telegram.getAdminLog(ctx.chat.id)
+        console.log(hasil)
     }
 })
 ```
-## Possible Error
+## Kemungkinan Kesalahan
 
-| code |          tipe          |                  deskripsi                   |
-|:----:|:----------------------:|:--------------------------------------------:|
-| 400  |    CHANNEL_INVALID     |       The provided channel is invalid        |
-| 400  |    CHANNEL_PRIVATE     |  You haven't joined this channel/supergroup  |
-| 400  | CHAT_ADMIN_REQUIRED  | You must be an admin in this chat to do this |
-| 403  | CHAT_WRITE_FORBIDDEN |         You can't write in this chat         |
-| 400  |    MSG_ID_INVALID    |         Invalid message ID provided          |
+| kode | tipe | deskripsi |
+| :---: | :---: | :------:|
+| 400 | CHANNEL_INVALID | Saluran yang disediakan tidak valid |
+| 400 | CHANNEL_PRIVATE | Anda belum bergabung dengan saluran/supergrup ini |
+| 400 | CHAT_ADMIN_REQUIRED | Anda harus menjadi admin dalam obrolan ini untuk melakukan ini |
+| 403 | CHAT_WRITE_FORBIDDEN | Anda tidak dapat menulis di obrolan ini |
+| 400 | MSG_ID_INVALID | ID pesan yang diberikan tidak valid |
 
-## Bot can't use this method.
+## Bot tidak dapat menggunakan metode ini.

@@ -30,10 +30,16 @@ export interface sendMediaMoreParams {
   mimeType?: string;
   fileName?: string;
 }
-
+/**
+ * Sending message media.
+ * @param snakeClient - Client
+ * @param {number|string|bigint} chatId - Chat/Groups/Channel id.
+ * @param {Object} media - Message Media.
+ * @param more - more parameters to use.
+ */
 export async function SendMedia(
   snakeClient: Snake,
-  chatId: number | string,
+  chatId: number | string | bigint,
   media: Api.TypeInputMedia,
   more?: sendMediaMoreParams
 ) {

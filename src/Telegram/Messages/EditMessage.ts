@@ -23,9 +23,17 @@ export interface editMessageMoreParams {
   scheduleDate?: number;
   parseMode?: string;
 }
+/**
+ * This method allow you to edit a message.
+ * @param snakeClient - Client
+ * @param {number|string|bigint} chatId - Chat/Groups/Channel id.
+ * @param {number} messageId - Message id to be edited.
+ * @param {string} text - New Message/Caption. You can pass with blank string (`""`) if you want to edit media.
+ * @param {Object} more - more parameters to use.
+ */
 export async function EditMessage(
   snakeClient: Snake,
-  chatId: number | string,
+  chatId: number | string | bigint,
   messageId: number,
   text: string,
   more?: editMessageMoreParams

@@ -16,9 +16,21 @@ import BigInt from 'big-integer';
 import { GetFileInfo } from './GetFileInfo';
 import path from 'path';
 import BotError from '../../Context/Error';
+/**
+ * Sending Document file location/url/buffer.
+ * @param snakeClient - Client
+ * @param {string|number|bigint} chatId - Chat/Groups/Channel id.
+ * @param {string|Buffer} fileId - File Location/Url/Buffer .
+ * @param {Object} more - more parameters to use.
+ * ```ts
+ * bot.command("doc",async (ctx) => {
+ *     let results = await ctx.telegram.sendDocument(ctx.chat.id,"https://tgsnake.js.org/images/tgsnake.jpg")
+ * })
+ * ```
+ */
 export async function SendDocument(
   snakeClient: Snake,
-  chatId: number | string,
+  chatId: number | string | bigint,
   fileId: string | Buffer,
   more?: sendMediaMoreParams
 ) {

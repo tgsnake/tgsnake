@@ -11,6 +11,7 @@ import { Api } from 'telegram';
 import { Snake } from '../client';
 import { Telegram } from '../Telegram';
 import { MessageContext } from '../Context/MessageContext';
+import { toNumber } from '../Utils/ToBigInt';
 
 export class UpdateNewChannelMessage extends Update {
   message!: MessageContext;

@@ -8,8 +8,9 @@
 
 import { Api } from 'telegram';
 import { Snake } from '../../client';
-import { BigInteger } from 'big-integer';
+import bigInt, { BigInteger } from 'big-integer';
 import BotError from '../../Context/Error';
+import { toNumber } from '../../Utils/ToBigInt';
 export class ClassResultGetAdminLog {
   log!: ClassLogGetAdminLog[];
   constructor(resultGetAdminLog: any) {
@@ -26,15 +27,15 @@ export class ClassResultGetAdminLog {
   }
 }
 class ClassLogGetAdminLog {
-  id: number | string | undefined;
-  date: Date | number | undefined;
-  action: any | undefined;
-  userId: number | undefined;
+  id?: number | string;
+  date?: Date | number;
+  action?: string;
+  userId?: number | bigint;
   constructor(event) {
     if (event) {
       if (event.id) this.id = event.id;
       if (event.date) this.date = event.date;
-      if (event.userId) this.userId = event.userId;
+      if (event.userId) this.userId = BigInt(toNumber(event.userId!) as number);
       if (event.action) {
         let tempAction = { ...event.action };
         delete tempAction.CONSTRUCTOR_ID;
@@ -68,13 +69,27 @@ export interface getAdminLogMoreParams {
   invites?: boolean;
   edit?: boolean;
   delete?: boolean;
-  maxId?: BigInteger;
-  minId?: BigInteger;
+  maxId?: bigint;
+  minId?: bigint;
   limit?: number;
 }
+/**
+ * Get the admin log of a channel/supergroup.
+ * @param snakeClient - Client
+ * @param {number|string|bigint} chatId -  Chat/Channel/Group id.
+ * @param {Object} more - more parameters to use.
+ * ```ts
+ * bot.command("getAdminLog",async (ctx) => {
+ *     if(!ctx.chat.private){
+ *        let results = await ctx.telegram.getAdminLog(ctx.chat.id)
+ *        console.log(results)
+ *     }
+ * })
+ * ```
+ */
 export async function GetAdminLog(
   snakeClient: Snake,
-  chatId: number | string,
+  chatId: number | string | bigint,
   more?: getAdminLogMoreParams
 ) {
   try {
@@ -107,12 +122,17 @@ export async function GetAdminLog(
     return new ClassResultGetAdminLog(
       await snakeClient.client.invoke(
         new Api.channels.GetAdminLog({
-          channel: chatId,
+          channel:
+            typeof chatId == 'string'
+              ? (chatId as string)
+              : typeof chatId == 'number'
+              ? bigInt(chatId as number)
+              : bigInt(chatId as bigint),
           eventsFilter: new Api.ChannelAdminLogEventsFilter(filter),
-          q: more?.q || '',
-          maxId: more?.maxId || undefined,
-          minId: more?.minId || undefined,
-          limit: more?.limit || undefined,
+          q: more?.q ? more.q : '',
+          maxId: more?.maxId ? bigInt(more.maxId!) : undefined,
+          minId: more?.minId ? bigInt(more.minId!) : undefined,
+          limit: more?.limit ? Number(more.limit!) : undefined,
         })
       )
     );

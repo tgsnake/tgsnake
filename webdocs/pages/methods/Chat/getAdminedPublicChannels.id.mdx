@@ -1,31 +1,31 @@
 ---
 title : getAdminedPublicChannels
 ---
-## Overview
-Get channels/supergroups/geogroups we're admin in. Usually called when the user exceeds the limit for owned public channels/supergroups/geogroups, and the user is given the choice to remove one of his channels/supergroups/geogroups.
-## Parameters
-```ts 
+## Gambaran
+Dapatkan saluran/supergrup/geogrup tempat kita menjadi admin.Biasanya dipanggil ketika pengguna melebihi batas saluran publik/supergrup/geogrup yang dimiliki, dan pengguna diberi pilihan untuk menghapus salah satu kanal/grup super/geogrupnya.
+## Parameter
+```ts
 ctx.telegram.getAdminedPublicChannels(byLocation,checkLimit)
 ```
 - `byLocation` (_boolean_)
-    - Get geogroups.
+    - Dapatkan geogroup.
 - `checkLimit` (_boolean_)
-    - If set and the user has reached the limit of owned public channels/supergroups/geogroups, instead of returning the channel list one of the specified errors will be returned.
-    - Useful to check if a new public channel can indeed be created, even before asking the user to enter a channel username to use in channels.checkUsername/channels.updateUsername.
-## Example
+    - Jika disetel dan pengguna telah mencapai batas saluran publik/supergrup/geogroup yang dimiliki, alih-alih mengembalikan daftar saluran, salah satu kesalahan yang ditentukan akan dikembalikan.
+    - Berguna untuk memeriksa apakah saluran publik baru memang dapat dibuat, bahkan sebelum meminta pengguna memasukkan nama pengguna saluran untuk digunakan di channels.checkUsername/channels.updateUsername.
+## Contoh
 ```ts highlight=3
 bot.command("getAdminedPublicChannels",async (ctx) => {
     if(!ctx.chat.private){
-        let results = await ctx.telegram.getAdminedPublicChannels()
-        console.log(results)
+        let hasil = await ctx.telegram.getAdminedPublicChannels()
+        console.log(hasil)
     }
 })
 ```
-## Possible Error
+## Kemungkinan Kesalahan
 
-| code |                tipe                 |                                                          deskripsi                                                          |
-|:----:|:-----------------------------------:|:---------------------------------------------------------------------------------------------------------------------------:|
-| 400  | CHANNELS_ADMIN_LOCATED_TOO_MUCH | Returned if both the check_limit and the by_location flags are set and the user has reached the limit of public geogroups |
-| 400  | CHANNELS_ADMIN_PUBLIC_TOO_MUCH  |          Returned if the check_limit flag is set and the user has reached the limit of public channels/supergroups          |
+| kode | tipe | deskripsi |
+| :---: | :---: | :------:|
+| 400 | CHANNELS_ADMIN_LOCATED_TOO_MUCH | Dikembalikan jika flag check_limit dan by_location disetel dan pengguna telah mencapai batas geogroup publik |
+| 400 | CHANNELS_ADMIN_PUBLIC_TOO_MUCH | Dikembalikan jika tanda check_limit disetel dan pengguna telah mencapai batas saluran publik/supergrup |
 
-## Bot can't use this method
+## Bot tidak dapat menggunakan metode ini

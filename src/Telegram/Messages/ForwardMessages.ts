@@ -20,10 +20,24 @@ export interface forwardMessageMoreParams {
   background?: boolean;
   scheduleDate?: number;
 }
+/**
+ * Forwards messages by their IDs.
+ * @param snakeClient - client
+ * @param {number|string|bigint} chatId - Destination.
+ * @param {number|string|bigint} fromChatId - Source of messages.
+ * @param {Array} messageId - IDs of messages which will forwarded.
+ * @param {Object} more - more paramaters to use.
+ * ```ts
+ * bot.command("forward", async (ctx) => {
+ *     let results = await ctx.telegram.forwardMessages(ctx.chat.id,ctx.chat.id,[ctx.id])
+ *     return console.log(results)
+ * })
+ * ```
+ */
 export async function ForwardMessages(
   snakeClient: Snake,
-  chatId: number | string,
-  fromChatId: number | string,
+  chatId: number | string | bigint,
+  fromChatId: number | string | bigint,
   messageId: number[],
   more?: forwardMessageMoreParams
 ) {

@@ -7,8 +7,9 @@
 //  it under the terms of the MIT License as published
 
 import { Api } from 'telegram';
-import { BigInteger } from 'big-integer';
+import bigInt, { BigInteger } from 'big-integer';
 import { Snake } from '../client';
+import { convertId } from './ToBigInt';
 export type TypeReplyMarkup = inlineKeyboard | replyKeyboard | removeKeyboard | forceReplyMarkup;
 /**
  * Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot's message and tapped 'Reply')
@@ -145,7 +146,7 @@ export interface BotLoginUrl {
    * Bot Id.
    * bot id getting from .getEntity()
    */
-  id: number;
+  id: bigint;
   /**
    * Bot access hash
    * access hash getting from .getEntity()
@@ -196,7 +197,7 @@ function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard) {
             fwdText: btn.loginUrl?.forwardText || String(btn.text),
             url: String(btn.loginUrl?.url),
             bot: new Api.InputUser({
-              userId: btn.loginUrl?.bot.id!,
+              userId: bigInt(btn.loginUrl?.bot.id! as bigint) as BigInteger,
               accessHash: btn.loginUrl?.bot.accessHash!,
             }),
           })

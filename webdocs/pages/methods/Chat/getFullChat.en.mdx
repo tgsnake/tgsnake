@@ -7,10 +7,10 @@ Returns full chat/channel info according to its ID.
 ```ts 
 ctx.telegram.getFullChat(chatId)
 ```
-- `chatId` (_number|string_) 
+- `chatId` (_number|string|bigint_) 
     - Chat/Groups/Channel id.
 ## Example 
-```ts:index.ts highlight=2
+```ts highlight=2
 bot.command("getFullChat",async (ctx) => {
     let results = await ctx.telegram.getFullChat(ctx.chat.id)
 })

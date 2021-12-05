@@ -19,7 +19,7 @@ export type LoggerInfo = (...args: Array<any>) => void;
 export class MainContext extends Composer {
   connected: Boolean = false;
   aboutMe!: ResultGetEntity;
-  entityCache: Map<number, ResultGetEntity> = new Map();
+  entityCache: Map<bigint, ResultGetEntity> = new Map();
   consoleColor: string = 'green';
   tgSnakeLog: boolean = true;
   log: LoggerInfo = (...args: Array<any>) => {

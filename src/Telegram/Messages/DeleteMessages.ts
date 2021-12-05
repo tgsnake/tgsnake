@@ -27,9 +27,21 @@ export class ResultAffectedMessages {
     }
   }
 }
+/**
+ * This method allow you to deletes messages by their identifiers
+ * @param snakeClient - Client
+ * @param {number|string|bigint} chatId - User or chat, where is the message located.
+ * @param {Array} messageId - Message ID list which will be deleted.
+ * ```ts
+ * bot.command("delete", async (ctx) => {
+ *     let results = await ctx.telegram.deleteMessages(ctx.chat.id,[ctx.id])
+ *     return console.log(results)
+ * })
+ * ```
+ */
 export async function DeleteMessages(
   snakeClient: Snake,
-  chatId: number | string,
+  chatId: number | string | bigint,
   messageId: number[]
 ) {
   try {

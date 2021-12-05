@@ -1,29 +1,29 @@
 ---
 title : deleteMessages
 ---
-## Overview
-This method allow you to deletes messages by their identifiers
-## Parameters
-```ts 
+## Gambaran
+Metode ini memungkinkan Anda untuk menghapus pesan dengan pengidentifikasinya
+## Parameter
+```ts
 ctx.telegram.deleteMessages(chatId,mesageId)
 ```
-- `chatId` (_number|string_)
-    - User or chat, where is the message located.
+- `chatId` (_number|string|bigint_)
+     - Pengguna atau obrolan, di mana pesan berada.
 - `messageId` (_number[]_)
-    - Message ID list which will be deleted.
-## Example
-```ts headlight=2
-bot.command("delete", async (ctx) => {
-    let results = await ctx.telegram.deleteMessages(ctx.chat.id,[ctx.id]) 
-    return console.log(results)
+     - Daftar ID Pesan yang akan dihapus.
+## Contoh
+```ts highlight= 2
+bot.command("hapus", async (ctx) => {
+     let hasil = await ctx.telegram.deleteMessages(ctx.chat.id,[ctx.id])
+     return console.log(hasil)
 })
 ```
-## Possible Error
-| code |            tipe            |                                               deskripsi                                                |
-|:----:|:--------------------------:|:------------------------------------------------------------------------------------------------------:|
-| 400  |      CHANNEL_INVALID       |                                    The provided channel is invalid.                                    |
-| 400  |      CHANNEL_PRIVATE       |                              You haven't joined this channel/supergroup.                               |
-| 403  | MESSAGE_DELETE_FORBIDDEN | You can't delete one of the messages you tried to delete, most likely because it is a service message. |
-| 400  |      MSG_ID_INVALID      |                                      Invalid message ID provided.                                      |
+## Kemungkinan Kesalahan
+| kode | ketik | deskripsi |
+| :---: | :---: | :------:|
+| 400 | CHANNEL_INVALID | Saluran yang disediakan tidak valid. |
+| 400 | CHANNEL_PRIVATE | Anda belum bergabung dengan saluran/supergrup ini. |
+| 403 | MESSAGE_DELETE_FORBIDDEN | Anda tidak dapat menghapus salah satu pesan yang Anda coba hapus, kemungkinan besar karena itu adalah pesan layanan. |
+| 400 | MSG_ID_INVALID | ID pesan yang diberikan tidak valid. |
 
-## Bot can use this method.
+## Bot dapat menggunakan metode ini.

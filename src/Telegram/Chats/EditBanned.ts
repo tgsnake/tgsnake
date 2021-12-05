@@ -10,7 +10,7 @@ import { Snake } from '../../client';
 import { Api } from 'telegram';
 import BotError from '../../Context/Error';
 import * as Updates from '../../Update';
-
+import { convertId } from '../../Utils/ToBigInt';
 export interface editBannedMoreParams {
   untilDate?: number;
   viewMessages?: boolean;
@@ -26,10 +26,26 @@ export interface editBannedMoreParams {
   pinMessages?: boolean;
   embedLinks?: boolean;
 }
+/**
+ * Ban/unban/kick a user in a supergroup/channel.
+ * @param snakeClient - Client
+ * @param {number|bigint|string} chatId - Chat/Group/Channel id.
+ * @param {number|bigint|string} userId - User id.
+ * @param {Object} more - more parameters to use.
+ * ```ts
+ * bot.command("ban",async (ctx) => {
+ * if((!ctx.chat.private) && ctx.replyToMessage){
+ *   let results = await ctx.telegram.editBanned(ctx.chat.id,ctx.replyToMessage.from.id)
+ *   console.log(results)
+ * }
+ * })
+ * ```
+ * This method will return UpdateNewMessage or UpdateNewChannelMessage. if success.
+ */
 export async function EditBanned(
   snakeClient: Snake,
-  chatId: number | string,
-  userId: number | string,
+  chatId: bigint | number | string,
+  userId: bigint | number | string,
   more?: editBannedMoreParams
 ) {
   try {
@@ -58,8 +74,8 @@ export async function EditBanned(
     };
     let results: Api.TypeUpdates = await snakeClient.client.invoke(
       new Api.channels.EditBanned({
-        channel: chatId,
-        participant: userId,
+        channel: convertId(chatId),
+        participant: convertId(userId),
         bannedRights: new Api.ChatBannedRights(permissions),
       })
     );

@@ -1,32 +1,32 @@
 ---
 title : exportMessageLink
 ---
-## Overview
-Get link and embed info of a message in a channel/supergroup
-## Parameters
-```ts 
-ctx.telegram.exportMessageLink(chatId,messageId,more)
+## Gambaran
+Dapatkan tautan dan sematkan info pesan di saluran/grup super
+## Parameter
+```ts
+ctx.telegram.exportMessageLink(chatId,messageId, more)
 ```
-- `chatId` (_number|string_)
-    - supergroup/channel id.
+- `chatId` (_number|string|bigint_)
+    - id supergrup/saluran.
 - `messageId` (_number_)
-    - message id.
-- `more` (_object_)
+    - nomor pesan.
+- `more` (_objek_)
     - `thread` (_boolean_)
-        - Whether to also include a thread ID, if available, inside of the link.
+        - Apakah akan menyertakan juga ID utas, jika tersedia, di dalam tautan.
     - `grouped` (_boolean_)
-        - Whether to include other grouped media (for albums)
-## Example
+        - Apakah akan menyertakan media lain yang dikelompokkan (untuk album)
+## Contoh
 ```ts highlight=2
 bot.command("getLink", async (ctx) => {
-    let results = await ctx.telegram.exportMessageLink(ctx.chat.id,ctx.id) 
-    return console.log(results)
+    let hasil = await ctx.telegram.exportMessageLink(ctx.chat.id,ctx.id)
+    return console.log(hasil)
 })
 ```
-## Possible Error
-| code |         tipe         |                  deskripsi                  |
-|:----:|:--------------------:|:-------------------------------------------:|
-| 400  |   CHANNEL_INVALID    |      The provided channel is invalid.       |
-| 400  |   CHANNEL_PRIVATE    | You haven't joined this channel/supergroup. |
-| 400  | MESSAGE_ID_INVALID |     The provided message id is invalid.     |
-| 400  |   MSG_ID_INVALID   |        Invalid message ID provided.         | 
+## Kemungkinan Kesalahan
+| kode | ketik | deskripsi |
+| :---: | :---: | :------:|
+| 400 | CHANNEL_INVALID | Saluran yang disediakan tidak valid. |
+| 400 | CHANNEL_PRIVATE | Anda belum bergabung dengan saluran/supergrup ini. |
+| 400 | MESSAGE_ID_INVALID | ID pesan yang diberikan tidak valid. |
+| 400 | MSG_ID_INVALID | ID pesan yang diberikan tidak valid. |

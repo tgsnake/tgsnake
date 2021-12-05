@@ -10,7 +10,19 @@ import { Snake } from '../../client';
 import { ResultGetEntity } from '../Users/GetEntity';
 import { Api } from 'telegram';
 import BotError from '../../Context/Error';
-export async function GetChatMembersCount(snakeClient: Snake, chatId: number | string) {
+import bigInt from 'big-integer';
+/**
+ * Get the number of members in a chat.
+ * @param snakeClient - client
+ * @param {number|string|bigint} chatId - Chat or channels id to getting the number of members.
+ * ```ts
+ * bot.command("getChatMembersCount",async (ctx) => {
+ *     let results = await ctx.telegram.getChatMembersCount(ctx.chat.id)
+ *     console.log(results)
+ * })
+ * ```
+ */
+export async function GetChatMembersCount(snakeClient: Snake, chatId: number | string | bigint) {
   try {
     let mode = ['debug', 'info'];
     if (mode.includes(snakeClient.logger)) {
@@ -30,7 +42,7 @@ export async function GetChatMembersCount(snakeClient: Snake, chatId: number | s
     if (chat.type == 'chat') {
       let r = await snakeClient.client.invoke(
         new Api.messages.GetChats({
-          id: [chat.id],
+          id: [bigInt(chat.id!)],
         })
       );
       let s: Api.Chat = r.chats[0] as Api.Chat;
@@ -40,7 +52,7 @@ export async function GetChatMembersCount(snakeClient: Snake, chatId: number | s
     if (chat.type == 'channel') {
       let r: Api.messages.ChatFull = await snakeClient.client.invoke(
         new Api.channels.GetFullChannel({
-          channel: chat.id,
+          channel: bigInt(chat.id!),
         })
       );
       let fc: Api.ChannelFull = r.fullChat as Api.ChannelFull;

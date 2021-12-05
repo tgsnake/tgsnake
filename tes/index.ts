@@ -6,7 +6,7 @@
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published. 
 
-import {Snake,Wizard,GramJs,Composer} from "../src" 
+import {Snake,GramJs,Composer} from "../src" 
 import { TypeReplyMarkup, BuildReplyMarkup } from '../src/Utils/ReplyMarkup';
 import { ParseMessage } from '../src/Utils/ParseMessage'
 import * as fs from "fs"

@@ -16,9 +16,21 @@ export interface deleteHistoryMoreParams {
   revoke?: boolean;
   justClear?: boolean;
 }
+/**
+ * This method allow you to deletes communication history.
+ * @param snakeClient - Client
+ * @param {string|number|bigint} chatId - User or chat, communication history of which will be deleted.
+ * @param {Object} more - more parameters to use.
+ * ```ts
+ * bot.command("clear", async (ctx) => {
+ *     let results = await ctx.telegram.deleteHistory(ctx.chat.id)
+ *     return console.log(results)
+ * })
+ * ```
+ */
 export async function DeleteHistory(
   snakeClient: Snake,
-  chatId: number | string,
+  chatId: number | string | bigint,
   more?: deleteHistoryMoreParams
 ) {
   try {

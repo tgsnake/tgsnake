@@ -7,9 +7,10 @@ Sending sticker with fileId/file location/url/buffer.
 ```ts  
 ctx.telegram.sendSticker(chatId,sticker)
 ```
-- `chatId` (_number|string_) 
+- `chatId` (_number|string|bigint_) 
     - Chat/Groups/Channel id. 
-- `sticker` (_string|Buffer_)
+- `sticker` (_string|Buffer_).
+    - Path file/FileId/Buffer.
 ## Example 
 ```ts highlight=3
 bot.on("message",async (ctx) => {

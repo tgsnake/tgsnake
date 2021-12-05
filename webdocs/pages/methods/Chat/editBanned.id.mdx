@@ -1,63 +1,63 @@
 ---
 title : editBanned
 ---
-## Overview
-Ban/unban/kick a user in a supergroup/channel.
+## Gambaran
+Melarang/membatalkan larangan/menendang pengguna di grup/saluran super.
 ## Parameters
-```ts 
+```ts
 ctx.telegram.editBanned(chatId,userId,more)
 ```
-- `chatId` (_number|string_)
-    - Chat/Group/Channel id.
-- `userId` (_number|string_)
-    - User id.
-- `more` (_object_)
+- `chatId` (_number|string|bigint_)
+    - Id Obrolan/Grup/Saluran.
+- `userId` (_number|string|bigint_)
+    - Identitas pengguna.
+- `more` (_objek_)
     - `untilDate` (_number_)
-      - Validity of said permissions (it is considered forever any value less then 30 seconds or more then 366 days).
+      - Validitas izin tersebut (dianggap selamanya nilai apa pun kurang dari 30 detik atau lebih dari 366 hari).
     - `viewMessages` (_boolean_)
-      - If set, does not allow a user to view messages in a supergroup/channel/chat.
-    - `sendMessages` (_boolean_)
-      - If set, does not allow a user to send messages in a supergroup/chat.
+      - Jika disetel, tidak mengizinkan pengguna melihat pesan di grup super/saluran/obrolan.
+    - `sendMessage` (_boolean_)
+      - Jika disetel, tidak mengizinkan pengguna mengirim pesan dalam supergrup/obrolan.
     - `sendMedia` (_boolean_)
-      - If set, does not allow a user to send any media in a supergroup/chat.
+      - Jika disetel, tidak mengizinkan pengguna mengirim media apa pun dalam supergrup/obrolan.
     - `sendStickers` (_boolean_)
-      - If set, does not allow a user to send stickers in a supergroup/chat.
+      - Jika disetel, tidak mengizinkan pengguna mengirim stiker di supergrup/obrolan.
     - `sendGifs` (_boolean_)
-      - If set, does not allow a user to send gifs in a supergroup/chat.
+      - Jika disetel, tidak mengizinkan pengguna mengirim gif di grup super/obrolan.
     - `sendGames` (_boolean_)
-      - If set, does not allow a user to send games in a supergroup/chat.
+      - Jika disetel, tidak mengizinkan pengguna mengirim game dalam supergrup/obrolan.
     - `sendInline` (_boolean_)
-      - If set, does not allow a user to use inline bots in a supergroup/chat.
+      - Jika disetel, tidak mengizinkan pengguna untuk menggunakan bot sebaris dalam supergrup/obrolan.
     - `sendPolls` (_boolean_)
-      - If set, does not allow a user to send stickers in a supergroup/chat.
+      - Jika disetel, tidak mengizinkan pengguna mengirim stiker di supergrup/obrolan.
     - `changeInfo` (_boolean_)
-      - If set, does not allow any user to change the description of a supergroup/chat.
+      - Jika disetel, tidak mengizinkan pengguna mengubah deskripsi supergrup/obrolan.
     - `inviteUsers` (_boolean_)
-      - If set, does not allow any user to invite users in a supergroup/chat.
+      - Jika disetel, tidak mengizinkan pengguna mana pun untuk mengundang pengguna di grup super/obrolan.
     - `pinMessages` (_boolean_)
-      - If set, does not allow any user to pin messages in a supergroup/chat.
+      - Jika disetel, tidak mengizinkan pengguna mana pun untuk menyematkan pesan di grup super/obrolan.
     - `embedLinks` (_boolean_)
-      - If set, does not allow a user to embed links in the messages of a supergroup/chat.
-## Example
+      - Jika disetel, tidak mengizinkan pengguna untuk menyematkan tautan dalam pesan grup super/obrolan.
+## Contoh
 ```ts highlight=3
 bot.command("ban",async (ctx) => {
   if((!ctx.chat.private) && ctx.replyToMessage){
-    let results = await ctx.telegram.editBanned(ctx.chat.id,ctx.replyToMessage.from.id) 
-    console.log(results)
+   let hasil = await ctx.telegram.editBanned(ctx.chat.id,ctx.replyToMessage.from.id)
+    console.log(hasil)
   }
 })
 ```
-## Possible Error
+## Kemungkinan Kesalahan
 
-| code |           tipe            |                  deskripsi                   |
-|:----:|:-------------------------:|:--------------------------------------------:|
-| 400  |      CHANNEL_INVALID      |       The provided channel is invalid        |
-| 400  |      CHANNEL_PRIVATE      |  You haven't joined this channel/supergroup  |
-| 400  |   CHAT_ADMIN_REQUIRED   | You must be an admin in this chat to do this |
-| 403  |  CHAT_WRITE_FORBIDDEN   |         You can't write in this chat         |
-| 400  |     MSG_ID_INVALID      |         Invalid message ID provided          |
-| 400  | PINNED_DIALOGS_TOO_MUCH |           Too many pinned dialogs            |
-| 400  |   USER_ADMIN_INVALID    |             You're not an admin              |
-| 400  |     USER_ID_INVALID     |       The provided user ID is invalid        |
+| kode | tipe | deskripsi |
+| :---: | :---: | :------:|
+| 400 | CHANNEL_INVALID | Saluran yang disediakan tidak valid |
+| 400 | CHANNEL_PRIVATE | Anda belum bergabung dengan saluran/supergrup ini |
+| 400 | CHAT_ADMIN_REQUIRED | Anda harus menjadi admin dalam obrolan ini untuk melakukan ini |
+| 403 | CHAT_WRITE_FORBIDDEN | Anda tidak dapat menulis di obrolan ini |
+| 400 | MSG_ID_INVALID | ID pesan yang diberikan tidak valid |
+| 400 | PINNED_DIALOGS_TOO_MUCH | Terlalu banyak dialog yang dipasangi pin |
+| 400 | USER_ADMIN_INVALID | Anda bukan admin |
+| 400 | USER_ID_INVALID | ID pengguna yang diberikan tidak valid |
 
-## Bot can use this method.
+## Bot dapat menggunakan metode ini.

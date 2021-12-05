@@ -12,9 +12,10 @@ import { MessageContext } from '../../Context/MessageContext';
 import * as Update from '../../Update';
 import { toBigInt, toNumber } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
+
 export async function GetMessages(
   snakeClient: Snake,
-  chatId: number | string,
+  chatId: number | string | bigint,
   messageId: number[],
   replies: boolean = false
 ) {

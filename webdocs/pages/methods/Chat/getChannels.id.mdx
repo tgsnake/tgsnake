@@ -1,27 +1,27 @@
 ---
 title : getChannels
 ---
-## Overview
-Get info about channels/supergroups.
-## Parameters
-```ts 
+## Gambaran
+Dapatkan info tentang saluran/supergrup.
+## Parameter
+```ts
 ctx.telegram.getChannels(chatId)
 ```
-- `chatId` (_number[]|string[]_)
-    - List of channel ids.
-## Example
-```ts:index.ts headlight=2
+- `chatId` (_number[]|string[]|bigint[]_)
+     - Daftar id saluran.
+## Contoh
+```ts highlight=2
 bot.command("getChannels",async (ctx) => {
-    let results = await ctx.telegram.getChannels([ctx.chat.id]) 
-    console.log(results)
+     let hasil = await ctx.telegram.getChannels([ctx.chat.id])
+     console.log(hasil)
 })
 ```
-## Possible Error
+## Kemungkinan Kesalahan
 
-| code |       tipe       |                 deskripsi                  |
-|:----:|:----------------:|:------------------------------------------:|
-| 400  | CHANNEL_INVALID  |      The provided channel is invalid       |
-| 400  | CHANNEL_PRIVATE  | You haven't joined this channel/supergroup |
-| 400  | MSG_ID_INVALID |        Invalid message ID provided         |
+| kode | tipe | deskripsi |
+| :---: | :---: | :------:|
+| 400 | CHANNEL_INVALID | Saluran yang disediakan tidak valid |
+| 400 | CHANNEL_PRIVATE | Anda belum bergabung dengan saluran/supergrup ini |
+| 400 | MSG_ID_INVALID | ID pesan yang diberikan tidak valid |
 
-## Bot can use this method.
+## Bot dapat menggunakan metode ini.

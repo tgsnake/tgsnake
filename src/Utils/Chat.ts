@@ -14,7 +14,7 @@ import { toBigInt, toNumber } from './ToBigInt';
 import { BigInteger, isInstance } from 'big-integer';
 import { Cleaning } from './CleanObject';
 export class Chat {
-  id!: number;
+  id!: bigint;
   title?: string;
   firstName?: string;
   lastName?: string;
@@ -27,40 +27,40 @@ export class Chat {
   fake: boolean = false;
   scam: boolean = false;
   constructor() {}
-  async init(peer: Api.TypePeer | number, snakeClient: Snake) {
-    if (typeof peer !== 'number') {
+  async init(peer: Api.TypePeer | number | bigint, snakeClient: Snake) {
+    if (typeof peer !== 'number' && typeof peer !== 'bigint') {
       if (peer instanceof Api.PeerUser) {
         peer as Api.PeerUser;
         if (isInstance(peer.userId)) {
           //@ts-ignore
-          this.id = toNumber(peer.userId);
+          this.id = BigInt(toNumber(peer.userId));
         } else {
           //@ts-ignore
-          this.id = peer.userId;
+          this.id = BigInt(peer.userId);
         }
       }
       if (peer instanceof Api.PeerChat) {
         peer as Api.PeerChat;
         if (isInstance(peer.chatId)) {
           //@ts-ignore
-          this.id = Number(`-${toNumber(peer.chatId)}`);
+          this.id = BigInt(Number(`-${toNumber(peer.chatId)}`));
         } else {
           //@ts-ignore
-          this.id = Number(`-${peer.chatId}`);
+          this.id = BigInt(Number(`-${peer.chatId}`));
         }
       }
       if (peer instanceof Api.PeerChannel) {
         peer as Api.PeerChannel;
         if (isInstance(peer.channelId)) {
           //@ts-ignore
-          this.id = Number(`-100${toNumber(peer.channelId)}`);
+          this.id = BigInt(Number(`-100${toNumber(peer.channelId)}`));
         } else {
           //@ts-ignore
-          this.id = Number(`-100${peer.channelId}`);
+          this.id = BigInt(Number(`-100${peer.channelId}`));
         }
       }
     } else {
-      this.id = peer;
+      this.id = typeof peer == 'number' ? BigInt(peer) : peer;
     }
     if (this.id) {
       let mode = ['debug', 'info'];

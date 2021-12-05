@@ -10,7 +10,28 @@ import { Snake } from '../../client';
 import { Api } from 'telegram';
 import * as Updates from '../../Update';
 import BotError from '../../Context/Error';
-export async function EditTitle(snakeClient: Snake, chatId: number | string, title: string) {
+import { convertId, toBigInt } from '../../Utils/ToBigInt';
+import { BigInteger } from 'big-integer';
+/**
+ * edit chat/group/channel title.
+ * @param snakeClient - Client
+ * @param {bigint|number|string} chatId - Chat/Groups/Channel id.
+ * @param {string} title - New title.
+ * ```ts
+ * bot.command("editTitle",async (ctx) => {
+ *    if(!ctx.chat.private){
+ *        let results = await ctx.telegram.editTitle(ctx.chat.id,"hey new title")
+ *        console.log(results)
+ *    }
+ * })
+ * ```
+ * This method will return UpdateNewMessage or UpdateNewChannelMessage. if success.
+ */
+export async function EditTitle(
+  snakeClient: Snake,
+  chatId: bigint | number | string,
+  title: string
+) {
   try {
     let mode = ['debug', 'info'];
     if (mode.includes(snakeClient.logger)) {
@@ -20,11 +41,11 @@ export async function EditTitle(snakeClient: Snake, chatId: number | string, tit
         }] - [${new Date().toLocaleString()}] - Running telegram.editTitle`
       );
     }
-    let type = await snakeClient.telegram.getEntity(chatId);
-    if (type.type == 'channel') {
+    let [id, type] = await toBigInt(chatId, snakeClient);
+    if (type == 'channel') {
       let results: Api.TypeUpdates = await snakeClient.client.invoke(
         new Api.channels.EditTitle({
-          channel: chatId,
+          channel: id as BigInteger,
           title: title,
         })
       );
@@ -32,7 +53,7 @@ export async function EditTitle(snakeClient: Snake, chatId: number | string, tit
     } else {
       return snakeClient.client.invoke(
         new Api.messages.EditChatTitle({
-          chatId: type.id,
+          chatId: id as BigInteger,
           title: title,
         })
       );
