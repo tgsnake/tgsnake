@@ -953,10 +953,10 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
-telegram@2.0.8:
-  version "2.0.8"
-  resolved "https://registry.yarnpkg.com/telegram/-/telegram-2.0.8.tgz#ad92ce2f8c2ea18803264264d3a76ba50e08a262"
-  integrity sha512-MzSBI9d0FhjrplvlVGpSFoxNoDCFiIn/GFTncbhxuHYuPYRdR4WyNNeYcHRs5gp0oIcXa4xetQXh3La7g+FE0Q==
+telegram@2.0.13:
+  version "2.0.13"
+  resolved "https://registry.yarnpkg.com/telegram/-/telegram-2.0.13.tgz#5bea28e1656d3c55f465766f9184f9fe81be35db"
+  integrity sha512-Kq5+Tr4F6ghJfqhXaNsqGXbZRZshulk8uyUyjRTvnEdFBlPN/+F5fhF2OglqPTu9OADszPIFYWIVHmmgg5BbSg==
   dependencies:
     "@cryptography/aes" "^0.1.1"
     async-mutex "^0.3.0"
