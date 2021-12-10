@@ -13,7 +13,7 @@ import { Telegram } from '../Telegram';
 import { Snake } from '../client';
 import { Chat } from '../Utils/Chat';
 import { sendMessageMoreParams } from '../Telegram/Messages/sendMessage';
-import { toNumber } from '../Utils/ToBigInt';
+import { toString } from '../Utils/ToBigInt';
 
 export class UpdateChatUserTyping extends Update {
   user!: From;
@@ -41,7 +41,7 @@ export class UpdateChatUserTyping extends Update {
     }
     if (update.chatId) {
       let chat = new Chat();
-      await chat.init(BigInt(toNumber(update.chatId!) as number), SnakeClient);
+      await chat.init(BigInt(toString(update.chatId!) as string), SnakeClient);
       this.chat = chat;
     }
     if (update.action instanceof Api.SendMessageTypingAction) {

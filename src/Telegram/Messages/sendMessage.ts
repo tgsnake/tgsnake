@@ -11,9 +11,9 @@ import { Snake } from '../../client';
 import { TypeReplyMarkup, BuildReplyMarkup } from '../../Utils/ReplyMarkup';
 import { Entities } from '../../Utils/Entities';
 import { ParseMessage } from '../../Utils/ParseMessage';
-import BigInt from 'big-integer';
+import bigInt from 'big-integer';
 import * as Update from '../../Update';
-import { toBigInt, toNumber } from '../../Utils/ToBigInt';
+import { toBigInt, toString } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
 export interface sendMessageMoreParams {
   noWebpage?: boolean;
@@ -59,7 +59,7 @@ export async function sendMessage(
       new Api.messages.SendMessage({
         peer: peer,
         message: parseText,
-        randomId: BigInt(-Math.floor(Math.random() * 10000000000000)),
+        randomId: bigInt(-Math.floor(Math.random() * 10000000000000)),
         //@ts-ignore
         entities: entities,
         replyMarkup: replyMarkup,

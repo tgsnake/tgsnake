@@ -10,7 +10,7 @@ import { Api } from 'telegram';
 import { Snake } from '../../client';
 import bigInt, { BigInteger } from 'big-integer';
 import BotError from '../../Context/Error';
-import { toNumber } from '../../Utils/ToBigInt';
+import { toString, convertId } from '../../Utils/ToBigInt';
 export class ClassResultGetAdminLog {
   log!: ClassLogGetAdminLog[];
   constructor(resultGetAdminLog: any) {
@@ -35,7 +35,7 @@ class ClassLogGetAdminLog {
     if (event) {
       if (event.id) this.id = event.id;
       if (event.date) this.date = event.date;
-      if (event.userId) this.userId = BigInt(toNumber(event.userId!) as number);
+      if (event.userId) this.userId = BigInt(toString(event.userId!) as string);
       if (event.action) {
         let tempAction = { ...event.action };
         delete tempAction.CONSTRUCTOR_ID;
@@ -122,12 +122,7 @@ export async function GetAdminLog(
     return new ClassResultGetAdminLog(
       await snakeClient.client.invoke(
         new Api.channels.GetAdminLog({
-          channel:
-            typeof chatId == 'string'
-              ? (chatId as string)
-              : typeof chatId == 'number'
-              ? bigInt(chatId as number)
-              : bigInt(chatId as bigint),
+          channel: convertId(chatId),
           eventsFilter: new Api.ChannelAdminLogEventsFilter(filter),
           q: more?.q ? more.q : '',
           maxId: more?.maxId ? bigInt(more.maxId!) : undefined,

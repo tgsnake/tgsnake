@@ -10,7 +10,7 @@ import { BannedRights } from './BannedRight';
 import { ChatPhoto } from './ChatPhoto';
 import { Snake } from '../client';
 import { Api } from 'telegram';
-import { toBigInt, toNumber } from './ToBigInt';
+import { toBigInt, toString } from './ToBigInt';
 import { BigInteger, isInstance } from 'big-integer';
 import { Cleaning } from './CleanObject';
 export class Chat {
@@ -26,6 +26,7 @@ export class Chat {
   dcId?: number;
   fake: boolean = false;
   scam: boolean = false;
+  type!: string;
   constructor() {}
   async init(peer: Api.TypePeer | number | bigint, snakeClient: Snake) {
     if (typeof peer !== 'number' && typeof peer !== 'bigint') {
@@ -33,7 +34,7 @@ export class Chat {
         peer as Api.PeerUser;
         if (isInstance(peer.userId)) {
           //@ts-ignore
-          this.id = BigInt(toNumber(peer.userId));
+          this.id = BigInt(toString(peer.userId));
         } else {
           //@ts-ignore
           this.id = BigInt(peer.userId);
@@ -43,20 +44,20 @@ export class Chat {
         peer as Api.PeerChat;
         if (isInstance(peer.chatId)) {
           //@ts-ignore
-          this.id = BigInt(Number(`-${toNumber(peer.chatId)}`));
+          this.id = BigInt(`-${toString(peer.chatId)}`);
         } else {
           //@ts-ignore
-          this.id = BigInt(Number(`-${peer.chatId}`));
+          this.id = BigInt(`-${peer.chatId}`);
         }
       }
       if (peer instanceof Api.PeerChannel) {
         peer as Api.PeerChannel;
         if (isInstance(peer.channelId)) {
           //@ts-ignore
-          this.id = BigInt(Number(`-100${toNumber(peer.channelId)}`));
+          this.id = BigInt(`-100${toString(peer.channelId)}`);
         } else {
           //@ts-ignore
-          this.id = BigInt(Number(`-100${peer.channelId}`));
+          this.id = BigInt(`-100${peer.channelId}`);
         }
       }
     } else {
@@ -105,6 +106,7 @@ export class Chat {
         this.scam = entity.scam;
       }
       this.private = Boolean(entity.type === 'user');
+      this.type = entity.type as string;
     }
     await Cleaning(this);
     return this;

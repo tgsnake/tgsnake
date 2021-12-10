@@ -9,7 +9,7 @@
 import { ResultAffectedMessages } from './DeleteMessages';
 import { Api } from 'telegram';
 import { Snake } from '../../client';
-import { toBigInt, toNumber } from '../../Utils/ToBigInt';
+import { toBigInt, toString } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
 export interface readHistoryMoreParams {
   maxId?: number;

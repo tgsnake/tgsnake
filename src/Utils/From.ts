@@ -11,7 +11,7 @@ import { Snake } from '../client';
 import { ChatPhoto } from './ChatPhoto';
 import { ResultGetEntity } from '../Telegram/Users/GetEntity';
 import { RestrictionReason } from './RestrictionReason';
-import { toBigInt, toNumber } from './ToBigInt';
+import { toBigInt, toString } from './ToBigInt';
 import bigInt, { BigInteger, isInstance } from 'big-integer';
 import { Cleaning } from './CleanObject';
 export class From {
@@ -37,7 +37,7 @@ export class From {
         peer as Api.PeerUser;
         if (isInstance(peer.userId)) {
           //@ts-ignore
-          this.id = BigInt(toNumber(peer.userId));
+          this.id = BigInt(toString(peer.userId));
         } else {
           //@ts-ignore
           this.id = BigInt(peer.userId);
@@ -47,7 +47,7 @@ export class From {
         peer as Api.PeerChat;
         if (isInstance(peer.chatId)) {
           //@ts-ignore
-          this.id = BigInt(Number(`-${toNumber(peer.chatId)}`));
+          this.id = BigInt(Number(`-${toString(peer.chatId)}`));
         } else {
           //@ts-ignore
           this.id = BigInt(Number(`-${peer.chatId}`));
@@ -57,7 +57,7 @@ export class From {
         peer as Api.PeerChannel;
         if (isInstance(peer.channelId)) {
           //@ts-ignore
-          this.id = BigInt(Number(`-100${toNumber(peer.channelId)}`));
+          this.id = BigInt(Number(`-100${toString(peer.channelId)}`));
         } else {
           //@ts-ignore
           this.id = BigInt(Number(`-100${peer.channelId}`));

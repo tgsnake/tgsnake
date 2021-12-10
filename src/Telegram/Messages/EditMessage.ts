@@ -13,7 +13,7 @@ import { Entities } from '../../Utils/Entities';
 import { ParseMessage } from '../../Utils/ParseMessage';
 import BigInt from 'big-integer';
 import * as Update from '../../Update';
-import { toBigInt, toNumber } from '../../Utils/ToBigInt';
+import { toBigInt, toString } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
 export interface editMessageMoreParams {
   noWebpage?: boolean;

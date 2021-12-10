@@ -15,7 +15,14 @@ import {ResultGetEntity} from "../src/Telegram/Users/GetEntity"
 import Util from 'tg-file-id/dist/Util';
 const {Api} = GramJs
 const bot = new Snake() 
+/*bot.on("*",(ctx)=>{
+  console.log(ctx)
+})*/
 bot.cmd("start",(ctx)=>{
   return ctx.reply("Working..")
 })
+bot.hears("hello",(ctx)=>{
+  ctx.reply("sure.")
+})
 bot.run()
+//bot.generateSession()

@@ -15,7 +15,7 @@ import { ForwardMessage } from '../Utils/ForwardMessage';
 import { From } from '../Utils/From';
 import { Chat } from '../Utils/Chat';
 import { MessageContext } from '../Context/MessageContext';
-import { toNumber } from '../Utils/ToBigInt';
+import { toString } from '../Utils/ToBigInt';
 export class UpdateShortMessage extends Update {
   message!: MessageContext;
   constructor() {
@@ -41,15 +41,15 @@ export class UpdateShortMessage extends Update {
     this.message.text = update.message;
     this.message.date = update.date;
     this.message.ttlPeriod = update.ttlPeriod;
-    this.message.viaBotId = BigInt(toNumber(update.viaBotId!) as number);
+    this.message.viaBotId = BigInt(toString(update.viaBotId!) as string);
     this.message.telegram = this.telegram;
     this.message.SnakeClient = SnakeClient;
     if (update.userId) {
       let chat = new Chat();
       let from = new From();
-      await chat.init(BigInt(toNumber(update.userId!) as number), SnakeClient);
+      await chat.init(BigInt(toString(update.userId!) as string), SnakeClient);
       if (!update.out) {
-        await from.init(BigInt(toNumber(update.userId!) as number), SnakeClient);
+        await from.init(BigInt(toString(update.userId!) as string), SnakeClient);
       } else {
         await from.init(SnakeClient.aboutMe.id, SnakeClient);
       }

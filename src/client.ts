@@ -51,7 +51,7 @@ function makeApiId(length) {
 export class Snake extends MainContext {
   client!: TelegramClient;
   telegram!: Telegram;
-  version: string = '2.0.0-beta.0';
+  version: string = '2.0.0-beta.2';
   logger: string = 'none';
   options!: Options;
   constructor(options?: Options) {
@@ -60,10 +60,8 @@ export class Snake extends MainContext {
       '\x1b[31m',
       `Warning\nYou are using tgsnake ${
         this.version
-      } which is still in the testing phase. Some update events may not be available. Please use the version below (2.0.0-alpha.7${
-        '' /*
+      } which is still in the testing phase. Some update events may not be available. Please use the version below (2.0.0-beta.${
         Number(this.version.replace('2.0.0-beta.', '')) - 1
-      */
       }) or above (2.0.0.beta.${Number(this.version.replace('2.0.0-beta.', '')) + 1}).\n`,
       '\x1b[0m'
     );

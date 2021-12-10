@@ -9,7 +9,7 @@
 import { Api } from 'telegram';
 import { Snake } from '../../client';
 import { BigInteger } from 'big-integer';
-import { toBigInt, toNumber } from '../../Utils/ToBigInt';
+import { toBigInt, toString } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
 export interface getUserPhotosMoreParams {
   offset?: number;

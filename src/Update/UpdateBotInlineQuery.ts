@@ -13,7 +13,7 @@ import { Telegram } from '../Telegram';
 import { Snake } from '../client';
 import { BigInteger } from 'big-integer';
 import { Media } from '../Utils/Media';
-import { toNumber } from '../Utils/ToBigInt';
+import { toString } from '../Utils/ToBigInt';
 export class UpdateBotInlineQuery extends Update {
   id!: bigint;
   from!: From;
@@ -35,7 +35,7 @@ export class UpdateBotInlineQuery extends Update {
       );
     }
     this.telegram = SnakeClient.telegram;
-    this.id = BigInt(toNumber(update.queryId!) as number);
+    this.id = BigInt(toString(update.queryId!) as string);
     this.query = update.query;
     this.offset = update.offset;
     if (update.peerType instanceof Api.InlineQueryPeerTypeSameBotPM) {
@@ -60,7 +60,7 @@ export class UpdateBotInlineQuery extends Update {
       }
     }
     this.from = new From();
-    await this.from.init(BigInt(toNumber(update.userId!) as number), SnakeClient);
+    await this.from.init(BigInt(toString(update.userId!) as string), SnakeClient);
     return this;
   }
 }

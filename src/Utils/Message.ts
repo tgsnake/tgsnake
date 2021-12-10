@@ -19,7 +19,7 @@ import { ForwardMessage } from './ForwardMessage';
 import { Media } from './Media';
 import { Telegram } from '../Telegram';
 import { convertReplyMarkup, TypeReplyMarkup } from './ReplyMarkup';
-import { toNumber } from './ToBigInt';
+import { toString } from './ToBigInt';
 import { Cleaning } from './CleanObject';
 let _SnakeClient: Snake;
 let _telegram: Telegram;
@@ -137,7 +137,7 @@ export class Message {
     this.pinned = message.pinned;
     this.viaBotId =
       message.viaBotId !== null || message.viaBotId !== undefined
-        ? BigInt(toNumber(message.viaBotId!) as number)
+        ? BigInt(toString(message.viaBotId!) as string)
         : BigInt(0);
     this.text = message.message;
     this.views = message.views;

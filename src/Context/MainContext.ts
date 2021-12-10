@@ -14,6 +14,7 @@ import { Api } from 'telegram';
 import { MessageContext } from './MessageContext';
 import { Composer, run, ErrorHandler } from './Composer';
 import BotError from './Error';
+import { Cleaning } from '../Utils/CleanObject';
 import chalk from 'chalk';
 export type LoggerInfo = (...args: Array<any>) => void;
 export class MainContext extends Composer {
@@ -43,6 +44,7 @@ export class MainContext extends Composer {
   }
   async handleUpdate(update: Api.TypeUpdate | ResultGetEntity, SnakeClient: Snake) {
     if (!update) return false;
+    update = await Cleaning(update);
     this.use = () => {
       let botError = new BotError();
       botError.error = new Error(

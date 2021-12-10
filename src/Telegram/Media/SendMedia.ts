@@ -14,7 +14,7 @@ import { _parseMessageText } from 'telegram/client/messageParse';
 import BigInt from 'big-integer';
 import * as Update from '../../Update';
 import path from 'path';
-import { toBigInt, toNumber } from '../../Utils/ToBigInt';
+import { toBigInt, toString, convertId } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
 export interface sendMediaMoreParams {
   silent?: boolean;

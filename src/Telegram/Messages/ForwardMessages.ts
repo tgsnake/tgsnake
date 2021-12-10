@@ -10,8 +10,8 @@ import { Snake } from '../../client';
 import { TypeReplyMarkup, BuildReplyMarkup } from '../../Utils/ReplyMarkup';
 import { Entities, ParseEntities } from '../../Utils/Entities';
 import { _parseMessageText } from 'telegram/client/messageParse';
-import BigInt from 'big-integer';
-import { toBigInt, toNumber } from '../../Utils/ToBigInt';
+import bigInt from 'big-integer';
+import { toBigInt, toString } from '../../Utils/ToBigInt';
 import * as Update from '../../Update';
 import BotError from '../../Context/Error';
 export interface forwardMessageMoreParams {
@@ -52,7 +52,7 @@ export async function ForwardMessages(
     }
     let randomId: any = [];
     for (let i = 0; i < messageId.length; i++) {
-      randomId.push(BigInt(Math.floor(Math.random() * 10000000000000)));
+      randomId.push(bigInt(Math.floor(Math.random() * 10000000000000)));
     }
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
     let [fId, fType, fPeer] = await toBigInt(fromChatId, snakeClient);

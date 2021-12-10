@@ -25,13 +25,16 @@ export async function toBigInt(Ids: bigint | number | string, SnakeClient: Snake
         });
   return [id as BigInteger, e.type, d];
 }
-export function toNumber(Ids: BigInteger | number) {
+export function toString(Ids: BigInteger | number | null | string) {
+  if (Ids == null) {
+    return 0;
+  }
   if (isInstance(Ids)) {
     //@ts-ignore
-    return Number(String(Ids));
+    return String(Ids);
   }
   //@ts-ignore
-  return Ids as Number;
+  return String(Ids);
 }
 export function convertId(ids: bigint | number | string) {
   if (typeof ids == 'bigint') {

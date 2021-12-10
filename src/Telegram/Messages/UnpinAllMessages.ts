@@ -9,7 +9,7 @@
 import { Api } from 'telegram';
 import { Snake } from '../../client';
 import { ResultAffectedMessages } from './DeleteMessages';
-import { toBigInt, toNumber } from '../../Utils/ToBigInt';
+import { toBigInt, toString } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
 export async function UnpinAllMessages(snakeClient: Snake, chatId: number | string | bigint) {
   try {

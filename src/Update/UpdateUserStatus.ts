@@ -11,7 +11,7 @@ import { Update } from './Update';
 import { From } from '../Utils/From';
 import { Telegram } from '../Telegram';
 import { Snake } from '../client';
-import { toNumber } from '../Utils/ToBigInt';
+import { toString } from '../Utils/ToBigInt';
 
 export class UpdateUserStatus extends Update {
   user!: From;
@@ -32,7 +32,7 @@ export class UpdateUserStatus extends Update {
     this.telegram = SnakeClient.telegram;
     if (update.userId) {
       let user = new From();
-      await user.init(BigInt(toNumber(update.userId!) as number), SnakeClient);
+      await user.init(BigInt(toString(update.userId!) as string), SnakeClient);
       this.user = user;
     }
     if (update.status) {

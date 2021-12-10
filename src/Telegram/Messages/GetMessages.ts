@@ -10,7 +10,7 @@ import { Snake } from '../../client';
 import BigInt from 'big-integer';
 import { MessageContext } from '../../Context/MessageContext';
 import * as Update from '../../Update';
-import { toBigInt, toNumber } from '../../Utils/ToBigInt';
+import { toBigInt, toString } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
 
 export async function GetMessages(

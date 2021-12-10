@@ -8,7 +8,7 @@
 
 import { Snake } from '../../client';
 import { Api } from 'telegram';
-import { toBigInt, toNumber } from '../../Utils/ToBigInt';
+import { toBigInt, toString } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
 export class ResultAffectedMessages {
   pts?: number = 0;

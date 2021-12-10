@@ -10,7 +10,7 @@ import { Api } from 'telegram';
 import { Snake } from '../../client';
 import { UploadFile } from './UploadFile';
 import * as Updates from '../../Update';
-import { toBigInt, toNumber } from '../../Utils/ToBigInt';
+import { toBigInt, toString, convertId } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
 import bigInt, { BigInteger } from 'big-integer';
 /**

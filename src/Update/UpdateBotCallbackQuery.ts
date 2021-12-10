@@ -14,13 +14,13 @@ import { Snake } from '../client';
 import { BigInteger } from 'big-integer';
 import { MessageContext } from '../Context/MessageContext';
 import Util from 'tg-file-id/dist/Util';
-import { toNumber } from '../Utils/ToBigInt';
+import { toString } from '../Utils/ToBigInt';
 export class UpdateBotCallbackQuery extends Update {
   id!: bigint;
   data?: string;
   message?: MessageContext;
   from!: From;
-  chatInstance!: BigInteger;
+  chatInstance!: bigint;
   inlineMessageId?: string;
   gameShortName?: string;
   constructor() {
@@ -38,14 +38,14 @@ export class UpdateBotCallbackQuery extends Update {
     }
     this.telegram = SnakeClient.telegram;
     this.data = update.data?.toString('utf8');
-    this.id = BigInt(toNumber(update.queryId!) as number);
+    this.id = BigInt(toString(update.queryId!) as string);
     this.gameShortName = update.gameShortName;
-    this.chatInstance = update.chatInstance;
+    this.chatInstance = BigInt(toString(update.chatInstance) as string);
     this.message = new MessageContext();
     if (update.peer instanceof Api.PeerChat) {
       update.peer as Api.PeerChat;
       let msg = await SnakeClient.telegram.getMessages(
-        BigInt(toNumber(update.peer.chatId!) as number),
+        BigInt(toString(update.peer.chatId!) as string),
         [update.msgId]
       );
       this.message = msg.messages[0];
@@ -53,7 +53,7 @@ export class UpdateBotCallbackQuery extends Update {
     if (update.peer instanceof Api.PeerChannel) {
       update.peer as Api.PeerChannel;
       let msg = await SnakeClient.telegram.getMessages(
-        BigInt(toNumber(update.peer.channelId!) as number),
+        BigInt(toString(update.peer.channelId!) as string),
         [update.msgId]
       );
       this.message = msg.messages[0];
@@ -61,13 +61,13 @@ export class UpdateBotCallbackQuery extends Update {
     if (update.peer instanceof Api.PeerUser) {
       update.peer as Api.PeerUser;
       let msg = await SnakeClient.telegram.getMessages(
-        BigInt(toNumber(update.peer.userId!) as number),
+        BigInt(toString(update.peer.userId!) as string),
         [update.msgId]
       );
       this.message = msg.messages[0];
     }
     this.from = new From();
-    await this.from.init(BigInt(toNumber(update.userId!) as number), SnakeClient);
+    await this.from.init(BigInt(toString(update.userId!) as string), SnakeClient);
     return this;
   }
 }

@@ -12,7 +12,7 @@ import { SendMedia, sendMediaMoreParams } from './SendMedia';
 import { UploadFile } from './UploadFile';
 import { decodeFileId } from 'tg-file-id';
 import { Media } from '../../Utils/Media';
-import BigInt from 'big-integer';
+import bigInt from 'big-integer';
 import { GetFileInfo } from './GetFileInfo';
 import path from 'path';
 import BotError from '../../Context/Error';

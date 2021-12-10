@@ -16,7 +16,7 @@ import { ForwardMessage } from '../Utils/ForwardMessage';
 import { From } from '../Utils/From';
 import { Chat } from '../Utils/Chat';
 import { MessageContext } from '../Context/MessageContext';
-import { toNumber } from '../Utils/ToBigInt';
+import { toString } from '../Utils/ToBigInt';
 export class UpdateShortChatMessage extends Update {
   message!: MessageContext;
   constructor() {
@@ -41,14 +41,14 @@ export class UpdateShortChatMessage extends Update {
     this.message.id = update.id;
     this.message.text = update.message;
     this.message.date = update.date;
-    this.message.viaBotId = BigInt(toNumber(update.viaBotId!) as number);
+    this.message.viaBotId = BigInt(toString(update.viaBotId!) as string);
     this.message.ttlPeriod = update.ttlPeriod;
     this.message.telegram = this.telegram;
     this.message.SnakeClient = SnakeClient;
     if (update.fromId) {
       let from = new From();
       if (!update.out) {
-        await from.init(BigInt(toNumber(update.fromId!) as number), SnakeClient);
+        await from.init(BigInt(toString(update.fromId!) as string), SnakeClient);
       } else {
         await from.init(SnakeClient.aboutMe.id, SnakeClient);
       }
@@ -56,7 +56,7 @@ export class UpdateShortChatMessage extends Update {
     }
     if (update.chatId) {
       let chat = new Chat();
-      await chat.init(BigInt(toNumber(update.chatId!) as number), SnakeClient);
+      await chat.init(BigInt(toString(update.chatId!) as string), SnakeClient);
       this.message.chat = chat;
     }
     if (update.fwdFrom) {

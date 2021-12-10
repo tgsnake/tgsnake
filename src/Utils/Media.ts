@@ -73,7 +73,7 @@ export function generateFileId(medias: GenerateFileId) {
       key == 'stickerSetId' ||
       key == 'stickerSetAccessHash'
     ) {
-      if (Number(value) < 0) {
+      if (BigInt(String(value)) < BigInt(0)) {
         let num = String(value).replace(/^\-/, ''); // generate positive number
         file[key] = BigInt(num);
         continue;
@@ -135,8 +135,8 @@ export class Media {
       subVersion: 30,
       dcId: doc.dcId,
       fileType: 'sticker',
-      id: doc.id,
-      accessHash: doc.accessHash,
+      id: BigInt(String(doc.id)),
+      accessHash: BigInt(String(doc.accessHash)),
       typeId: typeId.STICKER,
       fileReference: doc.fileReference.toString('hex'),
       photoSizeSource: 'stickerSetThumbnail',
@@ -177,8 +177,8 @@ export class Media {
   }
   private photoToFileId(photo: Api.Photo) {
     let data: GenerateFileId = {
-      id: photo.id,
-      accessHash: photo.accessHash,
+      id: BigInt(String(photo.id)),
+      accessHash: BigInt(String(photo.accessHash)),
       version: 4,
       subVersion: 30,
       volumeId: 1,

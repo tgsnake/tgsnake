@@ -10,7 +10,7 @@ import { Snake } from '../client';
 import { BigInteger } from 'big-integer';
 import { PaymentRequestedInfo, PaymentCharge } from './Payment';
 import { Media } from './Media';
-import { toNumber } from './ToBigInt';
+import { toString } from './ToBigInt';
 export class MessageAction {
   '_'!: string;
   title!: string;
@@ -47,7 +47,7 @@ export class MessageAction {
       this.title = messageAction.title;
       let c: bigint[] = [];
       for (let users of messageAction.users) {
-        c.push(BigInt(toNumber(users) as number));
+        c.push(BigInt(toString(users) as string));
       }
       this.users = c;
       return this;
@@ -71,7 +71,7 @@ export class MessageAction {
       messageAction as Api.MessageActionChatAddUser;
       let c: bigint[] = [];
       for (let users of messageAction.users) {
-        c.push(BigInt(toNumber(users) as number));
+        c.push(BigInt(toString(users) as string));
       }
       this.users = c;
       return this;
@@ -79,13 +79,13 @@ export class MessageAction {
     if (messageAction instanceof Api.MessageActionChatDeleteUser) {
       messageAction as Api.MessageActionChatDeleteUser;
       this['_'] = 'leftChatMember';
-      this.userId = BigInt(toNumber(messageAction.userId) as number);
+      this.userId = BigInt(toString(messageAction.userId) as string);
       return this;
     }
     if (messageAction instanceof Api.MessageActionChatJoinedByLink) {
       messageAction as Api.MessageActionChatJoinedByLink;
       this['_'] = 'newChatMember';
-      this.inviterId = BigInt(toNumber(messageAction.inviterId) as number);
+      this.inviterId = BigInt(toString(messageAction.inviterId) as string);
       return this;
     }
     if (messageAction instanceof Api.MessageActionChannelCreate) {
@@ -97,20 +97,20 @@ export class MessageAction {
     if (messageAction instanceof Api.MessageActionChatMigrateTo) {
       messageAction as Api.MessageActionChatMigrateTo;
       this['_'] = 'migrateTo';
-      this.channelId = BigInt(Number(`-100${toNumber(messageAction.channelId)}`) as number);
+      this.channelId = BigInt(`-100${toString(messageAction.channelId)}` as string);
       return this;
     }
     if (messageAction instanceof Api.MessageActionChannelMigrateFrom) {
       messageAction as Api.MessageActionChannelMigrateFrom;
       this['_'] = 'migrateFrom';
       this.title = messageAction.title;
-      this.chatId = BigInt(Number(`-${toNumber(messageAction.chatId)}`) as number);
+      this.chatId = BigInt(`-${toString(messageAction.chatId)}` as string);
       return this;
     }
     if (messageAction instanceof Api.MessageActionGameScore) {
       messageAction as Api.MessageActionGameScore;
       this['_'] = 'gameScore';
-      this.gameId = BigInt(toNumber(messageAction.gameId) as number);
+      this.gameId = BigInt(toString(messageAction.gameId) as string);
       this.score = messageAction.score;
       return this;
     }
@@ -118,7 +118,7 @@ export class MessageAction {
       messageAction as Api.MessageActionPaymentSentMe;
       this['_'] = 'paymentSentMe';
       this.currency = messageAction.currency;
-      this.totalAmount = BigInt(toNumber(messageAction.totalAmount) as number);
+      this.totalAmount = BigInt(toString(messageAction.totalAmount) as string);
       this.payload = messageAction.payload.toString('utf8');
       if (messageAction.info) this.info = new PaymentRequestedInfo(messageAction.info);
       if (messageAction.shippingOptionId) this.shippingOptionId = messageAction.shippingOptionId;
@@ -129,14 +129,14 @@ export class MessageAction {
       messageAction as Api.MessageActionPaymentSent;
       this['_'] = 'paymentSent';
       this.currency = messageAction.currency;
-      this.totalAmount = BigInt(toNumber(messageAction.totalAmount) as number);
+      this.totalAmount = BigInt(toString(messageAction.totalAmount) as string);
       return this;
     }
     if (messageAction instanceof Api.MessageActionPhoneCall) {
       messageAction as Api.MessageActionPhoneCall;
       this['_'] = 'phoneCall';
       this.video = messageAction.video;
-      this.callId = BigInt(toNumber(messageAction.callId) as number);
+      this.callId = BigInt(toString(messageAction.callId) as string);
       if (messageAction.reason) {
         this.reason = messageAction.reason.className
           .replace('PhoneCallDiscardReason', '')

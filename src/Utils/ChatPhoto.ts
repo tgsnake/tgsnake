@@ -8,6 +8,8 @@
 import { Api } from 'telegram';
 import { ResultGetEntity } from '../Telegram/Users/GetEntity';
 import * as media from './Media';
+import { toString } from './ToBigInt';
+import { BigInteger } from 'big-integer';
 import { decodeFileId } from 'tg-file-id';
 export class ChatPhoto {
   fileId!: string;
@@ -20,7 +22,7 @@ export class ChatPhoto {
       version: 4,
       subVersion: 30,
       dcId: photo.dcId,
-      id: photo.photoId,
+      id: BigInt(toString(photo.photoId as BigInteger) as string),
       accessHash: BigInt(0),
       photoSizeSource: 'dialogPhoto',
       dialogId: resultsGetEntity.id,

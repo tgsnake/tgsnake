@@ -14,13 +14,13 @@ import { Snake } from '../client';
 import { BigInteger } from 'big-integer';
 import { MessageContext } from '../Context/MessageContext';
 import Util from 'tg-file-id/dist/Util';
-import { toNumber } from '../Utils/ToBigInt';
+import { toString } from '../Utils/ToBigInt';
 export class UpdateInlineBotCallbackQuery extends Update {
   id!: bigint;
   data?: string;
   message?: MessageContext;
   from!: From;
-  chatInstance!: BigInteger;
+  chatInstance!: bigint;
   inlineMessageId?: string;
   gameShortName?: string;
   constructor() {
@@ -38,9 +38,9 @@ export class UpdateInlineBotCallbackQuery extends Update {
     }
     this.telegram = SnakeClient.telegram;
     this.data = update.data?.toString('utf8');
-    this.id = BigInt(toNumber(update.queryId!) as number);
+    this.id = BigInt(toString(update.queryId!) as string);
     this.gameShortName = update.gameShortName;
-    this.chatInstance = update.chatInstance;
+    this.chatInstance = BigInt(toString(update.chatInstance) as string);
     this.inlineMessageId = '';
     this.inlineMessageId += Util.to32bitBuffer(update.msgId.dcId);
     let id = BigInt(String(update.msgId.id));
@@ -59,7 +59,7 @@ export class UpdateInlineBotCallbackQuery extends Update {
     }
     this.inlineMessageId = Util.base64UrlEncode(Util.rleEncode(this.inlineMessageId));
     this.from = new From();
-    await this.from.init(BigInt(toNumber(update.userId) as number), SnakeClient);
+    await this.from.init(BigInt(toString(update.userId) as string), SnakeClient);
     return this;
   }
 }

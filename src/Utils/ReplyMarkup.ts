@@ -198,7 +198,8 @@ function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard) {
             url: String(btn.loginUrl?.url),
             bot: new Api.InputUser({
               userId: bigInt(btn.loginUrl?.bot.id! as bigint) as BigInteger,
-              accessHash: btn.loginUrl?.bot.accessHash!,
+              //@ts-ignore
+              accessHash: bigInt(btn.loginUrl?.bot.accessHash! as bigint) as BigInteger,
             }),
           })
         );
@@ -447,7 +448,7 @@ export async function convertReplyMarkup(
           let me = await SnakeClient.telegram.getMe();
           let ee: BotLoginUrl = {
             id: me.id!,
-            accessHash: me.accessHash!,
+            accessHash: bigInt(me.accessHash! as bigint) as BigInteger,
           };
           let dd: loginUrl = {
             requestWriteAccess: true,

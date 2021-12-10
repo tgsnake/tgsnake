@@ -210,7 +210,7 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
   ): Composer {
     let tgr = triggerFn(trigger);
     return this.on('message').filter((ctx) => {
-      const { text } = ctx.message;
+      const { text } = ctx;
       return match(ctx, String(text), tgr);
     }, ...middleware);
   }

@@ -9,8 +9,9 @@
 import { Snake } from '../../client';
 import { Api } from 'telegram';
 import { ResultAffectedMessages } from './DeleteMessages';
-import { toBigInt, toNumber } from '../../Utils/ToBigInt';
+import { toBigInt, toString } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
+
 /**
  * Delete all messages sent by a certain user in a supergroup
  * @param snakeClient - client.

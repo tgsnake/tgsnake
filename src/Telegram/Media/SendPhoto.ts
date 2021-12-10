@@ -12,7 +12,7 @@ import { SendMedia, sendMediaMoreParams } from './SendMedia';
 import { UploadFile } from './UploadFile';
 import { decodeFileId } from 'tg-file-id';
 import { Media } from '../../Utils/Media';
-import BigInt from 'big-integer';
+import bigInt from 'big-integer';
 import BotError from '../../Context/Error';
 /**
  * Sending photo with fileId/file location/url/buffer.
@@ -89,21 +89,21 @@ export async function SendPhoto(
           try {
             let media = new Api.InputMediaPhoto({
               id: new Api.InputPhoto({
-                id: BigInt(id),
-                accessHash: BigInt(accessHash),
+                id: bigInt(id),
+                accessHash: bigInt(accessHash),
                 fileReference: Buffer.from(file.fileReference, 'hex'),
               }),
             });
             results = SendMedia(snakeClient, chatId, media, more);
             break;
           } catch (e) {
-            if (Number(accessHash) > 0 && Number(id) > 0) {
+            if (BigInt(accessHash) > BigInt(0) && BigInt(id) > BigInt(0)) {
               // id (+) accessHash (+)
               accessHash = `-${accessHash}`; // id (+) accessHash (-)
-            } else if (Number(accessHash) < 0 && Number(id) > 0) {
+            } else if (BigInt(accessHash) < BigInt(0) && BigInt(id) > BigInt(0)) {
               // id (+) accessHash (-)
               id = `-${id}`; // id (-) accessHash (-)
-            } else if (Number(accessHash) < 0 && Number(id) < 0) {
+            } else if (BigInt(accessHash) < BigInt(0) && BigInt(id) < BigInt(0)) {
               // id (-) accessHash (-)
               accessHash = accessHash.replace(/^\-/, '');
               // id (-) accessHash (+)
@@ -135,21 +135,21 @@ export async function SendPhoto(
           try {
             let media = new Api.InputMediaPhoto({
               id: new Api.InputPhoto({
-                id: BigInt(id),
-                accessHash: BigInt(accessHash),
+                id: bigInt(id),
+                accessHash: bigInt(accessHash),
                 fileReference: Buffer.from(file.fileReference, 'hex'),
               }),
             });
             results = SendMedia(snakeClient, chatId, media, more);
             break;
           } catch (e) {
-            if (Number(accessHash) > 0 && Number(id) > 0) {
+            if (BigInt(accessHash) > BigInt(0) && BigInt(id) > BigInt(0)) {
               // id (+) accessHash (+)
               accessHash = `-${accessHash}`; // id (+) accessHash (-)
-            } else if (Number(accessHash) < 0 && Number(id) > 0) {
+            } else if (BigInt(accessHash) < BigInt(0) && BigInt(id) > BigInt(0)) {
               // id (+) accessHash (-)
               id = `-${id}`; // id (-) accessHash (-)
-            } else if (Number(accessHash) < 0 && Number(id) < 0) {
+            } else if (BigInt(accessHash) < BigInt(0) && BigInt(id) < BigInt(0)) {
               // id (-) accessHash (-)
               accessHash = accessHash.replace(/^\-/, '');
               // id (-) accessHash (+)
