@@ -1,1 +1,0 @@
-tgsnake docs.

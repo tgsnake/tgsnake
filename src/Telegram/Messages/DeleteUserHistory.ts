@@ -42,10 +42,9 @@ export async function DeleteUserHistory(
     let [uId, uType, uPeer] = await toBigInt(userId, snakeClient);
     return new ResultAffectedMessages(
       await snakeClient.client.invoke(
-        //@ts-ignore
-        new Api.channels.DeleteUserHistory({
+        new Api.channels.DeleteParticipantHistory({
           channel: peer,
-          userId: uPeer,
+          participant: uPeer,
         })
       )
     );
