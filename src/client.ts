@@ -268,6 +268,14 @@ export class Snake extends MainContext {
       this.log(`🐍 Welcome To TGSNAKE ${this.version}.`);
       this.log(`🐍 Setting Logger level to "${this.logger}"`);
       this.consoleColor = 'green';
+      let dir = await fs.readdirSync('./');
+      if (fs.includes(sessionName)) {
+        this.log(`🐍 Removing ${sessionName} folders.`);
+        await fs.rmSync(`./${sessionName}`, {
+          recursive: true,
+          force: true,
+        });
+      }
       if (!api_hash) {
         let input_api_hash = await prompts({
           type: 'text',
