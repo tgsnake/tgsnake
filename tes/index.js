@@ -9,23 +9,8 @@
 const {Snake,Wizard,GramJs,Composer} = require("../lib")
 const {Api} = GramJs
 const bot = new Snake() 
-bot.on("message",(ctx)=>{
-  return console.log(ctx)
-})
 bot.cmd("start",(ctx)=>{
-  ctx.reply("hai",{
-    replyMarkup : {
-      inlineKeyboard : [
-          [{
-            text : "click me",
-            callbackData : "clicked"
-          }]
-        ]
-    }
-  })
+  console.log(ctx)
+  return ctx.reply("Hi!")
 })
-bot.cmd("help",(ctx)=>{
-  ctx.reply("help")
-})
-
 bot.run()
