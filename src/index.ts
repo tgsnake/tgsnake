@@ -8,7 +8,7 @@
 
 export { Snake } from './client';
 export { Telegram } from './Telegram';
-export * as Update from './Update';
+export * as Updates from './Update';
 export * as GramJs from 'telegram';
 export { Composer } from './Context/Composer';
 import BotError from './Context/Error';

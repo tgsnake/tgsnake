@@ -17,15 +17,44 @@ import BotError from './Error';
 import { Cleaning } from '../Utils/CleanObject';
 import chalk from 'chalk';
 export type LoggerInfo = (...args: Array<any>) => void;
+import * as NodeUtil from 'util';
 export class MainContext extends Composer {
   connected: Boolean = false;
   aboutMe!: ResultGetEntity;
   entityCache: Map<bigint, ResultGetEntity> = new Map();
-  consoleColor: string = 'green';
   tgSnakeLog: boolean = true;
+  consoleColor!: string;
   log: LoggerInfo = (...args: Array<any>) => {
     if (this.tgSnakeLog) {
-      console.log(chalk[this.consoleColor](...args));
+      if (args.length > 1) {
+        let fargs: Array<any> = new Array();
+        for (let arg of args) {
+          if (typeof arg == 'object') {
+            fargs.push(
+              NodeUtil.inspect(arg, {
+                showHidden: true,
+                colors: true,
+              })
+            );
+          } else {
+            fargs.push(arg);
+          }
+        }
+        console.log(chalk[this.consoleColor](...fargs));
+      } else {
+        let fargs: Array<any> = new Array();
+        if (typeof args[0] == 'object') {
+          fargs.push(
+            NodeUtil.inspect(args[0], {
+              showHidden: true,
+              colors: true,
+            })
+          );
+        } else {
+          fargs.push(args[0]);
+        }
+        console.log(chalk[this.consoleColor](...fargs));
+      }
     }
     return args;
   };

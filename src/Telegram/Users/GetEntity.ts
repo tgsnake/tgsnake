@@ -239,12 +239,26 @@ export async function GetEntity(
     if (useCache) {
       if (typeof chatId == 'number') {
         if (snakeClient.entityCache.get(BigInt(toString(chatId) as string) as bigint)) {
+          if (mode.includes(snakeClient.logger)) {
+            snakeClient.log(
+              `[${
+                snakeClient.connectTime
+              }] - [${new Date().toLocaleString()}] - [telegram.getEntity] using cache`
+            );
+          }
           //@ts-ignore
           return snakeClient.entityCache.get(BigInt(toString(chatId) as string) as bigint);
         }
       }
       if (typeof chatId == 'bigint') {
         if (snakeClient.entityCache.get(chatId as bigint)) {
+          if (mode.includes(snakeClient.logger)) {
+            snakeClient.log(
+              `[${
+                snakeClient.connectTime
+              }] - [${new Date().toLocaleString()}] - [telegram.getEntity] using cache`
+            );
+          }
           //@ts-ignore
           return snakeClient.entityCache.get(chatId as bigint);
         }

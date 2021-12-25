@@ -75,7 +75,7 @@ export class Telegram {
    * })
    * ```
    */
-  async deleteMessage(chatId: bigint | number | string, messageId: number[]) {
+  async deleteMessages(chatId: bigint | number | string, messageId: number[]) {
     return await DeleteMessages(this.SnakeClient, chatId, messageId);
   }
   // editMessage
