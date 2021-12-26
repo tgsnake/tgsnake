@@ -18,6 +18,24 @@ import { Cleaning } from '../Utils/CleanObject';
 import chalk from 'chalk';
 export type LoggerInfo = (...args: Array<any>) => void;
 import * as NodeUtil from 'util';
+import fs from 'fs';
+export function cwlog(...args: Array<any>) {
+  let dir = fs.readdirSync('./');
+  let wr = ``;
+  for (let arg of args) {
+    if (typeof arg == 'object') {
+      wr += JSON.stringify(arg, (_, v) => (typeof v === 'bigint' ? v.toString() : v));
+    } else {
+      wr += arg;
+    }
+  }
+  if (dir.includes('tgsnake.log')) {
+    let l = fs.readFileSync('./tgsnake.log', 'utf8');
+    l += '\n' + wr;
+    return fs.writeFileSync('./tgsnake.log', l);
+  }
+  return fs.writeFileSync('./tgsnake.log', wr);
+}
 export class MainContext extends Composer {
   connected: Boolean = false;
   aboutMe!: ResultGetEntity;
@@ -25,6 +43,7 @@ export class MainContext extends Composer {
   tgSnakeLog: boolean = true;
   consoleColor!: string;
   log: LoggerInfo = (...args: Array<any>) => {
+    cwlog(...args);
     if (this.tgSnakeLog) {
       if (args.length > 1) {
         let fargs: Array<any> = new Array();
@@ -130,6 +149,13 @@ export class MainContext extends Composer {
     }
   }
   catch(errorHandler: ErrorHandler) {
-    return (this.errorHandler = errorHandler);
+    return (this.errorHandler = (error, update) => {
+      cwlog(
+        `🐍 Snake error (${error.message}) when processing update :`,
+        update,
+        `🐍 ${error.functionName}(${error.functionArgs})`
+      );
+      return errorHandler(error, update);
+    });
   }
 }

@@ -269,7 +269,7 @@ export class Snake extends MainContext {
       this.log(`🐍 Setting Logger level to "${this.logger}"`);
       this.consoleColor = 'green';
       let dir = await fs.readdirSync('./');
-      if (fs.includes(sessionName)) {
+      if (dir.includes(sessionName)) {
         this.log(`🐍 Removing ${sessionName} folders.`);
         await fs.rmSync(`./${sessionName}`, {
           recursive: true,
