@@ -66,6 +66,7 @@ export class ResultGetEntity {
   restrictionReason?: RestrictionReason[];
   dcId?: number;
   photo?: ChatPhoto;
+  noforward?: boolean;
   constructor(resultsGetEntity: Api.TypeUser | Api.TypeChat | Api.Channel) {
     if (resultsGetEntity instanceof Api.User) {
       resultsGetEntity as Api.User;
@@ -143,6 +144,7 @@ export class ResultGetEntity {
       this.deactivated = resultsGetEntity.deactivated;
       this.callActive = resultsGetEntity.callActive;
       this.callNotEmpty = resultsGetEntity.callNotEmpty;
+      this.noforward = resultsGetEntity.noforwards;
       if (isInstance(resultsGetEntity.id)) {
         //@ts-ignore
         this.id = BigInt(`-${toString(resultsGetEntity.id as BigInteger) as string}` as string);
@@ -170,7 +172,7 @@ export class ResultGetEntity {
     }
     if (resultsGetEntity instanceof Api.Channel) {
       resultsGetEntity as Api.Channel;
-      this.type = 'channel';
+      this.type = resultsGetEntity.megagroup ? 'supergroup' : 'channel';
       this.creator = resultsGetEntity.creator;
       this.left = resultsGetEntity.left;
       this.broadcast = resultsGetEntity.broadcast;
@@ -187,6 +189,7 @@ export class ResultGetEntity {
       this.callNotEmpty = resultsGetEntity.callNotEmpty;
       this.fake = resultsGetEntity.fake;
       this.gigagroup = resultsGetEntity.gigagroup;
+      this.noforward = resultsGetEntity.noforwards;
       if (isInstance(resultsGetEntity.id)) {
         //@ts-ignore
         this.id = BigInt(`-100${toString(resultsGetEntity.id as BigInteger) as string}` as string);

@@ -24,9 +24,10 @@ export class Chat {
   defaultBannedRights?: BannedRights;
   participantsCount?: number;
   dcId?: number;
-  fake: boolean = false;
-  scam: boolean = false;
+  fake!: boolean;
+  scam!: boolean;
   type!: string;
+  noforward?: boolean;
   constructor() {}
   async init(peer: Api.TypePeer | number | bigint, snakeClient: Snake) {
     if (typeof peer !== 'number' && typeof peer !== 'bigint') {
@@ -75,36 +76,17 @@ export class Chat {
       let tg = snakeClient.telegram;
       let entity = await tg.getEntity(this.id, true);
       this.id = entity.id;
-      if (entity.username) {
-        this.username = entity.username!;
-      }
-      if (entity.firstName) {
-        this.firstName = entity.firstName!;
-      }
-      if (entity.lastName) {
-        this.lastName = entity.lastName!;
-      }
-      if (entity.title) {
-        this.title = entity.title!;
-      }
-      if (entity.photo) {
-        this.photo = entity.photo!;
-      }
-      if (entity.defaultBannedRights) {
-        this.defaultBannedRights = entity.defaultBannedRights;
-      }
-      if (entity.participantsCount) {
-        this.participantsCount = entity.participantsCount;
-      }
-      if (entity.dcId) {
-        this.dcId = entity.dcId;
-      }
-      if (entity.fake) {
-        this.fake = entity.fake;
-      }
-      if (entity.scam) {
-        this.scam = entity.scam;
-      }
+      this.noforward = entity.noforward;
+      this.username = entity.username!;
+      this.firstName = entity.firstName!;
+      this.lastName = entity.lastName!;
+      this.title = entity.title!;
+      this.photo = entity.photo!;
+      this.defaultBannedRights = entity.defaultBannedRights;
+      this.participantsCount = entity.participantsCount;
+      this.dcId = entity.dcId;
+      this.fake = entity.fake !== undefined ? entity.fake : false;
+      this.scam = entity.scam !== undefined ? entity.scam : false;
       this.private = Boolean(entity.type === 'user');
       this.type = entity.type as string;
     }

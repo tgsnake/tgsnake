@@ -149,13 +149,14 @@ export class MainContext extends Composer {
     }
   }
   catch(errorHandler: ErrorHandler) {
-    return (this.errorHandler = (error, update) => {
+    this.errorHandler = (error, update) => {
       cwlog(
         `🐍 Snake error (${error.message}) when processing update :`,
         update,
         `🐍 ${error.functionName}(${error.functionArgs})`
       );
       return errorHandler(error, update);
-    });
+    };
+    return this;
   }
 }

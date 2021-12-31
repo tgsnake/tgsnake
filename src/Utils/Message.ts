@@ -53,6 +53,7 @@ export class Message {
   postAuthor?: string;
   mediaGroupId?: BigInteger | number;
   restrictionReason?: RestrictionReason[];
+  noforward?: boolean;
   constructor() {}
   async init(message: Api.MessageService | Api.Message, SnakeClient: Snake) {
     let mode = ['debug', 'info'];
@@ -80,6 +81,8 @@ export class Message {
     this.id = message.id;
     this.date = message.date;
     this.post = message.post;
+    //@ts-ignore
+    this.noforward = message.noforwards;
     let messageAction = new MessageAction();
     await messageAction.init(message.action);
     this.action = messageAction;
@@ -135,6 +138,8 @@ export class Message {
     this.fromScheduled = message.fromScheduled;
     this.editHide = message.editHide;
     this.pinned = message.pinned;
+    //@ts-ignore
+    this.noforward = message.noforwards;
     this.viaBotId =
       message.viaBotId !== null || message.viaBotId !== undefined
         ? BigInt(toString(message.viaBotId!) as string)

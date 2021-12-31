@@ -88,15 +88,9 @@ export class From {
       this.bot = entity.bot;
       this.verified = entity.verified;
       this.restricted = entity.restricted;
-      if (entity.dcId) {
-        this.dcId = entity.dcId;
-      }
-      if (entity.photo) {
-        this.photo = entity.photo;
-      }
-      if (entity.restrictionReason) {
-        this.restrictionReason = entity.restrictionReason;
-      }
+      this.dcId = entity.dcId;
+      this.photo = entity.photo;
+      this.restrictionReason = entity.restrictionReason;
     }
     await Cleaning(this);
     return this;

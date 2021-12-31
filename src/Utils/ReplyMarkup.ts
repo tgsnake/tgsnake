@@ -151,7 +151,7 @@ export interface BotLoginUrl {
    * Bot access hash
    * access hash getting from .getEntity()
    */
-  accessHash: BigInteger;
+  accessHash: bigint;
 }
 
 export function BuildReplyMarkup(replyMarkup: TypeReplyMarkup) {
@@ -198,7 +198,6 @@ function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard) {
             url: String(btn.loginUrl?.url),
             bot: new Api.InputUser({
               userId: bigInt(btn.loginUrl?.bot.id! as bigint) as BigInteger,
-              //@ts-ignore
               accessHash: bigInt(btn.loginUrl?.bot.accessHash! as bigint) as BigInteger,
             }),
           })
@@ -448,7 +447,7 @@ export async function convertReplyMarkup(
           let me = await SnakeClient.telegram.getMe();
           let ee: BotLoginUrl = {
             id: me.id!,
-            accessHash: bigInt(me.accessHash! as bigint) as BigInteger,
+            accessHash: me.accessHash! as bigint,
           };
           let dd: loginUrl = {
             requestWriteAccess: true,
