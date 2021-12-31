@@ -10,6 +10,7 @@ import { Api } from 'telegram';
 import { BigInteger } from 'big-integer';
 import { FileId, decodeFileId } from 'tg-file-id';
 import { Cleaning } from './CleanObject';
+import { toString } from './ToBigInt';
 export let typeId = {
   THUMBNAIL: 0,
   CHAT_PHOTO: 1, // ProfilePhoto
@@ -95,15 +96,15 @@ export function generateFileId(medias: GenerateFileId) {
 }
 export class Media {
   type!:
-    | 'sticker'
+    | 'sticker' //done
     | 'document'
-    | 'photo'
-    | 'location'
-    | 'dice'
+    | 'photo' // done
+    | 'location' //done
+    | 'dice' //done
     | 'contact'
     | 'animation'
     | 'video'
-    | 'poll'
+    | 'poll' //done
     | 'venue'
     | 'videoNote'
     | 'voice'
@@ -128,6 +129,11 @@ export class Media {
   answers!: string[];
   longitude!: number;
   latitude!: number;
+  phoneNumber!: string;
+  firstName!: string;
+  lastName!: string;
+  vcard!: string;
+  userId!: bigint;
   constructor() {}
   private stickerToFileId(doc: Api.Document) {
     let data: GenerateFileId = {
@@ -223,7 +229,24 @@ export class Media {
     this.answers = asn;
     return this;
   }
-  encode(media?: Api.Document | Api.Photo | Api.MessageMediaDice | Api.Poll | Api.GeoPoint) {
+  private contact(contact: Api.MessageMediaContact) {
+    this.type = 'contact';
+    this.phoneNumber = contact.phoneNumber;
+    this.firstName = contact.firstName;
+    this.lastName = contact.lastName;
+    this.vcard = contact.vcard;
+    this.userId = BigInt(toString(contact.userId) as string);
+    return this;
+  }
+  encode(
+    media?:
+      | Api.Document
+      | Api.Photo
+      | Api.MessageMediaDice
+      | Api.Poll
+      | Api.GeoPoint
+      | Api.MessageMediaContact
+  ) {
     // document
     if (media instanceof Api.Document) {
       let doc = media as Api.Document;
@@ -258,6 +281,10 @@ export class Media {
       this.latitude = loc.lat;
       this.longitude = loc.long;
     }
+    // contact
+    if (media instanceof Api.MessageMediaContact) {
+      return this.contact(media as Api.MessageMediaContact);
+    }
     return this;
   }
   decode(fileId?: string) {
@@ -285,6 +312,9 @@ export class Media {
     }
     if (media instanceof Api.MessageMediaGeo) {
       return media.geo as Api.GeoPoint;
+    }
+    if (media instanceof Api.MessageMediaContact) {
+      return media as Api.MessageMediaContact;
     }
   }
 }
