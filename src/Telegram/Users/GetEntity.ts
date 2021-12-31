@@ -266,10 +266,26 @@ export async function GetEntity(
           return snakeClient.entityCache.get(chatId as bigint);
         }
       }
+      if (typeof chatId == 'string') {
+        if (String(chatId).startsWith('@')) {
+          if (snakeClient.entityCache.get(String(chatId).replace('@', '') as string)) {
+            if (mode.includes(snakeClient.logger)) {
+              snakeClient.log(
+                `[${
+                  snakeClient.connectTime
+                }] - [${new Date().toLocaleString()}] - [telegram.getEntity] using cache`
+              );
+            }
+            //@ts-ignore
+            return snakeClient.entityCache.get(String(chatId).replace('@', '') as string);
+          }
+        }
+      }
     }
     let e = await snakeClient.client.getEntity(convertId(chatId));
     let r = new ResultGetEntity(e);
     snakeClient.entityCache.set(r.id, r);
+    if (r.username) snakeClient.entityCache.set(r.username, r);
     return r;
   } catch (error) {
     let botError = new BotError();

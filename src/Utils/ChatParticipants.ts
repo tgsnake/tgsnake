@@ -284,6 +284,7 @@ export class ChatParticipants {
     participant.users.map((item: Api.User) => {
       let entity = new ResultGetEntity(item);
       SnakeClient.entityCache.set(entity.id, entity);
+      if (entity.username) SnakeClient.entityCache.set(entity.username, entity);
     });
     //@ts-ignore
     participant.chats.map((item: Api.TypeChat) => {
@@ -294,6 +295,7 @@ export class ChatParticipants {
       }
       let entity = new ResultGetEntity(item);
       SnakeClient.entityCache.set(entity.id, entity);
+      if (entity.username) SnakeClient.entityCache.set(entity.username, entity);
     });
     let i = 0;
     while (true) {
@@ -320,6 +322,7 @@ export class ChatParticipants {
     participant.users.map((item: Api.User) => {
       let entity = new ResultGetEntity(item);
       SnakeClient.entityCache.set(entity.id, entity);
+      if (entity.username) SnakeClient.entityCache.set(entity.username, entity);
     });
     //@ts-ignore
     participant.chats.map((item: Api.TypeChat) => {
@@ -330,6 +333,7 @@ export class ChatParticipants {
       }
       let entity = new ResultGetEntity(item);
       SnakeClient.entityCache.set(entity.id, entity);
+      if (entity.username) SnakeClient.entityCache.set(entity.username, entity);
     });
     let channelPart = new ChannelParticipant();
     await channelPart.init(participants, SnakeClient);
