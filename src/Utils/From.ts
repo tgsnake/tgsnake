@@ -31,51 +31,50 @@ export class From {
   photo?: ChatPhoto;
   restrictionReason?: RestrictionReason[];
   constructor() {}
-  async init(peer: Api.TypePeer | number | bigint, snakeClient: Snake) {
-    if (typeof peer !== 'number' && typeof peer !== 'bigint') {
+  async init(peer: Api.TypePeer | number | bigint | string, snakeClient: Snake) {
+    let id: bigint | string | number | undefined;
+    if (typeof peer !== 'number' && typeof peer !== 'bigint' && typeof peer !== 'string') {
       if (peer instanceof Api.PeerUser) {
         peer as Api.PeerUser;
         if (isInstance(peer.userId)) {
           //@ts-ignore
-          this.id = BigInt(toString(peer.userId));
+          id = BigInt(toString(peer.userId));
         } else {
           //@ts-ignore
-          this.id = BigInt(peer.userId);
+          id = BigInt(peer.userId);
         }
       }
       if (peer instanceof Api.PeerChat) {
         peer as Api.PeerChat;
         if (isInstance(peer.chatId)) {
           //@ts-ignore
-          this.id = BigInt(Number(`-${toString(peer.chatId)}`));
+          id = BigInt(Number(`-${toString(peer.chatId)}`));
         } else {
           //@ts-ignore
-          this.id = BigInt(Number(`-${peer.chatId}`));
+          id = BigInt(Number(`-${peer.chatId}`));
         }
       }
       if (peer instanceof Api.PeerChannel) {
         peer as Api.PeerChannel;
         if (isInstance(peer.channelId)) {
           //@ts-ignore
-          this.id = BigInt(Number(`-100${toString(peer.channelId)}`));
+          id = BigInt(Number(`-100${toString(peer.channelId)}`));
         } else {
           //@ts-ignore
-          this.id = BigInt(Number(`-100${peer.channelId}`));
+          id = BigInt(Number(`-100${peer.channelId}`));
         }
       }
     } else {
-      this.id = typeof peer == 'number' ? BigInt(peer) : peer;
+      id = typeof peer == 'number' ? BigInt(peer) : peer;
     }
-    if (this.id) {
+    if (id) {
       let mode = ['debug', 'info'];
       if (mode.includes(snakeClient.logger)) {
         snakeClient.log(
-          `[${snakeClient.connectTime}] - [${new Date().toLocaleString()}] - Creating chat ${
-            this.id
-          }`
+          `[${snakeClient.connectTime}] - [${new Date().toLocaleString()}] - Creating chat ${id}`
         );
       }
-      let entity = await snakeClient.telegram.getEntity(this.id, true);
+      let entity = await snakeClient.telegram.getEntity(id, true);
       this.id = entity.id;
       this.username = entity.username;
       this.firstName = entity.firstName;

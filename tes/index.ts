@@ -17,6 +17,7 @@ const {Api} = GramJs
 const bot = new Snake() 
 bot.use((ctx,next)=>{
   console.log(ctx)
+  console.log(bot.entityCache)
   return next()
 })
 bot.cmd("start",(ctx)=>{

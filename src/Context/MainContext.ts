@@ -39,7 +39,7 @@ export function cwlog(...args: Array<any>) {
 export class MainContext extends Composer {
   connected: Boolean = false;
   aboutMe!: ResultGetEntity;
-  entityCache: Map<bigint, ResultGetEntity> = new Map();
+  entityCache: Map<bigint | string, ResultGetEntity> = new Map();
   tgSnakeLog: boolean = true;
   consoleColor!: string;
   log: LoggerInfo = (...args: Array<any>) => {
