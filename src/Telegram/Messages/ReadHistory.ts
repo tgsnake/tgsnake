@@ -14,6 +14,18 @@ import BotError from '../../Context/Error';
 export interface readHistoryMoreParams {
   maxId?: number;
 }
+/**
+ * Marks message history as read.
+ * @param snakeClient - Client
+ * @param {bigint|number|string} chatId - Target user or group.
+ * @param {Object} more - more parameter for ReadHistory.
+ * ```ts
+ * bot.command("readHistory",async (ctx)=>{
+ *     let results = await ctx.telegram.readHistory(ctx.chat.id,ctx.id)
+ *     console.log(results)
+ * })
+ * ```
+ */
 export async function ReadHistory(
   snakeClient: Snake,
   chatId: number | string | bigint,

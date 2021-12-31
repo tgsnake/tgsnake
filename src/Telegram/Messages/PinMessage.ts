@@ -16,6 +16,26 @@ export interface pinMessageMoreParams {
   unpin?: boolean;
   pmOneside?: boolean;
 }
+/**
+ * Pin or unpin a message.
+ * @param snakeClient - Client
+ * @param {number|string|bigint} chatId - where to pin or unpin the message.
+ * @param {number} messageId - The message to pin or unpin
+ * @param {Object} more - more parameter for PinMessage
+ * ```ts
+ * bot.command("pin",async (ctx)=>{
+ *     let results = await ctx.telegram.pinMessage(ctx.chat.id,ctx.id)
+ *     console.log(results)
+ * })
+ * // unpin a message
+ * bot.command("unpin",async (ctx)=>{
+ *     if(ctx.replyToMessage){
+ *         let results = await ctx.telegram.unpinMessage(ctx.chat.id,ctx.replyToMessage.id)
+ *         console.log(results)
+ *     }
+ * })
+ * ```
+ */
 export async function PinMessage(
   snakeClient: Snake,
   chatId: number | string | bigint,

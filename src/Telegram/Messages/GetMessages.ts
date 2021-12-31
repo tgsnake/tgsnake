@@ -12,7 +12,19 @@ import { MessageContext } from '../../Context/MessageContext';
 import * as Update from '../../Update';
 import { toBigInt, toString } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
-
+/**
+ * Returns the list of messages by their IDs.
+ * @param snakeClient - Client
+ * @param {bigint|number|string} chatId - Chat/Groups/Channel id.
+ * @param {Array} messageId - Message Id.
+ * @param {boolean} replies - if `true` it will getting the nested reply. and will making floodwait.
+ * ```ts
+ *   bot.command("getMessages",async (ctx)=>{
+ *       let results = await ctx.telegram.getMessages(ctx.chat.id,[ctx.id])
+ *       console.log(results)
+ *   })
+ * ```
+ */
 export async function GetMessages(
   snakeClient: Snake,
   chatId: number | string | bigint,
@@ -30,7 +42,7 @@ export async function GetMessages(
     }
     let messageIds: any = messageId;
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
-    if (type == 'channel') {
+    if (type == 'channel' || type == 'supergroup') {
       let results: Api.messages.TypeMessages = await snakeClient.client.invoke(
         new Api.channels.GetMessages({
           channel: peer,

@@ -32,7 +32,7 @@ export async function GetFullChat(snakeClient: Snake, chatId: number | string | 
       );
     }
     let [id, type] = await toBigInt(chatId, snakeClient);
-    if (type == 'channel') {
+    if (type == 'channel' || type == 'supergroup') {
       return snakeClient.client.invoke(
         new Api.channels.GetFullChannel({
           channel: id as BigInteger,

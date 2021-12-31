@@ -43,7 +43,7 @@ export async function DeleteHistory(
       );
     }
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
-    if (type == 'channel') {
+    if (type == 'channel' || type == 'supergroup') {
       return snakeClient.client.invoke(
         new Api.channels.DeleteHistory({
           channel: peer,

@@ -54,7 +54,7 @@ export async function DeleteMessages(
       );
     }
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
-    if (type == 'channel') {
+    if (type == 'channel' || type == 'supergroup') {
       return new ResultAffectedMessages(
         await snakeClient.client.invoke(
           new Api.channels.DeleteMessages({

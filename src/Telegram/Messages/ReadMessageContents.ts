@@ -11,6 +11,19 @@ import { Snake } from '../../client';
 import { ResultAffectedMessages } from './DeleteMessages';
 import { toBigInt, toString } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
+/**
+ * Notifies the sender about the recipient having listened a voice message or watched a video.
+ * @param snakeClient - Client
+ * @param {Array} messageId - message ids
+ * ```ts
+ * bot.on("message",async (ctx)=>{
+ *     if(ctx.media){
+ *         let results = await ctx.telegram.readMessageContents([ctx.id])
+ *         console.log(results)
+ *     }
+ * })
+ * ```
+ */
 export async function ReadMessageContents(snakeClient: Snake, messageId: number[]) {
   try {
     let mode = ['debug', 'info'];

@@ -45,7 +45,7 @@ export class UpdateBotCallbackQuery extends Update {
     if (update.peer instanceof Api.PeerChat) {
       update.peer as Api.PeerChat;
       let msg = await SnakeClient.telegram.getMessages(
-        BigInt(toString(update.peer.chatId!) as string),
+        BigInt(`-${toString(update.peer.chatId!)}` as string),
         [update.msgId]
       );
       this.message = msg.messages[0];
@@ -53,9 +53,10 @@ export class UpdateBotCallbackQuery extends Update {
     if (update.peer instanceof Api.PeerChannel) {
       update.peer as Api.PeerChannel;
       let msg = await SnakeClient.telegram.getMessages(
-        BigInt(toString(update.peer.channelId!) as string),
+        BigInt(`-100${toString(update.peer.channelId!)}` as string),
         [update.msgId]
       );
+      console.log(msg);
       this.message = msg.messages[0];
     }
     if (update.peer instanceof Api.PeerUser) {

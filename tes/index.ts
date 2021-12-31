@@ -17,15 +17,25 @@ const {Api} = GramJs
 const bot = new Snake() 
 /*bot.use((ctx,next)=>{
   console.log(ctx)
-  console.log(bot.entityCache)
+  //console.log(bot.entityCache)
   return next()
 })*/
 bot.catch(error => {
   console.log(error)
 })
 bot.cmd("start",(ctx)=>{
+  //console.log(ctx)
+  return ctx.reply("Hi!",{
+    replyMarkup : {
+      inlineKeyboard : [[{
+        text : "test",
+        callbackData : "test"
+      }]]
+    }
+  })
+})
+bot.action("test",(ctx)=>{
   console.log(ctx)
-  return ctx.reply("Hi!")
 })
 bot.run()
 //bot.generateSession()

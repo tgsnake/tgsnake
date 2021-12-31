@@ -44,7 +44,7 @@ export async function EditPhoto(
     let rr = await UploadFile(snakeClient, photo);
     let toUpload = new Api.InputFile({ ...rr! });
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
-    if (type == 'channel') {
+    if (type == 'channel' || type == 'supergroup') {
       let results: Api.TypeUpdates = await snakeClient.client.invoke(
         new Api.channels.EditPhoto({
           channel: id as BigInteger,

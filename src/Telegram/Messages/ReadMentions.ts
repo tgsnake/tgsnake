@@ -11,6 +11,17 @@ import { Snake } from '../../client';
 import { ResultAffectedMessages } from './DeleteMessages';
 import { toBigInt, toString } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
+/**
+ * Mark mentions as read.
+ * @param snakeClient - client
+ * @param {string|number|bigint} chatId - Chat/Groups/Channel id.
+ * ```ts
+ * bot.command("readMentions",async (ctx)=>{
+ *     let results = await ctx.telegram.readMentions(ctx.chat.id)
+ *     console.log(results)
+ * })
+ * ```
+ */
 export async function ReadMentions(snakeClient: Snake, chatId: number | string | bigint) {
   try {
     let mode = ['debug', 'info'];

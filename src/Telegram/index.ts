@@ -118,6 +118,18 @@ export class Telegram {
     return await ForwardMessages(this.SnakeClient, chatId, fromChatId, messageId, more);
   }
   // getMessages
+  /**
+   * Returns the list of messages by their IDs.
+   * @param {bigint|number|string} chatId - Chat/Groups/Channel id.
+   * @param {Array} messageId - Message Id.
+   * @param {boolean} replies - if `true` it will getting the nested reply. and will making floodwait.
+   * ```ts
+   *   bot.command("getMessages",async (ctx)=>{
+   *       let results = await ctx.telegram.getMessages(ctx.chat.id,[ctx.id])
+   *       console.log(results)
+   *   })
+   * ```
+   */
   async getMessages(
     chatId: bigint | number | string,
     messageId: number[],
@@ -126,6 +138,18 @@ export class Telegram {
     return await GetMessages(this.SnakeClient, chatId, messageId, replies);
   }
   // getMessagesViews
+  /**
+   * Get and increase the view counter of a message sent or forwarded from a channel.
+   * @param {number|string|bigint} chatId - Where the message was found.
+   * @param {Array} messageId - IDs of message.
+   * @param {boolean} increment - Whether to mark the message as viewed and increment the view counter
+   * ```ts
+   * bot.command("getMessagesViews",async (ctx)=>{
+   *     let results = await ctx.telegram.getMessagesViews(ctx.chat.id,[ctx.id])
+   *     console.log(results)
+   * })
+   * ```
+   */
   async getMessagesViews(
     chatId: bigint | number | string,
     messageId: number[],
@@ -134,26 +158,99 @@ export class Telegram {
     return await GetMessagesViews(this.SnakeClient, chatId, messageId, increment);
   }
   // getUserPhotos
+  /**
+   * Getting all user profile photos.
+   * @param {number|string|bigint} userId - id of user.
+   * @param {Object} more - more object for getUserPhotos
+   * ```ts
+   * bot.command("getUserPhotos",async (ctx)=>{
+   *     let results = await ctx.telegram.getUserPhotos(ctx.from.id)
+   *     console.log(results)
+   * })
+   * ```
+   */
   async getUserPhotos(chatId: bigint | number | string, more?: getUserPhotosMoreParams) {
     return await GetUserPhotos(this.SnakeClient, chatId, more);
   }
   // readHistory
+  /**
+   * Marks message history as read.
+   * @param {bigint|number|string} chatId - Target user or group.
+   * @param {Object} more - more parameter for ReadHistory.
+   * ```ts
+   * bot.command("readHistory",async (ctx)=>{
+   *     let results = await ctx.telegram.readHistory(ctx.chat.id,ctx.id)
+   *     console.log(results)
+   * })
+   * ```
+   */
   async readHistory(chatId: bigint | number | string, more?: readHistoryMoreParams) {
     return await ReadHistory(this.SnakeClient, chatId, more);
   }
   // readMentions
+  /**
+   * Mark mentions as read.
+   * @param {string|number|bigint} chatId - Chat/Groups/Channel id.
+   * ```ts
+   * bot.command("readMentions",async (ctx)=>{
+   *     let results = await ctx.telegram.readMentions(ctx.chat.id)
+   *     console.log(results)
+   * })
+   * ```
+   */
   async readMentions(chatId: bigint | number | string) {
     return await ReadMentions(this.SnakeClient, chatId);
   }
   // readMessageContents
+  /**
+   * Notifies the sender about the recipient having listened a voice message or watched a video.
+   * @param {Array} messageId - message ids
+   * ```ts
+   * bot.on("message",async (ctx)=>{
+   *     if(ctx.media){
+   *         let results = await ctx.telegram.readMessageContents([ctx.id])
+   *         console.log(results)
+   *     }
+   * })
+   * ```
+   */
   async readMessageContents(messageId: number[]) {
     return await ReadMessageContents(this.SnakeClient, messageId);
   }
   // unpinAllMessages
+  /**
+   * Unpin all message in chats.
+   * @param {string|number|bigint} chatId - Chat/Groups/Channel id.
+   * ```ts
+   * bot.command("unpinAll",async (ctx)=>{
+   *     let results = await ctx.telegram.unpinAllMessages(ctx.chat.id)
+   *     console.log(results)
+   * })
+   * ```
+   */
   async unpinAllMessages(chatId: bigint | number | string) {
     return await UnpinAllMessages(this.SnakeClient, chatId);
   }
   // pinMessages
+  /**
+   * Pin or unpin a message.
+   * @param {number|string|bigint} chatId - where to pin or unpin the message.
+   * @param {number} messageId - The message to pin or unpin
+   * @param {Object} more - more parameter for PinMessage
+   * ```ts
+   * bot.command("pin",async (ctx)=>{
+   *     let results = await ctx.telegram.pinMessage(ctx.chat.id,ctx.id)
+   *     console.log(results)
+   * })
+   * // unpin a message
+   * bot.command("unpin",async (ctx)=>{
+   *     if(ctx.replyToMessage){
+   *         let results = await ctx.telegram.unpinMessage(ctx.chat.id,ctx.replyToMessage.id)
+   *         console.log(results)
+   *     }
+   * })
+   * ```
+   */
   async pinMessages(
     chatId: bigint | number | string,
     messageId: number,
@@ -162,6 +259,19 @@ export class Telegram {
     return await PinMessage(this.SnakeClient, chatId, messageId, more);
   }
   // unpinMessages
+  /**
+   * unpin a message.
+   * @param {number|string|bigint} chatId - where to pin or unpin the message.
+   * @param {number} messageId - The message to pin or unpin
+   * ```ts
+   * bot.command("unpin",async (ctx)=>{
+   *     if(ctx.replyToMessage){
+   *         let results = await ctx.telegram.unpinMessage(ctx.chat.id,ctx.replyToMessage.id)
+   *         console.log(results)
+   *     }
+   * })
+   * ```
+   */
   async unpinMessage(chatId: bigint | number | string, messageId: number) {
     return await PinMessage(this.SnakeClient, chatId, messageId, { unpin: true });
   }

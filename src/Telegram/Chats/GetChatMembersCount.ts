@@ -49,7 +49,7 @@ export async function GetChatMembersCount(snakeClient: Snake, chatId: number | s
       snakeClient.entityCache.set(chat.id, new ResultGetEntity(s));
       return s.participantsCount;
     }
-    if (chat.type == 'channel') {
+    if (chat.type == 'channel' || chat.type == 'supergroup') {
       let r: Api.messages.ChatFull = await snakeClient.client.invoke(
         new Api.channels.GetFullChannel({
           channel: bigInt(chat.id!),

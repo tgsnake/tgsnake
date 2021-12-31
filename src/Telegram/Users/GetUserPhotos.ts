@@ -8,14 +8,26 @@
 
 import { Api } from 'telegram';
 import { Snake } from '../../client';
-import { BigInteger } from 'big-integer';
+import bigInt from 'big-integer';
 import { toBigInt, toString } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
 export interface getUserPhotosMoreParams {
   offset?: number;
-  maxId?: BigInteger;
+  maxId?: bigint;
   limit?: number;
 }
+/**
+ * Getting all user profile photos.
+ * @param snakeClient - Client
+ * @param {number|string|bigint} userId - id of user.
+ * @param {Object} more - more object for getUserPhotos
+ * ```ts
+ * bot.command("getUserPhotos",async (ctx)=>{
+ *     let results = await ctx.telegram.getUserPhotos(ctx.from.id)
+ *     console.log(results)
+ * })
+ * ```
+ */
 export async function GetUserPhotos(
   snakeClient: Snake,
   userId: number | string | bigint,
@@ -31,10 +43,13 @@ export async function GetUserPhotos(
       );
     }
     let [id, type, peer] = await toBigInt(userId, snakeClient);
+
     let results: Api.photos.TypePhotos = await snakeClient.client.invoke(
       new Api.photos.GetUserPhotos({
         userId: peer,
-        ...more,
+        offset: more ? more.offset : undefined,
+        maxId: more ? bigInt(String(more.maxId)) : undefined,
+        limit: more ? more.limit : undefined,
       })
     );
     return results;

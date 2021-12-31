@@ -40,6 +40,19 @@ class Views {
     }
   }
 }
+/**
+ * Get and increase the view counter of a message sent or forwarded from a channel.
+ * @param snakeClient - Client
+ * @param {number|string|bigint} chatId - Where the message was found.
+ * @param {Array} messageId - IDs of message.
+ * @param {boolean} increment - Whether to mark the message as viewed and increment the view counter
+ * ```ts
+ * bot.command("getMessagesViews",async (ctx)=>{
+ *     let results = await ctx.telegram.getMessagesViews(ctx.chat.id,[ctx.id])
+ *     console.log(results)
+ * })
+ * ```
+ */
 export async function GetMessagesViews(
   snakeClient: Snake,
   chatId: number | string | bigint,

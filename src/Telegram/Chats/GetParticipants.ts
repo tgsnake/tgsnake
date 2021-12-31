@@ -66,7 +66,7 @@ export async function GetParticipants(
       await participant.init(part, snakeClient);
       return participant;
     }
-    if (chat.type == 'channel') {
+    if (chat.type == 'channel' || chat.type == 'supergroup') {
       let filter: Api.TypeChannelParticipantsFilter = new Api.ChannelParticipantsSearch({
         q: more.query || '',
       });
