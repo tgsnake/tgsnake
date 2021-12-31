@@ -213,7 +213,7 @@ export class Telegram {
    */
   async editAdmin(
     chatId: bigint | number | string,
-    userId: number | string,
+    userId: bigint | number | string,
     more?: editAdminMoreParams
   ) {
     return await EditAdmin(this.SnakeClient, chatId, userId, more);
@@ -236,7 +236,7 @@ export class Telegram {
    */
   async editBanned(
     chatId: bigint | number | string,
-    userId: number | string,
+    userId: bigint | number | string,
     more?: editBannedMoreParams
   ) {
     return await EditBanned(this.SnakeClient, chatId, userId, more);
