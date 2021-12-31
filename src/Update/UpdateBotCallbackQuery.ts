@@ -56,7 +56,6 @@ export class UpdateBotCallbackQuery extends Update {
         BigInt(`-100${toString(update.peer.channelId!)}` as string),
         [update.msgId]
       );
-      console.log(msg);
       this.message = msg.messages[0];
     }
     if (update.peer instanceof Api.PeerUser) {
