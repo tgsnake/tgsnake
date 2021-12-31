@@ -19,12 +19,38 @@ import chalk from 'chalk';
 export type LoggerInfo = (...args: Array<any>) => void;
 import * as NodeUtil from 'util';
 import fs from 'fs';
+function objstr(obj) {
+  let result: any = {};
+  for (let [key, value] of Object.entries(obj)) {
+    switch (typeof value) {
+      case 'bigint':
+        result[key] = String(value);
+        break;
+      case 'object':
+        if (value == null) {
+          result[key] = value;
+        } else {
+          result[key] = objstr(value);
+        }
+        break;
+      case 'symbol':
+        result[key] = `[Symbol ${key}]`;
+        break;
+      case 'function':
+        result[key] = `[Function ${key}]`;
+        break;
+      default:
+        result[key] = value;
+    }
+  }
+  return result;
+}
 export function cwlog(...args: Array<any>) {
   let dir = fs.readdirSync('./');
   let wr = ``;
   for (let arg of args) {
     if (typeof arg == 'object') {
-      wr += JSON.stringify(arg, (_, v) => (typeof v === 'bigint' ? v.toString() : v));
+      wr += JSON.stringify(objstr(arg));
     } else {
       wr += arg;
     }

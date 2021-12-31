@@ -15,10 +15,13 @@ import {ResultGetEntity} from "../src/Telegram/Users/GetEntity"
 import Util from 'tg-file-id/dist/Util';
 const {Api} = GramJs
 const bot = new Snake() 
-bot.use((ctx,next)=>{
+/*bot.use((ctx,next)=>{
   console.log(ctx)
   console.log(bot.entityCache)
   return next()
+})*/
+bot.catch(error => {
+  console.log(error)
 })
 bot.cmd("start",(ctx)=>{
   console.log(ctx)
