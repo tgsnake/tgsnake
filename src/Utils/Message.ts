@@ -94,7 +94,15 @@ export class Message {
       if (message.out) {
         await from.init(this.SnakeClient.aboutMe.id, this.SnakeClient);
       } else if (message.fromId instanceof Api.PeerChannel) {
+        this.isAutomaticForward = false;
+        this.senderChat = new Chat();
         await from.init('@Channel_Bot', this.SnakeClient);
+        await this.senderChat.init(message.fromId, this.SnakeClient);
+        if (message.fwdFrom) {
+          if (message.fwdFrom.savedFromPeer) {
+            this.isAutomaticForward = true;
+          }
+        }
       } else if (message.fromId instanceof Api.PeerChat) {
         await from.init('@GroupAnonymousBot', this.SnakeClient);
       } else if (message.fromId instanceof Api.PeerUser) {
@@ -113,6 +121,10 @@ export class Message {
           message.peerId instanceof Api.PeerChat
         ) {
           await from.init('@GroupAnonymousBot', this.SnakeClient);
+          if (!this.senderChat) {
+            this.senderChat = new Chat();
+            await this.senderChat.init(message.peerId, this.SnakeClient);
+          }
         }
         this.from = from;
       }
@@ -162,25 +174,6 @@ export class Message {
     this.mediaGroupId = message.groupedId;
     this.ttlPeriod = message.ttlPeriod;
     this.editDate = message.editDate;
-    /*if (message.fromId) {
-      let from = new From();
-      if (!message.out) {
-        await from.init(message.fromId, this.SnakeClient);
-      } else {
-        await from.init(this.SnakeClient.aboutMe.id, this.SnakeClient);
-      }
-      this.from = from;
-    } else {
-      if (message.peerId) {
-        let from = new From();
-        if (!message.out) {
-          await from.init(message.peerId, this.SnakeClient);
-        } else {
-          await from.init(this.SnakeClient.aboutMe.id, this.SnakeClient);
-        }
-        this.from = from;
-      }
-    }*/
     if (message.fromId) {
       let from = new From();
       if (message.out) {
