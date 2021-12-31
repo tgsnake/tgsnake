@@ -48,6 +48,9 @@ export class ReplyToMessage {
   postAuthor?: string;
   mediaGroupId?: BigInteger | number;
   restrictionReason?: RestrictionReason[];
+  noforward?: boolean;
+  senderChat?: Chat;
+  isAutomaticForward?: boolean;
   constructor() {}
   async init(
     messageReplyHeader: Api.MessageReplyHeader,
@@ -93,6 +96,9 @@ export class ReplyToMessage {
         this.postAuthor = msg.postAuthor;
         this.mediaGroupId = msg.mediaGroupId;
         this.restrictionReason = msg.restrictionReason;
+        this.noforward = msg.noforward;
+        this.senderChat = msg.senderChat;
+        this.isAutomaticForward = msg.isAutomaticForward;
       }
       await Cleaning(this);
       return this;
