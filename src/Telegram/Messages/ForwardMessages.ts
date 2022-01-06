@@ -8,12 +8,12 @@
 import { Api } from 'telegram';
 import { Snake } from '../../client';
 import { TypeReplyMarkup, BuildReplyMarkup } from '../../Utils/ReplyMarkup';
-import { Entities, ParseEntities } from '../../Utils/Entities';
-import { _parseMessageText } from 'telegram/client/messageParse';
+import Parser, { Entities } from '@tgsnake/parser';
 import bigInt from 'big-integer';
 import { toBigInt, toString } from '../../Utils/ToBigInt';
 import * as Update from '../../Update';
 import BotError from '../../Context/Error';
+
 export interface forwardMessageMoreParams {
   withMyScore?: boolean;
   silent?: boolean;

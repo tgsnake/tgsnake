@@ -10,9 +10,10 @@ import { Update } from './Update';
 import { Api } from 'telegram';
 import { Snake } from '../client';
 import { Telegram } from '../Telegram';
-import { Entities } from '../Utils/Entities';
+import Parser, { Entities } from '@tgsnake/parser';
 import { Media } from '../Utils/Media';
 import { MessageContext } from '../Context/MessageContext';
+const parser = new Parser(Api);
 export class UpdateShortSentMessage extends Update {
   message!: MessageContext;
   constructor() {
@@ -40,11 +41,7 @@ export class UpdateShortSentMessage extends Update {
       this.message.media = media;
     }
     if (update.entities) {
-      let temp: Entities[] = [];
-      update.entities.forEach((item) => {
-        temp.push(new Entities(item!));
-      });
-      this.message.entities = temp;
+      this.message.entities = parser.fromRaw(update.entities);
     }
     this.message.telegram = this.telegram;
     this.message.SnakeClient = SnakeClient;

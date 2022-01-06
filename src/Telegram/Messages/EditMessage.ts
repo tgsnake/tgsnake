@@ -9,12 +9,12 @@
 import { Api } from 'telegram';
 import { Snake } from '../../client';
 import { TypeReplyMarkup, BuildReplyMarkup } from '../../Utils/ReplyMarkup';
-import { Entities } from '../../Utils/Entities';
-import { ParseMessage } from '../../Utils/ParseMessage';
+import Parser, { Entities } from '@tgsnake/parser';
 import BigInt from 'big-integer';
 import * as Update from '../../Update';
 import { toBigInt, toString } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
+const parser = new Parser(Api);
 export interface editMessageMoreParams {
   noWebpage?: boolean;
   media?: Api.TypeInputMedia;
@@ -49,6 +49,8 @@ export async function EditMessage(
     }
     let parseMode = '';
     let replyMarkup;
+    let parseText = text;
+    let entities;
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
     if (more) {
       if (more.parseMode) {
@@ -59,8 +61,18 @@ export async function EditMessage(
         replyMarkup = BuildReplyMarkup(more.replyMarkup!);
         delete more.replyMarkup;
       }
+      if (more.entities) {
+        parseText = text;
+        entities = parser.toRaw(more.entities);
+        delete more.entities;
+      }
     }
-    let [parseText, entities] = await ParseMessage(snakeClient, text, parseMode, more?.entities);
+    if (!more?.entities) {
+      //@ts-ignore
+      let [t, e] = parseMode !== '' ? parser.parse(text, parseMode!) : [text, []];
+      parseText = t;
+      entities = parser.toRaw(e!);
+    }
     let results: Api.TypeUpdates = await snakeClient.client.invoke(
       new Api.messages.EditMessage({
         peer: peer,

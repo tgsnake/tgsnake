@@ -13,7 +13,7 @@ import { BigInteger } from 'big-integer';
 import { MessageAction } from './MessageAction';
 import { Chat } from './Chat';
 import { From } from './From';
-import { Entities } from './Entities';
+import Parser, { Entities } from '@tgsnake/parser';
 import { ForwardMessage } from './ForwardMessage';
 import { Media } from './Media';
 import { convertReplyMarkup, TypeReplyMarkup } from './ReplyMarkup';

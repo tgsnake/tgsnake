@@ -11,12 +11,13 @@ import { Api } from 'telegram';
 import { Snake } from '../client';
 import { Telegram } from '../Telegram';
 import { ReplyToMessageContext } from '../Context/ReplyToMessageContext';
-import { Entities } from '../Utils/Entities';
+import Parser, { Entities } from '@tgsnake/parser';
 import { ForwardMessage } from '../Utils/ForwardMessage';
 import { From } from '../Utils/From';
 import { Chat } from '../Utils/Chat';
 import { MessageContext } from '../Context/MessageContext';
 import { toString } from '../Utils/ToBigInt';
+const parser = new Parser(Api);
 export class UpdateShortChatMessage extends Update {
   message!: MessageContext;
   constructor() {
@@ -70,11 +71,7 @@ export class UpdateShortChatMessage extends Update {
       this.message.replyToMessage = replyTo;
     }
     if (update.entities) {
-      let temp: Entities[] = [];
-      update.entities.forEach((item) => {
-        temp.push(new Entities(item!));
-      });
-      this.message.entities = temp;
+      this.message.entities = parser.fromRaw(update.entities!);
     }
     return this;
   }

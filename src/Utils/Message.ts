@@ -14,13 +14,14 @@ import { MessageAction } from './MessageAction';
 import { Chat } from './Chat';
 import { From } from './From';
 import { ReplyToMessageContext } from '../Context/ReplyToMessageContext';
-import { Entities } from './Entities';
+import Parser, { Entities } from '@tgsnake/parser';
 import { ForwardMessage } from './ForwardMessage';
 import { Media } from './Media';
 import { Telegram } from '../Telegram';
 import { convertReplyMarkup, TypeReplyMarkup } from './ReplyMarkup';
 import { toString } from './ToBigInt';
 import { Cleaning } from './CleanObject';
+const parser = new Parser(Api);
 let _SnakeClient: Snake;
 let _telegram: Telegram;
 export class Message {
@@ -241,11 +242,7 @@ export class Message {
       this.fwdFrom = forward;
     }
     if (message.entities) {
-      let temp: Entities[] = [];
-      message.entities.forEach((item) => {
-        temp.push(new Entities(item!));
-      });
-      this.entities = temp;
+      this.entities = parser.fromRaw(message.entities!);
     }
     if (message.restrictionReason) {
       let temp: RestrictionReason[] = [];

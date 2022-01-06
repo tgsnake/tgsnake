@@ -9,13 +9,13 @@
 import { Api } from 'telegram';
 import { Snake } from '../../client';
 import { TypeReplyMarkup, BuildReplyMarkup } from '../../Utils/ReplyMarkup';
-import { Entities, ParseEntities } from '../../Utils/Entities';
-import { _parseMessageText } from 'telegram/client/messageParse';
+import Parser, { Entities } from '@tgsnake/parser';
 import BigInt from 'big-integer';
 import * as Update from '../../Update';
 import path from 'path';
 import { toBigInt, toString, convertId } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
+const parser = new Parser(Api);
 export interface sendMediaMoreParams {
   silent?: boolean;
   background?: boolean;
@@ -61,18 +61,19 @@ export async function SendMedia(
       }
     }
     let parseText;
-    let entities;
+    let entities: Api.TypeMessageEntity[] = [];
     let replyMarkup;
     if (more) {
       if (more.entities) {
-        entities = await ParseEntities(more.entities);
+        entities = parser.toRaw(more.entities);
         parseText = more.caption || '';
         delete more.entities;
       }
       if (more.caption && !entities) {
-        let parse = await _parseMessageText(snakeClient.client, more.caption, parseMode);
-        parseText = parse[0];
-        entities = parse[1];
+        //@ts-ignore
+        let [t, e] = parseMode !== '' ? parser.parse(more.caption, parseMode!) : [more.caption, []];
+        parseText = t;
+        entities = parser.toRaw(e!) as Array<Api.TypeMessageEntity>;
         delete more.caption;
       }
       if (more.replyMarkup) {
@@ -95,6 +96,7 @@ export async function SendMedia(
         media: media,
         message: parseText || '',
         randomId: BigInt(-Math.floor(Math.random() * 10000000000000)),
+        //@ts-ignore
         entities: entities,
         replyMarkup: replyMarkup,
         ...more,
