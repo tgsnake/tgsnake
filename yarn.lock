@@ -20,9 +20,9 @@
     "@cspotcode/source-map-consumer" "0.8.0"
 
 "@tgsnake/parser@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@tgsnake/parser/-/parser-1.0.0.tgz#1f05ba8ddb37900d6cde1ceb1b65d52a47477af7"
-  integrity sha512-Uvmmwo6fmtcYX3oB8tPECQARL9L0eD4djJzD/FJ/H6OJlG1/inIlvxekCBBuue2Kz0hGiCT1Ap9Ck+Px5goQgw==
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@tgsnake/parser/-/parser-1.1.0.tgz#a7fe8cc966a944e5925b4be65b17746d4fd8063a"
+  integrity sha512-kL0PszEr6aOY1B4W2Y1SsV7ef0qXJoQj4USwfuyPOaBUSm3JwLAkdqyoAxwC1CAC1AbfWolCU/jH5WlgxS4+aQ==
   dependencies:
     big-integer "^1.6.51"
     htmlparser2 "^7.2.0"
