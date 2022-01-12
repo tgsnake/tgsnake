@@ -58,6 +58,7 @@ export async function SendDocument(
             fileName: more?.fileName || 'unknown',
           }),
         ],
+        forceFile: more?.forceDocument || true,
       });
       return SendMedia(snakeClient, chatId, final, more);
     }
@@ -82,6 +83,7 @@ export async function SendDocument(
               fileName: basename,
             }),
           ],
+          forceFile: more?.forceDocument || true,
         });
         return SendMedia(snakeClient, chatId, final, more);
       }

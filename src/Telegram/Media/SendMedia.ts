@@ -29,6 +29,7 @@ export interface sendMediaMoreParams {
   workers?: number;
   mimeType?: string;
   fileName?: string;
+  forceDocument?: boolean;
 }
 /**
  * Sending message media.
@@ -88,6 +89,9 @@ export async function SendMedia(
       }
       if (more.fileName) {
         delete more.fileName;
+      }
+      if (more.forceDocument !== undefined) {
+        delete more.forceDocument;
       }
     }
     return snakeClient.client.invoke(
