@@ -29,7 +29,7 @@
   "private": false,
   "dependencies": {
     "@tgsnake/parser": "^1.0.0",
-    "axios": "0.24.0",
+    "axios": "0.25.0",
     "big-integer": "1.6.51",
     "chalk": "4.1.2",
     "file-type": "16.5.3",
