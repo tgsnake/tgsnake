@@ -977,10 +977,10 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
-telegram@2.4.1:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/telegram/-/telegram-2.4.1.tgz#d700e0f3b54d4bbc9c7e730ec4a501bcdc3654c8"
-  integrity sha512-4xIXuMM5jBKkA6Zwf8Vg7Lhyw1UV5UXVXr5KAFZN2Dt3HrvwgTOwH5ZOboCLeuRwdzdJJQ/E4i5LTfNJ/FUIaA==
+telegram@2.4.3:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/telegram/-/telegram-2.4.3.tgz#316212097df81374763f726d4a98e6c776346f08"
+  integrity sha512-x45WbERi7NUJdYCRSN7F+Lz63Tb6Vwc0s3WG6/7KI6qpKSEGVg2gNDar/y+RDjNdV6c8Z1fwAn9iPMI/AFwigw==
   dependencies:
     "@cryptography/aes" "^0.1.1"
     async-mutex "^0.3.0"
