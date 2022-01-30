@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://github.com/butthx>
+// Copyright (C) 2022 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -7,7 +7,7 @@
 //  it under the terms of the MIT License as published.
 
 import { Api } from 'telegram';
-import { Snake } from '../../client';
+import { Snake } from '../../Client';
 import { UploadFile } from './UploadFile';
 import * as Updates from '../../Update';
 import { toBigInt, toString, convertId } from '../../Utils/ToBigInt';
@@ -42,14 +42,13 @@ export async function EditPhoto(
       );
     }
     let rr = await UploadFile(snakeClient, photo);
-    let toUpload = new Api.InputFile({ ...rr! });
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
     if (type == 'channel' || type == 'supergroup') {
       let results: Api.TypeUpdates = await snakeClient.client.invoke(
         new Api.channels.EditPhoto({
           channel: id as BigInteger,
           photo: new Api.InputChatUploadedPhoto({
-            file: toUpload,
+            file: rr!,
           }),
         })
       );
@@ -59,19 +58,17 @@ export async function EditPhoto(
         new Api.messages.EditChatPhoto({
           chatId: id as BigInteger,
           photo: new Api.InputChatUploadedPhoto({
-            file: toUpload,
+            file: rr!,
           }),
         })
       );
     }
-  } catch (error) {
-    let botError = new BotError();
-    botError.error = error;
-    botError.functionName = 'telegram.editPhoto';
-    botError.functionArgs = `${chatId}${
-      Buffer.isBuffer(photo) ? `<Buffer ${photo.toString('hex')} >` : photo
-    }`;
-    throw botError;
+  } catch (error: any) {
+    throw new BotError(
+      error.message,
+      'telegram.editPhoto',
+      `${chatId}${Buffer.isBuffer(photo) ? `<Buffer ${photo.toString('hex')} >` : photo}`
+    );
   }
 }
 async function generateResults(results: Api.TypeUpdates, SnakeClient: Snake) {

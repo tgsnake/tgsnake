@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://github.com/butthx>
+// Copyright (C) 2022 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -13,7 +13,7 @@ import { AdminRights } from '../../Utils/AdminRights';
 import { Api } from 'telegram';
 import bigInt, { BigInteger, isInstance } from 'big-integer';
 import { toBigInt, toString, convertId } from '../../Utils/ToBigInt';
-import { Snake } from '../../client';
+import { Snake } from '../../Client';
 import * as fs from 'fs';
 import BotError from '../../Context/Error';
 export class ResultGetEntity {
@@ -287,11 +287,7 @@ export async function GetEntity(
     snakeClient.entityCache.set(r.id, r);
     if (r.username) snakeClient.entityCache.set(r.username, r);
     return r;
-  } catch (error) {
-    let botError = new BotError();
-    botError.error = error;
-    botError.functionName = 'telegram.getEntity';
-    botError.functionArgs = `${chatId},${useCache}`;
-    throw botError;
+  } catch (error: any) {
+    throw new BotError(error.message, 'telegram.getEntity', `${chatId},${useCache}`);
   }
 }

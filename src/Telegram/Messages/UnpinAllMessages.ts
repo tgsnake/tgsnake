@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://github.com/butthx>
+// Copyright (C) 2022 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -7,7 +7,7 @@
 //  it under the terms of the MIT License as published.
 
 import { Api } from 'telegram';
-import { Snake } from '../../client';
+import { Snake } from '../../Client';
 import { ResultAffectedMessages } from './DeleteMessages';
 import { toBigInt, toString } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
@@ -40,11 +40,7 @@ export async function UnpinAllMessages(snakeClient: Snake, chatId: number | stri
         })
       )
     );
-  } catch (error) {
-    let botError = new BotError();
-    botError.error = error;
-    botError.functionName = 'telegram.unpinAllMessages';
-    botError.functionArgs = `${chatId}`;
-    throw botError;
+  } catch (error: any) {
+    throw new BotError(error.message, 'telegram.unpinAllMessages', `${chatId}`);
   }
 }

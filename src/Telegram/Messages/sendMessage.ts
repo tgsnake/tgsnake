@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://github.com/butthx>
+// Copyright (C) 2022 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -7,7 +7,7 @@
 //  it under the terms of the MIT License as published..
 
 import { Api } from 'telegram';
-import { Snake } from '../../client';
+import { Snake } from '../../Client';
 import { TypeReplyMarkup, BuildReplyMarkup } from '../../Utils/ReplyMarkup';
 import Parser, { Entities } from '@tgsnake/parser';
 import bigInt from 'big-integer';
@@ -56,14 +56,17 @@ export async function sendMessage(
         delete more.replyMarkup;
       }
       if (more.entities) {
-        entities = parser.toRaw(more.entities!) as Array<Api.TypeMessageEntity>;
+        entities = (await parser.toRaw(
+          snakeClient.client!,
+          more.entities!
+        )) as Array<Api.TypeMessageEntity>;
       }
     }
     if (!more?.entities) {
       //@ts-ignore
       let [t, e] = parseMode !== '' ? parser.parse(text, parseMode) : [text, []];
       parseText = t;
-      entities = parser.toRaw(e!) as Array<Api.TypeMessageEntity>;
+      entities = (await parser.toRaw(snakeClient.client!, e!)) as Array<Api.TypeMessageEntity>;
     }
     let results: Api.TypeUpdates = await snakeClient.client.invoke(
       new Api.messages.SendMessage({
@@ -77,12 +80,12 @@ export async function sendMessage(
       })
     );
     return await createResults(results, snakeClient);
-  } catch (error) {
-    let botError = new BotError();
-    botError.error = error;
-    botError.functionName = 'telegram.sendMessage';
-    botError.functionArgs = `${chatId},${text},${more ? JSON.stringify(more, null, 2) : ''}`;
-    throw botError;
+  } catch (error: any) {
+    throw new BotError(
+      error.message,
+      'telegram.sendMessage',
+      `${chatId},${text},${more ? JSON.stringify(more, null, 2) : ''}`
+    );
   }
 }
 async function createResults(results: Api.TypeUpdates, snakeClient: Snake) {

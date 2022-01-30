@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://github.com/butthx>
+// Copyright (C) 2022 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -11,7 +11,7 @@ import { CustomFile } from 'telegram/client/uploads';
 import path from 'path';
 import fs from 'fs';
 import axios from 'axios';
-import { Snake } from '../../client';
+import { Snake } from '../../Client';
 import BotError from '../../Context/Error';
 import { fromBuffer, fromFile } from 'file-type';
 export interface uploadFileMoreParams {
@@ -19,32 +19,31 @@ export interface uploadFileMoreParams {
   workers?: number;
   onProgress?: onProgress;
 }
-interface onProgress {
+export interface onProgress {
   (progress: number): void;
   isCanceled?: boolean;
 }
-class ResultUploadFile {
-  id!: Api.long;
-  parts!: number;
-  name!: string;
-  md5Checksum!: string;
-  constructor(resultUploadFile: Api.InputFile | Api.InputFileBig) {
-    this.id = resultUploadFile.id;
-    this.parts = resultUploadFile.parts;
-    this.name = resultUploadFile.name;
-    this.md5Checksum = '';
-    if (resultUploadFile instanceof Api.InputFile) {
-      this.md5Checksum = resultUploadFile.md5Checksum || '';
-    }
-  }
+export function inRange(x: number, min: number, max: number) {
+  return (x - min) * (x - max) <= 0;
 }
 export async function UploadFile(
   snakeClient: Snake,
   file: string | Buffer,
   more?: uploadFileMoreParams
-): Promise<ResultUploadFile | undefined> {
+): Promise<Api.InputFile | Api.InputFileBig | undefined> {
   try {
     let mode = ['debug', 'info'];
+    if (more?.workers !== undefined) {
+      if (!inRange(more?.workers!, 1, 16)) {
+        snakeClient.consoleColor = 'yellow';
+        snakeClient.log(
+          `[${snakeClient.connectTime}] - [${new Date().toLocaleString()}] - workers (${
+            more.workers
+          }) out of range (1 <= workers <= 16). Chances are this will make tgsnake unstable.`
+        );
+        snakeClient.consoleColor = 'green';
+      }
+    }
     if (mode.includes(snakeClient.logger)) {
       snakeClient.log(
         `[${
@@ -58,13 +57,11 @@ export async function UploadFile(
       //if (fileInfo) {
       let file_name = more?.fileName || `${Date.now() / 1000}.${fileInfo?.ext}`;
       let toUpload = new CustomFile(file_name, Buffer.byteLength(file), '', file);
-      return new ResultUploadFile(
-        await snakeClient.client.uploadFile({
-          file: toUpload,
-          workers: more?.workers || 1,
-          onProgress: more?.onProgress,
-        })
-      );
+      return snakeClient.client.uploadFile({
+        file: toUpload,
+        workers: more?.workers || 1,
+        onProgress: more?.onProgress,
+      });
       //}
     } else {
       let basename = path.basename(file);
@@ -83,13 +80,11 @@ export async function UploadFile(
           }
         }
         let toUpload = new CustomFile(file_name, Buffer.byteLength(basebuffer), '', basebuffer);
-        return new ResultUploadFile(
-          await snakeClient.client.uploadFile({
-            file: toUpload,
-            workers: more?.workers || 1,
-            onProgress: more?.onProgress,
-          })
-        );
+        return await snakeClient.client.uploadFile({
+          file: toUpload,
+          workers: more?.workers || 1,
+          onProgress: more?.onProgress,
+        });
       }
       if (/^(\/|\.\.?\/|~\/)/i.exec(file)) {
         let file_name = more?.fileName || basename;
@@ -101,22 +96,20 @@ export async function UploadFile(
           }
         }
         let toUpload = new CustomFile(file_name, fs.statSync(file).size, file);
-        return new ResultUploadFile(
-          await snakeClient.client.uploadFile({
-            file: toUpload,
-            workers: more?.workers || 1,
-            onProgress: more?.onProgress,
-          })
-        );
+        return await snakeClient.client.uploadFile({
+          file: toUpload,
+          workers: more?.workers || 1,
+          onProgress: more?.onProgress,
+        });
       }
     }
-  } catch (error) {
-    let botError = new BotError();
-    botError.error = error;
-    botError.functionName = 'telegram.uploadFile';
-    botError.functionArgs = `${Buffer.isBuffer(file) ? `<Buffer ${file.toString('hex')}>` : file}${
-      more ? ',' + JSON.stringify(more) : ''
-    }`;
-    throw botError;
+  } catch (error: any) {
+    throw new BotError(
+      error.message,
+      'telegram.uploadFile',
+      `${Buffer.isBuffer(file) ? `<Buffer ${file.toString('hex')}>` : file}${
+        more ? ',' + JSON.stringify(more) : ''
+      }`
+    );
   }
 }

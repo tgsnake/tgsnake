@@ -6,11 +6,9 @@
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published. 
 
-const {Snake,Wizard,GramJs,Composer} = require("../lib")
-const {Api} = GramJs
-const bot = new Snake() 
-bot.cmd("start",(ctx)=>{
+const {Snake} = require("../lib/Client/Snake")
+const bot = new Snake()
+bot.on("*",(ctx)=>{
   console.log(ctx)
-  return ctx.reply("Hi!")
 })
 bot.run()

@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://github.com/butthx>
+// Copyright (C) 2022 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -7,7 +7,7 @@
 //  it under the terms of the MIT License as published.
 
 import { Api } from 'telegram';
-import { Snake } from '../../client';
+import { Snake } from '../../Client';
 import BotError from '../../Context/Error';
 /**
  * Get a list of channels/supergroups we left.
@@ -35,11 +35,7 @@ export async function GetLeftChannels(snakeClient: Snake, offset: number = 0) {
         offset: offset,
       })
     );
-  } catch (error) {
-    let botError = new BotError();
-    botError.error = error;
-    botError.functionName = 'telegram.getLeftChannels';
-    botError.functionArgs = `${offset}`;
-    throw botError;
+  } catch (error: any) {
+    throw new BotError(error.message, 'telegram.getLeftChannels', `${offset}`);
   }
 }

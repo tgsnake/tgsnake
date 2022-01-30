@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://github.com/butthx>
+// Copyright (C) 2022 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -7,13 +7,29 @@
 //  it under the terms of the MIT License as published.
 
 import { Api } from 'telegram';
-import { Snake } from '../../client';
+import { Snake } from '../../Client';
 import { SendMedia, sendMediaMoreParams } from './SendMedia';
 import { UploadFile } from './UploadFile';
 import { decodeFileId } from 'tg-file-id';
 import { Media } from '../../Utils/Media';
 import bigInt from 'big-integer';
 import BotError from '../../Context/Error';
+import { onProgress } from './UploadFile';
+export interface sendPhotoMoreParams extends sendMediaMoreParams {
+  workers?: number;
+  onProgress?: onProgress;
+}
+function clean(more?: sendPhotoMoreParams) {
+  if (more) {
+    if (more.workers !== undefined) {
+      delete more.workers;
+    }
+    if (more.onProgress !== undefined) {
+      delete more.onProgress;
+    }
+  }
+  return more;
+}
 /**
  * Sending photo with fileId/file location/url/buffer.
  * @param snakeClient - client
@@ -33,7 +49,7 @@ export async function SendPhoto(
   snakeClient: Snake,
   chatId: number | string | bigint,
   fileId: string | Buffer | Media,
-  more?: sendMediaMoreParams
+  more?: sendPhotoMoreParams
 ) {
   try {
     let mode = ['debug', 'info'];
@@ -49,11 +65,12 @@ export async function SendPhoto(
       fileId as Buffer;
       let file = await UploadFile(snakeClient, fileId, {
         workers: more?.workers || 1,
+        onProgress: more?.onProgress,
       });
       let media = new Api.InputMediaUploadedPhoto({
-        file: new Api.InputFile({ ...file! }),
+        file: file!,
       });
-      return SendMedia(snakeClient, chatId, media, more);
+      return SendMedia(snakeClient, chatId, media, clean(more));
     }
     // https and path file.
     if (
@@ -61,13 +78,20 @@ export async function SendPhoto(
       (/^http/i.exec(String(fileId)) || /^(\/|\.\.?\/|~\/)/i.exec(String(fileId)))
     ) {
       fileId as string;
+      if (/^http/i.exec(String(fileId))) {
+        let file = new Api.InputMediaPhotoExternal({
+          url: fileId as string,
+        });
+        return SendMedia(snakeClient, chatId, file, clean(more));
+      }
       let file = await UploadFile(snakeClient, fileId, {
         workers: more?.workers || 1,
+        onProgress: more?.onProgress,
       });
       let media = new Api.InputMediaUploadedPhoto({
-        file: new Api.InputFile({ ...file! }),
+        file: file!,
       });
-      return SendMedia(snakeClient, chatId, media, more);
+      return SendMedia(snakeClient, chatId, media, clean(more));
     }
     // file id
     if (fileId instanceof Media) {
@@ -94,7 +118,7 @@ export async function SendPhoto(
                 fileReference: Buffer.from(file.fileReference, 'hex'),
               }),
             });
-            results = SendMedia(snakeClient, chatId, media, more);
+            results = SendMedia(snakeClient, chatId, media, clean(more));
             break;
           } catch (e) {
             if (BigInt(accessHash) > BigInt(0) && BigInt(id) > BigInt(0)) {
@@ -140,7 +164,7 @@ export async function SendPhoto(
                 fileReference: Buffer.from(file.fileReference, 'hex'),
               }),
             });
-            results = SendMedia(snakeClient, chatId, media, more);
+            results = SendMedia(snakeClient, chatId, media, clean(more));
             break;
           } catch (e) {
             if (BigInt(accessHash) > BigInt(0) && BigInt(id) > BigInt(0)) {
@@ -163,13 +187,13 @@ export async function SendPhoto(
         return results;
       }
     }
-  } catch (error) {
-    let botError = new BotError();
-    botError.error = error;
-    botError.functionName = 'telegram.sendPhoto';
-    botError.functionArgs = `${chatId},${
-      Buffer.isBuffer(fileId) ? `<Buffer ${fileId.toString('hex')}>` : JSON.stringify(fileId)
-    }${more ? ',' + JSON.stringify(more) : ''}`;
-    throw botError;
+  } catch (error: any) {
+    throw new BotError(
+      error.message,
+      'telegram.sendPhoto',
+      `${chatId},${
+        Buffer.isBuffer(fileId) ? `<Buffer ${fileId.toString('hex')}>` : JSON.stringify(fileId)
+      }${more ? ',' + JSON.stringify(more) : ''}`
+    );
   }
 }

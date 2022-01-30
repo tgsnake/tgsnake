@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://github.com/butthx>
+// Copyright (C) 2022 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -99,9 +99,11 @@ function filterEvent(filter, ctx) {
       );
     }
   }
+  let passed: string[] = [];
   for (let f of filters) {
-    return h.includes(f);
+    if (h.includes(f)) passed.push(f);
   }
+  return Boolean(passed.length > 0);
 }
 export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
   private handler!: MiddlewareFn<Updates.TypeUpdate>;
@@ -180,6 +182,7 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
     let filterCmd = (ctx) => {
       const { text } = ctx;
       const { aboutMe } = ctx.SnakeClient;
+      let s = text.split(' ');
       for (let cmd of key) {
         if (typeof cmd == 'string') {
           cmd as string;
@@ -187,11 +190,11 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
             `^[${this.prefix}](${cmd})${aboutMe.username ? `(@${aboutMe.username})?` : ``}$`,
             'i'
           );
-          return r.test(String(text));
+          return r.test(String(s[0]));
         }
         if (cmd instanceof RegExp) {
           cmd as RegExp;
-          return cmd.test(String(text));
+          return cmd.test(String(s[0]));
         }
       }
       return false;

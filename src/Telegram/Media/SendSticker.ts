@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://github.com/butthx>
+// Copyright (C) 2022 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -7,7 +7,7 @@
 //  it under the terms of the MIT License as published.
 
 import { Api } from 'telegram';
-import { Snake } from '../../client';
+import { Snake } from '../../Client';
 import { SendMedia, sendMediaMoreParams } from './SendMedia';
 import { UploadFile } from './UploadFile';
 import { decodeFileId } from 'tg-file-id';
@@ -57,7 +57,7 @@ export async function SendSticker(
       //@ts-ignore
       let file = await UploadFile(snakeClient, fileId);
       final = new Api.InputMediaUploadedDocument({
-        file: new Api.InputFile({ ...file! }),
+        file: file!,
         mimeType: 'image/webp',
         attributes: [
           new Api.DocumentAttributeFilename({
@@ -121,13 +121,13 @@ export async function SendSticker(
         }
       }
     }
-  } catch (error) {
-    let botError = new BotError();
-    botError.error = error;
-    botError.functionName = 'telegram.sendSticker';
-    botError.functionArgs = `${chatId},${
-      Buffer.isBuffer(fileId) ? `<Buffer ${fileId.toString('hex')}>` : JSON.stringify(fileId)
-    }`;
-    throw botError;
+  } catch (error: any) {
+    throw new BotError(
+      error.message,
+      'telegram.sendSticker',
+      `${chatId},${
+        Buffer.isBuffer(fileId) ? `<Buffer ${fileId.toString('hex')}>` : JSON.stringify(fileId)
+      }`
+    );
   }
 }

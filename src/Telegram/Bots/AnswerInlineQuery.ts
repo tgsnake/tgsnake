@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://github.com/butthx>
+// Copyright (C) 2022 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -7,7 +7,7 @@
 //  it under the terms of the MIT License as published.
 
 import { Api } from 'telegram';
-import { Snake } from '../../client';
+import { Snake } from '../../Client';
 import bigInt from 'big-integer';
 import BotError from '../../Context/Error';
 
@@ -56,13 +56,11 @@ export async function AnswerInlineQuery(
       })
     );
     return final;
-  } catch (error) {
-    let botError = new BotError();
-    botError.error = error;
-    botError.functionName = 'telegram.answerInlineQuery';
-    botError.functionArgs = `${id},${JSON.stringify(results, null, 2)}${
-      more ? ',' + JSON.stringify(more) : ''
-    }`;
-    throw botError;
+  } catch (error: any) {
+    throw new BotError(
+      error.message,
+      'telegram.answerInlineQuery',
+      `${id},${JSON.stringify(results, null, 2)}${more ? ',' + JSON.stringify(more) : ''}`
+    );
   }
 }

@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://github.com/butthx>
+// Copyright (C) 2022 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -8,7 +8,7 @@
 
 import { ResultAffectedMessages } from './DeleteMessages';
 import { Api } from 'telegram';
-import { Snake } from '../../client';
+import { Snake } from '../../Client';
 import { toBigInt, toString } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
 export interface readHistoryMoreParams {
@@ -58,11 +58,11 @@ export async function ReadHistory(
       );
       return new ResultAffectedMessages(results);
     }
-  } catch (error) {
-    let botError = new BotError();
-    botError.error = error;
-    botError.functionName = 'telegram.readHistory';
-    botError.functionArgs = `${chatId}${more ? ',' + JSON.stringify(more) : ''}`;
-    throw botError;
+  } catch (error: any) {
+    throw new BotError(
+      error.message,
+      'telegram.readHistory',
+      `${chatId}${more ? ',' + JSON.stringify(more) : ''}`
+    );
   }
 }

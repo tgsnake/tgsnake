@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://github.com/butthx>
+// Copyright (C) 2022 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -9,7 +9,7 @@
 import { Telegram } from '../Telegram';
 import { ResultGetEntity } from '../Telegram/Users/GetEntity';
 import * as Updates from '../Update';
-import { Snake } from '../client';
+import { Snake } from '../Client';
 import { Api } from 'telegram';
 import { MessageContext } from './MessageContext';
 import { Composer, run, ErrorHandler } from './Composer';
@@ -19,49 +19,6 @@ import chalk from 'chalk';
 export type LoggerInfo = (...args: Array<any>) => void;
 import * as NodeUtil from 'util';
 import fs from 'fs';
-function objstr(obj) {
-  let result: any = {};
-  for (let [key, value] of Object.entries(obj)) {
-    switch (typeof value) {
-      case 'bigint':
-        result[key] = String(value);
-        break;
-      case 'object':
-        if (value == null) {
-          result[key] = value;
-        } else {
-          result[key] = objstr(value);
-        }
-        break;
-      case 'symbol':
-        result[key] = `[Symbol ${key}]`;
-        break;
-      case 'function':
-        result[key] = `[Function ${key}]`;
-        break;
-      default:
-        result[key] = value;
-    }
-  }
-  return result;
-}
-export function cwlog(...args: Array<any>) {
-  let dir = fs.readdirSync('./');
-  let wr = ``;
-  for (let arg of args) {
-    if (typeof arg == 'object') {
-      wr += JSON.stringify(objstr(arg));
-    } else {
-      wr += arg;
-    }
-  }
-  if (dir.includes('tgsnake.log')) {
-    let l = fs.readFileSync('./tgsnake.log', 'utf8');
-    l += '\n' + wr;
-    return fs.writeFileSync('./tgsnake.log', l);
-  }
-  return fs.writeFileSync('./tgsnake.log', wr);
-}
 export class MainContext extends Composer {
   connected: Boolean = false;
   aboutMe!: ResultGetEntity;
@@ -69,7 +26,6 @@ export class MainContext extends Composer {
   tgSnakeLog: boolean = true;
   consoleColor!: string;
   log: LoggerInfo = (...args: Array<any>) => {
-    cwlog(...args);
     if (this.tgSnakeLog) {
       if (args.length > 1) {
         let fargs: Array<any> = new Array();
@@ -120,13 +76,11 @@ export class MainContext extends Composer {
     if (!update) return false;
     update = await Cleaning(update);
     this.use = () => {
-      let botError = new BotError();
-      botError.error = new Error(
-        `bot.use is unavailable when bot running. so kill bot first then add bot.use in your source code then running again.`
+      throw new BotError(
+        `bot.use is unavailable when bot running. so kill bot first then add bot.use in your source code then running again.`,
+        'Composer',
+        ''
       );
-      botError.functionName = 'Composer';
-      botError.functionArgs = ``;
-      throw botError;
     };
     let parsed: boolean = false;
     let parsedUpdate: Updates.TypeUpdate;
@@ -134,17 +88,19 @@ export class MainContext extends Composer {
       try {
         parsed = true;
         parsedUpdate = update as ResultGetEntity;
-        await run(this.middleware(), update as ResultGetEntity);
+        await run(this.middleware(), parsedUpdate as ResultGetEntity);
         return update;
-      } catch (error) {
-        if (error instanceof BotError) {
+      } catch (error: any | BotError) {
+        //@ts-ignore
+        if (error._isBotErrorClass) {
           //@ts-ignore
           return this.errorHandler(error as BotError, parsed ? parsedUpdate : update);
         }
-        let botError = new BotError();
-        botError.error = error;
-        botError.functionName = `handleUpdate`;
-        botError.functionArgs = `[Update]`;
+        let botError = new BotError(
+          error.message!,
+          error.functionName ? error.functionName : `handleUpdate`,
+          error.functionArgs ? error.functionArgs : `[Update]`
+        );
         //@ts-ignore
         return this.errorHandler(botError, parsed ? parsedUpdate : update);
       }
@@ -156,17 +112,19 @@ export class MainContext extends Composer {
             await jsonUpdate.init(update, SnakeClient);
             parsed = true;
             parsedUpdate = jsonUpdate;
-            await run(this.middleware(), jsonUpdate);
+            await run(this.middleware(), parsedUpdate);
             return jsonUpdate;
-          } catch (error) {
-            if (error instanceof BotError) {
+          } catch (error: any | BotError) {
+            //@ts-ignore
+            if (error._isBotErrorClass) {
               //@ts-ignore
               return this.errorHandler(error as BotError, parsed ? parsedUpdate : update);
             }
-            let botError = new BotError();
-            botError.error = error;
-            botError.functionName = `handleUpdate`;
-            botError.functionArgs = `[Update]`;
+            let botError = new BotError(
+              error.message!,
+              error.functionName ? error.functionName : `handleUpdate`,
+              error.functionArgs ? error.functionArgs : `[Update]`
+            );
             //@ts-ignore
             return this.errorHandler(botError, parsed ? parsedUpdate : update);
           }
@@ -175,14 +133,6 @@ export class MainContext extends Composer {
     }
   }
   catch(errorHandler: ErrorHandler) {
-    this.errorHandler = (error, update) => {
-      cwlog(
-        `🐍 Snake error (${error.message}) when processing update :`,
-        update,
-        `🐍 ${error.functionName}(${error.functionArgs})`
-      );
-      return errorHandler(error, update);
-    };
-    return this;
+    return (this.errorHandler = errorHandler);
   }
 }

@@ -1,47 +1,13 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://github.com/butthx>
+// Copyright (C) 2022 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
 import { ProxyInterface } from 'telegram/network/connection/TCPMTProxy';
-export interface Options {
-  /**
-   * Set Logger level for gramjs. Default is "none".
-   */
-  logger?: string;
-  /**
-   * An api_hash got from my.telegram.org
-   */
-  apiHash?: string;
-  /**
-   * An api_id got from my.telegram.org
-   */
-  apiId?: number;
-  /**
-   * String sessions
-   */
-  session?: string;
-  /**
-   * Bot Token from botFather. If you need to login as bot this required
-   */
-  botToken?: string;
-  /**
-   * tgsnake console.log
-   * If set, tgsnake will showing the message in console like welcome to tgsnake or anything.
-   */
-  tgSnakeLog?: boolean;
-  /**
-   * session name
-   * required to save the string session.
-   */
-  sessionName?: string;
-  /**
-   * storeSession
-   * required to save the session in storage.
-   */
-  storeSession?: boolean;
+import { Logger } from 'telegram/extensions';
+export interface ClientOptions {
   /** The connection instance to be used when creating a new connection to the servers. It must be a type.<br/>
    * Defaults to  ConnectionTCPFull on Node and ConnectionTCPObfuscated on browsers.
    */
@@ -106,11 +72,58 @@ export interface Options {
    */
   systemLangCode?: string;
   /**
-   * Does nothing for now. don't change.
+   * Instance of Logger to use. <br />
+   * If a `Logger` is given, it'll be used directly. If nothing is given, the default logger will be used. <br />
+   * To create your own Logger make sure you extends GramJS logger {@link Logger} and override `log` method.
    */
-  baseLogger?: string | any;
+  baseLogger?: Logger;
   /**
    * Whether to try to connect over Wss (or 443 port) or not.
    */
   useWSS?: boolean;
+  /**
+   * Limits how many downloads happen at the same time.
+   */
+  maxConcurrentDownloads?: number;
+  /**
+   * Whether to check for tampering in messages or not.
+   */
+  securityChecks?: boolean;
+}
+export interface Options extends ClientOptions {
+  /**
+   * Set Logger level for gramjs. Default is "none".
+   */
+  logger?: string;
+  /**
+   * An api_hash got from my.telegram.org
+   */
+  apiHash?: string;
+  /**
+   * An api_id got from my.telegram.org
+   */
+  apiId?: number;
+  /**
+   * String sessions
+   */
+  session?: string;
+  /**
+   * Bot Token from botFather. If you need to login as bot this required
+   */
+  botToken?: string;
+  /**
+   * tgsnake console.log
+   * If set, tgsnake will showing the message in console like welcome to tgsnake or anything.
+   */
+  tgSnakeLog?: boolean;
+  /**
+   * session name
+   * required to save the string session.
+   */
+  sessionName?: string;
+  /**
+   * storeSession
+   * required to save the session in storage.
+   */
+  storeSession?: boolean;
 }

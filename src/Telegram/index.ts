@@ -33,10 +33,10 @@ import { GetGroupsForDiscussion } from './Chats/GetGroupsForDiscussion';
 import { GetInactiveChannels } from './Chats/GetInactiveChannels';
 import { GetLeftChannels } from './Chats/GetLeftChannels';
 import { SendMedia, sendMediaMoreParams } from './Media/SendMedia';
-import { SendPhoto } from './Media/SendPhoto';
-import { SendDocument } from './Media/SendDocument';
+import { SendPhoto, sendPhotoMoreParams } from './Media/SendPhoto';
+import { SendDocument, sendDocumentMoreParams } from './Media/SendDocument';
 import { SendSticker } from './Media/SendSticker';
-import { Snake } from '../client';
+import { Snake } from '../Client';
 import { Api, TelegramClient } from 'telegram';
 import { Media } from '../Utils/Media';
 import { GetParticipant } from './Chats/GetParticipant';
@@ -78,6 +78,20 @@ export class Telegram {
   async deleteMessages(chatId: bigint | number | string, messageId: number[]) {
     return await DeleteMessages(this.SnakeClient, chatId, messageId);
   }
+  /**
+   * This method allow you to delete message by their identifiers
+   * @param {number|string|bigint} chatId - User or chat, where is the message located.
+   * @param {number} messageId - Message ID which will be deleted.
+   * ```ts
+   * bot.command("delete", async (ctx) => {
+   *     let results = await ctx.telegram.deleteMessages(ctx.chat.id,ctx.id)
+   *     return console.log(results)
+   * })
+   * ```
+   */
+  async deleteMessage(chatId: bigint | number | string, messageId: number) {
+    return await DeleteMessages(this.SnakeClient, chatId, [messageId]);
+  }
   // editMessage
   /**
    * This method allow you to edit a message.
@@ -116,6 +130,27 @@ export class Telegram {
     more?: forwardMessageMoreParams
   ) {
     return await ForwardMessages(this.SnakeClient, chatId, fromChatId, messageId, more);
+  }
+  /**
+   * Forward message by their IDs.
+   * @param {number|string|bigint} chatId - Destination.
+   * @param {number|string|bigint} fromChatId - Source of messages.
+   * @param {number} messageId - ID of messages which will forwarded.
+   * @param {Object} more - more paramaters to use.
+   * ```ts
+   * bot.command("forward", async (ctx) => {
+   *     let results = await ctx.telegram.forwardMessages(ctx.chat.id,ctx.chat.id,ctx.id)
+   *     return console.log(results)
+   * })
+   * ```
+   */
+  async forwardMessage(
+    chatId: bigint | number | string,
+    fromChatId: bigint | number | string,
+    messageId: number,
+    more?: forwardMessageMoreParams
+  ) {
+    return await ForwardMessages(this.SnakeClient, chatId, fromChatId, [messageId], more);
   }
   // getMessages
   /**
@@ -537,7 +572,7 @@ export class Telegram {
   async sendPhoto(
     chatId: bigint | number | string,
     fileId: string | Buffer | Media,
-    more?: sendMediaMoreParams
+    more?: sendPhotoMoreParams
   ) {
     return await SendPhoto(this.SnakeClient, chatId, fileId, more);
   }
@@ -556,7 +591,7 @@ export class Telegram {
   async sendDocument(
     chatId: bigint | number | string,
     fileId: string | Buffer,
-    more?: sendMediaMoreParams
+    more?: sendDocumentMoreParams
   ) {
     return await SendDocument(this.SnakeClient, chatId, fileId, more);
   }

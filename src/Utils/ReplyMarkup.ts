@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// Copyright (C) 2022 Butthx <https://guthub.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -8,7 +8,7 @@
 
 import { Api } from 'telegram';
 import bigInt, { BigInteger } from 'big-integer';
-import { Snake } from '../client';
+import { Snake } from '../Client';
 import { convertId } from './ToBigInt';
 export type TypeReplyMarkup = inlineKeyboard | replyKeyboard | removeKeyboard | forceReplyMarkup;
 /**

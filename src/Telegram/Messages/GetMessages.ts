@@ -1,12 +1,12 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://github.com/butthx>
+// Copyright (C) 2022 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
 import { Api } from 'telegram';
-import { Snake } from '../../client';
+import { Snake } from '../../Client';
 import BigInt from 'big-integer';
 import { MessageContext } from '../../Context/MessageContext';
 import * as Update from '../../Update';
@@ -62,12 +62,12 @@ export async function GetMessages(
       await final.init(results, snakeClient, replies);
       return final;
     }
-  } catch (error) {
-    let botError = new BotError();
-    botError.error = error;
-    botError.functionName = 'telegram.getMessages';
-    botError.functionArgs = `${chatId},${JSON.stringify(messageId)}`;
-    throw botError;
+  } catch (error: any) {
+    throw new BotError(
+      error.message,
+      'telegram.getMessages',
+      `${chatId},${JSON.stringify(messageId)}`
+    );
   }
 }
 export class ResultsGetMessage {

@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// Copyright (C) 2022 Butthx <https://guthub.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -7,7 +7,7 @@
 //  it under the terms of the MIT License as published.
 
 import { Api } from 'telegram';
-import { Snake } from '../client';
+import { Snake } from '../Client';
 import { From } from './From';
 import { Chat } from './Chat';
 import { AdminRights } from './AdminRights';

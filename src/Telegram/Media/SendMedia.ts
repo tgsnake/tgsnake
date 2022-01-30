@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://github.com/butthx>
+// Copyright (C) 2022 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -7,7 +7,7 @@
 //  it under the terms of the MIT License as published.
 
 import { Api } from 'telegram';
-import { Snake } from '../../client';
+import { Snake } from '../../Client';
 import { TypeReplyMarkup, BuildReplyMarkup } from '../../Utils/ReplyMarkup';
 import Parser, { Entities } from '@tgsnake/parser';
 import BigInt from 'big-integer';
@@ -15,6 +15,7 @@ import * as Update from '../../Update';
 import path from 'path';
 import { toBigInt, toString, convertId } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
+import { onProgress } from './UploadFile';
 const parser = new Parser(Api);
 export interface sendMediaMoreParams {
   silent?: boolean;
@@ -26,10 +27,6 @@ export interface sendMediaMoreParams {
   entities?: Entities[];
   scheduleDate?: number;
   caption?: string;
-  workers?: number;
-  mimeType?: string;
-  fileName?: string;
-  forceDocument?: boolean;
 }
 /**
  * Sending message media.
@@ -66,32 +63,23 @@ export async function SendMedia(
     let replyMarkup;
     if (more) {
       if (more.entities) {
-        entities = parser.toRaw(more.entities);
+        entities = (await parser.toRaw(
+          snakeClient.client!,
+          more.entities
+        )) as Array<Api.TypeMessageEntity>;
         parseText = more.caption || '';
         delete more.entities;
       }
-      if (more.caption && !entities) {
+      if (more.caption && !more.entities) {
         //@ts-ignore
         let [t, e] = parseMode !== '' ? parser.parse(more.caption, parseMode!) : [more.caption, []];
         parseText = t;
-        entities = parser.toRaw(e!) as Array<Api.TypeMessageEntity>;
+        entities = (await parser.toRaw(snakeClient.client!, e!)) as Array<Api.TypeMessageEntity>;
         delete more.caption;
       }
       if (more.replyMarkup) {
         replyMarkup = BuildReplyMarkup(more.replyMarkup!);
         delete more.replyMarkup;
-      }
-      if (more.workers) {
-        delete more.workers;
-      }
-      if (more.mimeType) {
-        delete more.mimeType;
-      }
-      if (more.fileName) {
-        delete more.fileName;
-      }
-      if (more.forceDocument !== undefined) {
-        delete more.forceDocument;
       }
     }
     return snakeClient.client.invoke(
@@ -106,13 +94,11 @@ export async function SendMedia(
         ...more,
       })
     );
-  } catch (error) {
-    let botError = new BotError();
-    botError.error = error;
-    botError.functionName = 'telegram.sendMedia';
-    botError.functionArgs = `${chatId},${JSON.stringify(media)}${
-      more ? ',' + JSON.stringify(more) : ''
-    }`;
-    throw botError;
+  } catch (error: any) {
+    throw new BotError(
+      error.message,
+      'telegram.sendMedia',
+      `${chatId},${JSON.stringify(media)}${more ? ',' + JSON.stringify(more) : ''}`
+    );
   }
 }
