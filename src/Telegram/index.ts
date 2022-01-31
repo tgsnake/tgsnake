@@ -697,4 +697,71 @@ export class Telegram {
   ) {
     return await AnswerInlineQuery(this.SnakeClient, queryId, results, more);
   }
+  async restrictChatMember(
+    chatId: bigint | number | string,
+    userId: bigint | number | string,
+    more?: editBannedMoreParams
+  ) {
+    return await EditBanned(
+      this.SnakeClient,
+      chatId,
+      userId,
+      Object.assign(
+        {
+          untilDate: 0,
+          viewMessages: false,
+          sendMessages: true,
+          sendMedia: true,
+          sendStickers: true,
+          sendGifs: true,
+          sendGames: true,
+          sendInline: true,
+          sendPolls: true,
+          changeInfo: true,
+          inviteUsers: true,
+          pinMessages: true,
+          embedLinks: true,
+        },
+        more
+      )
+    );
+  }
+  async banChatMember(chatId: bigint | number | string, userId: bigint | number | string) {
+    return await EditBanned(this.SnakeClient, chatId, userId);
+  }
+  async kickChatMember(chatId: bigint | number | string, userId: bigint | number | string) {
+    await EditBanned(this.SnakeClient, chatId, userId);
+    return await EditBanned(this.SnakeClient, chatId, userId, {
+      untilDate: 0,
+      viewMessages: false,
+      sendMessages: false,
+      sendMedia: false,
+      sendStickers: false,
+      sendGifs: false,
+      sendGames: false,
+      sendInline: false,
+      sendPolls: false,
+      changeInfo: false,
+      inviteUsers: false,
+      pinMessages: false,
+      embedLinks: false,
+    });
+  }
+  async unbanChatMember(chatId: bigint | number | string, userId: bigint | number | string) {
+    return await EditBanned(this.SnakeClient, chatId, userId, {
+      untilDate: 0,
+      viewMessages: false,
+      sendMessages: false,
+      sendMedia: false,
+      sendStickers: false,
+      sendGifs: false,
+      sendGames: false,
+      sendInline: false,
+      sendPolls: false,
+      changeInfo: false,
+      inviteUsers: false,
+      pinMessages: false,
+      embedLinks: false,
+    });
+  }
 }

@@ -57,7 +57,7 @@ export async function EditBanned(
         }] - [${new Date().toLocaleString()}] - Running telegram.editBanned`
       );
     }
-    let permissions = {
+    /*let permissions = {
       untilDate: more?.untilDate || 0,
       viewMessages: more?.viewMessages || true,
       sendMessages: more?.sendMessages || true,
@@ -71,12 +71,31 @@ export async function EditBanned(
       inviteUsers: more?.inviteUsers || true,
       pinMessages: more?.pinMessages || true,
       embedLinks: more?.embedLinks || true,
-    };
+    };*/
     let results: Api.TypeUpdates = await snakeClient.client.invoke(
       new Api.channels.EditBanned({
         channel: convertId(chatId),
         participant: convertId(userId),
-        bannedRights: new Api.ChatBannedRights(permissions),
+        bannedRights: new Api.ChatBannedRights(
+          Object.assign(
+            {
+              untilDate: 0,
+              viewMessages: true,
+              sendMessages: true,
+              sendMedia: true,
+              sendStickers: true,
+              sendGifs: true,
+              sendGames: true,
+              sendInline: true,
+              sendPolls: true,
+              changeInfo: true,
+              inviteUsers: true,
+              pinMessages: true,
+              embedLinks: true,
+            },
+            more
+          )
+        ),
       })
     );
     return await generateResults(results, snakeClient);

@@ -57,7 +57,7 @@ export async function EditAdmin(
         }] - [${new Date().toLocaleString()}] - Running telegram.editAdmin`
       );
     }
-    let permissions = {
+    /*let permissions = {
       changeInfo: more?.changeInfo || true,
       postMessages: more?.postMessages || true,
       editMessages: more?.editMessages || true,
@@ -68,12 +68,28 @@ export async function EditAdmin(
       addAdmins: more?.addAdmins || false,
       anonymous: more?.anonymous || false,
       manageCall: more?.manageCall || true,
-    };
+    };*/
     let results: Api.TypeUpdates = await snakeClient.client.invoke(
       new Api.channels.EditAdmin({
         channel: convertId(chatId),
         userId: convertId(userId),
-        adminRights: new Api.ChatAdminRights(permissions),
+        adminRights: new Api.ChatAdminRights(
+          Object.assign(
+            {
+              changeInfo: true,
+              postMessages: true,
+              editMessages: true,
+              deleteMessages: true,
+              banUsers: true,
+              inviteUsers: true,
+              pinMessages: true,
+              addAdmins: false,
+              anonymous: false,
+              manageCall: true,
+            },
+            more
+          )
+        ),
         rank: more?.rank || '',
       })
     );

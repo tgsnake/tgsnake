@@ -21,7 +21,7 @@ export class Snake extends MainContext {
   private _gramjsOptions!: Options;
   private _client!: TelegramClient;
   private _telegram!: Telegram;
-  private _version: string = '2.0.0-beta.11';
+  private _version: string = '2.0.0-beta.12';
   private _connectTime: number = 0;
   private _freshStore: boolean = false;
   private intervalCT!: any;
@@ -193,18 +193,18 @@ export class Snake extends MainContext {
     if (!this._client) {
       throw new BotError('client is missing', 'Snake._start', '');
     }
+    if (this._options.botToken && this._options.botToken !== '') {
+      await this._client.start({
+        botAuthToken: String(this._options.botToken),
+      });
+      this.connected = true;
+      return this;
+    }
     if (this._options.sessionName !== '' && this._options.storeSession) {
       if (this._freshStore) {
         return _ask();
       }
       await this._client.connect();
-      this.connected = true;
-      return this;
-    }
-    if (this._options.botToken) {
-      await this._client.start({
-        botAuthToken: String(this._options.botToken),
-      });
       this.connected = true;
       return this;
     }
