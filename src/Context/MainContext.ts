@@ -16,13 +16,14 @@ import { Composer, run, ErrorHandler } from './Composer';
 import BotError from './Error';
 import { Cleaning } from '../Utils/CleanObject';
 import chalk from 'chalk';
+import { EntityCache } from './EntityCache';
 export type LoggerInfo = (...args: Array<any>) => void;
 import * as NodeUtil from 'util';
 import fs from 'fs';
 export class MainContext extends Composer {
   connected: Boolean = false;
   aboutMe!: ResultGetEntity;
-  entityCache: Map<bigint | string, ResultGetEntity> = new Map();
+  entityCache!: EntityCache; //Map<bigint | string, ResultGetEntity> = new Map();
   tgSnakeLog: boolean = true;
   consoleColor!: string;
   log: LoggerInfo = (...args: Array<any>) => {

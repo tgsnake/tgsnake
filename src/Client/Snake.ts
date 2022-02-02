@@ -16,12 +16,15 @@ import BotError from '../Context/Error';
 import prompts from 'prompts';
 import { Api } from 'telegram';
 import fs from 'fs';
+import { EntityCache } from '../Context/EntityCache';
+import { SnakeEvent, InterfaceSnakeEvent } from '../Events';
+import { SnakeSession } from './SnakeSession';
 export class Snake extends MainContext {
   private _options!: Options;
   private _gramjsOptions!: Options;
   private _client!: TelegramClient;
   private _telegram!: Telegram;
-  private _version: string = '2.0.0-beta.12';
+  private _version: string = '2.0.0-beta.13';
   private _connectTime: number = 0;
   private _freshStore: boolean = false;
   private intervalCT!: any;
@@ -82,6 +85,8 @@ export class Snake extends MainContext {
       },
       _options
     );
+    this.entityCache = new EntityCache(this._options.sessionName!);
+    this.entityCache.load;
   }
   get telegram() {
     return this._telegram;
@@ -120,7 +125,7 @@ export class Snake extends MainContext {
       if (this._options.session !== '') {
         return await ConvertString(this._options.session!, this._options.sessionName!);
       }
-      let session = new StoreSession(this._options.sessionName!);
+      let session = new SnakeSession(this._options.sessionName!);
       await session.load();
       if (!session.authKey) {
         this._freshStore = true;
@@ -193,15 +198,15 @@ export class Snake extends MainContext {
     if (!this._client) {
       throw new BotError('client is missing', 'Snake._start', '');
     }
-    if (this._options.botToken && this._options.botToken !== '') {
-      await this._client.start({
-        botAuthToken: String(this._options.botToken),
-      });
-      this.connected = true;
-      return this;
-    }
     if (this._options.sessionName !== '' && this._options.storeSession) {
       if (this._freshStore) {
+        if (this._options.botToken && this._options.botToken !== '') {
+          await this._client.start({
+            botAuthToken: String(this._options.botToken),
+          });
+          this.connected = true;
+          return this;
+        }
         return _ask();
       }
       await this._client.connect();
@@ -209,6 +214,13 @@ export class Snake extends MainContext {
       return this;
     }
     if (!this._options.session || this._options.session == '') {
+      if (this._options.botToken && this._options.botToken !== '') {
+        await this._client.start({
+          botAuthToken: String(this._options.botToken),
+        });
+        this.connected = true;
+        return this;
+      }
       return _ask();
     } else if (this._options.session !== '') {
       await this._client.connect();
@@ -281,11 +293,11 @@ export class Snake extends MainContext {
     this.connected = false;
     return this;
   }
-  async run() {
+  async run(params?: InterfaceSnakeEvent) {
     await this.start();
     this._client.addEventHandler((update: Api.TypeUpdate) => {
       return this.handleUpdate(update, this);
-    });
+    }, new SnakeEvent(this, params || {}));
     return this;
   }
   async start() {
@@ -319,6 +331,9 @@ export class Snake extends MainContext {
       throw new BotError('you not connected.', 'Snake.save', '');
     }
     if (this._client.session instanceof StringSession) {
+      return await this._client.session.save();
+    }
+    if (this._client.session instanceof SnakeSession) {
       return await this._client.session.save();
     }
     if (this._client.session instanceof StoreSession) {

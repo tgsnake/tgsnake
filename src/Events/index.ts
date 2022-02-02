@@ -5,6 +5,5 @@
 //
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
-export { Snake } from './Snake';
-export { ConvertString, ConvertStore } from './ConvertSession';
-export { SnakeSession } from './SnakeSession';
+export { SnakeEvent } from './SnakeEvents';
+export { InterfaceSnakeEvent } from './SnakeEvents';

@@ -67,7 +67,8 @@ export class ResultGetEntity {
   dcId?: number;
   photo?: ChatPhoto;
   noforward?: boolean;
-  constructor(resultsGetEntity: Api.TypeUser | Api.TypeChat | Api.Channel) {
+  constructor(resultsGetEntity?: Api.TypeUser | Api.TypeChat | Api.Channel) {
+    if (!resultsGetEntity) return this;
     if (resultsGetEntity instanceof Api.User) {
       resultsGetEntity as Api.User;
       this.type = 'user';
@@ -228,7 +229,7 @@ export class ResultGetEntity {
 export async function GetEntity(
   snakeClient: Snake,
   chatId: bigint | string | number,
-  useCache?: boolean
+  useCache: boolean = true
 ): Promise<ResultGetEntity> {
   try {
     let mode = ['debug', 'info'];
