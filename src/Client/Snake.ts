@@ -24,7 +24,7 @@ export class Snake extends MainContext {
   private _gramjsOptions!: Options;
   private _client!: TelegramClient;
   private _telegram!: Telegram;
-  private _version: string = '2.0.0-beta.13';
+  private _version: string = '2.0.0-beta.15';
   private _connectTime: number = 0;
   private _freshStore: boolean = false;
   private intervalCT!: any;

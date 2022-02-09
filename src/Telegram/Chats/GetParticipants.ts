@@ -57,7 +57,7 @@ export async function GetParticipants(
     if (chat.type == 'chat') {
       let r: Api.messages.ChatFull = await snakeClient.client.invoke(
         new Api.messages.GetFullChat({
-          chatId: bigInt(chat.id as bigint),
+          chatId: bigInt(String(chat.id * BigInt(-1)) as string),
         })
       );
       let cf: Api.ChatFull = r.fullChat as Api.ChatFull;

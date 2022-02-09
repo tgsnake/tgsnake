@@ -286,7 +286,7 @@ export class Telegram {
    * })
    * ```
    */
-  async pinMessages(
+  async pinMessage(
     chatId: bigint | number | string,
     messageId: number,
     more?: pinMessageMoreParams

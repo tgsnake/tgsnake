@@ -20,6 +20,9 @@ export class UpdateChatUserTyping extends Update {
   chat!: Chat;
   action!: string;
   progress!: number;
+  messageId!: number;
+  emoticon!: string;
+  interaction!: any;
   constructor() {
     super();
     this['_'] = 'updateChatUserTyping';
@@ -100,6 +103,26 @@ export class UpdateChatUserTyping extends Update {
       update.action as Api.SendMessageHistoryImportAction;
       this.action = 'historyImport';
       this.progress = update.action.progress;
+    }
+    if (update.action instanceof Api.SendMessageHistoryImportAction) {
+      update.action as Api.SendMessageHistoryImportAction;
+      this.action = 'historyImport';
+      this.progress = update.action.progress;
+    }
+    if (update.action instanceof Api.SendMessageChooseStickerAction) {
+      update.action as Api.SendMessageChooseStickerAction;
+      this.action = 'chooseSticker';
+    }
+    if (update.action instanceof Api.SendMessageEmojiInteraction) {
+      update.action as Api.SendMessageEmojiInteraction;
+      this.action = 'emojiInteraction';
+      this.emoticon = update.action.emoticon;
+      this.messageId = update.action.msgId;
+      this.interaction = update.action.interaction;
+    }
+    if (update.action instanceof Api.SendMessageEmojiInteractionSeen) {
+      this.action = 'emojiInteractionSeen';
+      this.emoticon = update.action.emoticon;
     }
     return this;
   }

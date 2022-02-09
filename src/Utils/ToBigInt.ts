@@ -12,7 +12,7 @@ export async function toBigInt(Ids: bigint | number | string, SnakeClient: Snake
   let e = await SnakeClient.telegram.getEntity(Ids, true);
   let id = bigInt(String(e.id).replace('-100', '').replace('-', ''));
   let d =
-    e.type == 'channel'
+    e.type == 'channel' || e.type == 'supergroup'
       ? new Api.PeerChannel({
           channelId: id,
         })

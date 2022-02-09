@@ -9,6 +9,8 @@
 import { Message } from '../Utils/Message';
 import { Snake } from '../Client';
 import { replyMoreParams } from '../Interface/reply';
+import { forwardMessageMoreParams } from '../Telegram/Messages/ForwardMessages';
+import { pinMessageMoreParams } from '../Telegram/Messages/PinMessage';
 export class MessageContext extends Message {
   constructor() {
     super();
@@ -33,5 +35,25 @@ export class MessageContext extends Message {
       parseMode: 'markdown',
       ...more,
     });
+  }
+  async delete() {
+    let client = this.SnakeClient;
+    return await client.telegram.deleteMessage(this.chat.id, this.id);
+  }
+  async forward(chatId: string | number | bigint, more?: forwardMessageMoreParams) {
+    let client = this.SnakeClient;
+    return await client.telegram.forwardMessage(chatId, this.chat.id, this.id, more);
+  }
+  async pin(more?: pinMessageMoreParams) {
+    let client = this.SnakeClient;
+    return await client.telegram.pinMessage(this.chat.id, this.id, more);
+  }
+  async unpin() {
+    let client = this.SnakeClient;
+    return await client.telegram.unpinMessage(this.chat.id, this.id);
+  }
+  async link() {
+    let client = this.SnakeClient;
+    return await client.telegram.exportMessageLink(this.chat.id, this.id);
   }
 }

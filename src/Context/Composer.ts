@@ -89,6 +89,10 @@ function filterEvent(filter, ctx) {
       case 'updateBotInlineQuery':
         h.push('inlineQuery');
         break;
+      case 'updateEditChannelMessage':
+      case 'updateEditMessage':
+        h.push('editMessage');
+        break;
       default:
     }
     h.push(ctx['_']);
@@ -199,7 +203,7 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
       }
       return false;
     };
-    return this.on('message').filter(filterCmd, ...middleware);
+    return this.on(['message']).filter(filterCmd, ...middleware);
   }
   cmd(
     trigger: MaybeArray<string | RegExp>,
@@ -212,7 +216,7 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
     ...middleware: Array<MiddlewareFn<MessageContext>>
   ): Composer {
     let tgr = triggerFn(trigger);
-    return this.on('message').filter((ctx) => {
+    return this.on(['message']).filter((ctx) => {
       const { text } = ctx;
       return match(ctx, String(text), tgr);
     }, ...middleware);

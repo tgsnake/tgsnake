@@ -21,6 +21,7 @@ import { Telegram } from '../Telegram';
 import { convertReplyMarkup, TypeReplyMarkup } from './ReplyMarkup';
 import { toString } from './ToBigInt';
 import { Cleaning } from './CleanObject';
+import { Reactions } from './Reactions';
 const parser = new Parser(Api);
 let _SnakeClient: Snake;
 let _telegram: Telegram;
@@ -57,6 +58,7 @@ export class Message {
   noforward?: boolean;
   senderChat?: Chat;
   isAutomaticForward?: boolean;
+  reactions?: Reactions;
   constructor() {}
   async init(message: Api.MessageService | Api.Message, SnakeClient: Snake) {
     let mode = ['debug', 'info'];
@@ -87,7 +89,7 @@ export class Message {
     //@ts-ignore
     this.noforward = message.noforwards;
     let messageAction = new MessageAction();
-    await messageAction.init(message.action);
+    await messageAction.init(message.action, this.SnakeClient);
     this.action = messageAction;
     this.ttlPeriod = message.ttlPeriod;
     if (message.fromId) {
@@ -258,6 +260,9 @@ export class Message {
     }
     if (message.replies) {
       this.replies = message.replies;
+    }
+    if (message.reactions) {
+      this.reactions = new Reactions(message.reactions);
     }
     await Cleaning(this);
     return this;

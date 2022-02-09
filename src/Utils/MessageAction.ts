@@ -11,15 +11,17 @@ import { BigInteger } from 'big-integer';
 import { PaymentRequestedInfo, PaymentCharge } from './Payment';
 import { Media } from './Media';
 import { toString } from './ToBigInt';
+import { From } from './From';
+import { Chat } from './Chat';
 export class MessageAction {
   '_'!: string;
   title!: string;
-  users!: bigint[];
+  users!: From[];
   photo!: Media;
-  userId!: bigint;
-  inviterId!: bigint;
-  channelId!: bigint;
-  chatId!: bigint;
+  user!: From;
+  invite!: From;
+  channel!: Chat;
+  chat!: Chat;
   gameId!: bigint;
   score!: number;
   currency!: string;
@@ -39,15 +41,18 @@ export class MessageAction {
   types!: Api.TypeSecureValueType[];
   call!: Api.InputGroupCall;
   scheduleDate!: number;
+  emoticon!: string;
   constructor() {}
-  async init(messageAction: Api.TypeMessageAction) {
+  async init(messageAction: Api.TypeMessageAction, snakeClient: Snake) {
     if (messageAction instanceof Api.MessageActionChatCreate) {
       messageAction as Api.MessageActionChatCreate;
       this['_'] = 'chatCreate';
       this.title = messageAction.title;
-      let c: bigint[] = [];
+      let c: From[] = [];
       for (let users of messageAction.users) {
-        c.push(BigInt(toString(users) as string));
+        let from = new From();
+        await from.init(BigInt(toString(users) as string), snakeClient);
+        c.push(from);
       }
       this.users = c;
       return this;
@@ -66,12 +71,15 @@ export class MessageAction {
       this.photo = media;
       return this;
     }
+
     if (messageAction instanceof Api.MessageActionChatAddUser) {
       this['_'] = 'newChatMember';
       messageAction as Api.MessageActionChatAddUser;
-      let c: bigint[] = [];
+      let c: From[] = [];
       for (let users of messageAction.users) {
-        c.push(BigInt(toString(users) as string));
+        let from = new From();
+        await from.init(BigInt(toString(users) as string), snakeClient);
+        c.push(from);
       }
       this.users = c;
       return this;
@@ -79,13 +87,15 @@ export class MessageAction {
     if (messageAction instanceof Api.MessageActionChatDeleteUser) {
       messageAction as Api.MessageActionChatDeleteUser;
       this['_'] = 'leftChatMember';
-      this.userId = BigInt(toString(messageAction.userId) as string);
+      this.user = new From();
+      await this.user.init(BigInt(toString(messageAction.userId) as string), snakeClient);
       return this;
     }
     if (messageAction instanceof Api.MessageActionChatJoinedByLink) {
       messageAction as Api.MessageActionChatJoinedByLink;
       this['_'] = 'newChatMember';
-      this.inviterId = BigInt(toString(messageAction.inviterId) as string);
+      this.invite = new From();
+      await this.invite.init(BigInt(toString(messageAction.inviterId) as string), snakeClient);
       return this;
     }
     if (messageAction instanceof Api.MessageActionChannelCreate) {
@@ -97,14 +107,19 @@ export class MessageAction {
     if (messageAction instanceof Api.MessageActionChatMigrateTo) {
       messageAction as Api.MessageActionChatMigrateTo;
       this['_'] = 'migrateTo';
-      this.channelId = BigInt(`-100${toString(messageAction.channelId)}` as string);
+      this.channel = new Chat();
+      await this.channel.init(
+        BigInt(`-100${toString(messageAction.channelId)}` as string),
+        snakeClient
+      );
       return this;
     }
     if (messageAction instanceof Api.MessageActionChannelMigrateFrom) {
       messageAction as Api.MessageActionChannelMigrateFrom;
       this['_'] = 'migrateFrom';
       this.title = messageAction.title;
-      this.chatId = BigInt(`-${toString(messageAction.chatId)}` as string);
+      this.chat = new Chat();
+      await this.chat.init(BigInt(`-${toString(messageAction.chatId)}` as string), snakeClient);
       return this;
     }
     if (messageAction instanceof Api.MessageActionGameScore) {
@@ -203,6 +218,29 @@ export class MessageAction {
       this['_'] = 'groupCallScheduled';
       this.call = messageAction.call;
       this.scheduleDate = messageAction.scheduleDate;
+      return this;
+    }
+    if (messageAction instanceof Api.MessageActionInviteToGroupCall) {
+      messageAction as Api.MessageActionInviteToGroupCall;
+      this['_'] = 'inviteToGroupCall';
+      let c: From[] = [];
+      for (let users of messageAction.users) {
+        let from = new From();
+        await from.init(BigInt(toString(users) as string), snakeClient);
+        c.push(from);
+      }
+      this.users = c;
+      return this;
+    }
+    if (messageAction instanceof Api.MessageActionSetChatTheme) {
+      messageAction as Api.MessageActionSetChatTheme;
+      this['_'] = 'setChatTheme';
+      this.emoticon = messageAction.emoticon;
+      return this;
+    }
+    if (messageAction instanceof Api.MessageActionChatJoinedByRequest) {
+      messageAction as Api.MessageActionChatJoinedByRequest;
+      this['_'] = 'chatJoineeByRequest';
       return this;
     }
   }

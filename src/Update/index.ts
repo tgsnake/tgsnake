@@ -21,6 +21,8 @@ import { UpdateNewChannelMessage } from './UpdateNewChannelMessage';
 import { UpdateInlineBotCallbackQuery } from './UpdateInlineBotCallbackQuery';
 import { UpdateBotCallbackQuery } from './UpdateBotCallbackQuery';
 import { UpdateBotInlineQuery } from './UpdateBotInlineQuery';
+import { UpdateEditChannelMessage } from './UpdateEditChannelMessage';
+import { UpdateEditMessage } from './UpdateEditMessage';
 type TypeUpdate =
   | ResultGetEntity
   | MessageContext
@@ -37,7 +39,9 @@ type TypeUpdate =
   | UpdateNewChannelMessage
   | UpdateInlineBotCallbackQuery
   | UpdateBotCallbackQuery
-  | UpdateBotInlineQuery;
+  | UpdateBotInlineQuery
+  | UpdateEditChannelMessage
+  | UpdateEditMessage;
 interface Context {
   '*': TypeUpdate;
   connected: ResultGetEntity;
@@ -68,6 +72,7 @@ interface Context {
   groupCallScheduled: MessageContext;
   callbackQuery: UpdateInlineBotCallbackQuery | UpdateBotCallbackQuery;
   inlineQuery: UpdateBotInlineQuery;
+  editMessage: UpdateEditMessage | UpdateEditChannelMessage;
   // original names
   updateChatParticipants: UpdateChatParticipants;
   updateChatUserTyping: UpdateUserTyping;
@@ -83,6 +88,8 @@ interface Context {
   updateInlineBotCallbackQuery: UpdateInlineBotCallbackQuery;
   updateBotCallbackQuery: UpdateBotCallbackQuery;
   updateBotInlineQuery: UpdateBotInlineQuery;
+  updateEditMessage: UpdateEditMessage;
+  updateEditChannelMessage: UpdateEditChannelMessage;
 }
 export {
   TypeUpdate,
@@ -101,4 +108,6 @@ export {
   UpdateInlineBotCallbackQuery,
   UpdateBotCallbackQuery,
   UpdateBotInlineQuery,
+  UpdateEditChannelMessage,
+  UpdateEditMessage,
 };

@@ -22,7 +22,7 @@ export class ChatPhoto {
       version: 4,
       subVersion: 30,
       dcId: photo.dcId,
-      id: BigInt(toString(photo.photoId as BigInteger) as string),
+      id: photo.photoId ? BigInt(toString(photo.photoId as BigInteger) as string) : BigInt(0),
       accessHash: BigInt(0),
       photoSizeSource: 'dialogPhoto',
       dialogId: resultsGetEntity.id,

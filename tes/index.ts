@@ -8,6 +8,8 @@
 
 //import {Snake,GramJs,Composer,Updates} from "../src"
 import {Snake} from "../src/Client/Snake"
-import {StringSession} from "telegram/sessions";
 const bot = new Snake()
+bot.cmd("start",(ctx)=>{
+  ctx.reply("start")
+})
 bot.run()

@@ -111,15 +111,15 @@ async function createResults(results: Api.TypeUpdates, snakeClient: Snake) {
       for (let i = 0; i < results.updates.length; i++) {
         if (results.updates[i] instanceof Api.UpdateEditChannelMessage) {
           let arc = results.updates[i] as Api.UpdateEditChannelMessage;
-          //todo
-          //using UpdateEditChannelMessage
-          return arc;
+          let update = new Update.UpdateEditChannelMessage();
+          await update.init(arc, snakeClient);
+          return update;
         }
-        //todo
-        // using UpdateEditMessage
         if (results.updates[i] instanceof Api.UpdateEditMessage) {
           let arc = results.updates[i] as Api.UpdateEditMessage;
-          return arc;
+          let update = new Update.UpdateEditMessage();
+          await update.init(arc, snakeClient);
+          return update;
         }
       }
     }
