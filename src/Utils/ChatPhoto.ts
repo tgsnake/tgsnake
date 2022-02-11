@@ -22,13 +22,13 @@ export class ChatPhoto {
       version: 4,
       subVersion: 30,
       dcId: photo.dcId,
-      id: photo.photoId ? BigInt(toString(photo.photoId as BigInteger) as string) : BigInt(0),
+      id: BigInt(toString(photo.photoId as BigInteger) as string),
       accessHash: BigInt(0),
       photoSizeSource: 'dialogPhoto',
       dialogId: resultsGetEntity.id,
       isSmallDialogPhoto: false,
       photoSizeSourceId: media.thumbTypeId.CHAT_PHOTO_BIG,
-      dialogAccessHash: resultsGetEntity.accessHash!,
+      dialogAccessHash: resultsGetEntity.accessHash ? resultsGetEntity.accessHash : BigInt(0),
       volumeId: BigInt(1),
     });
     this.fileId = file.fileId;

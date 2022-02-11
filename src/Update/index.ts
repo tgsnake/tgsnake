@@ -72,7 +72,7 @@ interface Context {
   groupCallScheduled: MessageContext;
   callbackQuery: UpdateInlineBotCallbackQuery | UpdateBotCallbackQuery;
   inlineQuery: UpdateBotInlineQuery;
-  editMessage: UpdateEditMessage | UpdateEditChannelMessage;
+  editMessage: MessageContext;
   // original names
   updateChatParticipants: UpdateChatParticipants;
   updateChatUserTyping: UpdateUserTyping;

@@ -11,6 +11,7 @@ import { AuthKey } from 'telegram/crypto/AuthKey';
 import bigInt from 'big-integer';
 import { ResultGetEntity } from '../Telegram/Users/GetEntity';
 import fs from 'fs';
+import { Snake } from './Snake';
 
 export interface InterfaceSnakeSession {
   authKey: any;
@@ -23,9 +24,11 @@ let ignore = ['session.json', 'cache.json'];
 const CURRENT_VERSION = '1';
 export class SnakeSession extends MemorySession {
   private _sessionName!: string;
-  constructor(sessionName: string) {
+  private client!: Snake;
+  constructor(sessionName: string, client: Snake) {
     super();
     this._sessionName = sessionName;
+    this.client = client;
   }
   async load() {
     if (fs.existsSync(`${process.cwd()}/${this._sessionName}`)) {
@@ -90,7 +93,6 @@ export class SnakeSession extends MemorySession {
             dcId: this._dcId,
             port: this._port,
             serverAddress: this._serverAddress,
-            entities: [],
           })
         );
         for (let file of dir) {
@@ -124,7 +126,6 @@ export class SnakeSession extends MemorySession {
             dcId: dcId,
             port: port,
             serverAddress: serverAddress,
-            entities: [],
           })
         );
       }
@@ -167,7 +168,6 @@ export class SnakeSession extends MemorySession {
             dcId: this._dcId,
             port: this._port,
             serverAddress: this._serverAddress,
-            entities: [],
           })
         );
       }
@@ -186,30 +186,19 @@ export class SnakeSession extends MemorySession {
       create();
     }
   }
-  processEntities(tlo: any) {
-    let rows = this._entitiesToRows(tlo);
-    if (!rows) return;
-    if (!fs.existsSync(`${process.cwd()}/${this._sessionName}/session.json`)) return;
-    let session = JSON.parse(
-      fs.readFileSync(`${process.cwd()}/${this._sessionName}/session.json`, 'utf8')
-    );
-    let final: Array<any> = [];
-    for (let row of rows) {
-      row.push(new Date().getTime().toString());
-      final.push(row);
-    }
-    session.entities = final;
-    fs.writeFileSync(`${process.cwd()}/${this._sessionName}/session.json`, JSON.stringify(session));
-  }
   getEntityRowsById(id: string | bigInt.BigInteger, exact: boolean = true) {
-    if (!fs.existsSync(`${process.cwd()}/${this._sessionName}/session.json`)) return undefined;
-    let session = JSON.parse(
-      fs.readFileSync(`${process.cwd()}/${this._sessionName}/session.json`, 'utf8')
-    );
-    let rows = session.entities;
-    for (let row of rows) {
-      if (String(id) == row[0]) return row;
-    }
+    let Id: string | bigint = bigInt.isInstance(id) ? BigInt(String(id)) : String(id);
+    // get from cache
+    let cache = this.client.entityCache.get(Id);
+    if (!cache) return [];
+    return [
+      String(cache.id),
+      String(cache.accessHash),
+      cache.username ? cache.username : '',
+      cache.phone ? cache.phone : '',
+      cache.lastName ? cache.firstName + ' ' + cache.lastName : cache.firstName,
+      new Date().getTime().toString(),
+    ];
   }
   save() {
     if (!this.authKey || !this.serverAddress || !this.port) {

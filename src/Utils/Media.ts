@@ -74,7 +74,9 @@ export function generateFileId(medias: GenerateFileId) {
       key == 'stickerSetId' ||
       key == 'stickerSetAccessHash'
     ) {
-      if (BigInt(String(value)) < BigInt(0)) {
+      if (value == undefined) {
+        file[key] = BigInt(0);
+      } else if (BigInt(String(value)) < BigInt(0)) {
         let num = String(value).replace(/^\-/, ''); // generate positive number
         file[key] = BigInt(num);
         continue;
@@ -101,7 +103,7 @@ export class Media {
     | 'photo' // done
     | 'location' //done
     | 'dice' //done
-    | 'contact'
+    | 'contact' //done
     | 'animation'
     | 'video'
     | 'poll' //done

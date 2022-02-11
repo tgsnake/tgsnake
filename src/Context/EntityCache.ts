@@ -14,17 +14,7 @@ export class EntityCache {
     this._sessionName = sessionName;
   }
   set(key: bigint | string, value: ResultGetEntity) {
-    let _set = this._cache.set(key, value);
-    if (!fs.existsSync(`${process.cwd()}/${this._sessionName}`)) {
-      fs.mkdirSync(`${process.cwd()}/${this._sessionName}`);
-    }
-    fs.writeFileSync(
-      `${process.cwd()}/${this._sessionName}/cache.json`,
-      JSON.stringify([...this._cache.entries()], (k, v) => {
-        return typeof v == 'bigint' ? `:bigint:${v}` : v;
-      })
-    );
-    return _set;
+    return this._cache.set(key, value);
   }
   get(key: string | bigint) {
     return this._cache.get(key);
@@ -71,6 +61,18 @@ export class EntityCache {
         this._cache.set(k.startsWith(':bigint:') ? BigInt(k.replace(':bigint:', '')) : k, g);
       }
     }
+    return this;
+  }
+  save() {
+    if (!fs.existsSync(`${process.cwd()}/${this._sessionName}`)) {
+      fs.mkdirSync(`${process.cwd()}/${this._sessionName}`);
+    }
+    fs.writeFileSync(
+      `${process.cwd()}/${this._sessionName}/cache.json`,
+      JSON.stringify([...this._cache.entries()], (k, v) => {
+        return typeof v == 'bigint' ? `:bigint:${v}` : v;
+      })
+    );
     return this;
   }
 }
