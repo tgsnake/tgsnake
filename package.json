@@ -35,7 +35,7 @@
     "file-type": "16.5.3",
     "husky": "7.0.4",
     "prompts": "2.4.2",
-    "telegram": "2.4.6",
+    "telegram": "2.5.0",
     "tg-file-id": "1.1.2",
     "util": "^0.12.4"
   },
