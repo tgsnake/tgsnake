@@ -115,7 +115,7 @@ export interface Options extends ClientOptions {
    * tgsnake console.log
    * If set, tgsnake will showing the message in console like welcome to tgsnake or anything.
    */
-  tgSnakeLog?: boolean;
+  tgsnakeLog?: boolean;
   /**
    * session name
    * required to save the string session.

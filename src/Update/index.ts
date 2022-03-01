@@ -6,6 +6,7 @@
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
 import { ResultGetEntity } from '../Telegram/Users/GetEntity';
+import { TypeUpdates } from "./Update"
 import { MessageContext } from '../Context/MessageContext';
 import { UpdateChatParticipants } from './UpdateChatParticipants';
 import { UpdateChatUserTyping } from './UpdateChatUserTyping';
@@ -92,6 +93,7 @@ interface Context {
   updateEditChannelMessage: UpdateEditChannelMessage;
 }
 export {
+  TypeUpdates,
   TypeUpdate,
   UpdateChatParticipants,
   UpdateChatUserTyping,

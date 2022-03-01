@@ -24,7 +24,7 @@ export class ResultsMessagesViews {
     }
   }
 }
-class Views {
+export class Views {
   views?: number;
   forwards?: number;
   replies?: Api.MessageReplies;

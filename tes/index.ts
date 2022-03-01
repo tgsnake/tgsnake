@@ -9,7 +9,7 @@
 //import {Snake,GramJs,Composer,Updates} from "../src"
 import {Snake} from "../src/Client/Snake"
 const bot = new Snake()
-bot.on('newChatMember',(ctx)=>{
-  console.log(ctx)
+bot.on("connected",async (ctx) => {
+  console.log(await bot.save())
 })
 bot.run()

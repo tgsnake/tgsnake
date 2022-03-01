@@ -17,17 +17,18 @@ import BotError from './Error';
 import { Cleaning } from '../Utils/CleanObject';
 import chalk from 'chalk';
 import { EntityCache } from './EntityCache';
-export type LoggerInfo = (...args: Array<any>) => void;
 import * as NodeUtil from 'util';
 import fs from 'fs';
+export type LoggerInfo = (...args: Array<any>) => void;
 export class MainContext extends Composer {
+  private _options!: Options;
+  private _gramjsOptions!: Options;
   connected: Boolean = false;
   aboutMe!: ResultGetEntity;
-  entityCache!: EntityCache; //Map<bigint | string, ResultGetEntity> = new Map();
-  tgSnakeLog: boolean = true;
+  entityCache!: EntityCache;
   consoleColor!: string;
   log: LoggerInfo = (...args: Array<any>) => {
-    if (this.tgSnakeLog) {
+    if (this._options.tgsnakeLog) {
       if (args.length > 1) {
         let fargs: Array<any> = new Array();
         for (let arg of args) {
@@ -72,6 +73,18 @@ export class MainContext extends Composer {
   };
   constructor() {
     super();
+  }
+  get options () {
+    return this._options
+  }
+  set options (options) {
+    this._options = options
+  }
+  get gramjsOptions (){
+    return this._gramjsOptions
+  }
+  set gramjsOptions(options){
+    this._gramjsOptions = options
   }
   async handleUpdate(update: Api.TypeUpdate | ResultGetEntity, SnakeClient: Snake) {
     if (!update) return false;

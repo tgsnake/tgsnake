@@ -119,10 +119,10 @@ export async function SendDocument(
         }
         let final = new Api.InputMediaUploadedDocument({
           file: file!,
-          mimeType: info?.mime || more?.mimeType || 'unknown',
+          mimeType: more?.mimeType || info?.mime || 'unknown',
           attributes: [
             new Api.DocumentAttributeFilename({
-              fileName: basename,
+              fileName: more?.fileName || basename,
             }),
           ],
           forceFile: more?.forceDocument || true,

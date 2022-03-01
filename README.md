@@ -21,8 +21,8 @@ yarn add tgsnake@latest
 const {Snake} = require("tgsnake")
 // import {Snake} from "tgsnake"
 const bot = new Snake({
-  api_hash : "abcde", //your api hash
-  api_id : 123456, // your api id
+  apiHash : "abcde", //your api hash
+  apiId : 123456, // your api id
   logger:"none" // gramjs logger
 })
 bot.run() //snake running

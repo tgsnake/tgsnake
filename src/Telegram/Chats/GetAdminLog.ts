@@ -26,7 +26,7 @@ export class ClassResultGetAdminLog {
     }
   }
 }
-class ClassLogGetAdminLog {
+export class ClassLogGetAdminLog {
   id?: number | string;
   date?: Date | number;
   action?: string;

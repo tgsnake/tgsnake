@@ -10,15 +10,15 @@ import { Context } from '../Update';
 import { MessageContext } from './MessageContext';
 import { ResultGetEntity } from '../Telegram/Users/GetEntity';
 import BotError from './Error';
-type MaybeArray<T> = T | T[];
-type MaybePromise<T> = T | Promise<T>;
-type NextFn = () => MaybePromise<void>;
-type MiddlewareFn<C> = (ctx: C, next: NextFn) => MaybePromise<any>;
-interface MiddlewareObj<C> {
+export type MaybeArray<T> = T | T[];
+export type MaybePromise<T> = T | Promise<T>;
+export type NextFn = () => MaybePromise<void>;
+export type MiddlewareFn<C> = (ctx: C, next: NextFn) => MaybePromise<any>;
+export interface MiddlewareObj<C> {
   middleware: () => MiddlewareFn<C>;
 }
 export type ErrorHandler = (error: BotError, context: Updates.TypeUpdate) => MaybePromise<any>;
-type Middleware<C> = MiddlewareFn<C> | MiddlewareObj<C>;
+export type Middleware<C> = MiddlewareFn<C> | MiddlewareObj<C>;
 function flatten<C>(mw: Middleware<C>) {
   return typeof mw === 'function' ? mw : (ctx, next) => mw.middleware()(ctx, next);
 }
