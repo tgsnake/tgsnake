@@ -19,6 +19,7 @@ export interface MiddlewareObj<C> {
 }
 export type ErrorHandler = (error: BotError, context: Updates.TypeUpdate) => MaybePromise<any>;
 export type Middleware<C> = MiddlewareFn<C> | MiddlewareObj<C>;
+export type Combine<T, U> = T & Partial<U>;
 function flatten<C>(mw: Middleware<C>) {
   return typeof mw === 'function' ? mw : (ctx, next) => mw.middleware()(ctx, next);
 }
@@ -128,49 +129,51 @@ function filterEvent(filter, ctx) {
   }
   return Boolean(passed.length > 0);
 }
-export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
-  private handler!: MiddlewareFn<Updates.TypeUpdate>;
+export class Composer<T = {}> implements MiddlewareObj<Combine<Updates.TypeUpdate, T>> {
+  private handler!: MiddlewareFn<Combine<Updates.TypeUpdate, T>>;
+  context: Partial<T> = {};
   prefix: string = '.!/';
-  constructor(...middleware: Array<MiddlewareFn<Updates.TypeUpdate>>) {
+  constructor(...middleware: Array<MiddlewareFn<Combine<Updates.TypeUpdate, T>>>) {
     this.handler = middleware.length === 0 ? pass : middleware.map(flatten).reduce(concat);
   }
-  middleware() {
+  middleware(): MiddlewareFn<Combine<Updates.TypeUpdate, T>> {
     return this.handler;
   }
-  use(...middleware: Array<MiddlewareFn<Updates.TypeUpdate>>) {
+  use(...middleware: Array<MiddlewareFn<Combine<Updates.TypeUpdate, T>>>): Composer<T> {
     const composer = new Composer(...middleware);
     this.handler = concat(this.handler, flatten(composer));
     return composer;
   }
   on<K extends keyof Context>(
     filter: MaybeArray<K>,
-    ...middleware: Array<MiddlewareFn<Context[K]>>
-  ): Composer {
+    ...middleware: Array<MiddlewareFn<Combine<Context[K], T>>>
+  ): Composer<T> {
     return this.filter((ctx) => filterEvent(filter, ctx), ...middleware);
   }
-  filter(predicate, ...middleware): Composer {
+  filter(predicate, ...middleware): Composer<T> {
     const composer = new Composer(...middleware);
     this.branch(predicate, composer, pass);
     return composer;
   }
-  drop(predicate, ...middleware) {
+  drop(predicate, ...middleware): Composer<T> {
     return this.filter(async (ctx) => !(await predicate(ctx)), ...middleware);
   }
-  fork(...middleware) {
+  fork(...middleware): Composer<T> {
     const composer = new Composer(...middleware);
     const fork = flatten(composer);
     //@ts-ignore
     this.use((ctx, next) => Promise.all([next(), run(fork, ctx)]));
     return composer;
   }
-  lazy(middlewareFactory) {
+  lazy(middlewareFactory): Composer<T> {
     return this.use(async (context, next) => {
+      Object.assign(context, this.context);
       const middleware = await middlewareFactory(context);
       const arr = toArray(middleware);
-      await flatten(new Composer(...arr))(buildContext(context), next);
+      await flatten(new Composer(...arr))(Object.assign(buildContext(context), this.context), next);
     });
   }
-  route(router, routeHandlers, fallback = pass) {
+  route(router, routeHandlers, fallback = pass): Composer<T> {
     return this.lazy(async (ctx) => {
       var _a;
       const route = await router(ctx);
@@ -181,13 +184,13 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
         : fallback;
     });
   }
-  branch(predicate, trueMiddleware, falseMiddleware) {
+  branch(predicate, trueMiddleware, falseMiddleware): Composer<T> {
     return this.lazy(async (ctx) => ((await predicate(ctx)) ? trueMiddleware : falseMiddleware));
   }
   command(
     trigger: MaybeArray<string | RegExp>,
-    ...middleware: Array<MiddlewareFn<MessageContext>>
-  ): Composer {
+    ...middleware: Array<MiddlewareFn<Combine<MessageContext, T>>>
+  ): Composer<T> {
     let key = toArray(trigger);
     let filterCmd = (ctx) => {
       const { text } = ctx;
@@ -214,14 +217,14 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
   }
   cmd(
     trigger: MaybeArray<string | RegExp>,
-    ...middleware: Array<MiddlewareFn<MessageContext>>
-  ): Composer {
+    ...middleware: Array<MiddlewareFn<Combine<MessageContext, T>>>
+  ): Composer<T> {
     return this.command(trigger, ...middleware);
   }
   hears(
     trigger: MaybeArray<string | RegExp>,
-    ...middleware: Array<MiddlewareFn<MessageContext>>
-  ): Composer {
+    ...middleware: Array<MiddlewareFn<Combine<MessageContext, T>>>
+  ): Composer<T> {
     let tgr = triggerFn(trigger);
     return this.on(['message', 'editMessage']).filter((ctx) => {
       const { text } = ctx;
@@ -230,16 +233,18 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
   }
   hear(
     trigger: MaybeArray<string | RegExp>,
-    ...middleware: Array<MiddlewareFn<MessageContext>>
-  ): Composer {
+    ...middleware: Array<MiddlewareFn<Combine<MessageContext, T>>>
+  ): Composer<T> {
     return this.hears(trigger, ...middleware);
   }
   action(
     trigger: MaybeArray<string | RegExp>,
     ...middleware: Array<
-      MiddlewareFn<Updates.UpdateBotCallbackQuery | Updates.UpdateInlineBotCallbackQuery>
+      MiddlewareFn<
+        Combine<Updates.UpdateBotCallbackQuery | Updates.UpdateInlineBotCallbackQuery, T>
+      >
     >
-  ): Composer {
+  ): Composer<T> {
     let key = toArray(trigger);
     let filterCmd = (ctx) => {
       const { data } = ctx;
@@ -260,8 +265,8 @@ export class Composer implements MiddlewareObj<Updates.TypeUpdate> {
   }
   inlineQuery(
     trigger: MaybeArray<string | RegExp>,
-    ...middleware: Array<MiddlewareFn<Updates.UpdateBotInlineQuery>>
-  ): Composer {
+    ...middleware: Array<MiddlewareFn<Combine<Updates.UpdateBotInlineQuery, T>>>
+  ): Composer<T> {
     let key = toArray(trigger);
     let filterCmd = (ctx) => {
       const { query } = ctx;

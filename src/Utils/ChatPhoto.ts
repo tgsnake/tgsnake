@@ -15,7 +15,7 @@ export class ChatPhoto {
   fileId!: string;
   uniqueFileId!: string;
   isBig: boolean = true;
-  hasVideo?:boolean;
+  hasVideo?: boolean;
   constructor(photo: Api.ChatPhoto | Api.UserProfilePhoto, resultsGetEntity: ResultGetEntity) {
     let file = media.generateFileId({
       fileType: 'profile_photo',
@@ -34,7 +34,7 @@ export class ChatPhoto {
     });
     this.fileId = file.fileId;
     this.uniqueFileId = file.uniqueFileId;
-    this.hasVideo = photo.hasVideo || false
+    this.hasVideo = photo.hasVideo || false;
   }
   decode(fileId?: string) {
     let file = fileId || this.fileId;

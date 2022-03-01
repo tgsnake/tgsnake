@@ -14,12 +14,12 @@ import { Snake } from '../Client';
 import { toString } from '../Utils/ToBigInt';
 
 export class UpdateUserName extends Update {
-  user!:From;
-  constructor(){
-    super(); 
-    this["_"] = "updateUserName"
+  user!: From;
+  constructor() {
+    super();
+    this['_'] = 'updateUserName';
   }
-  async init(update:Api.UpdateUserName,SnakeClient:Snake){
+  async init(update: Api.UpdateUserName, SnakeClient: Snake) {
     let mode = ['debug', 'info'];
     if (mode.includes(SnakeClient.logger)) {
       SnakeClient.log(

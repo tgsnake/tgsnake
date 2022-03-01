@@ -19,7 +19,7 @@ import fs from 'fs';
 import { EntityCache } from '../Context/EntityCache';
 import { SnakeEvent, InterfaceSnakeEvent } from '../Events';
 import { SnakeSession } from './SnakeSession';
-export class Snake extends MainContext {
+export class Snake<T = {}> extends MainContext<T> {
   private _client!: TelegramClient;
   private _telegram!: Telegram;
   private _version: string = '2.0.0-beta.17';
@@ -112,7 +112,7 @@ export class Snake extends MainContext {
     this._connectTime = 0;
     this.connected = false;
     await clearInterval(this.intervalCT);
-    if(this.entityCache) this.entityCache.save()
+    if (this.entityCache) this.entityCache.save();
     await this.client.disconnect();
     await this.run();
     let p = Date.now();
@@ -120,16 +120,11 @@ export class Snake extends MainContext {
     return `${ping} s`;
   }
   private async _createSession() {
-    if (this._options.storeSession) {
-      if (this._options.session !== '') {
-        return await ConvertString(this._options.session!, this._options.sessionName!, this);
-      }
-      let session = new SnakeSession(this._options.sessionName!, this);
     if (this.options.storeSession) {
       if (this.options.session !== '') {
-        return await ConvertString(this.options.session!, this.options.sessionName!,this);
+        return await ConvertString(this.options.session!, this.options.sessionName!, this);
       }
-      let session = new SnakeSession(this.options.sessionName!,this);
+      let session = new SnakeSession(this.options.sessionName!, this);
       await session.load();
       if (!session.authKey) {
         this._freshStore = true;
@@ -237,14 +232,14 @@ export class Snake extends MainContext {
     process.once('SIGINT', () => {
       this.consoleColor = 'reset';
       this.log('🐍 Killing..');
-      if(this.entityCache) this.entityCache.save()
+      if (this.entityCache) this.entityCache.save();
       if (this._client) this._client.disconnect();
       process.exit(0);
     });
     process.once('SIGTERM', () => {
       this.consoleColor = 'reset';
       this.log('🐍 Killing..');
-      if(this.entityCache) this.entityCache.save()
+      if (this.entityCache) this.entityCache.save();
       if (this._client) this._client.disconnect();
       process.exit(0);
     });
@@ -295,7 +290,7 @@ export class Snake extends MainContext {
     if (!this.connected) {
       throw new BotError('you not connected.', 'Snake.disconnect', '');
     }
-    if(this.entityCache) this.entityCache.save()
+    if (this.entityCache) this.entityCache.save();
     await this._client.disconnect();
     this.connected = false;
     return this;
@@ -344,7 +339,7 @@ export class Snake extends MainContext {
       return await this._client.session.save();
     }
     if (this._client.session instanceof StoreSession) {
-      let session = await ConvertStore(this.options.sessionName!,this);
+      let session = await ConvertStore(this.options.sessionName!, this);
       if (!session) {
         throw new BotError("can't converting StoreSession to StringSession", 'Snake.save', '');
       }

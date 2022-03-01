@@ -5,6 +5,6 @@
 //
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
-export {ClientOptions,Options} from "./Options"
-export {replyMoreParams} from "./reply"
-export {CatchError} from "./CatchError"
+export { ClientOptions, Options } from './Options';
+export { replyMoreParams } from './reply';
+export { CatchError } from './CatchError';

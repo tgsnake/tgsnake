@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2021 Butthx <https://guthub.com/butthx>
+// Copyright (C) 2022 Butthx <https://guthub.com/butthx>
 //
 // This file is part of Tgsnake
 //
@@ -8,8 +8,24 @@
 
 //import {Snake,GramJs,Composer,Updates} from "../src"
 import {Snake} from "../src/Client/Snake"
+interface MyContext {
+  hello?:string
+}
 const bot = new Snake()
-bot.on("connected",async (ctx) => {
-  console.log(await bot.save())
+bot.cmd("start",(ctx)=>{
+  console.log(ctx)
 })
 bot.run()
+/*
+interface Hello {
+  halo?:string
+}
+type Combine<T,U> = T & Partial<U>
+class HelloClass<T = {}> {
+  hai?:string
+  constructor () {}
+}
+let context = {}
+let b:Combine<HelloClass<any>,Hello> = new HelloClass()
+Object.assign(b,context)
+console.log(String(b.halo))*/

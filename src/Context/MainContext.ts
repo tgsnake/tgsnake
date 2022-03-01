@@ -12,15 +12,16 @@ import * as Updates from '../Update';
 import { Snake } from '../Client';
 import { Api } from 'telegram';
 import { MessageContext } from './MessageContext';
-import { Composer, run, ErrorHandler } from './Composer';
+import { Composer, run, ErrorHandler, Combine } from './Composer';
 import BotError from './Error';
 import { Cleaning } from '../Utils/CleanObject';
 import chalk from 'chalk';
 import { EntityCache } from './EntityCache';
 import * as NodeUtil from 'util';
 import fs from 'fs';
+import { Options } from '../Interface/Options';
 export type LoggerInfo = (...args: Array<any>) => void;
-export class MainContext extends Composer {
+export class MainContext<T = {}> extends Composer<T> {
   private _options!: Options;
   private _gramjsOptions!: Options;
   connected: Boolean = false;
@@ -74,17 +75,17 @@ export class MainContext extends Composer {
   constructor() {
     super();
   }
-  get options () {
-    return this._options
+  get options() {
+    return this._options;
   }
-  set options (options) {
-    this._options = options
+  set options(options) {
+    this._options = options;
   }
-  get gramjsOptions (){
-    return this._gramjsOptions
+  get gramjsOptions() {
+    return this._gramjsOptions;
   }
-  set gramjsOptions(options){
-    this._gramjsOptions = options
+  set gramjsOptions(options) {
+    this._gramjsOptions = options;
   }
   async handleUpdate(update: Api.TypeUpdate | ResultGetEntity, SnakeClient: Snake) {
     if (!update) return false;
@@ -97,12 +98,13 @@ export class MainContext extends Composer {
       );
     };
     let parsed: boolean = false;
-    let parsedUpdate: Updates.TypeUpdate;
+    let parsedUpdate: Combine<Updates.TypeUpdate, T>;
     if (update instanceof ResultGetEntity) {
       try {
         parsed = true;
-        parsedUpdate = update as ResultGetEntity;
-        await run(this.middleware(), parsedUpdate as ResultGetEntity);
+        //@ts-ignore
+        parsedUpdate = update;
+        await run(this.middleware(), parsedUpdate!);
         return update;
       } catch (error: any | BotError) {
         //@ts-ignore
@@ -126,7 +128,7 @@ export class MainContext extends Composer {
             await jsonUpdate.init(update, SnakeClient);
             parsed = true;
             parsedUpdate = jsonUpdate;
-            await run(this.middleware(), parsedUpdate);
+            await run(this.middleware(), parsedUpdate!);
             return jsonUpdate;
           } catch (error: any | BotError) {
             //@ts-ignore

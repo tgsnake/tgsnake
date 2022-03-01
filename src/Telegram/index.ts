@@ -5,9 +5,9 @@
 //
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
-export { Telegram } from "./Telegram"
-export * as Users from "./Users"
-export * as Bots from "./Bots"
-export * as Media from "./Media"
-export * as Messages from "./Messages"
-export * as Chats from "./Chats"
+export { Telegram } from './Telegram';
+export * as Users from './Users';
+export * as Bots from './Bots';
+export * as Media from './Media';
+export * as Messages from './Messages';
+export * as Chats from './Chats';

@@ -5,13 +5,14 @@
   "main": "./lib/index.js",
   "scripts": {
     "dev": "ts-node ./tes/index.ts --project ./tsconfig.json",
-    "prepare": "husky install && echo \"🐍 Building snake package.\" && rm -rf ./lib && tsc",
     "build": "rm -rf ./lib && tsc",
     "pretty-quick": "pretty-quick --staged --pattern \"src/**/*.*(js|jsx|ts|tsx)\"",
     "prettier": "prettier -w ./src",
     "update": "yarn up \"**\" --interactive",
-    "prepublish": "husky install && echo \"🐍 Building snake package.\" && rm -rf ./lib && tsc",
-    "postinstall": "husky install && echo \"🐍 Building snake package.\" && rm -rf ./lib && tsc"
+    "prepare": "husky install && echo \"🐍 Building snake package.\" && rm -rf ./lib && tsc",
+    "prepublish": "yarn prepare",
+    "postinstall": "yarn prepare",
+    "prepack" : "yarn prepare"
   },
   "homepage": "https://tgsnake.js.org",
   "keywords": [
@@ -28,7 +29,6 @@
   "files": [
     "lib/**/*"
   ],
-  "private": false,
   "dependencies": {
     "@tgsnake/parser": "1.1.1",
     "axios": "0.26.0",

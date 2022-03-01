@@ -5,5 +5,5 @@
 //
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
-export {GetEntity, ResultGetEntity} from "./GetEntity"
-export {GetUserPhotos,getUserPhotosMoreParams} from "./GetUserPhotos"
+export { GetEntity, ResultGetEntity } from './GetEntity';
+export { GetUserPhotos, getUserPhotosMoreParams } from './GetUserPhotos';
