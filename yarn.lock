@@ -142,11 +142,6 @@ brace-expansion@^1.1.7:
     balanced-match "^1.0.0"
     concat-map "0.0.1"
 
-browser-or-node@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/browser-or-node/-/browser-or-node-1.3.0.tgz#f2a4e8568f60263050a6714b2cc236bb976647a7"
-  integrity sha512-0F2z/VSnLbmEeBcUrSuDH5l0HxTXdQQzLjkmBR4cYfvg1zJrKSlmIZFqyFR8oX0NrwPhy3c3HQ6i3OxMbew4Tg==
-
 buffer@^6.0.3:
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/buffer/-/buffer-6.0.3.tgz#2ace578459cc8fbe2a70aaa8f52ee63b6a74c6c6"
@@ -977,15 +972,14 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
-telegram@2.4.6:
-  version "2.4.6"
-  resolved "https://registry.yarnpkg.com/telegram/-/telegram-2.4.6.tgz#1c198968723af4ba6ec9176623156d29ca28479d"
-  integrity sha512-BEN4ZyQluhcaNFWt+qfxukg8PG+AO6HOXKEGtxi2/0AMk7o1ps8lg57Q1bIfLL8JNEejNsC8HdRMMKPLYVsyEg==
+telegram@2.5.2:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/telegram/-/telegram-2.5.2.tgz#6e33a4e51b4b86437d06a262b856569e738e7b46"
+  integrity sha512-s9MfMyjg7nNPXy57HfTWT83Ehbs6/17vZRlhQ676807mIReNBrMtSvD5WPuZwvNTtmWmSgngVTlkwJNio2IrZg==
   dependencies:
     "@cryptography/aes" "^0.1.1"
     async-mutex "^0.3.0"
     big-integer "^1.6.48"
-    browser-or-node "^1.3.0"
     buffer "^6.0.3"
     htmlparser2 "^6.1.0"
     mime-types "^2.1.30"
