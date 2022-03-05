@@ -32,25 +32,13 @@ export async function UploadFile(
   more?: uploadFileMoreParams
 ): Promise<Api.InputFile | Api.InputFileBig | undefined> {
   try {
-    let mode = ['debug', 'info'];
+    snakeClient.log.debug('Running telegram.uploadFile');
     if (more?.workers !== undefined) {
       if (!inRange(more?.workers!, 1, 16)) {
-        snakeClient.consoleColor = 'yellow';
-        snakeClient.log(
-          `[${snakeClient.connectTime}] - [${new Date().toLocaleString()}] - workers (${
-            more.workers
-          }) out of range (1 <= workers <= 16). Chances are this will make tgsnake unstable.`
+        snakeClient.log.warning(
+          `Workers (${more.workers}) out of range (1 <= workers <= 16). Chances are this will make tgsnake unstable.`
         );
-        snakeClient.consoleColor = 'green';
       }
-    }
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.uploadFile`,
-        '\x1b[0m'
-      );
     }
     if (Buffer.isBuffer(file)) {
       let fileInfo = await fromBuffer(file);
@@ -104,6 +92,7 @@ export async function UploadFile(
       }
     }
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.uploadFile');
     throw new BotError(
       error.message,
       'telegram.uploadFile',

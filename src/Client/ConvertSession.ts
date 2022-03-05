@@ -11,6 +11,7 @@ import { Api } from 'telegram';
 import BotError from '../Context/Error';
 import { Snake } from './Snake';
 export async function ConvertString(session: string, sessionName: string, snakeClient: Snake) {
+  snakeClient.log.debug('Converting string session to store session.');
   let stringsession = new StringSession(session);
   if (sessionName !== '' && session !== '') {
     let storesession = new SnakeSession(sessionName, snakeClient);
@@ -23,6 +24,7 @@ export async function ConvertString(session: string, sessionName: string, snakeC
   }
 }
 export async function ConvertStore(sessionName: string, snakeClient: Snake) {
+  snakeClient.log.debug('Converting store session to string session.');
   let stringsession = new StringSession('');
   if (sessionName !== '') {
     let storesession = new SnakeSession(sessionName, snakeClient);

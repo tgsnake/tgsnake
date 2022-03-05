@@ -18,14 +18,7 @@ export class UpdateDeleteMessages extends Update {
     this['_'] = 'updateDeleteMessages';
   }
   async init(update: Api.UpdateDeleteMessages, SnakeClient: Snake) {
-    let mode = ['debug', 'info'];
-    if (mode.includes(SnakeClient.logger)) {
-      SnakeClient.log(
-        `[${SnakeClient.connectTime}] - [${new Date().toLocaleString()}] - Creating update ${
-          this['_']
-        }`
-      );
-    }
+    SnakeClient.log.debug(`Creating ${this['_']}`);
     this.telegram = SnakeClient.telegram;
     this.id = update.messages;
     return this;

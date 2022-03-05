@@ -42,14 +42,11 @@ export async function SendMedia(
   more?: sendMediaMoreParams
 ) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.sendMedia`
+    snakeClient.log.debug('Running telegram.sendMedia');
+    if (typeof chatId === 'number')
+      snakeClient.log.warning(
+        'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    }
     let parseMode = '';
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
     if (more) {
@@ -63,6 +60,7 @@ export async function SendMedia(
     let replyMarkup;
     if (more) {
       if (more.entities) {
+        snakeClient.log.debug('Building Entities');
         entities = (await parser.toRaw(
           snakeClient.client!,
           more.entities
@@ -71,6 +69,7 @@ export async function SendMedia(
         delete more.entities;
       }
       if (more.caption && !more.entities) {
+        snakeClient.log.debug('Building Entities');
         //@ts-ignore
         let [t, e] = parseMode !== '' ? parser.parse(more.caption, parseMode!) : [more.caption, []];
         parseText = t;
@@ -78,6 +77,7 @@ export async function SendMedia(
         delete more.caption;
       }
       if (more.replyMarkup) {
+        snakeClient.log.debug('Building replyMarkup');
         replyMarkup = BuildReplyMarkup(more.replyMarkup!);
         delete more.replyMarkup;
       }
@@ -95,6 +95,7 @@ export async function SendMedia(
       })
     );
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.sendMedia');
     throw new BotError(
       error.message,
       'telegram.sendMedia',

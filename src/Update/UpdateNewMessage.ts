@@ -18,14 +18,7 @@ export class UpdateNewMessage extends Update {
     this['_'] = 'updateNewMessage';
   }
   async init(update: Api.UpdateNewMessage, SnakeClient: Snake) {
-    let mode = ['debug', 'info'];
-    if (mode.includes(SnakeClient.logger)) {
-      SnakeClient.log(
-        `[${SnakeClient.connectTime}] - [${new Date().toLocaleString()}] - Creating update ${
-          this['_']
-        }`
-      );
-    }
+    SnakeClient.log.debug(`Creating ${this['_']}`);
     this.telegram = SnakeClient.telegram;
     let message = new MessageContext();
     if (update.message instanceof Api.Message) {

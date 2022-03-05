@@ -43,14 +43,11 @@ export async function PinMessage(
   more?: pinMessageMoreParams
 ) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.pinMessage`
+    snakeClient.log.debug('Running telegram.pinMessage');
+    if (typeof chatId === 'number')
+      snakeClient.log.warning(
+        'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    }
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
     let results: Api.TypeUpdates = await snakeClient.client.invoke(
       new Api.messages.UpdatePinnedMessage({
@@ -61,6 +58,7 @@ export async function PinMessage(
     );
     return await generateResults(results, snakeClient);
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.pinMessage');
     throw new BotError(
       error.message,
       'telegram.pinMessage',
@@ -69,14 +67,7 @@ export async function PinMessage(
   }
 }
 async function generateResults(results: Api.TypeUpdates, SnakeClient: Snake) {
-  let mode = ['debug', 'info'];
-  if (mode.includes(SnakeClient.logger)) {
-    SnakeClient.log(
-      `[${
-        SnakeClient.connectTime
-      }] - [${new Date().toLocaleString()}] - Creating results telegram.pinMessage`
-    );
-  }
+  SnakeClient.log.debug('Running telegram.pinMessage');
   if (results instanceof Api.Updates) {
     results as Api.Updates;
     if (results.updates.length > 0) {

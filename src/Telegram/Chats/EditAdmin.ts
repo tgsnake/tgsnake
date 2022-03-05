@@ -49,26 +49,15 @@ export async function EditAdmin(
   more?: editAdminMoreParams
 ) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.editAdmin`
+    snakeClient.log.debug('Running telegram.editAdmin');
+    if (typeof userId === 'number')
+      snakeClient.log.warning(
+        'Type of userId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    }
-    /*let permissions = {
-      changeInfo: more?.changeInfo || true,
-      postMessages: more?.postMessages || true,
-      editMessages: more?.editMessages || true,
-      deleteMessages: more?.deleteMessages || true,
-      banUsers: more?.banUsers || true,
-      inviteUsers: more?.inviteUsers || true,
-      pinMessages: more?.pinMessages || true,
-      addAdmins: more?.addAdmins || false,
-      anonymous: more?.anonymous || false,
-      manageCall: more?.manageCall || true,
-    };*/
+    if (typeof chatId === 'number')
+      snakeClient.log.warning(
+        'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
+      );
     let results: Api.TypeUpdates = await snakeClient.client.invoke(
       new Api.channels.EditAdmin({
         channel: convertId(chatId),
@@ -93,8 +82,10 @@ export async function EditAdmin(
         rank: more?.rank || '',
       })
     );
+    snakeClient.log.debug('Creating results telegram.editAdmin');
     return await generateResults(results, snakeClient);
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.editAdmin');
     throw new BotError(
       error.message,
       'telegram.editAdmin',
@@ -103,14 +94,6 @@ export async function EditAdmin(
   }
 }
 async function generateResults(results: Api.TypeUpdates, SnakeClient: Snake) {
-  let mode = ['debug', 'info'];
-  if (mode.includes(SnakeClient.logger)) {
-    SnakeClient.log(
-      `[${
-        SnakeClient.connectTime
-      }] - [${new Date().toLocaleString()}] - Creating results telegram.editAdmin`
-    );
-  }
   if (results instanceof Api.Updates) {
     results as Api.Updates;
     if (results.updates.length > 0) {

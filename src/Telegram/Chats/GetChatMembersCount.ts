@@ -24,14 +24,7 @@ import bigInt from 'big-integer';
  */
 export async function GetChatMembersCount(snakeClient: Snake, chatId: number | string | bigint) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.getChatMembersCount`
-      );
-    }
+    snakeClient.log.debug('Running telegram.getChatMembersCount');
     let chat = await snakeClient.telegram.getEntity(chatId, true);
     if (chat.type === 'user') {
       throw new Error('Typeof chatId must be channel or chat, not a user.');
@@ -62,6 +55,7 @@ export async function GetChatMembersCount(snakeClient: Snake, chatId: number | s
       return s.participantsCount;
     }
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.getChatMembersCount');
     throw new BotError(error.message, 'telegram.getChatMembersCount', `${chatId}`);
   }
 }

@@ -12,20 +12,13 @@ interface MyContext {
   hello?:string
 }
 const bot = new Snake()
+bot.log.setLogLevel("debug")
+bot.use((ctx,next)=>{
+  console.log(ctx)
+  return next()
+})
 bot.cmd("start",(ctx)=>{
   console.log(ctx)
+  ctx.telegram.sendMessage(Number(ctx.chat.id),"hello")
 })
 bot.run()
-/*
-interface Hello {
-  halo?:string
-}
-type Combine<T,U> = T & Partial<U>
-class HelloClass<T = {}> {
-  hai?:string
-  constructor () {}
-}
-let context = {}
-let b:Combine<HelloClass<any>,Hello> = new HelloClass()
-Object.assign(b,context)
-console.log(String(b.halo))*/

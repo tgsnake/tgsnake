@@ -34,14 +34,11 @@ export async function DeleteHistory(
   more?: deleteHistoryMoreParams
 ) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.deleteHistory`
+    snakeClient.log.debug('Running telegram.deleteHistory');
+    if (typeof chatId === 'number')
+      snakeClient.log.warning(
+        'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    }
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
     if (type == 'channel' || type == 'supergroup') {
       return snakeClient.client.invoke(
@@ -61,6 +58,7 @@ export async function DeleteHistory(
       );
     }
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.deleteHistory');
     throw new BotError(
       error.message,
       'telegram.deleteHistory',

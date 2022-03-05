@@ -30,14 +30,15 @@ export async function DeleteUserHistory(
   userId: number | string | bigint
 ) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.deleteUserHistory`
+    snakeClient.log.debug('Running telegram.deleteUserHistory');
+    if (typeof chatId === 'number')
+      snakeClient.log.warning(
+        'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    }
+    if (typeof userId === 'number')
+      snakeClient.log.warning(
+        'Type of userId is number, please switch to BigInt or String for security Ids 64 bit int.'
+      );
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
     let [uId, uType, uPeer] = await toBigInt(userId, snakeClient);
     return new ResultAffectedMessages(
@@ -49,6 +50,7 @@ export async function DeleteUserHistory(
       )
     );
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.deleteUserHistory');
     throw new BotError(error.message, 'telegram.deleteUserHistory', `${chatId}${userId}`);
   }
 }

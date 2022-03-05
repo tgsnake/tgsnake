@@ -26,14 +26,7 @@ import BotError from '../../Context/Error';
  */
 export async function ReadMessageContents(snakeClient: Snake, messageId: number[]) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.readMessageContents`
-      );
-    }
+    snakeClient.log.debug('Running telegram.readMessageContents');
     return new ResultAffectedMessages(
       await snakeClient.client.invoke(
         new Api.messages.ReadMessageContents({
@@ -42,6 +35,7 @@ export async function ReadMessageContents(snakeClient: Snake, messageId: number[
       )
     );
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.readMessageContents');
     throw new BotError(
       error.message,
       'telegram.readMessageContents',

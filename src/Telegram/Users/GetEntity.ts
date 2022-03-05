@@ -232,37 +232,22 @@ export async function GetEntity(
   useCache: boolean = true
 ): Promise<ResultGetEntity> {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.getEntity`
-      );
-    }
+    snakeClient.log.debug('Running telegram.getEntity');
     if (useCache) {
       if (typeof chatId == 'number') {
         if (snakeClient.entityCache.get(BigInt(toString(chatId) as string) as bigint)) {
-          if (mode.includes(snakeClient.logger)) {
-            snakeClient.log(
-              `[${
-                snakeClient.connectTime
-              }] - [${new Date().toLocaleString()}] - [telegram.getEntity] using cache`
-            );
-          }
+          snakeClient.log.debug(
+            'Entity already in cache, so we use it, not fetching fresh data from telegram.'
+          );
           //@ts-ignore
           return snakeClient.entityCache.get(BigInt(toString(chatId) as string) as bigint);
         }
       }
       if (typeof chatId == 'bigint') {
         if (snakeClient.entityCache.get(chatId as bigint)) {
-          if (mode.includes(snakeClient.logger)) {
-            snakeClient.log(
-              `[${
-                snakeClient.connectTime
-              }] - [${new Date().toLocaleString()}] - [telegram.getEntity] using cache`
-            );
-          }
+          snakeClient.log.debug(
+            'Entity already in cache, so we use it, not fetching fresh data from telegram.'
+          );
           //@ts-ignore
           return snakeClient.entityCache.get(chatId as bigint);
         }
@@ -270,25 +255,27 @@ export async function GetEntity(
       if (typeof chatId == 'string') {
         if (String(chatId).startsWith('@')) {
           if (snakeClient.entityCache.get(String(chatId).replace('@', '') as string)) {
-            if (mode.includes(snakeClient.logger)) {
-              snakeClient.log(
-                `[${
-                  snakeClient.connectTime
-                }] - [${new Date().toLocaleString()}] - [telegram.getEntity] using cache`
-              );
-            }
+            snakeClient.log.debug(
+              'Entity already in cache, so we use it, not fetching fresh data from telegram.'
+            );
             //@ts-ignore
             return snakeClient.entityCache.get(String(chatId).replace('@', '') as string);
           }
         }
       }
     }
+    snakeClient.log.debug(
+      'Entity not available in cache, so we fetching fresh data from telegram.'
+    );
     let e = await snakeClient.client.getEntity(convertId(chatId));
+    snakeClient.log.debug('Creating ResultGetEntity');
     let r = new ResultGetEntity(e);
+    snakeClient.log.debug('Caching ResultGetEntity');
     snakeClient.entityCache.set(r.id, r);
     if (r.username) snakeClient.entityCache.set(r.username, r);
     return r;
   } catch (error: any) {
+    snakeClient.log.error('Failed running telegram.getEntity');
     throw new BotError(error.message, 'telegram.getEntity', `${chatId},${useCache}`);
   }
 }

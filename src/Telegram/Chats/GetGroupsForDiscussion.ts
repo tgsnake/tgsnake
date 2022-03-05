@@ -23,19 +23,13 @@ import BotError from '../../Context/Error';
  */
 export async function GetGroupsForDiscussion(snakeClient: Snake) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.getGroupsForDiscussion`
-      );
-    }
+    snakeClient.log.debug('Running telegram.getGroupsForDiscussion');
     let results: Api.messages.TypeChats = await snakeClient.client.invoke(
       new Api.channels.GetGroupsForDiscussion()
     );
     return results;
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.getGroupsForDiscussion');
     throw new BotError(error.message, 'telegram.getGroupsForDiscussion', '');
   }
 }

@@ -20,7 +20,7 @@ export {
   TypeChatParticipants,
 } from './ChatParticipants';
 export { ChatPhoto } from './ChatPhoto';
-export { Cleaning } from './CleanObject';
+export { Cleaning, betterConsoleLog } from './CleanObject';
 export { ForwardMessage } from './ForwardMessage';
 export { From } from './From';
 export { typeId, thumbTypeId, GenerateFileId, generateFileId, Media } from './Media';

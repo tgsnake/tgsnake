@@ -7,9 +7,14 @@
 //  it under the terms of the MIT License as published.
 import { ReplyToMessage } from '../Utils/ReplyToMessage';
 import { replyMoreParams } from '../Interface/reply';
+import { betterConsoleLog } from '../Utils/CleanObject';
+import { inspect } from 'util';
 export class ReplyToMessageContext extends ReplyToMessage {
   constructor() {
     super();
+  }
+  [inspect.custom]() {
+    return betterConsoleLog(this);
   }
   async reply(text: string, more?: replyMoreParams) {
     if (this.chat) {

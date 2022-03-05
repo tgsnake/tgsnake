@@ -34,16 +34,8 @@ export async function GetUserPhotos(
   more?: getUserPhotosMoreParams
 ) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.getUserPhotos`
-      );
-    }
+    snakeClient.log.debug('Running telegram.getUserPhotos');
     let [id, type, peer] = await toBigInt(userId, snakeClient);
-
     let results: Api.photos.TypePhotos = await snakeClient.client.invoke(
       new Api.photos.GetUserPhotos({
         userId: peer,
@@ -54,6 +46,7 @@ export async function GetUserPhotos(
     );
     return results;
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.getUserPhotos');
     throw new BotError(
       error.message,
       'telegram.getUserPhotos',

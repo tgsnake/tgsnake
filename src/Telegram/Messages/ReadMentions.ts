@@ -24,14 +24,11 @@ import BotError from '../../Context/Error';
  */
 export async function ReadMentions(snakeClient: Snake, chatId: number | string | bigint) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.readMentions`
+    snakeClient.log.debug('Running telegram.readMentions');
+    if (typeof chatId === 'number')
+      snakeClient.log.warning(
+        'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    }
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
     return new ResultAffectedMessages(
       await snakeClient.client.invoke(
@@ -41,6 +38,7 @@ export async function ReadMentions(snakeClient: Snake, chatId: number | string |
       )
     );
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.readMentions');
     throw new BotError(error.message, 'telegram.readMentions', '');
   }
 }

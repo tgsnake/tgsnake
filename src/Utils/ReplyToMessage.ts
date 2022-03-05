@@ -18,7 +18,6 @@ import { ForwardMessage } from './ForwardMessage';
 import { Media } from './Media';
 import { convertReplyMarkup, TypeReplyMarkup } from './ReplyMarkup';
 import { Cleaning } from './CleanObject';
-let _SnakeClient: Snake;
 export class ReplyToMessage {
   out?: boolean;
   mentioned?: boolean;
@@ -51,19 +50,16 @@ export class ReplyToMessage {
   noforward?: boolean;
   senderChat?: Chat;
   isAutomaticForward?: boolean;
+  private _SnakeClient!: Snake;
   constructor() {}
   async init(
     messageReplyHeader: Api.MessageReplyHeader,
     SnakeClient: Snake,
     chatId: number | bigint
   ) {
-    _SnakeClient = SnakeClient;
+    this._SnakeClient = SnakeClient;
     let mode = ['debug', 'info'];
-    if (mode.includes(SnakeClient.logger)) {
-      SnakeClient.log(
-        `[${SnakeClient.connectTime}] - [${new Date().toLocaleString()}] - Creating replyToMessage`
-      );
-    }
+    SnakeClient.log.debug(`Creating replyToMessage`);
     if (messageReplyHeader.replyToMsgId) {
       this.id = messageReplyHeader.replyToMsgId;
       let message = await this.SnakeClient.telegram.getMessages(chatId, [this.id], false);
@@ -105,9 +101,12 @@ export class ReplyToMessage {
     }
   }
   get SnakeClient() {
-    return _SnakeClient;
+    return this._SnakeClient;
+  }
+  get snakeClient() {
+    return this._SnakeClient;
   }
   get telegram() {
-    return _SnakeClient.telegram;
+    return this._SnakeClient.telegram;
   }
 }

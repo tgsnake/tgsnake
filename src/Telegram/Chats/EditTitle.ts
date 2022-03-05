@@ -33,14 +33,11 @@ export async function EditTitle(
   title: string
 ) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.editTitle`
+    snakeClient.log.debug('Running telegram.editTitle');
+    if (typeof chatId === 'number')
+      snakeClient.log.warning(
+        'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    }
     let [id, type] = await toBigInt(chatId, snakeClient);
     if (type == 'channel') {
       let results: Api.TypeUpdates = await snakeClient.client.invoke(
@@ -49,6 +46,7 @@ export async function EditTitle(
           title: title,
         })
       );
+      snakeClient.log.debug('Creating results telegram.editTitle');
       return await generateResults(results, snakeClient);
     } else {
       return snakeClient.client.invoke(
@@ -59,18 +57,11 @@ export async function EditTitle(
       );
     }
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.editTitle');
     throw new BotError(error.message, 'telegram.editTitle', `${chatId},${title}`);
   }
 }
 async function generateResults(results: Api.TypeUpdates, SnakeClient: Snake) {
-  let mode = ['debug', 'info'];
-  if (mode.includes(SnakeClient.logger)) {
-    SnakeClient.log(
-      `[${
-        SnakeClient.connectTime
-      }] - [${new Date().toLocaleString()}] - Creating results telegram.editTitle`
-    );
-  }
   if (results instanceof Api.Updates) {
     results as Api.Updates;
     if (results.updates.length > 0) {

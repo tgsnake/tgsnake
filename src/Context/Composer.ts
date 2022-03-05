@@ -17,7 +17,10 @@ export type MiddlewareFn<C> = (ctx: C, next: NextFn) => MaybePromise<any>;
 export interface MiddlewareObj<C> {
   middleware: () => MiddlewareFn<C>;
 }
-export type ErrorHandler = (error: BotError, context: Updates.TypeUpdate) => MaybePromise<any>;
+export type ErrorHandler<T> = (
+  error: BotError,
+  context: Combine<Updates.TypeUpdate, T>
+) => MaybePromise<any>;
 export type Middleware<C> = MiddlewareFn<C> | MiddlewareObj<C>;
 export type Combine<T, U> = T & Partial<U>;
 function flatten<C>(mw: Middleware<C>) {
@@ -116,12 +119,7 @@ function filterEvent(filter, ctx) {
       default:
     }
     h.push(ctx['_']);
-    let logger = ['info', 'debug'];
-    if (logger.includes(ctx.SnakeClient.logger)) {
-      ctx.SnakeClient.log(
-        `[${ctx.SnakeClient.connectTime}] - [${new Date().toLocaleString()}] - Receive ${ctx['_']}`
-      );
-    }
+    ctx.SnakeClient.log.debug(`Receive ${ctx['_']}`);
   }
   let passed: string[] = [];
   for (let f of filters) {
@@ -196,7 +194,7 @@ export class Composer<T = {}> implements MiddlewareObj<Combine<Updates.TypeUpdat
       const { text } = ctx;
       const { aboutMe } = ctx.SnakeClient;
       let s = text.split(' ');
-      let passed: any[] = [];
+      let passed: RegExpExecArray[] = [];
       for (let cmd of key) {
         if (typeof cmd == 'string') {
           cmd as string;
@@ -204,13 +202,18 @@ export class Composer<T = {}> implements MiddlewareObj<Combine<Updates.TypeUpdat
             `^[${this.prefix}](${cmd})${aboutMe.username ? `(@${aboutMe.username})?` : ``}$`,
             'i'
           );
-          if (r.test(String(s[0]))) passed.push(cmd);
+          if (r.test(String(s[0]))) {
+            passed.push(r.exec(String(s[0]))!);
+          }
         }
         if (cmd instanceof RegExp) {
           cmd as RegExp;
-          if (cmd.test(String(s[0]))) passed.push(cmd);
+          if (cmd.test(String(s[0]))) {
+            passed.push(cmd.exec(String(s[0]))!);
+          }
         }
       }
+      ctx.match = passed;
       return Boolean(passed.length);
     };
     return this.on(['message', 'editMessage']).filter(filterCmd, ...middleware);

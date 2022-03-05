@@ -44,6 +44,7 @@ export class MessageAction {
   emoticon!: string;
   constructor() {}
   async init(messageAction: Api.TypeMessageAction, snakeClient: Snake) {
+    snakeClient.log.debug(`Creating messageAction`);
     if (messageAction instanceof Api.MessageActionChatCreate) {
       messageAction as Api.MessageActionChatCreate;
       this['_'] = 'chatCreate';

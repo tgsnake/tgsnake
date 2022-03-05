@@ -32,14 +32,11 @@ export async function GetMessages(
   replies: boolean = false
 ) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.getMessages`
+    snakeClient.log.debug('Running telegram.getMessages');
+    if (typeof chatId === 'number')
+      snakeClient.log.warning(
+        'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    }
     let messageIds: any = messageId;
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
     if (type == 'channel' || type == 'supergroup') {
@@ -63,6 +60,7 @@ export async function GetMessages(
       return final;
     }
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.getMessages');
     throw new BotError(
       error.message,
       'telegram.getMessages',
@@ -75,14 +73,7 @@ export class ResultsGetMessage {
   date: number | Date = Math.floor(Date.now() / 1000);
   constructor() {}
   async init(results: Api.messages.TypeMessages, SnakeClient: Snake, replies: boolean = false) {
-    let mode = ['debug', 'info'];
-    if (mode.includes(SnakeClient.logger)) {
-      SnakeClient.log(
-        `[${
-          SnakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Creating results telegram.getMessages`
-      );
-    }
+    SnakeClient.log.debug('Creating results telegram.getMessages');
     let tempMessages: MessageContext[] = [];
     if (results instanceof Api.messages.ChannelMessages) {
       for (let i = 0; i < results.messages.length; i++) {

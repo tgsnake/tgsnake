@@ -23,14 +23,7 @@ export class UpdateChatParticipants extends Update {
     this['_'] = 'updateChatParticipants';
   }
   async init(update: Api.UpdateChatParticipants, SnakeClient: Snake) {
-    let mode = ['debug', 'info'];
-    if (mode.includes(SnakeClient.logger)) {
-      SnakeClient.log(
-        `[${SnakeClient.connectTime}] - [${new Date().toLocaleString()}] - Creating update ${
-          this['_']
-        }`
-      );
-    }
+    SnakeClient.log.debug(`Creating ${this['_']}`);
     this.telegram = SnakeClient.telegram;
     if (update.participants) {
       if (update.participants instanceof Api.ChatParticipants) {

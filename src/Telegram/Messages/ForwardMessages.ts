@@ -42,16 +42,18 @@ export async function ForwardMessages(
   more?: forwardMessageMoreParams
 ) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.forwardMessages`
+    snakeClient.log.debug('Running telegram.forwardMessages');
+    if (typeof chatId === 'number')
+      snakeClient.log.warning(
+        'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    }
+    if (typeof fromChatId === 'number')
+      snakeClient.log.warning(
+        'Type of fromChatId is number, please switch to BigInt or String for security Ids 64 bit int.'
+      );
     let randomId: any = [];
     for (let i = 0; i < messageId.length; i++) {
+      snakeClient.log.debug('Building randomId');
       randomId.push(bigInt(Math.floor(Math.random() * 10000000000000)));
     }
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
@@ -67,6 +69,7 @@ export async function ForwardMessages(
     );
     return await createResults(results, snakeClient);
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.forwardMessages');
     throw new BotError(
       error.message,
       'telegram.forwardMessages',
@@ -77,14 +80,7 @@ export async function ForwardMessages(
   }
 }
 async function createResults(results: Api.TypeUpdates, snakeClient: Snake) {
-  let mode = ['debug', 'info'];
-  if (mode.includes(snakeClient.logger)) {
-    snakeClient.log(
-      `[${
-        snakeClient.connectTime
-      }] - [${new Date().toLocaleString()}] - Creating results telegram.forwardMessages`
-    );
-  }
+  snakeClient.log.debug('Creating results telegram.forwardMessages');
   if (results instanceof Api.Updates) {
     results as Api.Updates;
     if (results.updates?.length > 0) {

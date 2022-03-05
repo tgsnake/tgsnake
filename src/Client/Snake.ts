@@ -19,6 +19,7 @@ import fs from 'fs';
 import { EntityCache } from '../Context/EntityCache';
 import { SnakeEvent, InterfaceSnakeEvent } from '../Events';
 import { SnakeSession } from './SnakeSession';
+import { Logger } from '../Context/Logger';
 export class Snake<T = {}> extends MainContext<T> {
   private _client!: TelegramClient;
   private _telegram!: Telegram;
@@ -76,15 +77,17 @@ export class Snake<T = {}> extends MainContext<T> {
     this.options = Object.assign(
       {
         tgsnakeLog: true,
-        logger: 'none',
+        logger: 'error',
         sessionName: 'tgsnake',
         storeSession: true,
         session: '',
       },
       _options
     );
+    this.log = new Logger(this.options.logger!, this.options.tgsnakeLog!);
     this.entityCache = new EntityCache(this.options.sessionName!);
-    this.entityCache.load;
+    this.log.debug('Load Entities from local cache');
+    this.entityCache.load();
   }
   get telegram() {
     return this._telegram;
@@ -106,9 +109,7 @@ export class Snake<T = {}> extends MainContext<T> {
   }
   async restart() {
     let d = Date.now();
-    this.consoleColor = 'reset';
-    await this.log(`🐍 Restarting after [${this.connectTime}] connected.`);
-    this.consoleColor = 'green';
+    this.log.debug(`Restarting after [${this.connectTime}] connected.`);
     this._connectTime = 0;
     this.connected = false;
     await clearInterval(this.intervalCT);
@@ -120,6 +121,7 @@ export class Snake<T = {}> extends MainContext<T> {
     return `${ping} s`;
   }
   private async _createSession() {
+    this.log.debug('Creating session');
     if (this.options.storeSession) {
       if (this.options.session !== '') {
         return await ConvertString(this.options.session!, this.options.sessionName!, this);
@@ -134,9 +136,8 @@ export class Snake<T = {}> extends MainContext<T> {
     return new StringSession(this.options.session!);
   }
   private async _start() {
-    this.log(`🐍 Welcome To TGSNAKE ${this.version}.`);
-    this.log(`🐍 Setting Logger level to "${this.options.logger}"`);
-    this.consoleColor = 'green';
+    this.log.log(`🐍 Welcome To TGSNAKE ${this.version}.`);
+    this.log.log(`🐍 Setting Logger level to "${this.options.logger}"`);
     let _ask = async () => {
       let loginAsBot = await prompts({
         type: 'confirm',
@@ -229,21 +230,21 @@ export class Snake<T = {}> extends MainContext<T> {
     return this;
   }
   async _createClient() {
+    this.log.debug('Creating client');
     process.once('SIGINT', () => {
-      this.consoleColor = 'reset';
-      this.log('🐍 Killing..');
+      this.log.log('🐍 Killing..');
+      this.log.debug('Saving Entities to local cache');
       if (this.entityCache) this.entityCache.save();
       if (this._client) this._client.disconnect();
       process.exit(0);
     });
     process.once('SIGTERM', () => {
-      this.consoleColor = 'reset';
-      this.log('🐍 Killing..');
+      this.log.log('🐍 Killing..');
+      this.log.debug('Saving Entities to local cache');
       if (this.entityCache) this.entityCache.save();
       if (this._client) this._client.disconnect();
       process.exit(0);
     });
-    this.consoleColor = 'reset';
     if (!this.options.apiHash) {
       this.options.apiHash = (
         await prompts({
@@ -314,8 +315,7 @@ export class Snake<T = {}> extends MainContext<T> {
       await this.client.getDialogs({});
     }
     this.handleUpdate(this.aboutMe, this);
-    this.log('🐍 Connected as ', name);
-    this.consoleColor = 'green';
+    this.log.log('🐍 Connected as ', name);
     this.connected = true;
     this.intervalCT = setInterval(() => {
       this._connectTime++;
@@ -332,6 +332,7 @@ export class Snake<T = {}> extends MainContext<T> {
     if (!this.connected) {
       throw new BotError('you not connected.', 'Snake.save', '');
     }
+    this.log.debug('Saving Session');
     if (this._client.session instanceof StringSession) {
       return await this._client.session.save();
     }
@@ -349,6 +350,7 @@ export class Snake<T = {}> extends MainContext<T> {
   }
   async generateSession() {
     this.options.storeSession = false;
+    this.log.debug('Generating session');
     await this.start();
     await this.save();
     process.exit(0);

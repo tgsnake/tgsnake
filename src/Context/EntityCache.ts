@@ -7,11 +7,16 @@
 //  it under the terms of the MIT License as published.
 import fs from 'fs';
 import { ResultGetEntity } from '../Telegram/Users/GetEntity';
+import { betterConsoleLog } from '../Utils/CleanObject';
+import { inspect } from 'util';
 export class EntityCache {
   private _cache: Map<bigint | string, ResultGetEntity> = new Map();
   private _sessionName!: string;
   constructor(sessionName: string) {
     this._sessionName = sessionName;
+  }
+  [inspect.custom]() {
+    return betterConsoleLog(this);
   }
   set(key: bigint | string, value: ResultGetEntity) {
     return this._cache.set(key, value);
@@ -40,7 +45,7 @@ export class EntityCache {
     }
     if (fs.existsSync(`${process.cwd()}/${this._sessionName}/cache.json`)) {
       let file = JSON.parse(
-        fs.readFileSync(`${process.cwd()}/e-cache-${this._sessionName}.json`, 'utf8')
+        fs.readFileSync(`${process.cwd()}/${this._sessionName}/cache.json`, 'utf8')
       );
       for (let [k, v] of file) {
         let g = new ResultGetEntity();

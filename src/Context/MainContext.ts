@@ -14,13 +14,11 @@ import { Api } from 'telegram';
 import { MessageContext } from './MessageContext';
 import { Composer, run, ErrorHandler, Combine } from './Composer';
 import BotError from './Error';
-import { Cleaning } from '../Utils/CleanObject';
-import chalk from 'chalk';
+import { Cleaning, betterConsoleLog } from '../Utils/CleanObject';
 import { EntityCache } from './EntityCache';
-import * as NodeUtil from 'util';
-import fs from 'fs';
 import { Options } from '../Interface/Options';
-export type LoggerInfo = (...args: Array<any>) => void;
+import { Logger } from './Logger';
+import { inspect } from 'util';
 export class MainContext<T = {}> extends Composer<T> {
   private _options!: Options;
   private _gramjsOptions!: Options;
@@ -28,52 +26,18 @@ export class MainContext<T = {}> extends Composer<T> {
   aboutMe!: ResultGetEntity;
   entityCache!: EntityCache;
   consoleColor!: string;
-  log: LoggerInfo = (...args: Array<any>) => {
-    if (this._options.tgsnakeLog) {
-      if (args.length > 1) {
-        let fargs: Array<any> = new Array();
-        for (let arg of args) {
-          if (typeof arg == 'object') {
-            fargs.push(
-              NodeUtil.inspect(arg, {
-                showHidden: true,
-                colors: true,
-              })
-            );
-          } else {
-            fargs.push(arg);
-          }
-        }
-        console.log(chalk[this.consoleColor](...fargs));
-      } else {
-        let fargs: Array<any> = new Array();
-        if (typeof args[0] == 'object') {
-          fargs.push(
-            NodeUtil.inspect(args[0], {
-              showHidden: true,
-              colors: true,
-            })
-          );
-        } else {
-          fargs.push(args[0]);
-        }
-        console.log(chalk[this.consoleColor](...fargs));
-      }
-    }
-    return args;
-  };
-  errorHandler: ErrorHandler = (error, update) => {
-    this.consoleColor = 'red';
-    this.log(`🐍 Snake error (${error.message}) when processing update : `);
-    this.consoleColor = 'reset';
-    this.log(update);
-    this.consoleColor = 'red';
-    this.log(`🐍 ${error.functionName}(${error.functionArgs})`);
-    this.consoleColor = 'green';
+  log!: Logger;
+  errorHandler: ErrorHandler<T> = (error, update) => {
+    this.log.error(`Snake error (${error.message}) when processing update :`);
+    this.log.error(update);
+    this.log.error(`${error.functionName}(${error.functionArgs})`);
     throw error;
   };
   constructor() {
     super();
+  }
+  [inspect.custom]() {
+    return betterConsoleLog(this);
   }
   get options() {
     return this._options;
@@ -101,6 +65,7 @@ export class MainContext<T = {}> extends Composer<T> {
     let parsedUpdate: Combine<Updates.TypeUpdate, T>;
     if (update instanceof ResultGetEntity) {
       try {
+        this.log.debug('Receive update (ResultGetEntity)');
         parsed = true;
         //@ts-ignore
         parsedUpdate = update;
@@ -117,6 +82,7 @@ export class MainContext<T = {}> extends Composer<T> {
           error.functionName ? error.functionName : `handleUpdate`,
           error.functionArgs ? error.functionArgs : `[Update]`
         );
+        this.log.info('something is wrong,set logger to "error" to see more info.');
         //@ts-ignore
         return this.errorHandler(botError, parsed ? parsedUpdate : update);
       }
@@ -124,6 +90,7 @@ export class MainContext<T = {}> extends Composer<T> {
       if (update.className) {
         if (Updates[update.className]) {
           try {
+            this.log.debug(`Receive update ${update.className}`);
             let jsonUpdate = new Updates[update.className]();
             await jsonUpdate.init(update, SnakeClient);
             parsed = true;
@@ -141,6 +108,7 @@ export class MainContext<T = {}> extends Composer<T> {
               error.functionName ? error.functionName : `handleUpdate`,
               error.functionArgs ? error.functionArgs : `[Update]`
             );
+            this.log.info('something is wrong,set logger to "error" to see more info.');
             //@ts-ignore
             return this.errorHandler(botError, parsed ? parsedUpdate : update);
           }
@@ -148,7 +116,8 @@ export class MainContext<T = {}> extends Composer<T> {
       }
     }
   }
-  catch(errorHandler: ErrorHandler) {
+  catch(errorHandler: ErrorHandler<T>) {
+    this.log.debug(`Replace default error handle`);
     return (this.errorHandler = errorHandler);
   }
 }

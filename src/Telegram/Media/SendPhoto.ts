@@ -52,14 +52,11 @@ export async function SendPhoto(
   more?: sendPhotoMoreParams
 ) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.sendPhoto`
+    snakeClient.log.debug('Running telegram.sendPhoto');
+    if (typeof chatId === 'number')
+      snakeClient.log.warning(
+        'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    }
     // buffer
     if (Buffer.isBuffer(fileId)) {
       fileId as Buffer;
@@ -188,6 +185,7 @@ export async function SendPhoto(
       }
     }
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.sendPhoto');
     throw new BotError(
       error.message,
       'telegram.sendPhoto',

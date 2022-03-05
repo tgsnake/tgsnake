@@ -29,14 +29,7 @@ export async function AnswerInlineQuery(
   more: AnswerInlineQueryMoreParams = defaultParam
 ) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.answerInlineQuery`
-      );
-    }
+    snakeClient.log.debug('Running telegram.answerInlineQuery');
     let final = await snakeClient.client.invoke(
       new Api.messages.SetInlineBotResults({
         queryId: bigInt(String(id)),
@@ -57,6 +50,7 @@ export async function AnswerInlineQuery(
     );
     return final;
   } catch (error: any) {
+    snakeClient.log.error('Failed running telegram.answerInlineQuery');
     throw new BotError(
       error.message,
       'telegram.answerInlineQuery',

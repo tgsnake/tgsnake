@@ -45,14 +45,11 @@ export async function DeleteMessages(
   messageId: number[]
 ) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.deleteMessages`
+    snakeClient.log.debug('Running telegram.deleteMessages');
+    if (typeof chatId === 'number')
+      snakeClient.log.warning(
+        'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    }
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
     if (type == 'channel' || type == 'supergroup') {
       return new ResultAffectedMessages(
@@ -74,6 +71,7 @@ export async function DeleteMessages(
       );
     }
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.deleteMessages');
     throw new BotError(
       error.message,
       'telegram.deleteMessages',

@@ -21,14 +21,7 @@ export class UpdateShortSentMessage extends Update {
     this['_'] = 'updateShortSentMessage';
   }
   async init(update: Api.UpdateShortSentMessage, SnakeClient: Snake) {
-    let mode = ['debug', 'info'];
-    if (mode.includes(SnakeClient.logger)) {
-      SnakeClient.log(
-        `[${SnakeClient.connectTime}] - [${new Date().toLocaleString()}] - Creating update ${
-          this['_']
-        }`
-      );
-    }
+    SnakeClient.log.debug(`Creating ${this['_']}`);
     this.message = new MessageContext();
     this.telegram = SnakeClient.telegram;
     this.message.out = update.out;
@@ -43,7 +36,6 @@ export class UpdateShortSentMessage extends Update {
     if (update.entities) {
       this.message.entities = parser.fromRaw(update.entities);
     }
-    this.message.telegram = this.telegram;
     this.message.SnakeClient = SnakeClient;
     return this;
   }

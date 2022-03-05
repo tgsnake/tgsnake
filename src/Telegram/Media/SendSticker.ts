@@ -34,14 +34,11 @@ export async function SendSticker(
   fileId: string | Buffer | Api.MessageMediaDocument | Api.Document
 ) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.sendSticker`
+    snakeClient.log.debug('Running telegram.sendSticker');
+    if (typeof chatId === 'number')
+      snakeClient.log.warning(
+        'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    }
     let final: any;
     if (fileId instanceof Api.MessageMediaDocument) {
       final = fileId as Api.MessageMediaDocument;
@@ -122,6 +119,7 @@ export async function SendSticker(
       }
     }
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.sendSticker');
     throw new BotError(
       error.message,
       'telegram.sendSticker',

@@ -92,9 +92,9 @@ export interface ClientOptions {
 }
 export interface Options extends ClientOptions {
   /**
-   * Set Logger level for gramjs. Default is "none".
+   * Set Logger level for gramjs. Default is "error".
    */
-  logger?: string;
+  logger?: 'none' | 'error' | 'info' | 'debug';
   /**
    * An api_hash got from my.telegram.org
    */

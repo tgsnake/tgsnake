@@ -7,6 +7,8 @@
 //  it under the terms of the MIT License as published.
 import { Telegram } from '../Telegram';
 import { sendMessageMoreParams } from '../Telegram/Messages/sendMessage';
+import { betterConsoleLog } from '../Utils/CleanObject';
+import { inspect } from 'util';
 export type TypeUpdates =
   | 'updateNewMessage'
   | 'updateMessageID'
@@ -109,18 +111,25 @@ export type TypeUpdates =
   | 'updates'
   | 'updateShortSentMessage';
 
-let _telegram: Telegram;
 export class Update {
   '_'!: TypeUpdates;
+  private _telegram!: Telegram;
   constructor() {}
+  [inspect.custom]() {
+    return betterConsoleLog(this);
+  }
   get telegram() {
-    return _telegram;
+    return this._telegram;
   }
   set telegram(tg: Telegram) {
-    _telegram = tg;
+    this._telegram = tg;
   }
   get SnakeClient() {
     //@ts-ignore
-    return _telegram.SnakeClient;
+    return this._telegram.SnakeClient;
+  }
+  get snakeClient() {
+    //@ts-ignore
+    return this._telegram.SnakeClient;
   }
 }

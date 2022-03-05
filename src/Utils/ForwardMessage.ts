@@ -22,12 +22,7 @@ export class ForwardMessage {
   psaType?: string;
   constructor() {}
   async init(forwardHeader: Api.MessageFwdHeader, snakeClient: Snake) {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${snakeClient.connectTime}] - [${new Date().toLocaleString()}] - Creating forwardMessage`
-      );
-    }
+    snakeClient.log.debug(`Creating forwardMessage`);
     this.imported = forwardHeader.imported;
     this.fromName = forwardHeader.fromName;
     this.date = forwardHeader.date;

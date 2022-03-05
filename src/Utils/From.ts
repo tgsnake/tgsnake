@@ -68,12 +68,7 @@ export class From {
       id = typeof peer == 'number' ? BigInt(peer) : peer;
     }
     if (id) {
-      let mode = ['debug', 'info'];
-      if (mode.includes(snakeClient.logger)) {
-        snakeClient.log(
-          `[${snakeClient.connectTime}] - [${new Date().toLocaleString()}] - Creating chat ${id}`
-        );
-      }
+      snakeClient.log.debug(`Creating User ${id}`);
       let entity = await snakeClient.telegram.getEntity(id, true);
       this.id = entity.id;
       this.username = entity.username;

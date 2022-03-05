@@ -60,14 +60,11 @@ export async function GetMessagesViews(
   increment: boolean = false
 ) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.getMessagesViews`
+    snakeClient.log.debug('Running telegram.getMessagesViews');
+    if (typeof chatId === 'number')
+      snakeClient.log.warning(
+        'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    }
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
     return new ResultsMessagesViews(
       await snakeClient.client.invoke(
@@ -79,6 +76,7 @@ export async function GetMessagesViews(
       )
     );
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.getMessagesViews');
     throw new BotError(
       error.message,
       'telegram.getMessagesViews',

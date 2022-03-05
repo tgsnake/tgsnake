@@ -33,14 +33,11 @@ export async function sendMessage(
   more?: sendMessageMoreParams
 ) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.sendMessage`
+    snakeClient.log.debug('Running telegram.sendMessage');
+    if (typeof chatId === 'number')
+      snakeClient.log.warning(
+        'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    }
     let parseMode = '';
     let replyMarkup;
     let parseText = text;
@@ -52,10 +49,12 @@ export async function sendMessage(
         delete more.parseMode;
       }
       if (more.replyMarkup) {
+        snakeClient.log.debug('Building replyMarkup');
         replyMarkup = BuildReplyMarkup(more.replyMarkup!);
         delete more.replyMarkup;
       }
       if (more.entities) {
+        snakeClient.log.debug('Building Entities');
         entities = (await parser.toRaw(
           snakeClient.client!,
           more.entities!
@@ -63,6 +62,7 @@ export async function sendMessage(
       }
     }
     if (!more?.entities) {
+      snakeClient.log.debug('Building Entities');
       //@ts-ignore
       let [t, e] = parseMode !== '' ? parser.parse(text, parseMode) : [text, []];
       parseText = t;
@@ -81,6 +81,7 @@ export async function sendMessage(
     );
     return await createResults(results, snakeClient);
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.sendMessage');
     throw new BotError(
       error.message,
       'telegram.sendMessage',
@@ -89,14 +90,7 @@ export async function sendMessage(
   }
 }
 async function createResults(results: Api.TypeUpdates, snakeClient: Snake) {
-  let mode = ['debug', 'info'];
-  if (mode.includes(snakeClient.logger)) {
-    snakeClient.log(
-      `[${
-        snakeClient.connectTime
-      }] - [${new Date().toLocaleString()}] - Creating results telegram.sendMessage`
-    );
-  }
+  snakeClient.log.debug('Creating results telegram.sendMessage');
   if (results instanceof Api.UpdateShortSentMessage) {
     results as Api.UpdateShortSentMessage;
     let update = new Update.UpdateShortSentMessage();

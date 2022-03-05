@@ -26,14 +26,7 @@ export class UpdateBotInlineQuery extends Update {
     this['_'] = 'updateBotInlineQuery';
   }
   async init(update: Api.UpdateBotInlineQuery, SnakeClient: Snake) {
-    let mode = ['debug', 'info'];
-    if (mode.includes(SnakeClient.logger)) {
-      SnakeClient.log(
-        `[${SnakeClient.connectTime}] - [${new Date().toLocaleString()}] - Creating update ${
-          this['_']
-        }`
-      );
-    }
+    SnakeClient.log.debug(`Creating ${this['_']}`);
     this.telegram = SnakeClient.telegram;
     this.id = BigInt(toString(update.queryId!) as string);
     this.query = update.query;

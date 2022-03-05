@@ -22,20 +22,14 @@ import BotError from '../../Context/Error';
  */
 export async function GetLeftChannels(snakeClient: Snake, offset: number = 0) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.getLeftChannels`
-      );
-    }
+    snakeClient.log.debug('Running telegram.getLeftChannels');
     return await snakeClient.client.invoke(
       new Api.channels.GetLeftChannels({
         offset: offset,
       })
     );
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.getLeftChannels');
     throw new BotError(error.message, 'telegram.getLeftChannels', `${offset}`);
   }
 }

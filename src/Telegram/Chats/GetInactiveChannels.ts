@@ -21,16 +21,10 @@ import BotError from '../../Context/Error';
  */
 export async function GetInactiveChannels(snakeClient: Snake) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.getInactiveChannels`
-      );
-    }
+    snakeClient.log.debug('Running telegram.getInactiveChannels');
     return await snakeClient.client.invoke(new Api.channels.GetInactiveChannels());
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.getInactiveChannels');
     throw new BotError(error.message, 'telegram.getInactiveChannels', '');
   }
 }

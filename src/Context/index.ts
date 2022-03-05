@@ -20,5 +20,6 @@ export {
 export { MessageContext } from './MessageContext';
 export { BotError };
 export { ReplyToMessageContext } from './ReplyToMessageContext';
-export { MainContext, LoggerInfo } from './MainContext';
+export { MainContext } from './MainContext';
 export { EntityCache } from './EntityCache';
+export { Logger, TypeLogLevel, TypeWarningLog, LoggerColor } from './Logger';

@@ -33,14 +33,11 @@ export async function EditPhoto(
   photo: string | Buffer
 ) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.editPhoto`
+    snakeClient.log.debug('Running telegram.editPhoto');
+    if (typeof chatId === 'number')
+      snakeClient.log.warning(
+        'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    }
     let rr = await UploadFile(snakeClient, photo);
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
     if (type == 'channel' || type == 'supergroup') {
@@ -64,6 +61,7 @@ export async function EditPhoto(
       );
     }
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.editPhoto');
     throw new BotError(
       error.message,
       'telegram.editPhoto',
@@ -72,14 +70,7 @@ export async function EditPhoto(
   }
 }
 async function generateResults(results: Api.TypeUpdates, SnakeClient: Snake) {
-  let mode = ['debug', 'info'];
-  if (mode.includes(SnakeClient.logger)) {
-    SnakeClient.log(
-      `[${
-        SnakeClient.connectTime
-      }] - [${new Date().toLocaleString()}] - Creating results telegram.editPhoto`
-    );
-  }
+  SnakeClient.log.debug('Creating results telegram.editPhoto');
   if (results instanceof Api.Updates) {
     results as Api.Updates;
     if (results.updates.length > 0) {

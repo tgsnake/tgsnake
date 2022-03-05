@@ -52,23 +52,25 @@ export class ClassLogGetAdminLog {
   }
 }
 export interface getAdminLogMoreParams {
-  q?: string;
-  join?: boolean;
-  leave?: boolean;
-  invite?: boolean;
-  ban?: boolean;
-  unban?: boolean;
-  kick?: boolean;
-  unkick?: boolean;
-  promote?: boolean;
-  demote?: boolean;
-  info?: boolean;
-  settings?: boolean;
-  pinned?: boolean;
-  groupCall?: boolean;
-  invites?: boolean;
-  edit?: boolean;
-  delete?: boolean;
+  query?: string;
+  filter?: {
+    join?: boolean;
+    leave?: boolean;
+    invite?: boolean;
+    ban?: boolean;
+    unban?: boolean;
+    kick?: boolean;
+    unkick?: boolean;
+    promote?: boolean;
+    demote?: boolean;
+    info?: boolean;
+    settings?: boolean;
+    pinned?: boolean;
+    groupCall?: boolean;
+    invites?: boolean;
+    edit?: boolean;
+    delete?: boolean;
+  };
   maxId?: bigint;
   minId?: bigint;
   limit?: number;
@@ -93,45 +95,52 @@ export async function GetAdminLog(
   more?: getAdminLogMoreParams
 ) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.getAdminLog`
+    snakeClient.log.debug('Running telegram.getAdminLog');
+    if (typeof chatId === 'number')
+      snakeClient.log.warning(
+        'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    }
-    let filter = {
-      join: more?.join || true,
-      leave: more?.leave || true,
-      invite: more?.invite || true,
-      ban: more?.ban || true,
-      unban: more?.unban || true,
-      kick: more?.kick || true,
-      unkick: more?.unkick || true,
-      promote: more?.promote || true,
-      demote: more?.demote || true,
-      info: more?.info || true,
-      settings: more?.settings || true,
-      pinned: more?.pinned || true,
-      groupCall: more?.groupCall || true,
-      invites: more?.invites || true,
-      edit: more?.edit || true,
-      delete: more?.delete || true,
-    };
+    let options = Object.assign(
+      {
+        query: '',
+        filter: {
+          join: true,
+          leave: true,
+          invite: true,
+          ban: true,
+          unban: true,
+          kick: true,
+          unkick: true,
+          promote: true,
+          demote: true,
+          info: true,
+          settings: true,
+          pinned: true,
+          groupCall: true,
+          invites: true,
+          edit: true,
+          delete: true,
+        },
+        maxId: undefined,
+        minId: undefined,
+        limit: undefined,
+      },
+      more
+    );
     return new ClassResultGetAdminLog(
       await snakeClient.client.invoke(
         new Api.channels.GetAdminLog({
           channel: convertId(chatId),
-          eventsFilter: new Api.ChannelAdminLogEventsFilter(filter),
-          q: more?.q ? more.q : '',
-          maxId: more?.maxId ? bigInt(more.maxId!) : undefined,
-          minId: more?.minId ? bigInt(more.minId!) : undefined,
-          limit: more?.limit ? Number(more.limit!) : undefined,
+          eventsFilter: new Api.ChannelAdminLogEventsFilter(options.filter),
+          q: options.query,
+          maxId: options.maxId ? bigInt(options.maxId!) : options.maxId,
+          minId: options.minId ? bigInt(options.minId!) : options.minId,
+          limit: options.limit!,
         })
       )
     );
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.getAdminLog');
     throw new BotError(
       error.message,
       'telegram.getAdminLog',

@@ -29,14 +29,7 @@ export async function GetAdminedPublicChannels(
   checkLimit: boolean = true
 ) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.getAdminedPublicChannels`
-      );
-    }
+    snakeClient.log.debug('Running telegram.getAdminedPublicChannels');
     let results: Api.messages.TypeChats = await snakeClient.client.invoke(
       new Api.channels.GetAdminedPublicChannels({
         byLocation: byLocation,
@@ -47,6 +40,7 @@ export async function GetAdminedPublicChannels(
     // change the json results
     return results;
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.getAdminedPublicChannels');
     throw new BotError(
       error.message,
       'telegram.getAdminedPublicChannels',

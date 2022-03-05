@@ -23,14 +23,7 @@ import bigInt, { BigInteger } from 'big-integer';
  */
 export async function GetChannels(snakeClient: Snake, chatId: number[] | string[] | bigint[]) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.getChannels`
-      );
-    }
+    snakeClient.log.debug('Running telegram.GetChannels');
     let id: BigInteger[] | string[] = [];
     for (let ids of chatId) {
       if (typeof ids == 'string') {
@@ -42,6 +35,9 @@ export async function GetChannels(snakeClient: Snake, chatId: number[] | string[
         id.push(bigInt(ids as bigint) as BigInteger);
       }
       if (typeof ids == 'number') {
+        snakeClient.log.warning(
+          'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
+        );
         //@ts-ignore
         id.push(bigInt(ids as number) as BigInteger);
       }
@@ -55,6 +51,7 @@ export async function GetChannels(snakeClient: Snake, chatId: number[] | string[
     //change the json results.
     return results;
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.getChannels');
     throw new BotError(error.message, 'telegram.getChannels', `${chatId}`);
   }
 }

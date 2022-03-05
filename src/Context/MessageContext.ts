@@ -11,9 +11,15 @@ import { Snake } from '../Client';
 import { replyMoreParams } from '../Interface/reply';
 import { forwardMessageMoreParams } from '../Telegram/Messages/ForwardMessages';
 import { pinMessageMoreParams } from '../Telegram/Messages/PinMessage';
+import { betterConsoleLog } from '../Utils/CleanObject';
+import { inspect } from 'util';
 export class MessageContext extends Message {
+  match!: Array<RegExpExecArray>;
   constructor() {
     super();
+  }
+  [inspect.custom]() {
+    return betterConsoleLog(this);
   }
   async reply(text: string, more?: replyMoreParams) {
     if (this.id && this.chat.id) {

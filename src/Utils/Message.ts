@@ -20,11 +20,9 @@ import { Media } from './Media';
 import { Telegram } from '../Telegram';
 import { convertReplyMarkup, TypeReplyMarkup } from './ReplyMarkup';
 import { toString } from './ToBigInt';
-import { Cleaning } from './CleanObject';
+import { Cleaning, betterConsoleLog } from './CleanObject';
 import { Reactions } from './Reactions';
 const parser = new Parser(Api);
-let _SnakeClient: Snake;
-let _telegram: Telegram;
 export class Message {
   out?: boolean;
   mentioned?: boolean;
@@ -59,16 +57,11 @@ export class Message {
   senderChat?: Chat;
   isAutomaticForward?: boolean;
   reactions?: Reactions;
+  private _SnakeClient!: Snake;
   constructor() {}
   async init(message: Api.MessageService | Api.Message, SnakeClient: Snake) {
-    let mode = ['debug', 'info'];
-    if (mode.includes(SnakeClient.logger)) {
-      SnakeClient.log(
-        `[${SnakeClient.connectTime}] - [${new Date().toLocaleString()}] - Creating message`
-      );
-    }
-    _SnakeClient = SnakeClient;
-    _telegram = SnakeClient.telegram;
+    SnakeClient.log.debug(`Creating Message`);
+    this._SnakeClient = SnakeClient;
     if (message instanceof Api.Message) {
       return await this.parseMessage(message as Api.Message);
     }
@@ -268,15 +261,18 @@ export class Message {
     return this;
   }
   get SnakeClient() {
-    return _SnakeClient;
+    return this._SnakeClient;
+  }
+  get snakeClient() {
+    return this._SnakeClient;
+  }
+  set SnakeClient(client: Snake) {
+    this._SnakeClient = client;
+  }
+  set snakeClient(client: Snake) {
+    this._SnakeClient = client;
   }
   get telegram() {
-    return _telegram;
-  }
-  set telegram(_tg) {
-    _telegram = _tg;
-  }
-  set SnakeClient(_snake) {
-    _SnakeClient = _snake;
+    return this._SnakeClient.telegram;
   }
 }

@@ -39,18 +39,15 @@ export async function EditMessage(
   more?: editMessageMoreParams
 ) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.editMessage`
+    snakeClient.log.debug('Running telegram.editMessage');
+    if (typeof chatId === 'number')
+      snakeClient.log.warning(
+        'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    }
     let parseMode = '';
     let replyMarkup;
     let parseText = text;
-    let entities;
+    let entities: Array<Api.TypeMessageEntity> = [];
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
     if (more) {
       if (more.parseMode) {
@@ -58,10 +55,12 @@ export async function EditMessage(
         delete more.parseMode;
       }
       if (more.replyMarkup) {
+        snakeClient.log.debug('Building replyMarkup');
         replyMarkup = BuildReplyMarkup(more.replyMarkup!);
         delete more.replyMarkup;
       }
       if (more.entities) {
+        snakeClient.log.debug('Building Entities');
         parseText = text;
         entities = (await parser.toRaw(
           snakeClient.client!,
@@ -71,6 +70,7 @@ export async function EditMessage(
       }
     }
     if (!more?.entities) {
+      snakeClient.log.debug('Building Entities');
       //@ts-ignore
       let [t, e] = parseMode !== '' ? parser.parse(text, parseMode!) : [text, []];
       parseText = t;
@@ -89,6 +89,7 @@ export async function EditMessage(
     );
     return await createResults(results, snakeClient);
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.editMessage');
     throw new BotError(
       error.message,
       'telegram.editMessage',
@@ -97,14 +98,7 @@ export async function EditMessage(
   }
 }
 async function createResults(results: Api.TypeUpdates, snakeClient: Snake) {
-  let mode = ['debug', 'info'];
-  if (mode.includes(snakeClient.logger)) {
-    snakeClient.log(
-      `[${
-        snakeClient.connectTime
-      }] - [${new Date().toLocaleString()}] - Creating results telegram.editMessage`
-    );
-  }
+  snakeClient.log.debug('Create results telegram.editMessage');
   if (results instanceof Api.Updates) {
     results as Api.Updates;
     if (results.updates?.length > 0) {

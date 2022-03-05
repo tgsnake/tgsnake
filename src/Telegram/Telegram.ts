@@ -5,6 +5,7 @@
 //
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
+import { betterConsoleLog } from '../Utils/CleanObject';
 import { GetEntity } from './Users/GetEntity';
 import { sendMessage, sendMessageMoreParams } from './Messages/sendMessage';
 import { DeleteMessages } from './Messages/DeleteMessages';
@@ -43,13 +44,17 @@ import { GetParticipant } from './Chats/GetParticipant';
 import { GetChatMembersCount } from './Chats/GetChatMembersCount';
 import { GetParticipants, GetParticipantMoreParams } from './Chats/GetParticipants';
 import { AnswerInlineQuery, AnswerInlineQueryMoreParams } from './Bots/AnswerInlineQuery';
-let _SnakeClient: Snake;
+import { inspect } from 'util';
 export class Telegram {
+  private _SnakeClient!: Snake;
   constructor(SnakeClient: Snake) {
-    _SnakeClient = SnakeClient;
+    this._SnakeClient = SnakeClient;
+  }
+  [inspect.custom]() {
+    return betterConsoleLog(this);
   }
   get SnakeClient() {
-    return _SnakeClient;
+    return this._SnakeClient;
   }
   // getEntity
   async getEntity(chatId: bigint | string | number, useCache?: boolean) {

@@ -29,6 +29,7 @@ export class ChannelParticipant {
   kickedBy?: From;
   constructor() {}
   async init(participant: Api.TypeChannelParticipant, SnakeClient: Snake) {
+    SnakeClient.log.debug(`Creating ChannelParticipant`);
     if (participant instanceof Api.ChannelParticipantCreator) {
       participant as Api.ChannelParticipantCreator;
       this.status = 'creator';
@@ -107,6 +108,7 @@ export class ChatParticipant {
   status: string = 'member';
   constructor() {}
   async init(participant: Api.ChatParticipant, SnakeClient: Snake) {
+    SnakeClient.log.debug(`Creating ChatParticipant`);
     this.date = participant.date;
     if (participant.userId) {
       let user = new From();
@@ -126,6 +128,7 @@ export class ChatParticipantCreator {
   status: string = 'creator';
   constructor() {}
   async init(participant: Api.ChatParticipantCreator, SnakeClient: Snake) {
+    SnakeClient.log.debug(`Creating ChatParticipantCreator`);
     if (participant.userId) {
       let user = new From();
       await user.init(BigInt(toString(participant.userId) as string), SnakeClient);
@@ -141,6 +144,7 @@ export class ChatParticipantAdmin {
   status: string = 'admin';
   constructor() {}
   async init(participant: Api.ChatParticipantAdmin, SnakeClient: Snake) {
+    SnakeClient.log.debug(`Creating ChatParticipantAdmin`);
     this.date = participant.date;
     if (participant.userId) {
       let user = new From();
@@ -166,6 +170,7 @@ export class ChatParticipantsForbidden {
   status: string = 'forbidden';
   constructor() {}
   async init(participant: Api.ChatParticipantsForbidden, SnakeClient: Snake) {
+    SnakeClient.log.debug(`Creating ChatParticipantsForbidden`);
     if (participant.chatId) {
       let chat = new Chat();
       await chat.init(BigInt(toString(participant.chatId) as string), SnakeClient);
@@ -210,14 +215,7 @@ export class ChatParticipants {
       | Api.channels.ChannelParticipant,
     SnakeClient: Snake
   ) {
-    let mode = ['debug', 'info'];
-    if (mode.includes(SnakeClient.logger)) {
-      SnakeClient.log(
-        `[${
-          SnakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Creating ChatParticipants`
-      );
-    }
+    SnakeClient.log.debug(`Creating ChatParticipants`);
     if (participant instanceof Api.ChatParticipants) {
       return await this._ChatParticipants(participant as Api.ChatParticipants, SnakeClient);
     }

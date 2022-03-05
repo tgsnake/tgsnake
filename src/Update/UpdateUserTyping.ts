@@ -24,14 +24,7 @@ export class UpdateUserTyping extends Update {
     this['_'] = 'updateUserTyping';
   }
   async init(update: Api.UpdateUserTyping, SnakeClient: Snake) {
-    let mode = ['debug', 'info'];
-    if (mode.includes(SnakeClient.logger)) {
-      SnakeClient.log(
-        `[${SnakeClient.connectTime}] - [${new Date().toLocaleString()}] - Creating update ${
-          this['_']
-        }`
-      );
-    }
+    SnakeClient.log.debug(`Creating ${this['_']}`);
     this.telegram = SnakeClient.telegram;
     if (update.userId) {
       let user = new From();

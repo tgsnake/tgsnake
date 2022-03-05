@@ -30,14 +30,15 @@ export async function GetParticipant(
   userId: number | string | bigint
 ) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.getParticipant`
+    snakeClient.log.debug('Running telegram.getParticipant');
+    if (typeof chatId === 'number')
+      snakeClient.log.warning(
+        'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    }
+    if (typeof userId === 'number')
+      snakeClient.log.warning(
+        'Type of userId is number, please switch to BigInt or String for security Ids 64 bit int.'
+      );
     let { client } = snakeClient;
     let result: Api.channels.ChannelParticipant = await client.invoke(
       new Api.channels.GetParticipant({
@@ -55,10 +56,12 @@ export async function GetParticipant(
             : bigInt(userId as bigint),
       })
     );
+    snakeClient.log.debug('Creating results telegram.getParticipant');
     let _results = new ChatParticipants();
     await _results.init(result, snakeClient);
     return _results.participants[0];
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.getParticipant');
     throw new BotError(error.message, 'telegram.getParticipant', `${chatId},${userId}`);
   }
 }

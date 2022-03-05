@@ -49,29 +49,15 @@ export async function EditBanned(
   more?: editBannedMoreParams
 ) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.editBanned`
+    snakeClient.log.debug('Running telegram.editBanned');
+    if (typeof userId === 'number')
+      snakeClient.log.warning(
+        'Type of userId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    }
-    /*let permissions = {
-      untilDate: more?.untilDate || 0,
-      viewMessages: more?.viewMessages || true,
-      sendMessages: more?.sendMessages || true,
-      sendMedia: more?.sendMedia || true,
-      sendStickers: more?.sendStickers || true,
-      sendGifs: more?.sendGifs || true,
-      sendGames: more?.sendGames || true,
-      sendInline: more?.sendInline || true,
-      sendPolls: more?.sendPolls || true,
-      changeInfo: more?.changeInfo || true,
-      inviteUsers: more?.inviteUsers || true,
-      pinMessages: more?.pinMessages || true,
-      embedLinks: more?.embedLinks || true,
-    };*/
+    if (typeof chatId === 'number')
+      snakeClient.log.warning(
+        'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
+      );
     let results: Api.TypeUpdates = await snakeClient.client.invoke(
       new Api.channels.EditBanned({
         channel: convertId(chatId),
@@ -98,8 +84,10 @@ export async function EditBanned(
         ),
       })
     );
+    snakeClient.log.debug('Creating results telegram.editBanned');
     return await generateResults(results, snakeClient);
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.editBanned');
     throw new BotError(
       error.message,
       'telegram.editBanned',
@@ -108,14 +96,6 @@ export async function EditBanned(
   }
 }
 async function generateResults(results: Api.TypeUpdates, SnakeClient: Snake) {
-  let mode = ['debug', 'info'];
-  if (mode.includes(SnakeClient.logger)) {
-    SnakeClient.log(
-      `[${
-        SnakeClient.connectTime
-      }] - [${new Date().toLocaleString()}] - Creating results telegram.editBanned`
-    );
-  }
   if (results instanceof Api.Updates) {
     results as Api.Updates;
     if (results.updates.length > 0) {

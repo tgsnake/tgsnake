@@ -32,14 +32,11 @@ export async function ReadHistory(
   more?: readHistoryMoreParams
 ) {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.readHistory`
+    snakeClient.log.debug('Running telegram.readHistory');
+    if (typeof chatId === 'number')
+      snakeClient.log.warning(
+        'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    }
     let [id, type, peer] = await toBigInt(chatId, snakeClient);
     if (type == 'channel') {
       let results = await snakeClient.client.invoke(
@@ -59,6 +56,7 @@ export async function ReadHistory(
       return new ResultAffectedMessages(results);
     }
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.readHistory');
     throw new BotError(
       error.message,
       'telegram.readHistory',

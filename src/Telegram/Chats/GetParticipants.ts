@@ -18,12 +18,6 @@ export interface GetParticipantMoreParams {
   query?: string;
   filter?: 'all' | 'kicked' | 'restricted' | 'bots' | 'recents' | 'administrators';
 }
-let defaultOptions: GetParticipantMoreParams = {
-  offset: 0,
-  limit: 200,
-  query: '',
-  filter: 'all',
-};
 /**
  * Getting list from all participants in channel or chats.
  * @param snakeClient - Client
@@ -39,17 +33,23 @@ let defaultOptions: GetParticipantMoreParams = {
 export async function GetParticipants(
   snakeClient: Snake,
   chatId: number | string | bigint,
-  more: GetParticipantMoreParams = defaultOptions
+  more?: GetParticipantMoreParams
 ): Promise<ChatParticipants | undefined> {
   try {
-    let mode = ['debug', 'info'];
-    if (mode.includes(snakeClient.logger)) {
-      snakeClient.log(
-        `[${
-          snakeClient.connectTime
-        }] - [${new Date().toLocaleString()}] - Running telegram.getParticipants`
+    snakeClient.log.debug('Running telegram.getParticipants');
+    if (typeof chatId === 'number')
+      snakeClient.log.warning(
+        'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    }
+    let options = Object.assign(
+      {
+        offset: 0,
+        limit: 200,
+        query: '',
+        filter: 'all',
+      },
+      more || {}
+    );
     let chat: ResultGetEntity = await snakeClient.telegram.getEntity(chatId, true);
     if (chat.type == 'user') {
       throw new Error('Typeof chatId must be channel or chat, not a user.');
@@ -62,20 +62,21 @@ export async function GetParticipants(
       );
       let cf: Api.ChatFull = r.fullChat as Api.ChatFull;
       let part: Api.ChatParticipants = cf.participants as Api.ChatParticipants;
+      snakeClient.log.debug('Creating results telegram.getParticipants');
       let participant: ChatParticipants = new ChatParticipants();
       await participant.init(part, snakeClient);
       return participant;
     }
     if (chat.type == 'channel' || chat.type == 'supergroup') {
       let filter: Api.TypeChannelParticipantsFilter = new Api.ChannelParticipantsSearch({
-        q: more.query || '',
+        q: options.query,
       });
-      switch (more.filter) {
+      switch (options.filter) {
         case 'kicked':
-          filter = new Api.ChannelParticipantsKicked({ q: more.query || '' });
+          filter = new Api.ChannelParticipantsKicked({ q: options.query });
           break;
         case 'restricted':
-          filter = new Api.ChannelParticipantsBanned({ q: more.query || '' });
+          filter = new Api.ChannelParticipantsBanned({ q: options.query });
           break;
         case 'bots':
           filter = new Api.ChannelParticipantsBots();
@@ -92,17 +93,19 @@ export async function GetParticipants(
         new Api.channels.GetParticipants({
           channel: bigInt(chat.id as bigint),
           filter: filter,
-          offset: more.offset,
-          limit: more.limit,
+          offset: options.offset,
+          limit: options.limit,
           hash: bigInt(0),
         })
       )) as Api.channels.ChannelParticipants;
+      snakeClient.log.debug('Creating results telegram.getParticipants');
       let participant: ChatParticipants = new ChatParticipants();
       //@ts-ignore
       await participant.init(r as Api.ChannelParticipants, snakeClient);
       return participant;
     }
   } catch (error: any) {
+    snakeClient.log.error('Failed to running telegram.getParticipants');
     throw new BotError(
       error.message,
       'telegram.getParticipants',

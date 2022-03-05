@@ -13,3 +13,16 @@ export function Cleaning(_object: any) {
   }
   return _object;
 }
+export function betterConsoleLog(object: { [key: string]: any }) {
+  const toPrint: { [key: string]: any } = {};
+  for (const key in object) {
+    if (object.hasOwnProperty(key)) {
+      if (!key.startsWith('_')) {
+        toPrint[key] = object[key];
+      } else if (key == '_') {
+        toPrint[key] = object[key];
+      }
+    }
+  }
+  return toPrint;
+}

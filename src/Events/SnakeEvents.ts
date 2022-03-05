@@ -36,6 +36,7 @@ export class SnakeEvent extends EventBuilder {
       //@ts-ignore
       for (let [key, value] of update._entities.entries()) {
         let entities = new ResultGetEntity(value!);
+        this._SnakeClient.log.debug(`Add or Update Entities (${entities.id}) to cache.`);
         this._SnakeClient.entityCache.set(entities.id!, entities!);
         if (entities.username) this._SnakeClient.entityCache.set(entities.username!, entities!);
       }
