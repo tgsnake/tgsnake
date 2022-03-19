@@ -16,7 +16,7 @@ import { From } from './From';
 import { ReplyToMessageContext } from '../Context/ReplyToMessageContext';
 import Parser, { Entities } from '@tgsnake/parser';
 import { ForwardMessage } from './ForwardMessage';
-import { Media } from './Media';
+import { TypeMessageMedia, GenerateMedia } from './Medias';
 import { Telegram } from '../Telegram';
 import { convertReplyMarkup, TypeReplyMarkup } from './ReplyMarkup';
 import { toString } from './ToBigInt';
@@ -43,7 +43,7 @@ export class Message {
   fwdFrom?: ForwardMessage;
   viaBotId?: bigint;
   text?: string;
-  media?: Media;
+  media?: TypeMessageMedia;
   replyMarkup?: TypeReplyMarkup;
   entities?: Entities[];
   views?: number;
@@ -51,7 +51,7 @@ export class Message {
   replies?: Api.TypeMessageReplies | number;
   editDate?: number;
   postAuthor?: string;
-  mediaGroupId?: BigInteger | number;
+  mediaGroupId?: bigint;
   restrictionReason?: RestrictionReason[];
   noforward?: boolean;
   senderChat?: Chat;
@@ -167,7 +167,7 @@ export class Message {
     this.views = message.views;
     this.forwards = message.forwards;
     this.postAuthor = message.postAuthor;
-    this.mediaGroupId = message.groupedId;
+    this.mediaGroupId = BigInt(String(message.groupedId ?? 0));
     this.ttlPeriod = message.ttlPeriod;
     this.editDate = message.editDate;
     if (message.fromId) {
@@ -222,9 +222,7 @@ export class Message {
       }
     }
     if (message.media) {
-      let media = new Media();
-      await media.encode(await media.parseMedia(message.media));
-      this.media = media;
+      this.media = await GenerateMedia(message.media!, this._SnakeClient);
     }
     if (message.replyTo) {
       let replyTo = new ReplyToMessageContext();

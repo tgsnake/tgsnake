@@ -7,12 +7,12 @@
 //  it under the terms of the MIT License as published.
 
 import { BannedRights } from './BannedRight';
-import { ChatPhoto } from './ChatPhoto';
+import { MediaChatPhoto } from './Medias';
 import { Snake } from '../Client';
 import { Api } from 'telegram';
 import { toBigInt, toString } from './ToBigInt';
 import { BigInteger, isInstance } from 'big-integer';
-import { Cleaning } from './CleanObject';
+import { Cleaning, betterConsoleLog } from './CleanObject';
 export class Chat {
   id!: bigint;
   title?: string;
@@ -20,7 +20,7 @@ export class Chat {
   lastName?: string;
   username?: string;
   private?: boolean;
-  photo?: ChatPhoto;
+  photo?: MediaChatPhoto;
   defaultBannedRights?: BannedRights;
   participantsCount?: number;
   dcId?: number;
@@ -85,5 +85,12 @@ export class Chat {
     }
     await Cleaning(this);
     return this;
+  }
+  toJSON() {
+    let obj = betterConsoleLog(this);
+    for (let [key, value] of Object.entries(obj)) {
+      if (typeof value == 'bigint') obj[key] = String(value);
+    }
+    return obj;
   }
 }

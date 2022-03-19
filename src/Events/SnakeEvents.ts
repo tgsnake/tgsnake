@@ -30,12 +30,13 @@ export class SnakeEvent extends EventBuilder {
     super({ chats, blacklistChats, func });
     this._SnakeClient = SnakeClient;
   }
-  build(update: Api.TypeUpdate | Api.TypeUpdates, callback: undefined, selfId: BigInteger) {
+  async build(update: Api.TypeUpdate | Api.TypeUpdates, callback: undefined, selfId: BigInteger) {
     //@ts-ignore
     if (update._entities && update._entities.size) {
       //@ts-ignore
       for (let [key, value] of update._entities.entries()) {
-        let entities = new ResultGetEntity(value!);
+        let entities = new ResultGetEntity();
+        await entities.init(value!, this._SnakeClient);
         this._SnakeClient.log.debug(`Add or Update Entities (${entities.id}) to cache.`);
         this._SnakeClient.entityCache.set(entities.id!, entities!);
         if (entities.username) this._SnakeClient.entityCache.set(entities.username!, entities!);

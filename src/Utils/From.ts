@@ -8,12 +8,12 @@
 
 import { Api } from 'telegram';
 import { Snake } from '../Client';
-import { ChatPhoto } from './ChatPhoto';
+import { MediaChatPhoto } from './Medias';
 import { ResultGetEntity } from '../Telegram/Users/GetEntity';
 import { RestrictionReason } from './RestrictionReason';
 import { toBigInt, toString } from './ToBigInt';
 import bigInt, { BigInteger, isInstance } from 'big-integer';
-import { Cleaning } from './CleanObject';
+import { Cleaning, betterConsoleLog } from './CleanObject';
 export class From {
   id!: bigint;
   firstName?: string;
@@ -28,7 +28,7 @@ export class From {
   verified?: boolean;
   restricted?: boolean;
   dcId?: number;
-  photo?: ChatPhoto;
+  photo?: MediaChatPhoto;
   restrictionReason?: RestrictionReason[];
   constructor() {}
   async init(peer: Api.TypePeer | number | bigint | string, snakeClient: Snake) {
@@ -88,5 +88,12 @@ export class From {
     }
     await Cleaning(this);
     return this;
+  }
+  toJSON() {
+    let obj = betterConsoleLog(this);
+    for (let [key, value] of Object.entries(obj)) {
+      if (typeof value == 'bigint') obj[key] = String(value);
+    }
+    return obj;
   }
 }

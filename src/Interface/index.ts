@@ -8,3 +8,4 @@
 export { ClientOptions, Options } from './Options';
 export { replyMoreParams } from './reply';
 export { CatchError } from './CatchError';
+export { DownloadFileParams, progressCallback } from './Download';

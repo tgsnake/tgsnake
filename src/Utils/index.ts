@@ -19,7 +19,6 @@ export {
   ChatParticipants,
   TypeChatParticipants,
 } from './ChatParticipants';
-export { ChatPhoto } from './ChatPhoto';
 export { Cleaning, betterConsoleLog } from './CleanObject';
 export { ForwardMessage } from './ForwardMessage';
 export { From } from './From';
@@ -45,3 +44,4 @@ export {
 export { ReplyToMessage } from './ReplyToMessage';
 export { RestrictionReason } from './RestrictionReason';
 export { toBigInt, toString, convertId } from './ToBigInt';
+export * as Medias from './Medias';

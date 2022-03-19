@@ -6,6 +6,7 @@
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
 import { betterConsoleLog } from '../Utils/CleanObject';
+import { DownloadFileParams } from '../Interface/Download';
 import { GetEntity } from './Users/GetEntity';
 import { sendMessage, sendMessageMoreParams } from './Messages/sendMessage';
 import { DeleteMessages } from './Messages/DeleteMessages';
@@ -39,12 +40,13 @@ import { SendDocument, sendDocumentMoreParams } from './Media/SendDocument';
 import { SendSticker } from './Media/SendSticker';
 import { Snake } from '../Client';
 import { Api, TelegramClient } from 'telegram';
-import { Media } from '../Utils/Media';
+import * as Medias from '../Utils/Medias';
 import { GetParticipant } from './Chats/GetParticipant';
 import { GetChatMembersCount } from './Chats/GetChatMembersCount';
 import { GetParticipants, GetParticipantMoreParams } from './Chats/GetParticipants';
 import { AnswerInlineQuery, AnswerInlineQueryMoreParams } from './Bots/AnswerInlineQuery';
 import { inspect } from 'util';
+import { Download } from './Media/Download';
 export class Telegram {
   private _SnakeClient!: Snake;
   constructor(SnakeClient: Snake) {
@@ -53,7 +55,17 @@ export class Telegram {
   [inspect.custom]() {
     return betterConsoleLog(this);
   }
+  toJSON() {
+    let obj = betterConsoleLog(this);
+    for (let [key, value] of Object.entries(obj)) {
+      if (typeof value == 'bigint') obj[key] = String(value);
+    }
+    return obj;
+  }
   get SnakeClient() {
+    return this._SnakeClient;
+  }
+  get snakeClient() {
     return this._SnakeClient;
   }
   // getEntity
@@ -576,7 +588,7 @@ export class Telegram {
    */
   async sendPhoto(
     chatId: bigint | number | string,
-    fileId: string | Buffer | Media,
+    fileId: string | Buffer,
     more?: sendPhotoMoreParams
   ) {
     return await SendPhoto(this.SnakeClient, chatId, fileId, more);
@@ -768,5 +780,20 @@ export class Telegram {
       pinMessages: false,
       embedLinks: false,
     });
+  }
+  /**
+   * Downloading file, you can pass the media as JSON of message.media or you can pass with file id. If success it will returning a Buffer of that file.
+   * ```ts
+   * bot.on("message",async (ctx)=>{
+   *  if(ctx.media){
+   *    console.log(await ctx.telegram.download(ctx.media))
+   *    // also you can do like :
+   *    // console.log(await ctx.media.download())
+   *   }
+   * })
+   * ```
+   */
+  async download(media: string | Medias.TypeMessageMediaDownload, params?: DownloadFileParams) {
+    return await Download(this.snakeClient, media, params);
   }
 }

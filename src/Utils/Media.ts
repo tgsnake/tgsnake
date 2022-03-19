@@ -11,6 +11,7 @@ import { BigInteger } from 'big-integer';
 import { FileId, decodeFileId } from 'tg-file-id';
 import { Cleaning } from './CleanObject';
 import { toString } from './ToBigInt';
+import { MediaPoll } from './Medias';
 export let typeId = {
   THUMBNAIL: 0,
   CHAT_PHOTO: 1, // ProfilePhoto
@@ -255,6 +256,7 @@ export class Media {
       switch (doc.mimeType) {
         case 'image/webp':
         case 'application/x-tgsticker':
+        case 'video/webm':
           this.type = 'sticker';
           return this.stickerToFileId(doc);
           break;
@@ -295,7 +297,6 @@ export class Media {
     return decodeFileId(String(file));
   }
   parseMedia(media: Api.TypeMessageMedia) {
-    //console.log(JSON.stringify(media, null, 2));
     if (media instanceof Api.MessageMediaDocument) {
       if (media.document instanceof Api.Document) {
         return media.document as Api.Document;

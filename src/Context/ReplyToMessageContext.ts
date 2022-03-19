@@ -16,6 +16,13 @@ export class ReplyToMessageContext extends ReplyToMessage {
   [inspect.custom]() {
     return betterConsoleLog(this);
   }
+  toJSON() {
+    let obj = betterConsoleLog(this);
+    for (let [key, value] of Object.entries(obj)) {
+      if (typeof value == 'bigint') obj[key] = String(value);
+    }
+    return obj;
+  }
   async reply(text: string, more?: replyMoreParams) {
     if (this.chat) {
       let client = this.SnakeClient;

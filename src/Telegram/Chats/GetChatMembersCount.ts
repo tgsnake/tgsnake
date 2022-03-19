@@ -39,7 +39,7 @@ export async function GetChatMembersCount(snakeClient: Snake, chatId: number | s
         })
       );
       let s: Api.Chat = r.chats[0] as Api.Chat;
-      snakeClient.entityCache.set(chat.id, new ResultGetEntity(s));
+      snakeClient.entityCache.set(chat.id, await new ResultGetEntity().init(s!, snakeClient));
       return s.participantsCount;
     }
     if (chat.type == 'channel' || chat.type == 'supergroup') {
@@ -51,7 +51,7 @@ export async function GetChatMembersCount(snakeClient: Snake, chatId: number | s
       let fc: Api.ChannelFull = r.fullChat as Api.ChannelFull;
       let s: Api.Channel = r.chats[0] as Api.Channel;
       s.participantsCount = fc.participantsCount;
-      snakeClient.entityCache.set(chat.id, new ResultGetEntity(s));
+      snakeClient.entityCache.set(chat.id, await new ResultGetEntity().init(s, snakeClient));
       return s.participantsCount;
     }
   } catch (error: any) {

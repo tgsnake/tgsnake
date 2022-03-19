@@ -279,19 +279,21 @@ export class ChatParticipants {
     let participants: Api.TypeChannelParticipant[] = participant.participants;
     let temp: ChannelParticipant[] = [];
     //@ts-ignore
-    participant.users.map((item: Api.User) => {
-      let entity = new ResultGetEntity(item);
+    participant.users.map(async (item: Api.User) => {
+      let entity = new ResultGetEntity();
+      await entity.init(item, SnakeClient);
       SnakeClient.entityCache.set(entity.id, entity);
       if (entity.username) SnakeClient.entityCache.set(entity.username, entity);
     });
     //@ts-ignore
-    participant.chats.map((item: Api.TypeChat) => {
+    participant.chats.map(async (item: Api.TypeChat) => {
       if (item instanceof Api.Chat) {
         item as Api.Chat;
       } else {
         item as Api.Channel;
       }
-      let entity = new ResultGetEntity(item);
+      let entity = new ResultGetEntity();
+      await entity.init(item, SnakeClient);
       SnakeClient.entityCache.set(entity.id, entity);
       if (entity.username) SnakeClient.entityCache.set(entity.username, entity);
     });
@@ -317,19 +319,21 @@ export class ChatParticipants {
     let participants: Api.TypeChannelParticipant = participant.participant;
     let temp: ChannelParticipant[] = [];
     //@ts-ignore
-    participant.users.map((item: Api.User) => {
-      let entity = new ResultGetEntity(item);
+    participant.users.map(async (item: Api.User) => {
+      let entity = new ResultGetEntity();
+      await entity.init(item, SnakeClient);
       SnakeClient.entityCache.set(entity.id, entity);
       if (entity.username) SnakeClient.entityCache.set(entity.username, entity);
     });
     //@ts-ignore
-    participant.chats.map((item: Api.TypeChat) => {
+    participant.chats.map(async (item: Api.TypeChat) => {
       if (item instanceof Api.Chat) {
         item as Api.Chat;
       } else {
         item as Api.Channel;
       }
-      let entity = new ResultGetEntity(item);
+      let entity = new ResultGetEntity();
+      await entity.init(item, SnakeClient);
       SnakeClient.entityCache.set(entity.id, entity);
       if (entity.username) SnakeClient.entityCache.set(entity.username, entity);
     });

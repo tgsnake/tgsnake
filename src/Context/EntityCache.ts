@@ -18,6 +18,13 @@ export class EntityCache {
   [inspect.custom]() {
     return betterConsoleLog(this);
   }
+  toJSON() {
+    let obj = betterConsoleLog(this);
+    for (let [key, value] of Object.entries(obj)) {
+      if (typeof value == 'bigint') obj[key] = String(value);
+    }
+    return obj;
+  }
   set(key: bigint | string, value: ResultGetEntity) {
     return this._cache.set(key, value);
   }

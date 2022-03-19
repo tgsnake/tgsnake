@@ -11,7 +11,7 @@ import { Api } from 'telegram';
 import { Snake } from '../Client';
 import { Telegram } from '../Telegram';
 import Parser, { Entities } from '@tgsnake/parser';
-import { Media } from '../Utils/Media';
+import { TypeMessageMedia, GenerateMedia } from '../Utils/Medias';
 import { MessageContext } from '../Context/MessageContext';
 const parser = new Parser(Api);
 export class UpdateShortSentMessage extends Update {
@@ -29,9 +29,7 @@ export class UpdateShortSentMessage extends Update {
     this.message.date = update.date;
     this.message.ttlPeriod = update.ttlPeriod;
     if (update.media) {
-      let media = new Media();
-      await media.encode(await media.parseMedia(update.media));
-      this.message.media = media;
+      this.message.media = await GenerateMedia(update.media!, SnakeClient);
     }
     if (update.entities) {
       this.message.entities = parser.fromRaw(update.entities);

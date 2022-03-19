@@ -13,8 +13,17 @@ interface MyContext {
 }
 const bot = new Snake()
 bot.log.setLogLevel("debug")
-bot.use((ctx,next)=>{
+bot.use(async (ctx,next)=>{
   console.log(ctx)
+  console.log(JSON.stringify(ctx,null,2))
+  //@ts-ignore
+  if(ctx.message?.media){
+    //@ts-ignore
+    if(ctx.message.media["_"] == "videoNote"){
+      //@ts-ignore
+      console.log(await ctx.message.media.download())
+    }
+  }
   return next()
 })
 bot.cmd("start",(ctx)=>{

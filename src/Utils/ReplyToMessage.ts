@@ -15,7 +15,7 @@ import { Chat } from './Chat';
 import { From } from './From';
 import Parser, { Entities } from '@tgsnake/parser';
 import { ForwardMessage } from './ForwardMessage';
-import { Media } from './Media';
+import { TypeMessageMedia, GenerateMedia } from './Medias';
 import { convertReplyMarkup, TypeReplyMarkup } from './ReplyMarkup';
 import { Cleaning } from './CleanObject';
 export class ReplyToMessage {
@@ -37,7 +37,7 @@ export class ReplyToMessage {
   fwdFrom?: ForwardMessage;
   viaBotId?: bigint;
   text?: string;
-  media?: Media;
+  media?: TypeMessageMedia;
   replyMarkup?: TypeReplyMarkup;
   entities?: Entities[];
   views?: number;
@@ -45,7 +45,7 @@ export class ReplyToMessage {
   replies?: Api.TypeMessageReplies | number;
   editDate?: number;
   postAuthor?: string;
-  mediaGroupId?: BigInteger | number;
+  mediaGroupId?: bigint;
   restrictionReason?: RestrictionReason[];
   noforward?: boolean;
   senderChat?: Chat;

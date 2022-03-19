@@ -7,12 +7,13 @@
 //  it under the terms of the MIT License as published.
 import { MigrateTo } from '../../Utils/MigrateTo';
 import { BannedRights } from '../../Utils/BannedRight';
-import { ChatPhoto } from '../../Utils/ChatPhoto';
+import { MediaChatPhoto } from '../../Utils/Medias';
 import { RestrictionReason } from '../../Utils/RestrictionReason';
 import { AdminRights } from '../../Utils/AdminRights';
 import { Api } from 'telegram';
 import bigInt, { BigInteger, isInstance } from 'big-integer';
 import { toBigInt, toString, convertId } from '../../Utils/ToBigInt';
+import { Cleaning, betterConsoleLog } from '../../Utils/CleanObject';
 import { Snake } from '../../Client';
 import * as fs from 'fs';
 import BotError from '../../Context/Error';
@@ -65,9 +66,10 @@ export class ResultGetEntity {
   gigagroup?: boolean;
   restrictionReason?: RestrictionReason[];
   dcId?: number;
-  photo?: ChatPhoto;
+  photo?: MediaChatPhoto;
   noforward?: boolean;
-  constructor(resultsGetEntity?: Api.TypeUser | Api.TypeChat | Api.Channel) {
+  constructor() {}
+  async init(resultsGetEntity: Api.TypeUser | Api.TypeChat | Api.Channel, snakeClient: Snake) {
     if (!resultsGetEntity) return this;
     if (resultsGetEntity instanceof Api.User) {
       resultsGetEntity as Api.User;
@@ -132,9 +134,11 @@ export class ResultGetEntity {
       }
       if (resultsGetEntity.photo instanceof Api.UserProfilePhoto) {
         resultsGetEntity.photo as Api.UserProfilePhoto;
-        this.photo = new ChatPhoto(resultsGetEntity.photo!, this);
+        this.photo = new MediaChatPhoto();
+        await this.photo.encode(resultsGetEntity.photo, this.id!, this.accessHash!, snakeClient);
         this.dcId = resultsGetEntity.photo.dcId;
       }
+      return this;
     }
     if (resultsGetEntity instanceof Api.Chat) {
       resultsGetEntity as Api.Chat;
@@ -167,9 +171,11 @@ export class ResultGetEntity {
       }
       if (resultsGetEntity.photo instanceof Api.ChatPhoto) {
         resultsGetEntity.photo as Api.ChatPhoto;
-        this.photo = new ChatPhoto(resultsGetEntity.photo!, this);
+        this.photo = new MediaChatPhoto();
+        await this.photo.encode(resultsGetEntity.photo!, this.id!, this.accessHash!, snakeClient);
         this.dcId = resultsGetEntity.photo.dcId;
       }
+      return this;
     }
     if (resultsGetEntity instanceof Api.Channel) {
       resultsGetEntity as Api.Channel;
@@ -220,10 +226,20 @@ export class ResultGetEntity {
       }
       if (resultsGetEntity.photo instanceof Api.ChatPhoto) {
         resultsGetEntity.photo as Api.ChatPhoto;
-        this.photo = new ChatPhoto(resultsGetEntity.photo!, this);
+        this.photo = new MediaChatPhoto();
+        await this.photo.encode(resultsGetEntity.photo!, this.id!, this.accessHash!, snakeClient);
         this.dcId = resultsGetEntity.photo.dcId;
       }
+      return this;
     }
+    return this;
+  }
+  toJSON() {
+    let obj = betterConsoleLog(this);
+    for (let [key, value] of Object.entries(obj)) {
+      if (typeof value == 'bigint') obj[key] = String(value);
+    }
+    return obj;
   }
 }
 export async function GetEntity(
@@ -269,7 +285,8 @@ export async function GetEntity(
     );
     let e = await snakeClient.client.getEntity(convertId(chatId));
     snakeClient.log.debug('Creating ResultGetEntity');
-    let r = new ResultGetEntity(e);
+    let r = new ResultGetEntity();
+    await r.init(e, snakeClient);
     snakeClient.log.debug('Caching ResultGetEntity');
     snakeClient.entityCache.set(r.id, r);
     if (r.username) snakeClient.entityCache.set(r.username, r);
