@@ -11,21 +11,20 @@ import { Snake } from '../../Client';
 import { SendMedia, sendMediaMoreParams } from './SendMedia';
 import { UploadFile } from './UploadFile';
 import { decodeFileId } from 'tg-file-id';
-import { Media } from '../../Utils/Media';
+import * as Medias from '../../Utils/Medias';
 import bigInt from 'big-integer';
 import BotError from '../../Context/Error';
 import { onProgress } from './UploadFile';
 export interface sendPhotoMoreParams extends sendMediaMoreParams {
   workers?: number;
   onProgress?: onProgress;
+  download?: boolean;
 }
 function clean(more?: sendPhotoMoreParams) {
   if (more) {
-    if (more.workers !== undefined) {
-      delete more.workers;
-    }
-    if (more.onProgress !== undefined) {
-      delete more.onProgress;
+    let purge = ['workers', 'onProgress'];
+    for (let [key] of Object.entries(more)) {
+      if (purge.includes(key)) delete more[key];
     }
   }
   return more;
@@ -38,7 +37,7 @@ function clean(more?: sendPhotoMoreParams) {
  * @param {Object} more - more parameters to use.
  * ```ts
  * bot.on("message",async (ctx) => {
- *     if(ctx.media && ctx.media.type == "photo"){
+ *     if(ctx.media && ctx.media._ == "photo"){
  *         let results = await ctx.telegram.sendPhoto(ctx.chat.id,ctx.media.fileId)
  *         console.log(results)
  *     }
@@ -48,7 +47,7 @@ function clean(more?: sendPhotoMoreParams) {
 export async function SendPhoto(
   snakeClient: Snake,
   chatId: number | string | bigint,
-  fileId: string | Buffer | Media,
+  fileId: string | Buffer | Medias.MediaPhoto,
   more?: sendPhotoMoreParams
 ) {
   try {
@@ -57,132 +56,85 @@ export async function SendPhoto(
       snakeClient.log.warning(
         'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    // buffer
-    if (Buffer.isBuffer(fileId)) {
-      fileId as Buffer;
-      let file = await UploadFile(snakeClient, fileId, {
-        workers: more?.workers || 1,
-        onProgress: more?.onProgress,
-      });
-      let media = new Api.InputMediaUploadedPhoto({
-        file: file!,
-      });
-      return SendMedia(snakeClient, chatId, media, clean(more));
-    }
-    // https and path file.
-    if (
-      typeof fileId == 'string' &&
-      (/^http/i.exec(String(fileId)) || /^(\/|\.\.?\/|~\/)/i.exec(String(fileId)))
-    ) {
-      fileId as string;
-      if (/^http/i.exec(String(fileId))) {
-        let file = new Api.InputMediaPhotoExternal({
-          url: fileId as string,
-        });
-        return SendMedia(snakeClient, chatId, file, clean(more));
-      }
-      let file = await UploadFile(snakeClient, fileId, {
-        workers: more?.workers || 1,
-        onProgress: more?.onProgress,
-      });
-      let media = new Api.InputMediaUploadedPhoto({
-        file: file!,
-      });
-      return SendMedia(snakeClient, chatId, media, clean(more));
-    }
-    // file id
-    if (fileId instanceof Media) {
-      let file;
-      try {
-        fileId as Media;
-        file = fileId.decode();
-      } catch (e) {
-        throw new Error('Invalid fileId!');
-      }
-      if (file) {
-        if (file.typeId !== 2) {
-          throw new Error(`typeId invalid. typeId must be 2 but got ${file.typeId}`);
-        }
-        let accessHash: string = String(file.access_hash);
-        let id: string = String(file.id);
-        let results;
-        while (true) {
-          try {
-            let media = new Api.InputMediaPhoto({
+    switch (fileId.constructor) {
+      case Buffer:
+        fileId as Buffer;
+        return await SendMedia(
+          snakeClient,
+          chatId,
+          new Api.InputMediaUploadedPhoto({
+            //@ts-ignore
+            file: await UploadFile(snakeClient, fileId, {
+              workers: more?.workers || 1,
+              onProgress: more?.onProgress,
+            }),
+          }),
+          clean(more)
+        );
+        break;
+      case Medias.MediaPhoto:
+        fileId as Medias.MediaPhoto;
+        return await SendMedia(
+          snakeClient,
+          chatId,
+          new Api.InputMediaPhoto({
+            id: new Api.InputPhoto({
+              //@ts-ignore
+              id: bigInt(String(fileId._id!)),
+              //@ts-ignore
+              accessHash: bigInt(String(fileId._accessHash!)),
+              //@ts-ignore
+              fileReference: Buffer.from(fileId._fileReference!, 'hex'),
+            }),
+          }),
+          clean(more)
+        );
+        break;
+      case String:
+        fileId as string;
+        if (/^http/i.test(String(fileId)) || /^(\/|\.\.?\/|~\/)/i.test(String(fileId))) {
+          if (more && more.download) {
+            return await SendMedia(
+              snakeClient,
+              chatId,
+              new Api.InputMediaUploadedPhoto({
+                //@ts-ignore
+                file: await UploadFile(snakeClient, fileId, {
+                  workers: more?.workers || 1,
+                  onProgress: more?.onProgress,
+                }),
+              }),
+              clean(more)
+            );
+          }
+          return await SendMedia(
+            snakeClient,
+            chatId,
+            new Api.InputMediaPhotoExternal({
+              //@ts-ignore
+              url: fileId,
+            }),
+            clean(more)
+          );
+        } else {
+          //@ts-ignore
+          let file = await decodeFileId(fileId);
+          if (file.typeId !== 2) throw new Error(`Invalid fileId. This fileId not for photos`);
+          return await SendMedia(
+            snakeClient,
+            chatId,
+            new Api.InputMediaPhoto({
               id: new Api.InputPhoto({
-                id: bigInt(id),
-                accessHash: bigInt(accessHash),
+                id: bigInt(String(file.id)),
+                accessHash: bigInt(String(file.access_hash)),
                 fileReference: Buffer.from(file.fileReference, 'hex'),
               }),
-            });
-            results = SendMedia(snakeClient, chatId, media, clean(more));
-            break;
-          } catch (e) {
-            if (BigInt(accessHash) > BigInt(0) && BigInt(id) > BigInt(0)) {
-              // id (+) accessHash (+)
-              accessHash = `-${accessHash}`; // id (+) accessHash (-)
-            } else if (BigInt(accessHash) < BigInt(0) && BigInt(id) > BigInt(0)) {
-              // id (+) accessHash (-)
-              id = `-${id}`; // id (-) accessHash (-)
-            } else if (BigInt(accessHash) < BigInt(0) && BigInt(id) < BigInt(0)) {
-              // id (-) accessHash (-)
-              accessHash = accessHash.replace(/^\-/, '');
-              // id (-) accessHash (+)
-            } else {
-              //@ts-ignore
-              throw new Error(e.message);
-              break;
-            }
-          }
+            }),
+            clean(more)
+          );
         }
-        return results;
-      }
-    }
-    if (typeof fileId == 'string') {
-      let file;
-      try {
-        file = decodeFileId(String(fileId));
-      } catch (e) {
-        throw new Error('Invalid fileId!');
-      }
-      if (file) {
-        if (file.typeId !== 2) {
-          throw new Error(`typeId invalid. typeId must be 2 but got ${file.typeId}`);
-        }
-        let accessHash: string = String(file.accessHash);
-        let id: string = String(file.id);
-        let results;
-        while (true) {
-          try {
-            let media = new Api.InputMediaPhoto({
-              id: new Api.InputPhoto({
-                id: bigInt(id),
-                accessHash: bigInt(accessHash),
-                fileReference: Buffer.from(file.fileReference, 'hex'),
-              }),
-            });
-            results = SendMedia(snakeClient, chatId, media, clean(more));
-            break;
-          } catch (e) {
-            if (BigInt(accessHash) > BigInt(0) && BigInt(id) > BigInt(0)) {
-              // id (+) accessHash (+)
-              accessHash = `-${accessHash}`; // id (+) accessHash (-)
-            } else if (BigInt(accessHash) < BigInt(0) && BigInt(id) > BigInt(0)) {
-              // id (+) accessHash (-)
-              id = `-${id}`; // id (-) accessHash (-)
-            } else if (BigInt(accessHash) < BigInt(0) && BigInt(id) < BigInt(0)) {
-              // id (-) accessHash (-)
-              accessHash = accessHash.replace(/^\-/, '');
-              // id (-) accessHash (+)
-            } else {
-              //@ts-ignore
-              throw new Error(e.message);
-              break;
-            }
-          }
-        }
-        return results;
-      }
+      default:
+        throw new Error(`Couldn't resolve this fileId.`);
     }
   } catch (error: any) {
     snakeClient.log.error('Failed to running telegram.sendPhoto');

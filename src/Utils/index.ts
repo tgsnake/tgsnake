@@ -22,7 +22,6 @@ export {
 export { Cleaning, betterConsoleLog } from './CleanObject';
 export { ForwardMessage } from './ForwardMessage';
 export { From } from './From';
-export { typeId, thumbTypeId, GenerateFileId, generateFileId, Media } from './Media';
 export { Message } from './Message';
 export { MessageAction } from './MessageAction';
 export { MigrateTo } from './MigrateTo';

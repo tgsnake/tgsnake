@@ -19,6 +19,10 @@ export interface forwardMessageMoreParams {
   silent?: boolean;
   background?: boolean;
   scheduleDate?: number;
+  noforwards?: boolean;
+  sendAs?: string;
+  dropAuthor?: boolean;
+  dropMediaCaptions?: boolean;
 }
 /**
  * Forwards messages by their IDs.

@@ -12,13 +12,13 @@ import { Update } from './Update';
 import { Telegram } from '../Telegram';
 import { Snake } from '../Client';
 import { BigInteger } from 'big-integer';
-import { Media } from '../Utils/Media';
+import * as Medias from '../Utils/Medias';
 import { toString } from '../Utils/ToBigInt';
 export class UpdateBotInlineQuery extends Update {
   id!: bigint;
   from!: From;
   query!: string;
-  location?: Media;
+  location?: Medias.MediaLocation;
   chatType?: string;
   offset!: string;
   constructor() {
@@ -47,10 +47,8 @@ export class UpdateBotInlineQuery extends Update {
       this.chatType = 'channel';
     }
     if (update.geo) {
-      this.location = new Media();
-      if (update.geo instanceof Api.GeoPoint) {
-        await this.location.encode(update.geo as Api.GeoPoint);
-      }
+      this.location = new Medias.MediaLocation();
+      await this.location.encode(update.geo!, SnakeClient);
     }
     this.from = new From();
     await this.from.init(BigInt(toString(update.userId!) as string), SnakeClient);

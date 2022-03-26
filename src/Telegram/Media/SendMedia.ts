@@ -17,15 +17,19 @@ import { toBigInt, toString, convertId } from '../../Utils/ToBigInt';
 import BotError from '../../Context/Error';
 import { onProgress } from './UploadFile';
 const parser = new Parser(Api);
-export interface sendMediaMoreParams {
+export interface defaultSendMediaMoreParams {
   silent?: boolean;
   background?: boolean;
-  parseMode?: string;
   clearDraft?: boolean;
   replyToMsgId?: number;
-  replyMarkup?: TypeReplyMarkup;
-  entities?: Entities[];
   scheduleDate?: number;
+  noforwards?: boolean;
+  sendAs?: string;
+  replyMarkup?: TypeReplyMarkup;
+}
+export interface sendMediaMoreParams extends defaultSendMediaMoreParams {
+  entities?: Entities[];
+  parseMode?: string;
   caption?: string;
 }
 /**

@@ -11,7 +11,7 @@ import { Snake } from '../../Client';
 import { SendMedia, sendMediaMoreParams } from './SendMedia';
 import { UploadFile } from './UploadFile';
 import { decodeFileId } from 'tg-file-id';
-import { Media } from '../../Utils/Media';
+import * as Medias from '../../Utils/Medias';
 import bigInt from 'big-integer';
 import BotError from '../../Context/Error';
 /**
@@ -21,7 +21,7 @@ import BotError from '../../Context/Error';
  * @param {string|Buffer|Object} fileId - Path file/FileId/Buffer.
  * ```ts
  * bot.on("message",async (ctx) => {
- *     if(ctx.media && ctx.media.type == "sticker"){
+ *     if(ctx.media && ctx.media._ == "sticker"){
  *         let results = await ctx.telegram.sendSticker(ctx.chat.id,ctx.media.fileId)
  *         console.log(results)
  *     }
@@ -31,7 +31,7 @@ import BotError from '../../Context/Error';
 export async function SendSticker(
   snakeClient: Snake,
   chatId: number | string | bigint,
-  fileId: string | Buffer | Api.MessageMediaDocument | Api.Document
+  fileId: string | Buffer | Medias.MediaSticker
 ) {
   try {
     snakeClient.log.debug('Running telegram.sendSticker');
@@ -39,84 +39,78 @@ export async function SendSticker(
       snakeClient.log.warning(
         'Type of chatId is number, please switch to BigInt or String for security Ids 64 bit int.'
       );
-    let final: any;
-    if (fileId instanceof Api.MessageMediaDocument) {
-      final = fileId as Api.MessageMediaDocument;
-    }
-    if (fileId instanceof Api.Document) {
-      final = fileId as Api.Document;
-    }
-    if (
-      Buffer.isBuffer(fileId) ||
-      /^http/i.exec(String(fileId)) ||
-      /^(\/|\.\.?\/|~\/)/i.exec(String(fileId))
-    ) {
-      //@ts-ignore
-      let file = await UploadFile(snakeClient, fileId);
-      final = new Api.InputMediaUploadedDocument({
-        file: file!,
-        mimeType: 'image/webp',
-        attributes: [
-          new Api.DocumentAttributeFilename({
-            fileName: `sticker.webp`,
-          }),
-        ],
-      });
-    }
-    if (final) {
-      return SendMedia(snakeClient, chatId, final);
-    } else {
-      let decode;
-      if (typeof fileId !== 'string') {
-        throw new Error('Invalid FileId!');
-      }
-      try {
-        decode = decodeFileId(String(fileId));
-      } catch (error) {
-        throw new Error('Invalid FileId!');
-      }
-      if (decode) {
-        if (decode.fileType == 'sticker') {
-          let resultsSendSticker;
-          let accessHash: string = String(decode.access_hash);
-          let id: string = String(decode.id);
-          while (true) {
-            try {
-              resultsSendSticker = await SendMedia(
-                snakeClient,
-                chatId,
-                new Api.InputMediaDocument({
-                  id: new Api.InputDocument({
-                    id: bigInt(id),
-                    accessHash: bigInt(accessHash),
-                    fileReference: Buffer.from(decode.fileReference, 'hex'),
-                  }),
-                })
-              );
-              break;
-            } catch (e) {
-              if (BigInt(accessHash) > BigInt(0) && BigInt(id) > BigInt(0)) {
-                // id (+) accessHash (+)
-                accessHash = `-${accessHash}`; // id (+) accessHash (-)
-              } else if (BigInt(accessHash) < BigInt(0) && BigInt(id) > BigInt(0)) {
-                // id (+) accessHash (-)
-                id = `-${id}`; // id (-) accessHash (-)
-              } else if (BigInt(accessHash) < BigInt(0) && BigInt(id) < BigInt(0)) {
-                // id (-) accessHash (-)
-                accessHash = accessHash.replace(/^\-/, '');
-                // id (-) accessHash (+)
-              } else {
-                //@ts-ignore
-                throw new Error(e.message);
-                break;
-              }
-            }
-          }
-          return resultsSendSticker;
+    switch (fileId.constructor) {
+      case Buffer:
+        fileId as Buffer;
+        return await SendMedia(
+          snakeClient,
+          chatId,
+          new Api.InputMediaUploadedDocument({
+            //@ts-ignore
+            file: await UploadFile(snakeClient, fileId),
+            mimeType: 'image/webp',
+            attributes: [
+              new Api.DocumentAttributeFilename({
+                fileName: `sticker.webp`,
+              }),
+            ],
+          })
+        );
+        break;
+      case Medias.MediaSticker:
+        fileId as Medias.MediaSticker;
+        return await SendMedia(
+          snakeClient,
+          chatId,
+          new Api.InputMediaDocument({
+            id: new Api.InputDocument({
+              //@ts-ignore
+              id: bigInt(String(fileId._id)),
+              //@ts-ignore
+              accessHash: bigInt(String(fileId._accessHash)),
+              //@ts-ignore
+              fileReference: Buffer.from(fileId._fileReference, 'hex'),
+            }),
+          })
+        );
+        break;
+      case String:
+        fileId as string;
+        //@ts-ignore
+        if (/^http/i.test(fileId) || /^(\/|\.\.?\/|~\/)/i.test(fileId)) {
+          return await SendMedia(
+            snakeClient,
+            chatId,
+            new Api.InputMediaUploadedDocument({
+              //@ts-ignore
+              file: await UploadFile(snakeClient, fileId),
+              mimeType: 'image/webp',
+              attributes: [
+                new Api.DocumentAttributeFilename({
+                  fileName: `sticker.webp`,
+                }),
+              ],
+            })
+          );
         } else {
-          throw new Error(`Invalid FileType. It must be "sticker". Received ${decode.fileType}`);
+          //@ts-ignore
+          let file = await decodeFileId(fileId);
+          if (file.typeId !== 8) throw new Error(`Invalid fileId. This fileId not for sticker`);
+          return await SendMedia(
+            snakeClient,
+            chatId,
+            new Api.InputMediaDocument({
+              id: new Api.InputDocument({
+                id: bigInt(String(file.id)),
+                accessHash: bigInt(String(file.access_hash)),
+                fileReference: Buffer.from(file.fileReference, 'hex'),
+              }),
+            })
+          );
         }
-      }
+        break;
+      default:
+        throw new Error(`Couldn't resolve this fileId.`);
     }
   } catch (error: any) {
     snakeClient.log.error('Failed to running telegram.sendSticker');

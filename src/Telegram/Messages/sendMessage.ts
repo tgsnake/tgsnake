@@ -25,6 +25,8 @@ export interface sendMessageMoreParams {
   replyMarkup?: TypeReplyMarkup;
   entities?: Entities[];
   scheduleDate?: number;
+  noforwards?: boolean;
+  sendAs?: string;
 }
 export async function sendMessage(
   snakeClient: Snake,

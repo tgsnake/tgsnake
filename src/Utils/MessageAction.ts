@@ -9,15 +9,16 @@ import { Api } from 'telegram';
 import { Snake } from '../Client';
 import { BigInteger } from 'big-integer';
 import { PaymentRequestedInfo, PaymentCharge } from './Payment';
-import { Media } from './Media';
+import * as Medias from './Medias';
 import { toString } from './ToBigInt';
 import { From } from './From';
 import { Chat } from './Chat';
+import { Cleaning, betterConsoleLog } from './CleanObject';
 export class MessageAction {
   '_'!: string;
   title!: string;
   users!: From[];
-  photo!: Media;
+  photo!: Medias.MediaPhoto;
   user!: From;
   invite!: From;
   channel!: Chat;
@@ -67,8 +68,8 @@ export class MessageAction {
     if (messageAction instanceof Api.MessageActionChatEditPhoto) {
       messageAction as Api.MessageActionChatEditPhoto;
       this['_'] = 'editChatPhoto';
-      let media = new Media();
-      media.encode(messageAction.photo as Api.Photo);
+      let media = new Medias.MediaPhoto();
+      await media.encode(messageAction.photo!, snakeClient!);
       this.photo = media;
       return this;
     }
@@ -244,5 +245,12 @@ export class MessageAction {
       this['_'] = 'chatJoineeByRequest';
       return this;
     }
+  }
+  toJSON() {
+    let obj = betterConsoleLog(this);
+    for (let [key, value] of Object.entries(obj)) {
+      if (typeof value == 'bigint') obj[key] = String(value);
+    }
+    return obj;
   }
 }

@@ -5,58 +5,27 @@
 //
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
-import { betterConsoleLog } from '../Utils/CleanObject';
-import { DownloadFileParams } from '../Interface/Download';
-import { GetEntity } from './Users/GetEntity';
-import { sendMessage, sendMessageMoreParams } from './Messages/sendMessage';
-import { DeleteMessages } from './Messages/DeleteMessages';
-import { EditMessage, editMessageMoreParams } from './Messages/EditMessage';
-import { ForwardMessages, forwardMessageMoreParams } from './Messages/ForwardMessages';
-import { GetMessages } from './Messages/GetMessages';
-import { GetMessagesViews } from './Messages/GetMessagesViews';
-import { GetUserPhotos, getUserPhotosMoreParams } from './Users/GetUserPhotos';
-import { ReadHistory, readHistoryMoreParams } from './Messages/ReadHistory';
-import { ReadMentions } from './Messages/ReadMentions';
-import { ReadMessageContents } from './Messages/ReadMessageContents';
-import { UnpinAllMessages } from './Messages/UnpinAllMessages';
-import { PinMessage, pinMessageMoreParams } from './Messages/PinMessage';
-import { DeleteHistory, deleteHistoryMoreParams } from './Messages/DeleteHistory';
-import { DeleteUserHistory } from './Messages/DeleteUserHistory';
-import { EditAdmin, editAdminMoreParams } from './Chats/EditAdmin';
-import { EditBanned, editBannedMoreParams } from './Chats/EditBanned';
-import { EditPhoto } from './Media/EditPhoto';
-import { EditTitle } from './Chats/EditTitle';
-import { exportMessageLinkMoreParams, ExportMessageLink } from './Messages/ExportMessageLink';
-import { GetAdminedPublicChannels } from './Chats/GetAdminedPublicChannels';
-import { GetAdminLog, getAdminLogMoreParams } from './Chats/GetAdminLog';
-import { GetChannels } from './Chats/GetChannels';
-import { GetFullChat } from './Chats/GetFullChat';
-import { GetGroupsForDiscussion } from './Chats/GetGroupsForDiscussion';
-import { GetInactiveChannels } from './Chats/GetInactiveChannels';
-import { GetLeftChannels } from './Chats/GetLeftChannels';
-import { SendMedia, sendMediaMoreParams } from './Media/SendMedia';
-import { SendPhoto, sendPhotoMoreParams } from './Media/SendPhoto';
-import { SendDocument, sendDocumentMoreParams } from './Media/SendDocument';
-import { SendSticker } from './Media/SendSticker';
-import { Snake } from '../Client';
-import { Api, TelegramClient } from 'telegram';
-import * as Medias from '../Utils/Medias';
-import { GetParticipant } from './Chats/GetParticipant';
-import { GetChatMembersCount } from './Chats/GetChatMembersCount';
-import { GetParticipants, GetParticipantMoreParams } from './Chats/GetParticipants';
-import { AnswerInlineQuery, AnswerInlineQueryMoreParams } from './Bots/AnswerInlineQuery';
+import { Api } from 'telegram';
 import { inspect } from 'util';
-import { Download } from './Media/Download';
+import * as Utils from '../Utils';
+import * as Users from './Users';
+import * as Bots from './Bots';
+import * as Media from './Media';
+import * as Messages from './Messages';
+import * as Chats from './Chats';
+import * as Client from '../Client';
+import * as Interface from '../Interface';
+
 export class Telegram {
-  private _SnakeClient!: Snake;
-  constructor(SnakeClient: Snake) {
+  private _SnakeClient!: Client.Snake;
+  constructor(SnakeClient: Client.Snake) {
     this._SnakeClient = SnakeClient;
   }
   [inspect.custom]() {
-    return betterConsoleLog(this);
+    return Utils.betterConsoleLog(this);
   }
   toJSON() {
-    let obj = betterConsoleLog(this);
+    let obj = Utils.betterConsoleLog(this);
     for (let [key, value] of Object.entries(obj)) {
       if (typeof value == 'bigint') obj[key] = String(value);
     }
@@ -70,15 +39,19 @@ export class Telegram {
   }
   // getEntity
   async getEntity(chatId: bigint | string | number, useCache?: boolean) {
-    return await GetEntity(this.SnakeClient, chatId, useCache);
+    return Users.GetEntity(this.SnakeClient, chatId, useCache);
   }
   // getMe
   async getMe() {
-    return await this.getEntity('me');
+    return this.getEntity('me');
   }
   // sendMessage
-  async sendMessage(chatId: bigint | number | string, text: string, more?: sendMessageMoreParams) {
-    return await sendMessage(this.SnakeClient, chatId, text, more);
+  async sendMessage(
+    chatId: bigint | number | string,
+    text: string,
+    more?: Messages.sendMessageMoreParams
+  ) {
+    return Messages.sendMessage(this.SnakeClient, chatId, text, more);
   }
   // deleteMessages
   /**
@@ -93,7 +66,7 @@ export class Telegram {
    * ```
    */
   async deleteMessages(chatId: bigint | number | string, messageId: number[]) {
-    return await DeleteMessages(this.SnakeClient, chatId, messageId);
+    return Messages.DeleteMessages(this.SnakeClient, chatId, messageId);
   }
   /**
    * This method allow you to delete message by their identifiers
@@ -107,7 +80,7 @@ export class Telegram {
    * ```
    */
   async deleteMessage(chatId: bigint | number | string, messageId: number) {
-    return await DeleteMessages(this.SnakeClient, chatId, [messageId]);
+    return Messages.DeleteMessages(this.SnakeClient, chatId, [messageId]);
   }
   // editMessage
   /**
@@ -122,9 +95,9 @@ export class Telegram {
     chatId: bigint | number | string,
     messageId: number,
     text: string,
-    more?: editMessageMoreParams
+    more?: Messages.editMessageMoreParams
   ) {
-    return await EditMessage(this.SnakeClient, chatId, messageId, text, more);
+    return Messages.EditMessage(this.SnakeClient, chatId, messageId, text, more);
   }
   // forwardMessages
   /**
@@ -144,9 +117,9 @@ export class Telegram {
     chatId: bigint | number | string,
     fromChatId: bigint | number | string,
     messageId: number[],
-    more?: forwardMessageMoreParams
+    more?: Messages.forwardMessageMoreParams
   ) {
-    return await ForwardMessages(this.SnakeClient, chatId, fromChatId, messageId, more);
+    return Messages.ForwardMessages(this.SnakeClient, chatId, fromChatId, messageId, more);
   }
   /**
    * Forward message by their IDs.
@@ -165,9 +138,9 @@ export class Telegram {
     chatId: bigint | number | string,
     fromChatId: bigint | number | string,
     messageId: number,
-    more?: forwardMessageMoreParams
+    more?: Messages.forwardMessageMoreParams
   ) {
-    return await ForwardMessages(this.SnakeClient, chatId, fromChatId, [messageId], more);
+    return Messages.ForwardMessages(this.SnakeClient, chatId, fromChatId, [messageId], more);
   }
   // getMessages
   /**
@@ -187,7 +160,7 @@ export class Telegram {
     messageId: number[],
     replies: boolean = true
   ) {
-    return await GetMessages(this.SnakeClient, chatId, messageId, replies);
+    return Messages.GetMessages(this.SnakeClient, chatId, messageId, replies);
   }
   // getMessagesViews
   /**
@@ -207,7 +180,7 @@ export class Telegram {
     messageId: number[],
     increment: boolean = false
   ) {
-    return await GetMessagesViews(this.SnakeClient, chatId, messageId, increment);
+    return Messages.GetMessagesViews(this.SnakeClient, chatId, messageId, increment);
   }
   // getUserPhotos
   /**
@@ -221,8 +194,8 @@ export class Telegram {
    * })
    * ```
    */
-  async getUserPhotos(chatId: bigint | number | string, more?: getUserPhotosMoreParams) {
-    return await GetUserPhotos(this.SnakeClient, chatId, more);
+  async getUserPhotos(chatId: bigint | number | string, more?: Users.getUserPhotosMoreParams) {
+    return Users.GetUserPhotos(this.SnakeClient, chatId, more);
   }
   // readHistory
   /**
@@ -236,8 +209,8 @@ export class Telegram {
    * })
    * ```
    */
-  async readHistory(chatId: bigint | number | string, more?: readHistoryMoreParams) {
-    return await ReadHistory(this.SnakeClient, chatId, more);
+  async readHistory(chatId: bigint | number | string, more?: Messages.readHistoryMoreParams) {
+    return Messages.ReadHistory(this.SnakeClient, chatId, more);
   }
   // readMentions
   /**
@@ -251,7 +224,7 @@ export class Telegram {
    * ```
    */
   async readMentions(chatId: bigint | number | string) {
-    return await ReadMentions(this.SnakeClient, chatId);
+    return Messages.ReadMentions(this.SnakeClient, chatId);
   }
   // readMessageContents
   /**
@@ -267,7 +240,7 @@ export class Telegram {
    * ```
    */
   async readMessageContents(messageId: number[]) {
-    return await ReadMessageContents(this.SnakeClient, messageId);
+    return Messages.ReadMessageContents(this.SnakeClient, messageId);
   }
   // unpinAllMessages
   /**
@@ -281,7 +254,7 @@ export class Telegram {
    * ```
    */
   async unpinAllMessages(chatId: bigint | number | string) {
-    return await UnpinAllMessages(this.SnakeClient, chatId);
+    return Messages.UnpinAllMessages(this.SnakeClient, chatId);
   }
   // pinMessages
   /**
@@ -306,9 +279,9 @@ export class Telegram {
   async pinMessage(
     chatId: bigint | number | string,
     messageId: number,
-    more?: pinMessageMoreParams
+    more?: Messages.pinMessageMoreParams
   ) {
-    return await PinMessage(this.SnakeClient, chatId, messageId, more);
+    return Messages.PinMessage(this.SnakeClient, chatId, messageId, more);
   }
   // unpinMessages
   /**
@@ -325,7 +298,7 @@ export class Telegram {
    * ```
    */
   async unpinMessage(chatId: bigint | number | string, messageId: number) {
-    return await PinMessage(this.SnakeClient, chatId, messageId, { unpin: true });
+    return Messages.PinMessage(this.SnakeClient, chatId, messageId, { unpin: true });
   }
   // deleteHistory
   /**
@@ -339,8 +312,8 @@ export class Telegram {
    * })
    * ```
    */
-  async deleteHistory(chatId: bigint | number | string, more?: deleteHistoryMoreParams) {
-    return await DeleteHistory(this.SnakeClient, chatId, more);
+  async deleteHistory(chatId: bigint | number | string, more?: Messages.deleteHistoryMoreParams) {
+    return Messages.DeleteHistory(this.SnakeClient, chatId, more);
   }
   //deleteUserHistory
   /**
@@ -355,7 +328,7 @@ export class Telegram {
    * ```
    */
   async deleteUserHistory(chatId: bigint | number | string, userId: number | string) {
-    return await DeleteUserHistory(this.SnakeClient, chatId, userId);
+    return Messages.DeleteUserHistory(this.SnakeClient, chatId, userId);
   }
   // editAdmin
   /**
@@ -376,9 +349,9 @@ export class Telegram {
   async editAdmin(
     chatId: bigint | number | string,
     userId: bigint | number | string,
-    more?: editAdminMoreParams
+    more?: Chats.editAdminMoreParams
   ) {
-    return await EditAdmin(this.SnakeClient, chatId, userId, more);
+    return Chats.EditAdmin(this.SnakeClient, chatId, userId, more);
   }
   // editBanned
   /**
@@ -399,9 +372,9 @@ export class Telegram {
   async editBanned(
     chatId: bigint | number | string,
     userId: bigint | number | string,
-    more?: editBannedMoreParams
+    more?: Chats.editBannedMoreParams
   ) {
-    return await EditBanned(this.SnakeClient, chatId, userId, more);
+    return Chats.EditBanned(this.SnakeClient, chatId, userId, more);
   }
   // editPhoto
   /**
@@ -418,7 +391,7 @@ export class Telegram {
    * ```
    */
   async editPhoto(chatId: bigint | number | string, photo: string | Buffer) {
-    return await EditPhoto(this.SnakeClient, chatId, photo);
+    return Media.EditPhoto(this.SnakeClient, chatId, photo);
   }
   /**
    * edit chat/group/channel title.
@@ -436,7 +409,7 @@ export class Telegram {
    */
   // editTitle
   async editTitle(chatId: bigint | number | string, title: string) {
-    return await EditTitle(this.SnakeClient, chatId, title);
+    return Chats.EditTitle(this.SnakeClient, chatId, title);
   }
   // exportMessageLink
   /**
@@ -448,9 +421,9 @@ export class Telegram {
   async exportMessageLink(
     chatId: bigint | number | string,
     messageId: number,
-    more?: exportMessageLinkMoreParams
+    more?: Messages.exportMessageLinkMoreParams
   ) {
-    return await ExportMessageLink(this.SnakeClient, chatId, messageId, more);
+    return Messages.ExportMessageLink(this.SnakeClient, chatId, messageId, more);
   }
   // getAdminedPublicChannels
   /**
@@ -468,7 +441,7 @@ export class Telegram {
    * ```
    */
   async getAdminedPublicChannels(byLocation: boolean = true, checkLimit: boolean = true) {
-    return await GetAdminedPublicChannels(this.SnakeClient, byLocation, checkLimit);
+    return Chats.GetAdminedPublicChannels(this.SnakeClient, byLocation, checkLimit);
   }
   // getAdminLog
   /**
@@ -485,8 +458,8 @@ export class Telegram {
    * })
    * ```
    */
-  async getAdminLog(chatId: bigint | number | string, more?: getAdminLogMoreParams) {
-    return GetAdminLog(this.SnakeClient, chatId, more);
+  async getAdminLog(chatId: bigint | number | string, more?: Chats.getAdminLogMoreParams) {
+    return Chats.GetAdminLog(this.SnakeClient, chatId, more);
   }
   // getChannels
   /**
@@ -500,7 +473,7 @@ export class Telegram {
    * ```
    */
   async getChannels(chatId: bigint[] | number[] | string[]) {
-    return await GetChannels(this.SnakeClient, chatId);
+    return Chats.GetChannels(this.SnakeClient, chatId);
   }
   // getFullChat
   /**
@@ -513,7 +486,7 @@ export class Telegram {
    * ```
    */
   async getFullChat(chatId: bigint | number | string) {
-    return await GetFullChat(this.SnakeClient, chatId);
+    return Chats.GetFullChat(this.SnakeClient, chatId);
   }
   // getGroupsForDiscussion
   /**
@@ -528,7 +501,7 @@ export class Telegram {
    * ```
    */
   async getGroupsForDiscussion() {
-    return await GetGroupsForDiscussion(this.SnakeClient);
+    return Chats.GetGroupsForDiscussion(this.SnakeClient);
   }
   // getInactiveChannels
   /**
@@ -541,7 +514,7 @@ export class Telegram {
    * ```
    */
   async getInactiveChannels() {
-    return await GetInactiveChannels(this.SnakeClient);
+    return Chats.GetInactiveChannels(this.SnakeClient);
   }
   // getLeftChannels
   /**
@@ -555,7 +528,7 @@ export class Telegram {
    * ```
    */
   async getLeftChannels(offset: number = 0) {
-    return await GetLeftChannels(this.SnakeClient, offset);
+    return Chats.GetLeftChannels(this.SnakeClient, offset);
   }
   // sendMedia
   /**
@@ -567,9 +540,9 @@ export class Telegram {
   async sendMedia(
     chatId: bigint | number | string,
     media: Api.TypeInputMedia,
-    more?: sendMediaMoreParams
+    more?: Media.sendMediaMoreParams
   ) {
-    return await SendMedia(this.SnakeClient, chatId, media, more);
+    return Media.SendMedia(this.SnakeClient, chatId, media, more);
   }
   // sendPhoto
   /**
@@ -579,7 +552,7 @@ export class Telegram {
    * @param {Object} more - more parameters to use.
    * ```ts
    * bot.on("message",async (ctx) => {
-   *     if(ctx.media && ctx.media.type == "photo"){
+   *     if(ctx.media && ctx.media._ == "photo"){
    *         let results = await ctx.telegram.sendPhoto(ctx.chat.id,ctx.media.fileId)
    *         console.log(results)
    *     }
@@ -588,16 +561,16 @@ export class Telegram {
    */
   async sendPhoto(
     chatId: bigint | number | string,
-    fileId: string | Buffer,
-    more?: sendPhotoMoreParams
+    fileId: string | Buffer | Utils.Medias.MediaPhoto,
+    more?: Media.sendPhotoMoreParams
   ) {
-    return await SendPhoto(this.SnakeClient, chatId, fileId, more);
+    return Media.SendPhoto(this.SnakeClient, chatId, fileId, more);
   }
   // sendDocument
   /**
    * Sending Document file location/url/buffer.
    * @param {string|number|bigint} chatId - Chat/Groups/Channel id.
-   * @param {string|Buffer} fileId - File Location/Url/Buffer .
+   * @param {string|Buffer|Object} fileId - File Location/Url/Buffer .
    * @param {Object} more - more parameters to use.
    * ```ts
    * bot.command("doc",async (ctx) => {
@@ -607,10 +580,10 @@ export class Telegram {
    */
   async sendDocument(
     chatId: bigint | number | string,
-    fileId: string | Buffer,
-    more?: sendDocumentMoreParams
+    fileId: string | Buffer | Utils.Medias.TypeMessageMediaDocument,
+    more?: Media.sendDocumentMoreParams
   ) {
-    return await SendDocument(this.SnakeClient, chatId, fileId, more);
+    return Media.SendDocument(this.SnakeClient, chatId, fileId, more);
   }
   // sendSticker
   /**
@@ -619,7 +592,7 @@ export class Telegram {
    * @param {string|Buffer|Object} fileId - Path file/FileId/Buffer.
    * ```ts
    * bot.on("message",async (ctx) => {
-   *     if(ctx.media && ctx.media.type == "sticker"){
+   *     if(ctx.media && ctx.media._ == "sticker"){
    *         let results = await ctx.telegram.sendSticker(ctx.chat.id,ctx.media.fileId)
    *         console.log(results)
    *     }
@@ -628,9 +601,209 @@ export class Telegram {
    */
   async sendSticker(
     chatId: bigint | number | string,
-    fileId: string | Buffer | Api.MessageMediaDocument | Api.Document
+    fileId: string | Buffer | Utils.Medias.MediaSticker
   ) {
-    return await SendSticker(this.SnakeClient, chatId, fileId);
+    return Media.SendSticker(this.SnakeClient, chatId, fileId);
+  }
+  // sendVideo
+  /**
+   * Sending Video
+   * @param snakeClient - Client
+   * @param {string|number|bigint} chatId - Chat/Groups/Channel id.
+   * @param {string|Buffer} fileId - File Location/Url/Buffer .
+   * @param {Object} more - more parameters to use.
+   * ```ts
+   * bot.command("vid",async (ctx) => {
+   *     let results = await ctx.telegram.sendVideo(ctx.chat.id,"https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4")
+   * })
+   * ```
+   */
+  async sendVideo(
+    chatId: bigint | number | string,
+    fileId: string | Buffer | Utils.Medias.MediaVideo,
+    more?: Media.sendVideoMoreParams
+  ) {
+    return Media.SendVideo(this.SnakeClient, chatId, fileId, more);
+  }
+  // sendVideoNote
+  /**
+   * Sending VideoNote (rounded video)
+   * @param {string|number|bigint} chatId - Chat/Groups/Channel id.
+   * @param {string|Buffer} fileId - File Location/Url/Buffer .
+   * @param {Object} more - more parameters to use.
+   * ```ts
+   * bot.command("vidnote",async (ctx) => {
+   *     let results = await ctx.telegram.sendVideoNote(ctx.chat.id,"file id here")
+   * })
+   * ```
+   */
+  async sendVideoNote(
+    chatId: bigint | number | string,
+    fileId: string | Buffer | Utils.Medias.MediaVideoNote,
+    more?: Media.sendVideoNoteMoreParams
+  ) {
+    return Media.SendVideoNote(this.SnakeClient, chatId, fileId, more);
+  }
+  // sendAnimation
+  /**
+   * Sending Animation
+   * @param {string|number|bigint} chatId - Chat/Groups/Channel id.
+   * @param {string|Buffer} fileId - File Location/Url/Buffer .
+   * @param {Object} more - more parameters to use.
+   * ```ts
+   * bot.command("ani",async (ctx) => {
+   *     let results = await ctx.telegram.sendAnimation(ctx.chat.id,"file id here")
+   * })
+   * ```
+   */
+  async sendAnimation(
+    chatId: bigint | number | string,
+    fileId: string | Buffer | Utils.Medias.MediaAnimation,
+    more?: Media.sendAnimationMoreParams
+  ) {
+    return Media.SendAnimation(this.SnakeClient, chatId, fileId, more);
+  }
+  // sendAudio
+  /**
+   * Sending Audio
+   * @param {string|number|bigint} chatId - Chat/Groups/Channel id.
+   * @param {string|Buffer} fileId - File Location/Url/Buffer .
+   * @param {Object} more - more parameters to use.
+   * ```ts
+   * bot.command("au",async (ctx) => {
+   *     let results = await ctx.telegram.sendAudio(ctx.chat.id,"file id here")
+   * })
+   * ```
+   */
+  async sendAudio(
+    chatId: bigint | number | string,
+    fileId: string | Buffer | Utils.Medias.MediaAudio,
+    more?: Media.sendAudioMoreParams
+  ) {
+    return Media.SendAudio(this.SnakeClient, chatId, fileId, more);
+  }
+  // sendVoice
+  /**
+   * Sending Voice
+   * @param {string|number|bigint} chatId - Chat/Groups/Channel id.
+   * @param {string|Buffer} fileId - File Location/Url/Buffer .
+   * @param {Object} more - more parameters to use.
+   * ```ts
+   * bot.command("voice",async (ctx) => {
+   *     let results = await ctx.telegram.sendVoice(ctx.chat.id,"file id here")
+   * })
+   * ```
+   */
+  async sendVoice(
+    chatId: bigint | number | string,
+    fileId: string | Buffer | Utils.Medias.MediaVoice,
+    more?: Media.sendVoiceMoreParams
+  ) {
+    return Media.SendVoice(this.SnakeClient, chatId, fileId, more);
+  }
+  // sendDice
+  async sendDice(
+    chatId: bigint | number | string,
+    dice: string | Utils.Medias.MediaDice,
+    more?: Media.defaultSendMediaMoreParams
+  ) {
+    return Media.SendDice(this.snakeClient, chatId, dice, more);
+  }
+  // sendContact
+  /**
+   * Sending Contact
+   * @param snakeClient - Client
+   * @param {string|number|bigint} chatId - Chat/Groups/Channel id.
+   * @param {Object} contact - contact.
+   * @param {Object} more - more parameters to use.
+   * ```ts
+   * bot.command("contact",async (ctx) => {
+   *     let results = await ctx.telegram.sendContact(ctx.chat.id,{
+   *    firstName : "someone",
+   *    lastName : "",
+   *    phoneNumber : "1234567890",
+   *    vcard : "something info"
+   *  })
+   * })
+   * ```
+   */
+  async sendContact(
+    chatId: bigint | number | string,
+    contact: Media.InterfaceContact | Utils.Medias.MediaContact,
+    more?: Media.defaultSendMediaMoreParams
+  ) {
+    return Media.SendContact(this.SnakeClient, chatId, contact, more);
+  }
+  // sendPoll
+  /**
+   * Sending Polling
+   * @param {string|number|bigint} chatId - Chat/Groups/Channel id.
+   * @param {Object} poll - polling
+   * @param {Object} more - more parameters to use.
+   * ```ts
+   * bot.command("poll",async (ctx) => {
+   *     let results = await ctx.telegram.sendPoll(ctx.chat.id,{
+   *    question : "something"
+   *    options : ["A","B"],
+   *  })
+   * })
+   * ```
+   */
+  async sendPoll(
+    chatId: bigint | number | string,
+    poll: Media.InterfacePoll | Utils.Medias.MediaPoll,
+    more?: Media.sendPollMoreParams
+  ) {
+    return Media.SendPoll(this.SnakeClient, chatId, poll, more);
+  }
+  // sendLocation
+  /**
+   * Sending Location
+   * @param {string|number|bigint} chatId - Chat/Groups/Channel id.
+   * @param {Object} location - location
+   * @param {Object} more - more parameters to use.
+   * ```ts
+   * bot.command("loc",async (ctx) => {
+   *     let results = await ctx.telegram.sendLocation(ctx.chat.id,{
+   *    latitude : 0,
+   *    longitude : 0
+   *  })
+   * })
+   * ```
+   */
+  async sendLocation(
+    chatId: bigint | number | string,
+    location: Media.InterfaceLocation | Utils.Medias.MediaLocation,
+    more?: Media.defaultSendMediaMoreParams
+  ) {
+    return Media.SendLocation(this.SnakeClient, chatId, location, more);
+  }
+  // sendVenue
+  /**
+   * Sending Venue
+   * @param {string|number|bigint} chatId - Chat/Groups/Channel id.
+   * @param {Object} venue - venue
+   * @param {Object} more - more parameters to use.
+   * ```ts
+   * bot.command("venue",async (ctx) => {
+   *     let results = await ctx.telegram.sendVenue(ctx.chat.id,{
+   *    latitude : 0,
+   *    longitude : 0,
+   *    title : "title",
+   *    address : "address",
+   *    provider : "provider",
+   *    id : "some id here",
+   *    type : "some type here"
+   *  })
+   * })
+   * ```
+   */
+  async sendVenue(
+    chatId: bigint | number | string,
+    venue: Media.InterfaceVenue | Utils.Medias.MediaVenue,
+    more?: Media.defaultSendMediaMoreParams
+  ) {
+    return Media.SendVenue(this.SnakeClient, chatId, venue, more);
   }
   // getParticipant
   /**
@@ -645,7 +818,7 @@ export class Telegram {
    * ```
    */
   async getParticipant(chatId: bigint | string | number, userId: string | number) {
-    return await GetParticipant(this.SnakeClient, chatId, userId);
+    return Chats.GetParticipant(this.SnakeClient, chatId, userId);
   }
   // getChatMember
   /**
@@ -660,7 +833,7 @@ export class Telegram {
    * ```
    */
   async getChatMember(chatId: bigint | string | number, userId: string | number) {
-    return await GetParticipant(this.SnakeClient, chatId, userId);
+    return Chats.GetParticipant(this.SnakeClient, chatId, userId);
   }
   // getChatMembersCount
   /**
@@ -674,7 +847,7 @@ export class Telegram {
    * ```
    */
   async getChatMembersCount(chatId: bigint | number | string) {
-    return await GetChatMembersCount(this.SnakeClient, chatId);
+    return Chats.GetChatMembersCount(this.SnakeClient, chatId);
   }
   // getParticipants
   /**
@@ -688,8 +861,8 @@ export class Telegram {
    * })
    * ```
    */
-  async getParticipants(chatId: bigint | number | string, more?: GetParticipantMoreParams) {
-    return await GetParticipants(this.SnakeClient, chatId, more);
+  async getParticipants(chatId: bigint | number | string, more?: Chats.GetParticipantMoreParams) {
+    return Chats.GetParticipants(this.SnakeClient, chatId, more);
   }
   // getChatMembers
   /**
@@ -703,23 +876,23 @@ export class Telegram {
    * })
    * ```
    */
-  async getChatMembers(chatId: bigint | number | string, more?: GetParticipantMoreParams) {
-    return await GetParticipants(this.SnakeClient, chatId, more);
+  async getChatMembers(chatId: bigint | number | string, more?: Chats.GetParticipantMoreParams) {
+    return Chats.GetParticipants(this.SnakeClient, chatId, more);
   }
   // answerInlineQuery
   async answerInlineQuery(
     queryId: bigint,
     results: Array<Api.TypeInputBotInlineResult>,
-    more?: AnswerInlineQueryMoreParams
+    more?: Bots.AnswerInlineQueryMoreParams
   ) {
-    return await AnswerInlineQuery(this.SnakeClient, queryId, results, more);
+    return Bots.AnswerInlineQuery(this.SnakeClient, queryId, results, more);
   }
   async restrictChatMember(
     chatId: bigint | number | string,
     userId: bigint | number | string,
-    more?: editBannedMoreParams
+    more?: Chats.editBannedMoreParams
   ) {
-    return await EditBanned(
+    return Chats.EditBanned(
       this.SnakeClient,
       chatId,
       userId,
@@ -744,11 +917,11 @@ export class Telegram {
     );
   }
   async banChatMember(chatId: bigint | number | string, userId: bigint | number | string) {
-    return await EditBanned(this.SnakeClient, chatId, userId);
+    return Chats.EditBanned(this.SnakeClient, chatId, userId);
   }
   async kickChatMember(chatId: bigint | number | string, userId: bigint | number | string) {
-    await EditBanned(this.SnakeClient, chatId, userId);
-    return await EditBanned(this.SnakeClient, chatId, userId, {
+    await Chats.EditBanned(this.SnakeClient, chatId, userId);
+    return Chats.EditBanned(this.SnakeClient, chatId, userId, {
       untilDate: 0,
       viewMessages: false,
       sendMessages: false,
@@ -765,7 +938,7 @@ export class Telegram {
     });
   }
   async unbanChatMember(chatId: bigint | number | string, userId: bigint | number | string) {
-    return await EditBanned(this.SnakeClient, chatId, userId, {
+    return Chats.EditBanned(this.SnakeClient, chatId, userId, {
       untilDate: 0,
       viewMessages: false,
       sendMessages: false,
@@ -793,7 +966,10 @@ export class Telegram {
    * })
    * ```
    */
-  async download(media: string | Medias.TypeMessageMediaDownload, params?: DownloadFileParams) {
-    return await Download(this.snakeClient, media, params);
+  async download(
+    media: string | Utils.Medias.TypeMessageMediaDownload,
+    params?: Interface.DownloadFileParams
+  ) {
+    return Media.Download(this.snakeClient, media, params);
   }
 }

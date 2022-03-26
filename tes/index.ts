@@ -8,26 +8,23 @@
 
 //import {Snake,GramJs,Composer,Updates} from "../src"
 import {Snake} from "../src/Client/Snake"
+import * as Medias from "../src/Utils/Medias"
+import fs from "fs"
+import path from "path"
 interface MyContext {
   hello?:string
 }
 const bot = new Snake()
 bot.log.setLogLevel("debug")
-bot.use(async (ctx,next)=>{
-  console.log(ctx)
-  console.log(JSON.stringify(ctx,null,2))
-  //@ts-ignore
-  if(ctx.message?.media){
-    //@ts-ignore
-    if(ctx.message.media["_"] == "videoNote"){
-      //@ts-ignore
-      console.log(await ctx.message.media.download())
-    }
-  }
-  return next()
-})
-bot.cmd("start",(ctx)=>{
-  console.log(ctx)
-  ctx.telegram.sendMessage(Number(ctx.chat.id),"hello")
+bot.cmd("poll",(ctx)=>{
+  ctx.telegram.sendPoll(ctx.chat.id,{
+    question : "something",
+    options : ["A","B"]
+  },{
+    correctAnswers : 0,
+    solution : "**here your solution**",
+    solutionParseMode : "markdown",
+    quiz : true
+  })
 })
 bot.run()

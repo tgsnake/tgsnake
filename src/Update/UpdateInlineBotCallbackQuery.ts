@@ -38,18 +38,8 @@ export class UpdateInlineBotCallbackQuery extends Update {
     this.inlineMessageId += Util.to32bitBuffer(update.msgId.dcId);
     let id = BigInt(String(update.msgId.id));
     let accessHash = BigInt(String(update.msgId.accessHash));
-    //accessHash
-    if (accessHash < BigInt(0)) {
-      this.inlineMessageId += Util.to64bitBuffer(accessHash * BigInt(-1));
-    } else {
-      this.inlineMessageId += Util.to64bitBuffer(accessHash);
-    }
-    //id
-    if (id < BigInt(0)) {
-      this.inlineMessageId += Util.to64bitBuffer(id * BigInt(-1));
-    } else {
-      this.inlineMessageId += Util.to64bitBuffer(id);
-    }
+    this.inlineMessageId += Util.to64bitBuffer(accessHash);
+    this.inlineMessageId += Util.to64bitBuffer(id);
     this.inlineMessageId = Util.base64UrlEncode(Util.rleEncode(this.inlineMessageId));
     this.from = new From();
     await this.from.init(BigInt(toString(update.userId) as string), SnakeClient);
