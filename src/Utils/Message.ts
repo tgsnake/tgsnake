@@ -57,6 +57,7 @@ export class Message {
   senderChat?: Chat;
   isAutomaticForward?: boolean;
   reactions?: Reactions;
+  /** @hidden */
   private _SnakeClient!: Snake;
   constructor() {}
   async init(message: Api.MessageService | Api.Message, SnakeClient: Snake) {
@@ -70,6 +71,7 @@ export class Message {
     }
   }
   // only parse Message Service
+  /** @hidden */
   private async parseMessageService(message: Api.MessageService) {
     this.out = message.out;
     this.mentioned = message.mentioned;
@@ -145,6 +147,7 @@ export class Message {
     return this;
   }
   // only parse Message
+  /** @hidden */
   private async parseMessage(message: Api.Message) {
     this.out = message.out;
     this.mentioned = message.mentioned;

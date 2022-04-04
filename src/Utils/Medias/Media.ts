@@ -11,7 +11,7 @@ import { betterConsoleLog } from '../CleanObject';
 import { FileId, decodeFileId } from 'tg-file-id';
 import { DownloadFileParams } from '../../Interface/Download';
 import BotError from '../../Context/Error';
-export type TypeMessageMedia =
+export type TypeMessageMediaName =
   | 'sticker' //done
   | 'document' //done
   | 'photo' // done
@@ -30,7 +30,7 @@ export type TypeMessageMedia =
   | 'invoice' // done
   | 'chatPhoto'; //done
 export class Media {
-  _!: TypeMessageMedia;
+  _!: TypeMessageMediaName;
   date!: Date | number;
   /** @hidden */
   private _SnakeClient!: Snake;
@@ -55,9 +55,11 @@ export class Media {
     if (!file) throw new BotError(`FileId not found!`, 'Media.decode', '');
     return decodeFileId(String(file));
   }
+  /** @hidden */
   [inspect.custom]() {
     return betterConsoleLog(this);
   }
+  /** @hidden */
   toJSON() {
     let obj = betterConsoleLog(this);
     for (let [key, value] of Object.entries(obj)) {

@@ -17,13 +17,16 @@ import * as Client from '../Client';
 import * as Interface from '../Interface';
 
 export class Telegram {
+  /** @hidden */
   private _SnakeClient!: Client.Snake;
   constructor(SnakeClient: Client.Snake) {
     this._SnakeClient = SnakeClient;
   }
+  /** @hidden */
   [inspect.custom]() {
     return Utils.betterConsoleLog(this);
   }
+  /** @hidden */
   toJSON() {
     let obj = Utils.betterConsoleLog(this);
     for (let [key, value] of Object.entries(obj)) {

@@ -69,26 +69,31 @@ export class From {
     }
     if (id) {
       snakeClient.log.debug(`Creating User ${id}`);
-      let entity = await snakeClient.telegram.getEntity(id, true);
-      this.id = entity.id;
-      this.username = entity.username;
-      this.firstName = entity.firstName;
-      this.lastName = entity.lastName;
-      this.status = entity.status;
-      this.self = entity.self;
-      this.deleted = entity.deleted;
-      this.fake = entity.fake;
-      this.scam = entity.scam;
-      this.bot = entity.bot;
-      this.verified = entity.verified;
-      this.restricted = entity.restricted;
-      this.dcId = entity.dcId;
-      this.photo = entity.photo;
-      this.restrictionReason = entity.restrictionReason;
+      try {
+        let entity = await snakeClient.telegram.getEntity(id, true);
+        this.id = entity.id;
+        this.username = entity.username;
+        this.firstName = entity.firstName;
+        this.lastName = entity.lastName;
+        this.status = entity.status;
+        this.self = entity.self;
+        this.deleted = entity.deleted;
+        this.fake = entity.fake;
+        this.scam = entity.scam;
+        this.bot = entity.bot;
+        this.verified = entity.verified;
+        this.restricted = entity.restricted;
+        this.dcId = entity.dcId;
+        this.photo = entity.photo;
+        this.restrictionReason = entity.restrictionReason;
+      } catch (error) {
+        return this;
+      }
     }
     await Cleaning(this);
     return this;
   }
+  /** @hidden */
   toJSON() {
     let obj = betterConsoleLog(this);
     for (let [key, value] of Object.entries(obj)) {

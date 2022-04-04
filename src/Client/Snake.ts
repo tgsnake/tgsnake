@@ -21,11 +21,17 @@ import { SnakeEvent, InterfaceSnakeEvent } from '../Events';
 import { SnakeSession } from './SnakeSession';
 import { Logger } from '../Context/Logger';
 export class Snake<T = {}> extends MainContext<T> {
+  /** @hidden */
   private _client!: TelegramClient;
+  /** @hidden */
   private _telegram!: Telegram;
-  private _version: string = '2.0.0';
+  /** @hidden */
+  private _version: string = '2.0.0-beta.18';
+  /** @hidden */
   private _connectTime: number = 0;
+  /** @hidden */
   private _freshStore: boolean = false;
+  /** @hidden */
   private intervalCT!: any;
   constructor(options?: Options) {
     super();
@@ -120,6 +126,7 @@ export class Snake<T = {}> extends MainContext<T> {
     let ping = Number((p - d) / 1000).toFixed(3);
     return `${ping} s`;
   }
+  /** @hidden */
   private async _createSession() {
     this.log.debug('Creating session');
     if (this.options.storeSession) {
@@ -135,6 +142,7 @@ export class Snake<T = {}> extends MainContext<T> {
     }
     return new StringSession(this.options.session!);
   }
+  /** @hidden */
   private async _start() {
     this.log.log(`🐍 Welcome To TGSNAKE ${this.version}.`);
     this.log.log(`🐍 Setting Logger level to "${this.options.logger}"`);
@@ -229,6 +237,7 @@ export class Snake<T = {}> extends MainContext<T> {
     }
     return this;
   }
+  /** @hidden */
   async _createClient() {
     this.log.debug('Creating client');
     process.once('SIGINT', () => {

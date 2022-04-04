@@ -23,7 +23,9 @@ export interface InterfaceSnakeSession {
 let ignore = ['session.json', 'cache.json'];
 const CURRENT_VERSION = '1';
 export class SnakeSession extends MemorySession {
+  /** @hidden */
   private _sessionName!: string;
+  /** @hidden */
   private client!: Snake;
   constructor(sessionName: string, client: Snake) {
     super();

@@ -24,6 +24,7 @@ export interface InterfaceSnakeEvent extends DefaultEventInterface {
 }
 
 export class SnakeEvent extends EventBuilder {
+  /** @hidden */
   private _SnakeClient!: Snake;
   constructor(SnakeClient: Snake, eventParams: InterfaceSnakeEvent) {
     let { chats, blacklistChats, func } = eventParams;

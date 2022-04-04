@@ -13,9 +13,11 @@ export class ReplyToMessageContext extends ReplyToMessage {
   constructor() {
     super();
   }
+  /** @hidden */
   [inspect.custom]() {
     return betterConsoleLog(this);
   }
+  /** @hidden */
   toJSON() {
     let obj = betterConsoleLog(this);
     for (let [key, value] of Object.entries(obj)) {

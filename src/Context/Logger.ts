@@ -17,9 +17,13 @@ export interface LoggerColor {
 export type TypeLogLevel = 'none' | 'info' | 'debug' | 'error' | 'verbose' | 'warning';
 export type TypeWarningLog = 'soft' | 'hard';
 export class Logger {
+  /** @hidden */
   private _color!: LoggerColor;
+  /** @hidden */
   private _level!: TypeLogLevel;
+  /** @hidden */
   private _enable!: boolean;
+  /** @hidden */
   private _warningLogLevel!: TypeWarningLog;
   constructor(level: TypeLogLevel, enable: boolean, color?: LoggerColor) {
     this._level = level;
@@ -35,10 +39,20 @@ export class Logger {
       color ? color : {}
     );
   }
+  /** @hidden */
   [NodeUtil.inspect.custom]() {
     return betterConsoleLog(this);
   }
+  /** @hidden */
+  toJSON() {
+    let obj = betterConsoleLog(this);
+    for (let [key, value] of Object.entries(obj)) {
+      if (typeof value == 'bigint') obj[key] = String(value);
+    }
+    return obj;
+  }
   /**
+   * @hidden
    * Creating a log template.
    */
   private template(level: string) {

@@ -16,6 +16,7 @@ export {
   run,
   Composer,
   MiddlewareObj,
+  Combine,
 } from './Composer';
 export { MessageContext } from './MessageContext';
 export { BotError };

@@ -1,6 +1,6 @@
 {
   "name": "tgsnake",
-  "version": "2.0.0",
+  "version": "2.0.0-beta.18",
   "description": "Telegram MTProto framework base gram.js",
   "main": "./lib/index.js",
   "scripts": {
@@ -9,10 +9,7 @@
     "pretty-quick": "pretty-quick --staged --pattern \"src/**/*.*(js|jsx|ts|tsx)\"",
     "prettier": "prettier -w ./src",
     "update": "yarn up \"**\" --interactive",
-    "prepare": "husky install && echo \"🐍 Building snake package.\" && rm -rf ./lib && tsc",
-    "prepublish": "yarn prepare",
-    "postinstall": "yarn prepare",
-    "prepack": "yarn prepare"
+    "prepare": "husky install && echo \"🐍 Building snake package.\" && rm -rf ./lib && tsc"
   },
   "homepage": "https://tgsnake.js.org",
   "keywords": [
@@ -43,18 +40,19 @@
     "util": "^0.12.4"
   },
   "devDependencies": {
-    "@types/node": "17.0.21",
-    "dotenv": "^16.0.0",
-    "prettier": "2.6.0",
+    "@types/node": "17.0.23",
+    "dotenv": "16.0.0",
+    "prettier": "2.6.1",
     "pretty-quick": "3.1.3",
     "ts-node": "10.7.0",
     "typedoc": "0.22.13",
-    "typescript": "4.6.2"
+    "typescript": "4.6.3"
   },
   "engineStrict": true,
   "engines": {
     "node": ">=10.0.0",
     "npm": ">=6.0.0",
     "yarn": ">=1.0.0"
-  }
+  },
+  "packageManager": "yarn@3.2.0"
 }

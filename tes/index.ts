@@ -16,15 +16,8 @@ interface MyContext {
 }
 const bot = new Snake()
 bot.log.setLogLevel("debug")
-bot.cmd("poll",(ctx)=>{
-  ctx.telegram.sendPoll(ctx.chat.id,{
-    question : "something",
-    options : ["A","B"]
-  },{
-    correctAnswers : 0,
-    solution : "**here your solution**",
-    solutionParseMode : "markdown",
-    quiz : true
+bot.run().then(()=>{
+  bot.telegram.getMessages("tdlibchat",[39834]).then((res)=>{
+    console.log(res)
   })
 })
-bot.run()

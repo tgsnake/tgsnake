@@ -31,14 +31,18 @@ export class ForwardMessage {
     this.savedFromMsgId = forwardHeader.savedFromMsgId;
     this.psaType = forwardHeader.psaType;
     if (forwardHeader.fromId) {
-      let from = new From();
-      await from.init(forwardHeader.fromId, snakeClient);
-      this.from = from;
+      try {
+        let from = new From();
+        await from.init(forwardHeader.fromId, snakeClient);
+        this.from = from;
+      } catch (error) {}
     }
     if (forwardHeader.savedFromPeer) {
-      let chat = new Chat();
-      await chat.init(forwardHeader.savedFromPeer, snakeClient);
-      this.savedFromChat = chat;
+      try {
+        let chat = new Chat();
+        await chat.init(forwardHeader.savedFromPeer, snakeClient);
+        this.savedFromChat = chat;
+      } catch (error) {}
     }
     await Cleaning(this);
     return this;

@@ -10,14 +10,18 @@ import { ResultGetEntity } from '../Telegram/Users/GetEntity';
 import { betterConsoleLog } from '../Utils/CleanObject';
 import { inspect } from 'util';
 export class EntityCache {
+  /** @hidden */
   private _cache: Map<bigint | string, ResultGetEntity> = new Map();
+  /** @hidden */
   private _sessionName!: string;
   constructor(sessionName: string) {
     this._sessionName = sessionName;
   }
+  /** @hidden */
   [inspect.custom]() {
     return betterConsoleLog(this);
   }
+  /** @hidden */
   toJSON() {
     let obj = betterConsoleLog(this);
     for (let [key, value] of Object.entries(obj)) {

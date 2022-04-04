@@ -5,10 +5,10 @@
 //
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
-export { Media } from './Media';
+export { Media, TypeMessageMediaName } from './Media';
 export { MediaContact } from './Contact';
 export { MediaSticker } from './Sticker';
-export { MediaPoll } from './Poll';
+export { MediaPoll, IPollAnswer } from './Poll';
 export { MediaDice } from './Dice';
 export { MediaLocation } from './Location';
 export { MediaPhoto } from './Photo';

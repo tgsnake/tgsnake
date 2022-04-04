@@ -20,13 +20,15 @@ import { Options } from '../Interface/Options';
 import { Logger } from './Logger';
 import { inspect } from 'util';
 export class MainContext<T = {}> extends Composer<T> {
+  /** @hidden */
   private _options!: Options;
+  /** @hidden */
   private _gramjsOptions!: Options;
   connected: Boolean = false;
   aboutMe!: ResultGetEntity;
   entityCache!: EntityCache;
-  consoleColor!: string;
   log!: Logger;
+  /** @hidden */
   errorHandler: ErrorHandler<T> = (error, update) => {
     this.log.error(`Snake error (${error.message}) when processing update :`);
     this.log.error(update);
@@ -36,9 +38,11 @@ export class MainContext<T = {}> extends Composer<T> {
   constructor() {
     super();
   }
+  /** @hidden */
   [inspect.custom]() {
     return betterConsoleLog(this);
   }
+  /** @hidden */
   toJSON() {
     let obj = betterConsoleLog(this);
     for (let [key, value] of Object.entries(obj)) {

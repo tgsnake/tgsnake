@@ -50,6 +50,7 @@ export class ReplyToMessage {
   noforward?: boolean;
   senderChat?: Chat;
   isAutomaticForward?: boolean;
+  /** @hidden */
   private _SnakeClient!: Snake;
   constructor() {}
   async init(

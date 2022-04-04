@@ -113,11 +113,14 @@ export type TypeUpdates =
 
 export class Update {
   '_'!: TypeUpdates;
+  /** @hidden */
   private _telegram!: Telegram;
   constructor() {}
+  /** @hidden */
   [inspect.custom]() {
     return betterConsoleLog(this);
   }
+  /** @hidden */
   toJSON() {
     let obj = betterConsoleLog(this);
     for (let [key, value] of Object.entries(obj)) {

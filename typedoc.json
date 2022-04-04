@@ -1,12 +1,12 @@
 {
   "entryPoints": ["src/index.ts"],
-  "out": "docs",
-  "cname" : "tgsnake.js.org",
+  "out": "beta",
   "media" : ["./media"],
   "name" : "tgsnake",
   "includeVersion" : true,
   "hideGenerator": true,
   "externalPattern":["./example/*(.js|.ts|.md)"],
   "emit" : true,
-  "json" : "docs/api/docs.json"
+  "logger" : "verbose",
+  "sort" : "alphabetical"
 }

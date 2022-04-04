@@ -234,6 +234,7 @@ export class ResultGetEntity {
     }
     return this;
   }
+  /** @hidden */
   toJSON() {
     let obj = betterConsoleLog(this);
     for (let [key, value] of Object.entries(obj)) {

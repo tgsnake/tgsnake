@@ -232,6 +232,7 @@ export class ChatParticipants {
       );
     }
   }
+  /** @hidden */
   private async _ChatParticipants(participant: Api.ChatParticipants, SnakeClient: Snake) {
     this.version = participant.version;
     if (participant.chatId) {
@@ -270,6 +271,7 @@ export class ChatParticipants {
     }
     return this;
   }
+  /** @hidden */
   private async _ChannelParticipants(
     participant: Api.channels.ChannelParticipants,
     SnakeClient: Snake
@@ -310,6 +312,7 @@ export class ChatParticipants {
       i++;
     }
   }
+  /** @hidden */
   private async _ChannelParticipant(
     participant: Api.channels.ChannelParticipant,
     SnakeClient: Snake

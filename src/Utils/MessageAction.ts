@@ -242,10 +242,11 @@ export class MessageAction {
     }
     if (messageAction instanceof Api.MessageActionChatJoinedByRequest) {
       messageAction as Api.MessageActionChatJoinedByRequest;
-      this['_'] = 'chatJoineeByRequest';
+      this['_'] = 'chatJoinedByRequest';
       return this;
     }
   }
+  /** @hidden */
   toJSON() {
     let obj = betterConsoleLog(this);
     for (let [key, value] of Object.entries(obj)) {

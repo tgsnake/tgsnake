@@ -128,7 +128,9 @@ function filterEvent(filter, ctx) {
   return Boolean(passed.length > 0);
 }
 export class Composer<T = {}> implements MiddlewareObj<Combine<Updates.TypeUpdate, T>> {
+  /** @hidden */
   private handler!: MiddlewareFn<Combine<Updates.TypeUpdate, T>>;
+  /** @hidden */
   context: Partial<T> = {};
   prefix: string = '.!/';
   constructor(...middleware: Array<MiddlewareFn<Combine<Updates.TypeUpdate, T>>>) {

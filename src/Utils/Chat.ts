@@ -67,25 +67,30 @@ export class Chat {
     if (this.id) {
       snakeClient.log.debug(`Creating Chat ${this.id}`);
       let tg = snakeClient.telegram;
-      let entity = await tg.getEntity(this.id, true);
-      this.id = entity.id;
-      this.noforward = entity.noforward;
-      this.username = entity.username!;
-      this.firstName = entity.firstName!;
-      this.lastName = entity.lastName!;
-      this.title = entity.title!;
-      this.photo = entity.photo!;
-      this.defaultBannedRights = entity.defaultBannedRights;
-      this.participantsCount = entity.participantsCount;
-      this.dcId = entity.dcId;
-      this.fake = entity.fake !== undefined ? entity.fake : false;
-      this.scam = entity.scam !== undefined ? entity.scam : false;
-      this.private = Boolean(entity.type === 'user');
-      this.type = entity.type as string;
+      try {
+        let entity = await tg.getEntity(this.id, true);
+        this.id = entity.id;
+        this.noforward = entity.noforward;
+        this.username = entity.username!;
+        this.firstName = entity.firstName!;
+        this.lastName = entity.lastName!;
+        this.title = entity.title!;
+        this.photo = entity.photo!;
+        this.defaultBannedRights = entity.defaultBannedRights;
+        this.participantsCount = entity.participantsCount;
+        this.dcId = entity.dcId;
+        this.fake = entity.fake !== undefined ? entity.fake : false;
+        this.scam = entity.scam !== undefined ? entity.scam : false;
+        this.private = Boolean(entity.type === 'user');
+        this.type = entity.type as string;
+      } catch (error) {
+        return this;
+      }
     }
     await Cleaning(this);
     return this;
   }
+  /** @hidden */
   toJSON() {
     let obj = betterConsoleLog(this);
     for (let [key, value] of Object.entries(obj)) {
