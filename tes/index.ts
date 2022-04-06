@@ -16,8 +16,10 @@ interface MyContext {
 }
 const bot = new Snake()
 bot.log.setLogLevel("debug")
-bot.run().then(()=>{
-  bot.telegram.getMessages("tdlibchat",[39834]).then((res)=>{
-    console.log(res)
-  })
+bot.on("message",async (ctx) => {
+  if(ctx.media && ctx.media._ == 'document'){
+    //@ts-ignore
+    return ctx.telegram.sendDocument(ctx.chat.id,ctx.media.fileId)
+  }
 })
+bot.run()

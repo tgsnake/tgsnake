@@ -8,7 +8,7 @@
 import { Snake } from '../../Client';
 import { inspect } from 'util';
 import { betterConsoleLog } from '../CleanObject';
-import { FileId, decodeFileId } from 'tg-file-id';
+import { FileId, decodeFileId } from '../../Libs/tg-file-id-1.1.3/src';
 import { DownloadFileParams } from '../../Interface/Download';
 import BotError from '../../Context/Error';
 export type TypeMessageMediaName =

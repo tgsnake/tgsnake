@@ -10,7 +10,7 @@ import { Api } from 'telegram';
 import { Snake } from '../../Client';
 import { SendMedia, sendMediaMoreParams } from './SendMedia';
 import { UploadFile } from './UploadFile';
-import { decodeFileId } from 'tg-file-id';
+import { decodeFileId } from '../../Libs/tg-file-id-1.1.3/src';
 import * as Medias from '../../Utils/Medias';
 import bigInt from 'big-integer';
 import { GetFileInfo } from './GetFileInfo';
