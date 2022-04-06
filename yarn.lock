@@ -2003,6 +2003,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tg-file-id@https://github.com/butthx/tg-file-id#prebuild":
+  version: 1.1.3
+  resolution: "tg-file-id@https://github.com/butthx/tg-file-id.git#commit=28d0470296a5ecb3a518641a6a90b682d6061bb3"
+  checksum: fbb1aeefb3ffdcd43241ee5c55ee72211a8c8f73b1c36331f6a4f06617d95f5576cad13b01cd4daecad21e63b9b883ffe681c411024158b1a4dad0ea85795d49
+  languageName: node
+  linkType: hard
+
 "tgsnake@workspace:.":
   version: 0.0.0-use.local
   resolution: "tgsnake@workspace:."
@@ -2019,6 +2026,7 @@ __metadata:
     pretty-quick: 3.1.3
     prompts: 2.4.2
     telegram: 2.6.2
+    tg-file-id: "https://github.com/butthx/tg-file-id#prebuild"
     ts-node: 10.7.0
     typedoc: 0.22.13
     typescript: 4.6.3

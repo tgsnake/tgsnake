@@ -13,7 +13,7 @@ import { Telegram } from '../Telegram';
 import { Snake } from '../Client';
 import { BigInteger } from 'big-integer';
 import { MessageContext } from '../Context/MessageContext';
-import Util from '../Libs/tg-file-id-1.1.3/src/Util';
+import Util from 'tg-file-id/dist/Util';
 import { toString } from '../Utils/ToBigInt';
 export class UpdateInlineBotCallbackQuery extends Update {
   id!: bigint;

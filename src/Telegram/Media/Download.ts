@@ -7,7 +7,7 @@
 //  it under the terms of the MIT License as published.
 import { Api } from 'telegram';
 import * as Medias from '../../Utils/Medias';
-import { FileId, decodeFileId } from '../../Libs/tg-file-id-1.1.3/src';
+import { FileId, decodeFileId } from 'tg-file-id';
 import { Snake } from '../../Client';
 import bigInt, { BigInteger } from 'big-integer';
 import { DownloadFileParams } from '../../Interface/Download';
