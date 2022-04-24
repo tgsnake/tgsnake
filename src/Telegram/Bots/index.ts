@@ -6,3 +6,5 @@
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
 export { AnswerInlineQuery, AnswerInlineQueryMoreParams } from './AnswerInlineQuery';
+export { AnswerShippingQuery, ShippingOptions } from './AnswerShippingQuery';
+export { AnswerPrecheckoutQuery } from './AnswerPrecheckoutQuery';

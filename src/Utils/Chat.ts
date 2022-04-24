@@ -28,6 +28,7 @@ export class Chat {
   scam!: boolean;
   type!: string;
   noforward?: boolean;
+  accessHash!: bigint;
   constructor() {}
   async init(peer: Api.TypePeer | number | bigint, snakeClient: Snake) {
     if (typeof peer !== 'number' && typeof peer !== 'bigint') {
@@ -83,6 +84,7 @@ export class Chat {
         this.scam = entity.scam !== undefined ? entity.scam : false;
         this.private = Boolean(entity.type === 'user');
         this.type = entity.type as string;
+        this.accessHash = entity.accessHash!;
       } catch (error) {
         return this;
       }

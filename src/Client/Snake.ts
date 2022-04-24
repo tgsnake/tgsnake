@@ -26,7 +26,7 @@ export class Snake<T = {}> extends MainContext<T> {
   /** @hidden */
   private _telegram!: Telegram;
   /** @hidden */
-  private _version: string = '2.0.0-beta.20';
+  private _version: string = '2.0.0-beta.21';
   /** @hidden */
   private _connectTime: number = 0;
   /** @hidden */
@@ -320,9 +320,11 @@ export class Snake<T = {}> extends MainContext<T> {
     let name = this.aboutMe.lastName
       ? this.aboutMe.firstName + ' ' + this.aboutMe.lastName + ' [' + this.aboutMe.id + ']'
       : this.aboutMe.firstName + ' [' + this.aboutMe.id + ']';
-    if (!this.aboutMe.bot) {
-      await this.client.getDialogs({});
-    }
+    //
+    //    if (!this.aboutMe.bot) {
+    //      await this.client.getDialogs({});
+    //    }
+    //
     this.handleUpdate(this.aboutMe, this);
     this.log.log('🐍 Connected as ', name);
     this.connected = true;

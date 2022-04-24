@@ -7,7 +7,7 @@
 //  it under the terms of the MIT License as published. 
 
 //import {Snake,GramJs,Composer,Updates} from "../src"
-import {Snake} from "../src/Client/Snake"
+import {Snake,GramJs} from "../src/"
 import * as Medias from "../src/Utils/Medias"
 import fs from "fs"
 import path from "path"
@@ -16,10 +16,5 @@ interface MyContext {
 }
 const bot = new Snake()
 bot.log.setLogLevel("debug")
-bot.on("message",async (ctx) => {
-  if(ctx.media && ctx.media._ == 'document'){
-    //@ts-ignore
-    return ctx.telegram.sendDocument(ctx.chat.id,ctx.media.fileId)
-  }
-})
+bot.on("message",console.log)
 bot.run()

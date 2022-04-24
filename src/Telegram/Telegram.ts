@@ -975,4 +975,39 @@ export class Telegram {
   ) {
     return Media.Download(this.snakeClient, media, params);
   }
+  /**
+   * Sending invoice (payment).
+   * @param chatId {String|Number|BigInt} - target chat.
+   * @param invoice {Object} - Invoice will be sending.
+   * @param more {Object} - More parameter will be using to sending invoice.
+   * ```ts
+   * bot.command("invoice",(ctx)=>{
+   *   return ctx.telegram.sendInvoice(ctx.chat.id,{
+   *      test : true,
+   *      currency : "usd",
+   *      payload : "some payload here.",
+   *      provider : "",
+   *      title : "testing",
+   *      description : "just testing lol. xD",
+   *      prices : [{
+   *          amount : 1000n,
+   *          label : "1"
+   *      }]
+   *   })
+   * })
+   * ```
+   */
+  async sendInvoice(
+    chatId: number | string | bigint,
+    invoice: Media.sendInvoiceParams,
+    more?: Media.defaultSendMediaMoreParams
+  ) {
+    return Media.SendInvoice(this.snakeClient, chatId, invoice, more);
+  }
+  async answerPrecheckoutQuery(id: bigint, ok: boolean, error?: string) {
+    return Bots.AnswerPrecheckoutQuery(this.snakeClient, id, ok, error);
+  }
+  async answerShippingQuery(id: bigint, options?: Array<Bots.ShippingOptions>, error?: string) {
+    return Bots.AnswerShippingQuery(this.snakeClient, id, options, error);
+  }
 }

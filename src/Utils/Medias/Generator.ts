@@ -9,22 +9,22 @@ import { Snake } from '../../Client';
 import * as Medias from './';
 import { Api } from 'telegram';
 export type TypeMessageMediaDocument =
-  | Medias.MediaSticker // done
-  | Medias.MediaVoice // done
-  | Medias.MediaVideoNote // done
-  | Medias.MediaVideo // done
-  | Medias.MediaAnimation // done
-  | Medias.MediaAudio // done
-  | Medias.MediaDocument; // done
+  | Medias.MediaSticker
+  | Medias.MediaVoice
+  | Medias.MediaVideoNote
+  | Medias.MediaVideo
+  | Medias.MediaAnimation
+  | Medias.MediaAudio
+  | Medias.MediaDocument;
 export type TypeMessageMedia =
   | Medias.Media
-  | Medias.MediaPoll // done
+  | Medias.MediaPoll
   | TypeMessageMediaDocument
   | Medias.MediaVenue
-  | Medias.MediaPhoto // done
-  | Medias.MediaLocation // done
-  | Medias.MediaDice // done
-  | Medias.MediaContact // done
+  | Medias.MediaPhoto
+  | Medias.MediaLocation
+  | Medias.MediaDice
+  | Medias.MediaContact
   | Medias.MediaChatPhoto;
 export type TypeMessageMediaDownload =
   | TypeMessageMediaDocument

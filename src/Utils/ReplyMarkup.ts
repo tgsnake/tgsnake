@@ -9,7 +9,7 @@
 import { Api } from 'telegram';
 import bigInt, { BigInteger } from 'big-integer';
 import { Snake } from '../Client';
-import { convertId } from './ToBigInt';
+import { convertId, toBigInt } from './ToBigInt';
 export type TypeReplyMarkup = inlineKeyboard | replyKeyboard | removeKeyboard | forceReplyMarkup;
 /**
  * Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot's message and tapped 'Reply')
@@ -154,25 +154,25 @@ export interface BotLoginUrl {
   accessHash: bigint;
 }
 
-export function BuildReplyMarkup(replyMarkup: TypeReplyMarkup) {
+export async function BuildReplyMarkup(replyMarkup: TypeReplyMarkup, snakeClient: Snake) {
   // inlineKeyboard
   if ('inlineKeyboard' in replyMarkup) {
-    return replyMarkupInlineKeyboard(replyMarkup as inlineKeyboard);
+    return await replyMarkupInlineKeyboard(replyMarkup as inlineKeyboard, snakeClient);
   }
   // keyboard
   if ('keyboard' in replyMarkup) {
-    return replyMarkupKeyboard(replyMarkup as replyKeyboard);
+    return await replyMarkupKeyboard(replyMarkup as replyKeyboard);
   }
   // removeKeyboard
   if ('removeKeyboard' in replyMarkup) {
-    return replyMarkupRemoveKeyboard(replyMarkup as removeKeyboard);
+    return await replyMarkupRemoveKeyboard(replyMarkup as removeKeyboard);
   }
   // forceReply
   if ('forceReply' in replyMarkup) {
-    return replyMarkupForceReply(replyMarkup as forceReplyMarkup);
+    return await replyMarkupForceReply(replyMarkup as forceReplyMarkup);
   }
 }
-function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard) {
+async function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard, snakeClient: Snake) {
   let rows: Api.KeyboardButtonRow[] = [];
   for (let row = 0; row < replyMarkup.inlineKeyboard.length; row++) {
     let tempCol: Api.TypeKeyboardButton[] = [];
@@ -180,12 +180,32 @@ function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard) {
       let btn: inlineKeyboardButton = replyMarkup.inlineKeyboard[row][col] as inlineKeyboardButton;
       // button url
       if (btn.url) {
-        tempCol.push(
-          new Api.KeyboardButtonUrl({
-            text: String(btn.text),
-            url: String(btn.url),
-          })
-        );
+        if (String(btn.url).startsWith('tg://user?id=')) {
+          let [id, type, peer] = await toBigInt(
+            BigInt(String(btn.url).replace('tg://user?id=', '')),
+            snakeClient
+          );
+          if (type !== 'user') continue;
+          tempCol.push(
+            new Api.InputKeyboardButtonUserProfile({
+              text: String(btn.text),
+              //@ts-ignore
+              userId: new Api.InputUser({
+                //@ts-ignore
+                userId: peer.userId,
+                //@ts-ignore
+                accessHash: peer.accessHash,
+              }),
+            })
+          );
+        } else {
+          tempCol.push(
+            new Api.KeyboardButtonUrl({
+              text: String(btn.text),
+              url: String(btn.url),
+            })
+          );
+        }
         continue;
       }
       // button login url
@@ -434,6 +454,14 @@ export async function convertReplyMarkup(
       let btns: Api.KeyboardButtonRow = replyMarkup.rows[i];
       for (let j = 0; j < btns.buttons.length; j++) {
         let btn: Api.TypeKeyboardButton = btns.buttons[j];
+        if (btn instanceof Api.KeyboardButtonUserProfile) {
+          btn as Api.KeyboardButtonUserProfile;
+          let cc: inlineKeyboardButton = {
+            text: btn.text,
+            url: `tg://user?id=${btn.userId}`,
+          };
+          col.push(cc);
+        }
         if (btn instanceof Api.KeyboardButtonUrl) {
           btn as Api.KeyboardButtonUrl;
           let cc: inlineKeyboardButton = {

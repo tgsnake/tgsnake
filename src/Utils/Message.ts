@@ -13,7 +13,7 @@ import { BigInteger } from 'big-integer';
 import { MessageAction } from './MessageAction';
 import { Chat } from './Chat';
 import { From } from './From';
-import { ReplyToMessageContext } from '../Context/ReplyToMessageContext';
+import { MessageContext } from '../Context/MessageContext';
 import Parser, { Entities } from '@tgsnake/parser';
 import { ForwardMessage } from './ForwardMessage';
 import { TypeMessageMedia, GenerateMedia } from './Medias';
@@ -33,7 +33,7 @@ export class Message {
   id!: number;
   from!: From;
   chat!: Chat;
-  replyToMessage?: ReplyToMessageContext;
+  replyToMessage?: MessageContext;
   date?: number | Date;
   action?: MessageAction;
   ttlPeriod?: number;
@@ -139,9 +139,13 @@ export class Message {
       }
     }
     if (message.replyTo) {
-      let replyTo = new ReplyToMessageContext();
-      await replyTo.init(message.replyTo, this.SnakeClient, this.chat.id);
-      this.replyToMessage = replyTo;
+      this.SnakeClient.log.debug(`Creating replyToMessage`);
+      let replyTo = await this.SnakeClient.telegram.getMessages(
+        this.chat.id,
+        [message.replyTo.replyToMsgId],
+        false
+      );
+      this.replyToMessage = replyTo.messages[0];
     }
     await Cleaning(this);
     return this;
@@ -228,9 +232,13 @@ export class Message {
       this.media = await GenerateMedia(message.media!, this._SnakeClient);
     }
     if (message.replyTo) {
-      let replyTo = new ReplyToMessageContext();
-      await replyTo.init(message.replyTo, this.SnakeClient, this.chat.id);
-      this.replyToMessage = replyTo;
+      this.SnakeClient.log.debug(`Creating replyToMessage`);
+      let replyTo = await this.SnakeClient.telegram.getMessages(
+        this.chat.id,
+        [message.replyTo.replyToMsgId],
+        false
+      );
+      this.replyToMessage = replyTo.messages[0];
     }
     if (message.fwdFrom) {
       let forward = new ForwardMessage();

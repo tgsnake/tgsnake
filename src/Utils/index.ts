@@ -19,7 +19,7 @@ export {
   ChatParticipants,
   TypeChatParticipants,
 } from './ChatParticipants';
-export { Cleaning, betterConsoleLog } from './CleanObject';
+export { Cleaning, betterConsoleLog, toJSON } from './CleanObject';
 export { ForwardMessage } from './ForwardMessage';
 export { From } from './From';
 export { Message } from './Message';
@@ -40,7 +40,6 @@ export {
   BuildReplyMarkup,
   convertReplyMarkup,
 } from './ReplyMarkup';
-export { ReplyToMessage } from './ReplyToMessage';
 export { RestrictionReason } from './RestrictionReason';
 export { toBigInt, toString, convertId } from './ToBigInt';
 export * as Medias from './Medias';

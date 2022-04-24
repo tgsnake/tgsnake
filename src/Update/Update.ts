@@ -10,14 +10,14 @@ import { sendMessageMoreParams } from '../Telegram/Messages/sendMessage';
 import { betterConsoleLog } from '../Utils/CleanObject';
 import { inspect } from 'util';
 export type TypeUpdates =
-  | 'updateNewMessage'
-  | 'updateMessageID'
-  | 'updateDeleteMessages'
-  | 'updateUserTyping'
-  | 'updateChatUserTyping'
-  | 'updateChatParticipants'
-  | 'updateUserStatus'
-  | 'updateUserName'
+  | 'updateNewMessage' // done
+  | 'updateMessageID' // done
+  | 'updateDeleteMessages' // done
+  | 'updateUserTyping' // done
+  | 'updateChatUserTyping' // done
+  | 'updateChatParticipants' // done
+  | 'updateUserStatus' // done
+  | 'updateUserName' // done
   | 'updateUserPhoto'
   | 'updateNewEncryptedMessage'
   | 'updateEncryptedChatTyping'
@@ -36,7 +36,7 @@ export type TypeUpdates =
   | 'updateReadMessagesContents'
   | 'updateChannelTooLong'
   | 'updateChannel'
-  | 'updateNewChannelMessage'
+  | 'updateNewChannelMessage' // done
   | 'updateReadChannelInbox'
   | 'updateDeleteChannelMessages'
   | 'updateChannelMessageViews'
@@ -45,12 +45,12 @@ export type TypeUpdates =
   | 'updateStickerSetsOrder'
   | 'updateStickerSets'
   | 'updateSavedGifs'
-  | 'updateBotInlineQuery'
+  | 'updateBotInlineQuery' // done
   | 'updateBotInlineSend'
-  | 'updateEditChannelMessage'
-  | 'updateBotCallbackQuery'
-  | 'updateEditMessage'
-  | 'updateInlineBotCallbackQuery'
+  | 'updateEditChannelMessage' // done
+  | 'updateBotCallbackQuery' // done
+  | 'updateEditMessage' // done
+  | 'updateInlineBotCallbackQuery' // done
   | 'updateReadChannelOutbox'
   | 'updateDraftMessage'
   | 'updateReadFeaturedStickers'
@@ -104,12 +104,12 @@ export type TypeUpdates =
   | 'updateGroupCallConnection'
   | 'updateBotCommands'
   | 'updatesTooLong'
-  | 'updateShortMessage'
-  | 'updateShortChatMessage'
+  | 'updateShortMessage' // done
+  | 'updateShortChatMessage' // done
   | 'updateShort'
   | 'updatesCombined'
   | 'updates'
-  | 'updateShortSentMessage';
+  | 'updateShortSentMessage'; // done
 
 export class Update {
   '_'!: TypeUpdates;

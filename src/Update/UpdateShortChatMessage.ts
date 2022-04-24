@@ -10,7 +10,6 @@ import { Update } from './Update';
 import { Api } from 'telegram';
 import { Snake } from '../Client';
 import { Telegram } from '../Telegram';
-import { ReplyToMessageContext } from '../Context/ReplyToMessageContext';
 import Parser, { Entities } from '@tgsnake/parser';
 import { ForwardMessage } from '../Utils/ForwardMessage';
 import { From } from '../Utils/From';
@@ -58,9 +57,13 @@ export class UpdateShortChatMessage extends Update {
       this.message.fwdFrom = fwd;
     }
     if (update.replyTo) {
-      let replyTo = new ReplyToMessageContext();
-      await replyTo.init(update.replyTo, SnakeClient, this.message.chat.id);
-      this.message.replyToMessage = replyTo;
+      this.SnakeClient.log.debug(`Creating replyToMessage`);
+      let replyTo = await this.SnakeClient.telegram.getMessages(
+        this.message.chat.id,
+        [update.replyTo.replyToMsgId],
+        false
+      );
+      this.message.replyToMessage = replyTo.messages[0];
     }
     if (update.entities) {
       this.message.entities = parser.fromRaw(update.entities!);

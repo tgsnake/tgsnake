@@ -82,21 +82,24 @@ export async function SendMedia(
       }
       if (more.replyMarkup) {
         snakeClient.log.debug('Building replyMarkup');
-        replyMarkup = BuildReplyMarkup(more.replyMarkup!);
+        replyMarkup = await BuildReplyMarkup(more.replyMarkup!, snakeClient);
         delete more.replyMarkup;
       }
     }
-    return snakeClient.client.invoke(
-      new Api.messages.SendMedia({
-        peer: peer,
-        media: media,
-        message: parseText || '',
-        randomId: BigInt(-Math.floor(Math.random() * 10000000000000)),
-        //@ts-ignore
-        entities: entities,
-        replyMarkup: replyMarkup,
-        ...more,
-      })
+    return await createResults(
+      await snakeClient.client.invoke(
+        new Api.messages.SendMedia({
+          peer: peer,
+          media: media,
+          message: parseText || '',
+          randomId: BigInt(-Math.floor(Math.random() * 10000000000000)),
+          //@ts-ignore
+          entities: entities,
+          replyMarkup: replyMarkup,
+          ...more,
+        })
+      ),
+      snakeClient
     );
   } catch (error: any) {
     snakeClient.log.error('Failed to running telegram.sendMedia');
@@ -105,5 +108,33 @@ export async function SendMedia(
       'telegram.sendMedia',
       `${chatId},${JSON.stringify(media)}${more ? ',' + JSON.stringify(more) : ''}`
     );
+  }
+}
+async function createResults(results: Api.TypeUpdates, snakeClient: Snake) {
+  snakeClient.log.debug('Creating results telegram.sendMedia');
+  if (results instanceof Api.UpdateShortSentMessage) {
+    results as Api.UpdateShortSentMessage;
+    let update = new Update.UpdateShortSentMessage();
+    await update.init(results, snakeClient);
+    return update;
+  }
+  if (results instanceof Api.Updates) {
+    results as Api.Updates;
+    if (results.updates.length > 0) {
+      for (let i = 0; i < results.updates.length; i++) {
+        if (results.updates[i] instanceof Api.UpdateNewMessage) {
+          let arc = results.updates[i] as Api.UpdateNewMessage;
+          let update = new Update.UpdateNewMessage();
+          await update.init(arc, snakeClient);
+          return update;
+        }
+        if (results.updates[i] instanceof Api.UpdateNewChannelMessage) {
+          let arc = results.updates[i] as Api.UpdateNewChannelMessage;
+          let update = new Update.UpdateNewChannelMessage();
+          await update.init(arc, snakeClient);
+          return update;
+        }
+      }
+    }
   }
 }

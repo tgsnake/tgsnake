@@ -23,3 +23,4 @@ export { SendContact, InterfaceContact } from './SendContact';
 export { sendPollMoreParams, SendPoll, InterfacePoll } from './SendPoll';
 export { SendLocation, InterfaceLocation } from './SendLocation';
 export { SendVenue, InterfaceVenue } from './SendVenue';
+export { SendInvoice, sendInvoiceParams, InvoicePricesLabel } from './SendInvoice';

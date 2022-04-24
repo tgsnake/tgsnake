@@ -116,6 +116,12 @@ function filterEvent(filter, ctx) {
       case 'updateEditMessage':
         h.push('editMessage');
         break;
+      case 'updateBotPrecheckoutQuery':
+        h.push('precheckoutQuery');
+        break;
+      case 'updateBotShippingQuery':
+        h.push('shippingQuery');
+        break;
       default:
     }
     h.push(ctx['_']);

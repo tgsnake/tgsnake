@@ -52,7 +52,7 @@ export async function sendMessage(
       }
       if (more.replyMarkup) {
         snakeClient.log.debug('Building replyMarkup');
-        replyMarkup = BuildReplyMarkup(more.replyMarkup!);
+        replyMarkup = await BuildReplyMarkup(more.replyMarkup!, snakeClient);
         delete more.replyMarkup;
       }
       if (more.entities) {

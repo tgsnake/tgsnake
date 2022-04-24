@@ -6,9 +6,30 @@
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published. 
 
-const {Snake} = require("../lib/Client/Snake")
+const {Snake,GramJs} = require("../lib")
+const bigInt = require("big-integer")
 const bot = new Snake()
-bot.on("*",(ctx)=>{
-  console.log(ctx)
-})
+bot.log.setLogLevel("debug")
+bot.cmd("start",async (ctx)=>{
+  let c = await ctx.reply("test",{
+    replyMarkup : {
+      inlineKeyboard : [[{
+        text : "hello",
+        url : `tg://user?id=${ctx.from.id}`
+      }]]
+    }
+  });
+  /*console.log(await c.message.click({
+    filter : (btn, row,col) => {
+      console.log(true,btn,row,col) 
+      return true
+    }
+  }))*/
+  console.log(await c.message.click({
+    filter : (btn, row,col) => {
+      console.log(false,btn,row,col) 
+      return false
+    }
+  }))
+});
 bot.run()

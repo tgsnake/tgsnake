@@ -20,7 +20,6 @@ export {
 } from './Composer';
 export { MessageContext } from './MessageContext';
 export { BotError };
-export { ReplyToMessageContext } from './ReplyToMessageContext';
 export { MainContext } from './MainContext';
 export { EntityCache } from './EntityCache';
 export { Logger, TypeLogLevel, TypeWarningLog, LoggerColor } from './Logger';

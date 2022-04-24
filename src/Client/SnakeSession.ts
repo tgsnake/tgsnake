@@ -36,9 +36,20 @@ export class SnakeSession extends MemorySession {
     if (fs.existsSync(`${process.cwd()}/${this._sessionName}`)) {
       let dir = fs.readdirSync(`${process.cwd()}/${this._sessionName}`);
       if (dir.includes('session.json')) {
-        let json = JSON.parse(
-          fs.readFileSync(`${process.cwd()}/${this._sessionName}/session.json`, 'utf8')
-        );
+        let json: any = undefined;
+        try {
+          json = JSON.parse(
+            fs.readFileSync(`${process.cwd()}/${this._sessionName}/session.json`, 'utf8')
+          );
+        } catch (error) {
+          // if can't parse the session file, delete it.
+          fs.unlinkSync(`${process.cwd()}/${this._sessionName}/session.json`);
+          return;
+        }
+        if (!json) {
+          fs.unlinkSync(`${process.cwd()}/${this._sessionName}/session.json`);
+          return;
+        }
         let authKey = json.authKey;
         if (authKey && typeof authKey === 'object') {
           this._authKey = new AuthKey();
@@ -47,9 +58,9 @@ export class SnakeSession extends MemorySession {
           }
           await this._authKey.setKey(authKey);
         }
-        if (json.dcId) this._dcId = json.dcId;
-        if (json.port) this._port = json.port;
-        if (json.serverAddress) this._serverAddress = json.serverAddress;
+        if (json?.dcId) this._dcId = json?.dcId;
+        if (json?.port) this._port = json?.port;
+        if (json?.serverAddress) this._serverAddress = json?.serverAddress;
       } else {
         // importing from storeSession then remove it.
         if (dir.includes(`${this._sessionName}%3AauthKey`)) {
@@ -109,28 +120,28 @@ export class SnakeSession extends MemorySession {
     super.setDC(dcId, serverAddress, port);
     const create = () => {
       let dir = fs.readdirSync(`${process.cwd()}/${this._sessionName}`);
-      if (dir.includes('session.json')) {
-        let session = JSON.parse(
-          fs.readFileSync(`${process.cwd()}/${this._sessionName}/session.json`, 'utf8')
-        );
-        session.dcId = dcId;
-        session.serverAddress = serverAddress;
-        session.port = port;
-        fs.writeFileSync(
-          `${process.cwd()}/${this._sessionName}/session.json`,
-          JSON.stringify(session)
-        );
-      } else {
-        fs.writeFileSync(
-          `${process.cwd()}/${this._sessionName}/session.json`,
-          JSON.stringify({
-            authKey: this._authKey?.getKey(),
-            dcId: dcId,
-            port: port,
-            serverAddress: serverAddress,
-          })
-        );
-      }
+      //      if (dir.includes('session.json')) {
+      //        let session = JSON.parse(
+      //          fs.readFileSync(`${process.cwd()}/${this._sessionName}/session.json`, 'utf8')
+      //        );
+      //        session.dcId = dcId;
+      //        session.serverAddress = serverAddress;
+      //        session.port = port;
+      //        fs.writeFileSync(
+      //          `${process.cwd()}/${this._sessionName}/session.json`,
+      //          JSON.stringify(session)
+      //        );
+      //      } else {
+      fs.writeFileSync(
+        `${process.cwd()}/${this._sessionName}/session.json`,
+        JSON.stringify({
+          authKey: this._authKey?.getKey(),
+          dcId: dcId,
+          port: port,
+          serverAddress: serverAddress,
+        })
+      );
+      //      }
       for (let file of dir) {
         if (!ignore.includes(file)) {
           fs.unlinkSync(`${process.cwd()}/${this._sessionName}/${file}`);
@@ -153,26 +164,26 @@ export class SnakeSession extends MemorySession {
     this._authKey = value;
     const create = () => {
       let dir = fs.readdirSync(`${process.cwd()}/${this._sessionName}`);
-      if (dir.includes('session.json')) {
-        let session = JSON.parse(
-          fs.readFileSync(`${process.cwd()}/${this._sessionName}/session.json`, 'utf8')
-        );
-        session.authKey = value?.getKey();
-        fs.writeFileSync(
-          `${process.cwd()}/${this._sessionName}/session.json`,
-          JSON.stringify(session)
-        );
-      } else {
-        fs.writeFileSync(
-          `${process.cwd()}/${this._sessionName}/session.json`,
-          JSON.stringify({
-            authKey: value?.getKey(),
-            dcId: this._dcId,
-            port: this._port,
-            serverAddress: this._serverAddress,
-          })
-        );
-      }
+      //      if (dir.includes('session.json')) {
+      //        let session = JSON.parse(
+      //          fs.readFileSync(`${process.cwd()}/${this._sessionName}/session.json`, 'utf8')
+      //        );
+      //        session.authKey = value?.getKey();
+      //        fs.writeFileSync(
+      //          `${process.cwd()}/${this._sessionName}/session.json`,
+      //          JSON.stringify(session)
+      //        );
+      //      } else {
+      fs.writeFileSync(
+        `${process.cwd()}/${this._sessionName}/session.json`,
+        JSON.stringify({
+          authKey: value?.getKey(),
+          dcId: this._dcId,
+          port: this._port,
+          serverAddress: this._serverAddress,
+        })
+      );
+      //      }
       for (let file of dir) {
         if (!ignore.includes(file)) {
           fs.unlinkSync(`${process.cwd()}/${this._sessionName}/${file}`);

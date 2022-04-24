@@ -30,6 +30,7 @@ export class From {
   dcId?: number;
   photo?: MediaChatPhoto;
   restrictionReason?: RestrictionReason[];
+  accessHash?: bigint;
   constructor() {}
   async init(peer: Api.TypePeer | number | bigint | string, snakeClient: Snake) {
     let id: bigint | string | number | undefined;
@@ -86,6 +87,7 @@ export class From {
         this.dcId = entity.dcId;
         this.photo = entity.photo;
         this.restrictionReason = entity.restrictionReason;
+        this.accessHash = entity.accessHash;
       } catch (error) {
         return this;
       }

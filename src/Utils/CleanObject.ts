@@ -26,3 +26,12 @@ export function betterConsoleLog(object: { [key: string]: any }) {
   }
   return toPrint;
 }
+export function toJSON(json: any) {
+  let obj = betterConsoleLog(json);
+  for (let [key, value] of Object.entries(obj)) {
+    if (typeof value == 'bigint') obj[key] = String(value);
+    if (typeof value == 'object' && !Array.isArray(value)) obj[key] = toJSON(value);
+    if (typeof value == 'object' && Array.isArray(value)) obj[key] = value.map((x) => toJSON(x));
+  }
+  return obj;
+}
