@@ -28,7 +28,7 @@
   ],
   "dependencies": {
     "@tgsnake/parser": "1.1.1",
-    "axios": "0.26.1",
+    "axios": "0.27.0",
     "big-integer": "1.6.51",
     "chalk": "4.1.2",
     "file-type": "16.5.3",
