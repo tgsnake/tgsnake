@@ -34,7 +34,7 @@
     "file-type": "16.5.3",
     "husky": "7.0.4",
     "prompts": "2.4.2",
-    "telegram": "2.6.2",
+    "telegram": "2.7.12",
     "tg-file-id": "https://github.com/butthx/tg-file-id#prebuild",
     "util": "^0.12.4"
   },
