@@ -32,7 +32,7 @@
     "big-integer": "1.6.51",
     "chalk": "4.1.2",
     "file-type": "16.5.3",
-    "husky": "7.0.4",
+    "husky": "8.0.1",
     "prompts": "2.4.2",
     "telegram": "2.7.12",
     "tg-file-id": "https://github.com/butthx/tg-file-id#prebuild",
