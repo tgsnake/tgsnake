@@ -911,9 +911,9 @@ supports-color@^7.1.0:
   dependencies:
     has-flag "^4.0.0"
 
-telegram@2.7.12:
-  version "2.7.12"
-  resolved "https://registry.yarnpkg.com/telegram/-/telegram-2.7.12.tgz#87f271241ef45b7cf00b6b105a55bbdb3c9720fb"
+telegram@2.7.32:
+  version "2.7.32"
+  resolved "https://registry.yarnpkg.com/telegram/-/telegram-2.7.32.tgz#28722b2ae38a0c292474a3be63f04fde618eee36"
   dependencies:
     "@cryptography/aes" "^0.1.1"
     async-mutex "^0.3.0"
