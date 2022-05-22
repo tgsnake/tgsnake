@@ -31,7 +31,7 @@
     "axios": "0.27.2",
     "big-integer": "1.6.51",
     "chalk": "4.1.2",
-    "file-type": "16.5.3",
+    "file-type": "17.1.1",
     "husky": "8.0.1",
     "prompts": "2.4.2",
     "telegram": "2.8.2",
