@@ -2082,9 +2082,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"telegram@npm:2.8.2":
-  version: 2.8.2
-  resolution: "telegram@npm:2.8.2"
+"telegram@npm:2.8.4":
+  version: 2.8.4
+  resolution: "telegram@npm:2.8.4"
   dependencies:
     "@cryptography/aes": ^0.1.1
     async-mutex: ^0.3.0
@@ -2106,7 +2106,7 @@ __metadata:
       optional: true
     utf-8-validate:
       optional: true
-  checksum: 8f1b71134cda5a4a4bc6424cbf66de1c59af85965a6012fd62446a80613ec9608ecb31e84675684bf5341c7b14106e45a2da91c5c2e1eb30a58dca7099ef644e
+  checksum: 7dd1bf1d3e2467d4cd5b4d6fc1cb247768fe6239636552f96505c578f557fbdc50b3ede2396654b65ee70b97f27c1e7943949236ca831a36af7697df01d342d8
   languageName: node
   linkType: hard
 
@@ -2132,7 +2132,7 @@ __metadata:
     prettier: 2.6.2
     pretty-quick: 3.1.3
     prompts: 2.4.2
-    telegram: 2.8.2
+    telegram: 2.8.4
     tg-file-id: "https://github.com/butthx/tg-file-id#prebuild"
     ts-node: 10.8.0
     typedoc: 0.22.15
