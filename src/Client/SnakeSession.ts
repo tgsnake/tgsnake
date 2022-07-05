@@ -120,18 +120,6 @@ export class SnakeSession extends MemorySession {
     super.setDC(dcId, serverAddress, port);
     const create = () => {
       let dir = fs.readdirSync(`${process.cwd()}/${this._sessionName}`);
-      //      if (dir.includes('session.json')) {
-      //        let session = JSON.parse(
-      //          fs.readFileSync(`${process.cwd()}/${this._sessionName}/session.json`, 'utf8')
-      //        );
-      //        session.dcId = dcId;
-      //        session.serverAddress = serverAddress;
-      //        session.port = port;
-      //        fs.writeFileSync(
-      //          `${process.cwd()}/${this._sessionName}/session.json`,
-      //          JSON.stringify(session)
-      //        );
-      //      } else {
       fs.writeFileSync(
         `${process.cwd()}/${this._sessionName}/session.json`,
         JSON.stringify({
@@ -141,7 +129,6 @@ export class SnakeSession extends MemorySession {
           serverAddress: serverAddress,
         })
       );
-      //      }
       for (let file of dir) {
         if (!ignore.includes(file)) {
           fs.unlinkSync(`${process.cwd()}/${this._sessionName}/${file}`);
@@ -164,16 +151,6 @@ export class SnakeSession extends MemorySession {
     this._authKey = value;
     const create = () => {
       let dir = fs.readdirSync(`${process.cwd()}/${this._sessionName}`);
-      //      if (dir.includes('session.json')) {
-      //        let session = JSON.parse(
-      //          fs.readFileSync(`${process.cwd()}/${this._sessionName}/session.json`, 'utf8')
-      //        );
-      //        session.authKey = value?.getKey();
-      //        fs.writeFileSync(
-      //          `${process.cwd()}/${this._sessionName}/session.json`,
-      //          JSON.stringify(session)
-      //        );
-      //      } else {
       fs.writeFileSync(
         `${process.cwd()}/${this._sessionName}/session.json`,
         JSON.stringify({
@@ -183,7 +160,6 @@ export class SnakeSession extends MemorySession {
           serverAddress: this._serverAddress,
         })
       );
-      //      }
       for (let file of dir) {
         if (!ignore.includes(file)) {
           fs.unlinkSync(`${process.cwd()}/${this._sessionName}/${file}`);

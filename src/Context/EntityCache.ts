@@ -70,11 +70,15 @@ export class EntityCache {
             } else {
               g[kk] = vv;
             }
-          } else {
+            // remove the null entities
+          } else if (vv !== null) {
             g[kk] = vv;
           }
         }
-        this._cache.set(k.startsWith(':bigint:') ? BigInt(k.replace(':bigint:', '')) : k, g);
+        if (k && typeof k === 'string') {
+          this._cache.set(k.startsWith(':bigint:') ? BigInt(k.replace(':bigint:', '')) : k, g);
+        }
+        // skip when array is null/undefined
       }
     }
     return this;
