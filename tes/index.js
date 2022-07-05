@@ -12,12 +12,13 @@ const bot = new Snake()
 bot.log.setLogLevel("debug")
 bot.command("start",async (ctx) => {
   const msg = await ctx.reply("123456")
-  await ctx.telegram.editMessage(ctx.chat.id,msg.message.id,"78901234",{
-    entities : [{
+  await ctx.telegram.editMessage(ctx.chat.id,msg.message.id,"**78901**234",{
+    parseMode : "markdown"
+    /*entities : [{
       type : "bold",
       offset : 0,
       length : 4
-    }]
+    }]*/
   })
 })
 bot.run()
