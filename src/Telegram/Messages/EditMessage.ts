@@ -69,7 +69,7 @@ export async function EditMessage(
         delete more.entities;
       }
     }
-    if (!more?.entities) {
+    if (!entities.length) {
       snakeClient.log.debug('Building Entities');
       //@ts-ignore
       let [t, e] = parseMode !== '' ? parser.parse(text, parseMode!) : [text, []];

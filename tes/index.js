@@ -10,26 +10,14 @@ const {Snake,GramJs} = require("../lib")
 const bigInt = require("big-integer")
 const bot = new Snake()
 bot.log.setLogLevel("debug")
-bot.cmd("start",async (ctx)=>{
-  let c = await ctx.reply("test",{
-    replyMarkup : {
-      inlineKeyboard : [[{
-        text : "hello",
-        url : `tg://user?id=${ctx.from.id}`
-      }]]
-    }
-  });
-  /*console.log(await c.message.click({
-    filter : (btn, row,col) => {
-      console.log(true,btn,row,col) 
-      return true
-    }
-  }))*/
-  console.log(await c.message.click({
-    filter : (btn, row,col) => {
-      console.log(false,btn,row,col) 
-      return false
-    }
-  }))
-});
+bot.command("start",async (ctx) => {
+  const msg = await ctx.reply("123456")
+  await ctx.telegram.editMessage(ctx.chat.id,msg.message.id,"78901234",{
+    entities : [{
+      type : "bold",
+      offset : 0,
+      length : 4
+    }]
+  })
+})
 bot.run()

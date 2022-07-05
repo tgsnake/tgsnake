@@ -144,7 +144,6 @@ export class ResultGetEntity {
       resultsGetEntity as Api.Chat;
       this.type = 'chat';
       this.creator = resultsGetEntity.creator;
-      this.kicked = resultsGetEntity.kicked;
       this.left = resultsGetEntity.left;
       this.deactivated = resultsGetEntity.deactivated;
       this.callActive = resultsGetEntity.callActive;
