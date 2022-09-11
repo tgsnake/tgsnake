@@ -46,7 +46,7 @@ export class SnakeSession extends Storages.BaseSession {
     let sessionName = `${this._name}.session`;
     let cacheName = `${this._name}.cache`;
     // save session when it unavailable.
-    if (!path.join(process.cwd(), sessionName)) {
+    if (!fs.existsSync(path.join(process.cwd(), sessionName))) {
       fs.writeFileSync(
         path.join(process.cwd(), sessionName),
         Buffer.from(await this.exportString(), 'base64url')
