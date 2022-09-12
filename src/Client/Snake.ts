@@ -26,7 +26,7 @@ export class Snake extends MainContext {
     Logger.log(`Thanks for using tgsnake`)
     if (!options) {
       if (fs.existsSync(path.join(process.cwd(), 'tgsnake.config.js'))) {
-        Logger.info('Found config file: tgsnake.config.js');
+        Logger.info(`Found config file: ${path.join(process.cwd(), 'tgsnake.config.js')}`);
         options = require(path.join(process.cwd(), 'tgsnake.config.js'));
       } else {
         // @ts-ignore
@@ -65,10 +65,10 @@ export class Snake extends MainContext {
         if (this._options.login.session === '') {
           if (this._options.login.forceDotSession) {
             if(!options.login.sessionName){
-              this._options.login.sessionName = generateName(this._options.login.sessionName!);
-              Logger.info(
-                `Creating \`${this._options.login.sessionName}\` dot session. Change default sessionName to \`${this._options.login.sessionName}\` for login in next time.`
-              );
+            this._options.login.sessionName = generateName(this._options.login.sessionName!);
+            Logger.info(
+              `Creating \`${this._options.login.sessionName}\` dot session. Change default sessionName to \`${this._options.login.sessionName}\` for login in next time.`
+            );
             }
             this._options.login.session = new SnakeSession(this._options.login.sessionName!);
           } else {
@@ -95,6 +95,18 @@ export class Snake extends MainContext {
     }
   }
   async run() {
+    process.on("SIGINT",async () => {
+      Logger.info("Saving session before killed.")
+      // @ts-ignore
+      await this._options.login.session.save()
+      return process.exit()
+    })
+    process.on("SIGTERM",async () => {
+      Logger.info("Saving session before killed.")
+      // @ts-ignore
+      await this._options.login.session.save()
+      return process.exit()
+    })
     if (this._options.useWebPage) {
     } else {
       await LoginWithCLI(this);
