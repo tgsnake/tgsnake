@@ -32,9 +32,9 @@ export async function LoginWithCLI(snake: Snake): Promise<Raw.users.UserFull> {
     snake._options.clientOptions
   );
   // @ts-ignore
-  await snake._options.login.session.load();
+  await snake._options.login.session.load()
   // @ts-ignore
-  if (!snake._options.login.session?.authKey) {
+  if(!snake._options.login.session?.authKey){
     if (snake._options.login.botToken) {
       Logger.debug('Login using bot token.');
       const user = await snake._client.start({
@@ -42,13 +42,11 @@ export async function LoginWithCLI(snake: Snake): Promise<Raw.users.UserFull> {
       });
       Logger.log(
         `${
-          snake._options.login.forceDotSession
-            ? `(${snake._options.login.sessionName}.session)`
-            : ``
+          snake._options.login.forceDotSession ? `(${snake._options.login.sessionName}.session)` : ``
         } Loggined as: `
       );
       // @ts-ignore
-      await snake._options.login.session.save();
+      await snake._options.login.session.save()
       return user;
     }
     const loginAs = await AskLoginAs();
@@ -60,13 +58,11 @@ export async function LoginWithCLI(snake: Snake): Promise<Raw.users.UserFull> {
       });
       Logger.log(
         `${
-          snake._options.login.forceDotSession
-            ? `(${snake._options.login.sessionName}.session)`
-            : ``
+          snake._options.login.forceDotSession ? `(${snake._options.login.sessionName}.session)` : ``
         } Loggined as: `
       );
       // @ts-ignore
-      await snake._options.login.session.save();
+      await snake._options.login.session.save()
       return user;
     }
     const user = await snake._client.start({
@@ -83,11 +79,11 @@ export async function LoginWithCLI(snake: Snake): Promise<Raw.users.UserFull> {
       } Loggined as: `
     );
     // @ts-ignore
-    await snake._options.login.session.save();
+    await snake._options.login.session.save()
     return user;
-  } else {
-    await snake._client.connect();
-    return await snake._client.getMe();
+  }else{
+    await snake._client.connect()
+    return await snake._client.getMe()
   }
 }
 async function AskApiId(snake: Snake): Promise<string> {
@@ -98,7 +94,7 @@ async function AskApiId(snake: Snake): Promise<string> {
     validate: (value) => (value ? true : false),
   });
   snake._options.apiId = value;
-  Logger.info(`Setting up Api Id with: ${snake._options.apiId}.`);
+  Logger.debug(`Setting up Api Id with: ${snake._options.apiId}.`);
   return String(value);
 }
 async function AskApiHash(snake: Snake): Promise<string> {
@@ -109,7 +105,7 @@ async function AskApiHash(snake: Snake): Promise<string> {
     validate: (value) => (value ? true : false),
   });
   snake._options.apiHash = value;
-  Logger.info(`Setting up Api Hash with: ${snake._options.apiHash}.`);
+  Logger.debug(`Setting up Api Hash with: ${snake._options.apiHash}.`);
   return String(value);
 }
 async function AskLoginAs(): Promise<string> {
@@ -146,7 +142,7 @@ async function AskBotToken(snake: Snake): Promise<string> {
   const securedBotToken = `${splitedBotToken[0]}:${splitedBotToken[1]
     .slice(30)
     .padStart(splitedBotToken[1].length, '*')}`;
-  Logger.info(`Setting up Bot Token with: ${securedBotToken}.`);
+  Logger.debug(`Setting up Bot Token with: ${securedBotToken}.`);
   return String(value);
 }
 async function AskPhoneNumber(): Promise<string> {
