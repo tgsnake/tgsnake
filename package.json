@@ -1,22 +1,20 @@
 {
   "name": "tgsnake",
-  "version": "2.0.0",
-  "description": "Telegram MTProto framework base gram.js",
+  "version": "3.0.0-alpha.0",
+  "description": "Telegram MTProto framework for nodejs.",
   "main": "./lib/index.js",
   "scripts": {
-    "dev": "ts-node ./tes/index.ts --project ./tsconfig.json",
+    "dev": "ts-node ./tes/index.ts",
     "build": "rm -rf ./lib && tsc",
-    "pretty-quick": "pretty-quick --staged --pattern \"src/**/*.*(js|jsx|ts|tsx)\"",
-    "prettier": "prettier -w ./src",
+    "prettier": "prettier -w .",
     "update": "yarn up \"**\" --interactive",
-    "prepare": "husky install && echo \"🐍 Building snake package.\" && rm -rf ./lib && tsc"
+    "prepare": "echo \"🐍 Building snake package.\" && rm -rf ./lib && tsc"
   },
   "homepage": "https://tgsnake.js.org",
   "keywords": [
     "tgsnake",
     "telegram",
     "mtproto",
-    "gramjs",
     "userbot"
   ],
   "bugs": "https://github.com/tgsnake/tgsnake/issues",
@@ -24,28 +22,25 @@
   "author": "butthx",
   "license": "MIT",
   "files": [
-    "lib/**/*"
+    "lib/**/*",
+    "src"
   ],
   "dependencies": {
+    "@tgsnake/core": "1.1.2",
+    "@tgsnake/fileid": "2.0.1",
+    "@tgsnake/log": "1.0.0",
     "@tgsnake/parser": "1.1.1",
-    "axios": "0.27.2",
-    "big-integer": "1.6.51",
-    "chalk": "4.1.2",
+    "axios": "1.1.2",
     "file-type": "16.5.3",
-    "husky": "8.0.1",
-    "prompts": "2.4.2",
-    "telegram": "2.8.4",
-    "tg-file-id": "https://github.com/butthx/tg-file-id#prebuild",
-    "util": "^0.12.4"
+    "prompts": "2.4.2"
   },
   "devDependencies": {
-    "@types/node": "17.0.35",
-    "dotenv": "16.0.1",
-    "prettier": "2.6.2",
-    "pretty-quick": "3.1.3",
-    "ts-node": "10.8.1",
-    "typedoc": "0.22.15",
-    "typescript": "4.7.3"
+    "@types/node": "18.7.3",
+    "dotenv": "16.0.3",
+    "prettier": "2.7.1",
+    "ts-node": "10.9.1",
+    "typedoc": "0.23.15",
+    "typescript": "4.8.4"
   },
   "engineStrict": true,
   "engines": {
@@ -53,5 +48,7 @@
     "npm": ">=6.0.0",
     "yarn": ">=1.0.0"
   },
-  "packageManager": "yarn@3.2.1"
+  "packageManager": "yarn@3.2.4",
+  "isBeta": true,
+  "isPrivate": true
 }

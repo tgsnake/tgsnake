@@ -117,3 +117,5 @@ dist
 /tgsnake*
 # tgsnake config 
 tgsnake.config.js
+*.session
+*.cache

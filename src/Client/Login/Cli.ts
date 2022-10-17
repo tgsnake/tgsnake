@@ -32,9 +32,9 @@ export async function LoginWithCLI(snake: Snake): Promise<Raw.users.UserFull> {
     snake._options.clientOptions
   );
   // @ts-ignore
-  await snake._options.login.session.load()
+  await snake._options.login.session.load();
   // @ts-ignore
-  if(!snake._options.login.session?.authKey){
+  if (!snake._options.login.session?.authKey) {
     if (snake._options.login.botToken) {
       Logger.debug('Login using bot token.');
       const user = await snake._client.start({
@@ -42,11 +42,13 @@ export async function LoginWithCLI(snake: Snake): Promise<Raw.users.UserFull> {
       });
       Logger.log(
         `${
-          snake._options.login.forceDotSession ? `(${snake._options.login.sessionName}.session)` : ``
+          snake._options.login.forceDotSession
+            ? `(${snake._options.login.sessionName}.session)`
+            : ``
         } Loggined as: `
       );
       // @ts-ignore
-      await snake._options.login.session.save()
+      await snake._options.login.session.save();
       return user;
     }
     const loginAs = await AskLoginAs();
@@ -58,11 +60,13 @@ export async function LoginWithCLI(snake: Snake): Promise<Raw.users.UserFull> {
       });
       Logger.log(
         `${
-          snake._options.login.forceDotSession ? `(${snake._options.login.sessionName}.session)` : ``
+          snake._options.login.forceDotSession
+            ? `(${snake._options.login.sessionName}.session)`
+            : ``
         } Loggined as: `
       );
       // @ts-ignore
-      await snake._options.login.session.save()
+      await snake._options.login.session.save();
       return user;
     }
     const user = await snake._client.start({
@@ -79,11 +83,11 @@ export async function LoginWithCLI(snake: Snake): Promise<Raw.users.UserFull> {
       } Loggined as: `
     );
     // @ts-ignore
-    await snake._options.login.session.save()
+    await snake._options.login.session.save();
     return user;
-  }else{
-    await snake._client.connect()
-    return await snake._client.getMe()
+  } else {
+    await snake._client.connect();
+    return await snake._client.getMe();
   }
 }
 async function AskApiId(snake: Snake): Promise<string> {

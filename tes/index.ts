@@ -4,17 +4,17 @@
 // This file is part of Tgsnake
 //
 // Tgsnake is a free software : you can redistribute it and/or modify
-//  it under the terms of the MIT License as published. 
+//  it under the terms of the MIT License as published.
 
 //import {Snake,GramJs,Composer,Updates} from "../src"
-import {Snake,GramJs} from "../src/"
-import * as Medias from "../src/Utils/Medias"
-import fs from "fs"
-import path from "path"
+import { Snake, GramJs } from '../src/';
+import * as Medias from '../src/Utils/Medias';
+import fs from 'fs';
+import path from 'path';
 interface MyContext {
-  hello?:string
+  hello?: string;
 }
-const bot = new Snake()
-bot.log.setLogLevel("debug")
-bot.on("message",console.log)
-bot.run()
+const bot = new Snake();
+bot.log.setLogLevel('debug');
+bot.on('message', console.log);
+bot.run();

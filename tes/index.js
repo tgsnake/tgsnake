@@ -4,21 +4,8 @@
 // This file is part of Tgsnake
 //
 // Tgsnake is a free software : you can redistribute it and/or modify
-//  it under the terms of the MIT License as published. 
+//  it under the terms of the MIT License as published.
 
-const {Snake,GramJs} = require("../lib")
-const bigInt = require("big-integer")
-const bot = new Snake()
-bot.log.setLogLevel("debug")
-bot.command("start",async (ctx) => {
-  const msg = await ctx.reply("123456")
-  await ctx.telegram.editMessage(ctx.chat.id,msg.message.id,"**78901**234",{
-    parseMode : "markdown"
-    /*entities : [{
-      type : "bold",
-      offset : 0,
-      length : 4
-    }]*/
-  })
-})
-bot.run()
+const { Snake } = require('../lib/src/Client/Snake');
+const bot = new Snake();
+bot.run();

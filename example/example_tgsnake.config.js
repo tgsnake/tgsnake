@@ -1,47 +1,47 @@
 /**
  * example config file. (tgsnake.config.js)
  * You don't have to create this file. You can put options in ``new Snake({options})``
-*/
+ */
 module.exports = {
-    /**
+  /**
    * Set Logger level for gramjs. Default is "none".
-  */
-  logger: "none",
+   */
+  logger: 'none',
   /**
    * An api_hash got from my.telegram.org
-  */
-  apiHash: "your api hash here.",
+   */
+  apiHash: 'your api hash here.',
   /**
    * An api_id got from my.telegram.org
-  */
+   */
   apiId: 123456,
   /**
-   * String sessions. 
+   * String sessions.
    * if you have the string sessions you can fill this. if not you can fill with blank string.
-  */
-  session: "",
+   */
+  session: '',
   /**
-   * Bot Token from botFather. If you need to login as bot this required. 
+   * Bot Token from botFather. If you need to login as bot this required.
    * if you need login with user, delete this.
-  */
-  botToken: "paste you bot token in here.",
+   */
+  botToken: 'paste you bot token in here.',
   /**
    * Connection Retries for gramjs. Default is 5.
-  */
+   */
   connectionRetries: 5,
   /**
-   * tgsnake console.log 
+   * tgsnake console.log
    * If set, tgsnake will showing the message in console like welcome to tgsnake or anything.
-  */
+   */
   tgSnakeLog: true,
   /**
-   * session name 
+   * session name
    * required to save the string session.
-  */
-  sessionName: "tgsnake",
+   */
+  sessionName: 'tgsnake',
   /**
-   * storeSession 
+   * storeSession
    * required to save the session in storage.
-  */
-  storeSession: true
+   */
+  storeSession: true,
 };

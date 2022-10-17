@@ -5,11 +5,9 @@
 //
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
-import * as Updates from '../Update';
-import { Context } from '../Update';
-import { MessageContext } from './MessageContext';
-import { ResultGetEntity } from '../Telegram/Users/GetEntity';
-import BotError from './Error';
+import { Raw } from '@tgsnake/core';
+import { Context } from './TypeUpdate';
+
 export type MaybeArray<T> = T | T[];
 export type MaybePromise<T> = T | Promise<T>;
 export type NextFn = () => MaybePromise<void>;
@@ -18,8 +16,8 @@ export interface MiddlewareObj<C> {
   middleware: () => MiddlewareFn<C>;
 }
 export type ErrorHandler<T> = (
-  error: BotError,
-  context: Combine<Updates.TypeUpdate, T>
+  error: Error,
+  context: Combine<Raw.TypeUpdate, T>
 ) => MaybePromise<any>;
 export type Middleware<C> = MiddlewareFn<C> | MiddlewareObj<C>;
 export type Combine<T, U> = T & Partial<U>;
@@ -61,71 +59,37 @@ function toArray(e) {
 export async function run<C>(middleware: MiddlewareFn<C>, ctx: C) {
   await middleware(ctx, leaf);
 }
-function buildContext(context) {
-  let ctx = context;
-  if (context['_']) {
-    switch (context['_']) {
-      case 'updateNewMessage':
-      case 'updateShortMessage':
-      case 'updateShortChatMessage':
-      case 'updateNewChannelMessage':
-      case 'updateEditChannelMessage':
-      case 'updateEditMessage':
-        //@ts-ignore
-        ctx = context.message as MessageContext;
-        break;
-      default:
-    }
-  }
-  return ctx;
-}
 function filterEvent(filter, ctx) {
   let filters = toArray(filter);
   let h: Array<string> = [];
   h.push('*');
-  if (ctx instanceof ResultGetEntity) h.push('connected');
-  if (ctx instanceof MessageContext) {
-    ctx as MessageContext;
-    h.push('message');
-    if (ctx.action) {
-      h.push(ctx.action['_']);
-    }
-  }
-  if (ctx['_']) {
-    switch (ctx['_']) {
-      case 'updateNewMessage':
-      case 'updateShortMessage':
-      case 'updateShortChatMessage':
-      case 'updateNewChannelMessage':
-        h.push('message');
-        if (ctx.message) {
-          ctx.message as MessageContext;
-          if (ctx.message.action) {
-            h.push(ctx.message.action['_']);
-          }
-        }
-        break;
-      case 'updateInlineBotCallbackQuery':
-      case 'updateBotCallbackQuery':
-        h.push('callbackQuery');
-        break;
-      case 'updateBotInlineQuery':
-        h.push('inlineQuery');
-        break;
-      case 'updateEditChannelMessage':
-      case 'updateEditMessage':
-        h.push('editMessage');
-        break;
-      case 'updateBotPrecheckoutQuery':
-        h.push('precheckoutQuery');
-        break;
-      case 'updateBotShippingQuery':
-        h.push('shippingQuery');
-        break;
-      default:
-    }
-    h.push(ctx['_']);
-    ctx.SnakeClient.log.debug(`Receive ${ctx['_']}`);
+  switch (ctx.className) {
+    case 'UpdateNewMessage':
+    case 'UpdateShortMessage':
+    case 'UpdateShortChatMessage':
+    case 'UpdateNewChannelMessage':
+      h.push('message');
+      // filter message action
+      break;
+    case 'UpdateInlineBotCallbackQuery':
+    case 'UpdateBotCallbackQuery':
+      h.push('callbackQuery');
+      break;
+    case 'UpdateBotInlineQuery':
+      h.push('inlineQuery');
+      break;
+    case 'UpdateEditChannelMessage':
+    case 'UpdateEditMessage':
+      h.push('editMessage');
+      break;
+    case 'UpdateBotPrecheckoutQuery':
+      h.push('precheckoutQuery');
+      break;
+    case 'UpdateBotShippingQuery':
+      h.push('shippingQuery');
+      break;
+    default:
+      h.push(ctx.className);
   }
   let passed: string[] = [];
   for (let f of filters) {
@@ -133,19 +97,19 @@ function filterEvent(filter, ctx) {
   }
   return Boolean(passed.length > 0);
 }
-export class Composer<T = {}> implements MiddlewareObj<Combine<Updates.TypeUpdate, T>> {
+export class Composer<T = {}> implements MiddlewareObj<Combine<Raw.TypeUpdate, T>> {
   /** @hidden */
-  private handler!: MiddlewareFn<Combine<Updates.TypeUpdate, T>>;
+  private handler!: MiddlewareFn<Combine<Raw.TypeUpdate, T>>;
   /** @hidden */
   context: Partial<T> = {};
   prefix: string = '.!/';
-  constructor(...middleware: Array<MiddlewareFn<Combine<Updates.TypeUpdate, T>>>) {
+  constructor(...middleware: Array<MiddlewareFn<Combine<Raw.TypeUpdate, T>>>) {
     this.handler = middleware.length === 0 ? pass : middleware.map(flatten).reduce(concat);
   }
-  middleware(): MiddlewareFn<Combine<Updates.TypeUpdate, T>> {
+  middleware(): MiddlewareFn<Combine<Raw.TypeUpdate, T>> {
     return this.handler;
   }
-  use(...middleware: Array<MiddlewareFn<Combine<Updates.TypeUpdate, T>>>): Composer<T> {
+  use(...middleware: Array<MiddlewareFn<Combine<Raw.TypeUpdate, T>>>): Composer<T> {
     const composer = new Composer(...middleware);
     this.handler = concat(this.handler, flatten(composer));
     return composer;
@@ -173,10 +137,9 @@ export class Composer<T = {}> implements MiddlewareObj<Combine<Updates.TypeUpdat
   }
   lazy(middlewareFactory): Composer<T> {
     return this.use(async (context, next) => {
-      Object.assign(context, this.context);
       const middleware = await middlewareFactory(context);
       const arr = toArray(middleware);
-      await flatten(new Composer(...arr))(Object.assign(buildContext(context), this.context), next);
+      await flatten(new Composer(...arr))(Object.assign(context, this.context), next);
     });
   }
   route(router, routeHandlers, fallback = pass): Composer<T> {
@@ -193,7 +156,39 @@ export class Composer<T = {}> implements MiddlewareObj<Combine<Updates.TypeUpdat
   branch(predicate, trueMiddleware, falseMiddleware): Composer<T> {
     return this.lazy(async (ctx) => ((await predicate(ctx)) ? trueMiddleware : falseMiddleware));
   }
-  command(
+  [Symbol.for('nodejs.util.inspect.custom')](): { [key: string]: any } {
+    const toPrint: { [key: string]: any } = {
+      _: this.constructor.name,
+    };
+    for (const key in this) {
+      if (this.hasOwnProperty(key)) {
+        const value = this[key];
+        if (!key.startsWith('_')) {
+          toPrint[key] = value;
+        }
+      }
+    }
+    return toPrint;
+  }
+  toJSON(): { [key: string]: any } {
+    const toPrint: { [key: string]: any } = {
+      _: this.constructor.name,
+    };
+    for (const key in this) {
+      if (this.hasOwnProperty(key)) {
+        const value = this[key];
+        if (!key.startsWith('_')) {
+          toPrint[key] = typeof value === 'bigint' ? String(value) : value;
+        }
+      }
+    }
+    return toPrint;
+  }
+  toString() {
+    return `[constructor of ${this.constructor.name}] ${JSON.stringify(this, null, 2)}`;
+  }
+
+  /*command(
     trigger: MaybeArray<string | RegExp>,
     ...middleware: Array<MiddlewareFn<Combine<MessageContext, T>>>
   ): Composer<T> {
@@ -252,7 +247,7 @@ export class Composer<T = {}> implements MiddlewareObj<Combine<Updates.TypeUpdat
     trigger: MaybeArray<string | RegExp>,
     ...middleware: Array<
       MiddlewareFn<
-        Combine<Updates.UpdateBotCallbackQuery | Updates.UpdateInlineBotCallbackQuery, T>
+        Combine<Raw.UpdateBotCallbackQuery | Raw.UpdateInlineBotCallbackQuery, T>
       >
     >
   ): Composer<T> {
@@ -276,7 +271,7 @@ export class Composer<T = {}> implements MiddlewareObj<Combine<Updates.TypeUpdat
   }
   inlineQuery(
     trigger: MaybeArray<string | RegExp>,
-    ...middleware: Array<MiddlewareFn<Combine<Updates.UpdateBotInlineQuery, T>>>
+    ...middleware: Array<MiddlewareFn<Combine<Raw.UpdateBotInlineQuery, T>>>
   ): Composer<T> {
     let key = toArray(trigger);
     let filterCmd = (ctx) => {
@@ -295,5 +290,5 @@ export class Composer<T = {}> implements MiddlewareObj<Combine<Updates.TypeUpdat
       return Boolean(passed.length);
     };
     return this.on('inlineQuery').filter(filterCmd, ...middleware);
-  }
+  }*/
 }
