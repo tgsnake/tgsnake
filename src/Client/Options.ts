@@ -27,7 +27,7 @@ export interface Options {
    *
    * Default is true
    */
-  useWebPage?: boolean;
+  useWebPage?: boolean | WebPageOption;
   /**
    * The logger level, it should be "debug" | "verbose" | "info" | "error" | "warn" | "none". <br/>
    *
@@ -61,4 +61,16 @@ export interface LoginWithSession {
    * default is "tgsnake"
    */
   sessionName?: string;
+}
+export interface WebPageOption {
+  /**
+   * Change the default login port.
+   * default is 8000.
+   */
+  port?: number;
+  /**
+   * Do you want to automatically open the login page using the browser on your device.
+   * default is true.
+   */
+  autoOpen?: boolean;
 }
