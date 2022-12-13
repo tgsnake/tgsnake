@@ -62,7 +62,6 @@ export class Message {
   constructor() {}
   async init(message: Api.MessageService | Api.Message, SnakeClient: Snake) {
     SnakeClient.log.debug(`Creating Message`);
-    console.log(message);
     this._SnakeClient = SnakeClient;
     if (message instanceof Api.Message) {
       return await this.parseMessage(message as Api.Message);
