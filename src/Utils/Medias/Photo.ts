@@ -22,7 +22,7 @@ export class MediaPhoto extends Media {
   uniqueFileId!: string;
   dcId!: number;
   hasStickers!: boolean;
-  size!: number;
+  size!: bigint;
   width!: number;
   height!: number;
   constructor() {
@@ -43,7 +43,7 @@ export class MediaPhoto extends Media {
         for (let i = 0; i < photo.sizes.length; i++) {
           if (photo.sizes[i] instanceof Api.PhotoSizeProgressive) {
             let size = photo.sizes[i] as Api.PhotoSizeProgressive;
-            this.size = Math.max(...size.sizes);
+            this.size = BigInt(Math.max(...size.sizes));
             this.width = size.w;
             this.height = size.h;
             break;
@@ -84,9 +84,6 @@ export class MediaPhoto extends Media {
     this.snakeClient.log.debug('Downloading photo');
     const { client, log } = this.snakeClient;
     const file = fileId ?? this.fileId;
-    const inRange = (x: number, min: number, max: number) => {
-      return (x - min) * (x - max) <= 0;
-    };
     if (!file) {
       this.snakeClient.log.error('Failed to download photo cause: FileId not found!');
       throw new BotError('FileId not found!', 'Photo.download', String(file));
@@ -100,17 +97,15 @@ export class MediaPhoto extends Media {
       let dParams = Object.assign(
         {
           dcId: dFile.dcId,
-          workers: 1,
           progressCallback: (progress) => {
             return log.debug(`Downloading photo [${Math.round(progress)}]`);
           },
         },
         params ?? {}
       );
-      if (!inRange(dParams.workers!, 1, 16)) {
-        log.warning(
-          `Workers (${dParams.workers}) out of range (1 <= workers <= 16). Chances are this will make tgsnake unstable.`
-        );
+      if (dParams.fileSize && typeof dParams.fileSize == 'bigint') {
+        // @ts-ignore
+        dParams.fileSize = bigInt(String(dParams.fileSize));
       }
       return client.downloadFile(
         new Api.InputPhotoFileLocation({
@@ -119,24 +114,23 @@ export class MediaPhoto extends Media {
           fileReference: Buffer.from(dFile.fileReference, 'hex'),
           thumbSize: 'w',
         }),
-        dParams!
+        // @ts-ignore
+        dParams
       );
     }
     let dParams = Object.assign(
       {
         dcId: this.dcId,
-        fileSize: this.size,
-        workers: 1,
+        fileSize: bigInt(this.size),
         progressCallback: (progress) => {
           return log.debug(`Downloading photo [${Math.round(progress)}]`);
         },
       },
       params ?? {}
     );
-    if (!inRange(dParams.workers!, 1, 16)) {
-      log.warning(
-        `Workers (${dParams.workers}) out of range (1 <= workers <= 16). Chances are this will make tgsnake unstable.`
-      );
+    if (dParams.fileSize && typeof dParams.fileSize == 'bigint') {
+      // @ts-ignore
+      dParams.fileSize = bigInt(String(dParams.fileSize));
     }
     return client.downloadFile(
       new Api.InputPhotoFileLocation({
@@ -145,7 +139,8 @@ export class MediaPhoto extends Media {
         fileReference: Buffer.from(this._fileReference, 'hex'),
         thumbSize: 'w',
       }),
-      dParams!
+      // @ts-ignore
+      dParams
     );
   }
 }

@@ -7,15 +7,18 @@
 //  it under the terms of the MIT License as published.
 import { Api } from 'telegram';
 export class Reactions {
-  chosen?: boolean;
-  reaction!: string;
+  reaction?: string;
+  customEmojiId?: bigint;
   count!: number;
-  constructor(reactions: Api.MessageReactions) {
-    for (let i = 0; i < reactions.results.length; i++) {
-      let reaction = reactions.results[i] as Api.ReactionCount;
-      this.chosen = reaction.chosen;
-      this.reaction = reaction.reaction;
-      this.count = reaction.count;
+  constructor(reaction: Api.ReactionCount) {
+    this.count = reaction.count;
+    if (reaction.reaction instanceof Api.ReactionEmoji) {
+      this.reaction = (reaction.reaction as Api.ReactionEmoji).emoticon;
+    }
+    if (reaction.reaction instanceof Api.ReactionCustomEmoji) {
+      this.customEmojiId = BigInt(
+        String((reaction.reaction as Api.ReactionCustomEmoji).documentId)
+      );
     }
   }
 }

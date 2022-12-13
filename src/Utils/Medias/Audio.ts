@@ -23,7 +23,7 @@ export class MediaAudio extends Media {
   _fileReference!: string;
   dcId!: number;
   mimeType!: string;
-  size!: number;
+  size!: bigint;
   fileId!: string;
   uniqueFileId!: string;
   duration!: number;
@@ -41,7 +41,7 @@ export class MediaAudio extends Media {
     this._accessHash = BigInt(String(audio.accessHash));
     this._fileReference = audio.fileReference.toString('hex');
     this.mimeType = audio.mimeType;
-    this.size = audio.size;
+    this.size = BigInt(String(audio.size));
     this.dcId = audio.dcId;
     for (let attribute of audio.attributes) {
       if (attribute instanceof Api.DocumentAttributeAudio) {
@@ -73,9 +73,6 @@ export class MediaAudio extends Media {
     this.snakeClient.log.debug('Downloading Audio');
     const { client, log } = this.snakeClient;
     const file = fileId ?? this.fileId;
-    const inRange = (x: number, min: number, max: number) => {
-      return (x - min) * (x - max) <= 0;
-    };
     if (!file) {
       this.snakeClient.log.error('Failed to download audio cause: FileId not found!');
       throw new BotError('FileId not found!', 'Audio.download', String(file));
@@ -89,17 +86,15 @@ export class MediaAudio extends Media {
       let dParams = Object.assign(
         {
           dcId: dFile.dcId,
-          workers: 1,
           progressCallback: (progress) => {
             return log.debug(`Downloading audio [${Math.round(progress)}]`);
           },
         },
         params ?? {}
       );
-      if (!inRange(dParams.workers!, 1, 16)) {
-        log.warning(
-          `Workers (${dParams.workers}) out of range (1 <= workers <= 16). Chances are this will make tgsnake unstable.`
-        );
+      if (dParams.fileSize && typeof dParams.fileSize == 'bigint') {
+        // @ts-ignore
+        dParams.fileSize = bigInt(String(dParams.fileSize));
       }
       return client.downloadFile(
         new Api.InputDocumentFileLocation({
@@ -108,24 +103,23 @@ export class MediaAudio extends Media {
           fileReference: Buffer.from(dFile.fileReference, 'hex'),
           thumbSize: 'w',
         }),
-        dParams!
+        // @ts-ignore
+        dParams
       );
     }
     let dParams = Object.assign(
       {
         dcId: this.dcId,
-        fileSize: this.size,
-        workers: 1,
+        fileSize: bigInt(this.size),
         progressCallback: (progress) => {
           return log.debug(`Downloading audio [${Math.round(progress)}]`);
         },
       },
       params ?? {}
     );
-    if (!inRange(dParams.workers!, 1, 16)) {
-      log.warning(
-        `Workers (${dParams.workers}) out of range (1 <= workers <= 16). Chances are this will make tgsnake unstable.`
-      );
+    if (dParams.fileSize && typeof dParams.fileSize == 'bigint') {
+      // @ts-ignore
+      dParams.fileSize = bigInt(String(dParams.fileSize));
     }
     return client.downloadFile(
       new Api.InputDocumentFileLocation({
@@ -134,7 +128,8 @@ export class MediaAudio extends Media {
         fileReference: Buffer.from(this._fileReference, 'hex'),
         thumbSize: 'w',
       }),
-      dParams!
+      // @ts-ignore
+      dParams
     );
   }
 }

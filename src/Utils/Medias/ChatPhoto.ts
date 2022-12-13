@@ -65,9 +65,6 @@ export class MediaChatPhoto extends Media {
     this.snakeClient.log.debug('Downloading chat photo');
     const { client, log } = this.snakeClient;
     const file = fileId ?? this.fileId;
-    const inRange = (x: number, min: number, max: number) => {
-      return (x - min) * (x - max) <= 0;
-    };
     const getInputPeer = (dialogId: bigint, dialogAccessHash: bigint) => {
       if (String(dialogId).startsWith('-100')) {
         return new Api.InputPeerChannel({
@@ -98,17 +95,15 @@ export class MediaChatPhoto extends Media {
       let dParams = Object.assign(
         {
           dcId: dFile.dcId,
-          workers: 1,
           progressCallback: (progress) => {
             return log.debug(`Downloading chat photo [${Math.round(progress)}]`);
           },
         },
         params ?? {}
       );
-      if (!inRange(dParams.workers!, 1, 16)) {
-        log.warning(
-          `Workers (${dParams.workers}) out of range (1 <= workers <= 16). Chances are this will make tgsnake unstable.`
-        );
+      if (dParams.fileSize && typeof dParams.fileSize == 'bigint') {
+        // @ts-ignore
+        dParams.fileSize = bigInt(String(dParams.fileSize));
       }
       return client.downloadFile(
         new Api.InputPeerPhotoFileLocation({
@@ -119,23 +114,22 @@ export class MediaChatPhoto extends Media {
           ),
           photoId: bigInt(String(dFile.id)),
         }),
-        dParams!
+        // @ts-ignore
+        dParams
       );
     }
     let dParams = Object.assign(
       {
         dcId: this.dcId,
-        workers: 1,
         progressCallback: (progress) => {
           return log.debug(`Downloading chat photo [${Math.round(progress)}]`);
         },
       },
       params ?? {}
     );
-    if (!inRange(dParams.workers!, 1, 16)) {
-      log.warning(
-        `Workers (${dParams.workers}) out of range (1 <= workers <= 16). Chances are this will make tgsnake unstable.`
-      );
+    if (dParams.fileSize && typeof dParams.fileSize == 'bigint') {
+      // @ts-ignore
+      dParams.fileSize = bigInt(String(dParams.fileSize));
     }
     return client.downloadFile(
       new Api.InputPeerPhotoFileLocation({
@@ -143,7 +137,8 @@ export class MediaChatPhoto extends Media {
         peer: getInputPeer(this._dialogId!, this._dialogAccessHash!),
         photoId: bigInt(String(this._id)),
       }),
-      dParams!
+      // @ts-ignore
+      dParams
     );
   }
 }

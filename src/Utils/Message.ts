@@ -56,12 +56,13 @@ export class Message {
   noforward?: boolean;
   senderChat?: Chat;
   isAutomaticForward?: boolean;
-  reactions?: Reactions;
+  reactions?: Array<Reactions>;
   /** @hidden */
   private _SnakeClient!: Snake;
   constructor() {}
   async init(message: Api.MessageService | Api.Message, SnakeClient: Snake) {
     SnakeClient.log.debug(`Creating Message`);
+    console.log(message);
     this._SnakeClient = SnakeClient;
     if (message instanceof Api.Message) {
       return await this.parseMessage(message as Api.Message);
@@ -264,7 +265,7 @@ export class Message {
       this.replies = message.replies;
     }
     if (message.reactions) {
-      this.reactions = new Reactions(message.reactions);
+      this.reactions = message.reactions.results.map((el) => new Reactions(el));
     }
     await Cleaning(this);
     return this;

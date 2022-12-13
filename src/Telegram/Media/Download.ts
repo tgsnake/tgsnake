@@ -21,22 +21,22 @@ export async function Download(
   try {
     snakeClient.log.debug('Running telegram.download');
     const { client, log } = snakeClient;
-    const inRange = (x: number, min: number, max: number) => {
-      return (x - min) * (x - max) <= 0;
-    };
     if (typeof media == 'string') {
       media as string;
       let dFile = await decodeFileId(media!);
       let dParams = Object.assign(
         {
           dcId: dFile.dcId,
-          workers: 1,
           progressCallback: (progress) => {
             return log.debug(`Downloading ${media} [${Math.round(progress)}]`);
           },
         },
         params ?? {}
       );
+      if (dParams.fileSize && typeof dParams.fileSize == 'bigint') {
+        // @ts-ignore
+        dParams.fileSize = bigInt(String(dParams.fileSize));
+      }
       switch (dFile.typeId) {
         // ChatPhoto
         case 1:
@@ -57,11 +57,6 @@ export async function Download(
               accessHash: bigInt(String(dialogAccessHash)),
             });
           };
-          if (!inRange(dParams.workers!, 1, 16)) {
-            log.warning(
-              `Workers (${dParams.workers}) out of range (1 <= workers <= 16). Chances are this will make tgsnake unstable.`
-            );
-          }
           return client.downloadFile(
             new Api.InputPeerPhotoFileLocation({
               big: dFile.photoSize == 'big',
@@ -71,16 +66,12 @@ export async function Download(
               ),
               photoId: bigInt(String(dFile.id)),
             }),
-            dParams!
+            // @ts-ignore
+            dParams
           );
           break;
         // Photo
         case 2:
-          if (!inRange(dParams.workers!, 1, 16)) {
-            log.warning(
-              `Workers (${dParams.workers}) out of range (1 <= workers <= 16). Chances are this will make tgsnake unstable.`
-            );
-          }
           return client.downloadFile(
             new Api.InputPhotoFileLocation({
               id: bigInt(String(dFile.id)),
@@ -88,7 +79,8 @@ export async function Download(
               fileReference: Buffer.from(dFile.fileReference, 'hex'),
               thumbSize: 'w',
             }),
-            dParams!
+            // @ts-ignore
+            dParams
           );
           break;
         // Document
@@ -99,11 +91,6 @@ export async function Download(
         case 9:
         case 10:
         case 13:
-          if (!inRange(dParams.workers!, 1, 16)) {
-            log.warning(
-              `Workers (${dParams.workers}) out of range (1 <= workers <= 16). Chances are this will make tgsnake unstable.`
-            );
-          }
           return client.downloadFile(
             new Api.InputDocumentFileLocation({
               id: bigInt(String(dFile.id)),
@@ -111,7 +98,8 @@ export async function Download(
               fileReference: Buffer.from(dFile.fileReference, 'hex'),
               thumbSize: 'w',
             }),
-            dParams!
+            // @ts-ignore
+            dParams
           );
           break;
         default:

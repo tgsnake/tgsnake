@@ -23,7 +23,7 @@ export class MediaVoice extends Media {
   _fileReference!: string;
   dcId!: number;
   mimeType!: string;
-  size!: number;
+  size!: bigint;
   fileId!: string;
   uniqueFileId!: string;
   duration!: number;
@@ -41,7 +41,7 @@ export class MediaVoice extends Media {
     this._accessHash = BigInt(String(voice.accessHash));
     this._fileReference = voice.fileReference.toString('hex');
     this.mimeType = voice.mimeType;
-    this.size = voice.size;
+    this.size = BigInt(String(voice.size));
     this.dcId = voice.dcId;
     for (let attribute of voice.attributes) {
       if (attribute instanceof Api.DocumentAttributeAudio) {
@@ -89,18 +89,12 @@ export class MediaVoice extends Media {
       let dParams = Object.assign(
         {
           dcId: dFile.dcId,
-          workers: 1,
           progressCallback: (progress) => {
             return log.debug(`Downloading voice [${Math.round(progress)}]`);
           },
         },
         params ?? {}
       );
-      if (!inRange(dParams.workers!, 1, 16)) {
-        log.warning(
-          `Workers (${dParams.workers}) out of range (1 <= workers <= 16). Chances are this will make tgsnake unstable.`
-        );
-      }
       return client.downloadFile(
         new Api.InputDocumentFileLocation({
           id: bigInt(String(dFile.id)),
@@ -108,25 +102,20 @@ export class MediaVoice extends Media {
           fileReference: Buffer.from(dFile.fileReference, 'hex'),
           thumbSize: 'w',
         }),
-        dParams!
+        // @ts-ignore
+        dParams
       );
     }
     let dParams = Object.assign(
       {
         dcId: this.dcId,
-        fileSize: this.size,
-        workers: 1,
+        fileSize: bigInt(this.size),
         progressCallback: (progress) => {
           return log.debug(`Downloading voice [${Math.round(progress)}]`);
         },
       },
       params ?? {}
     );
-    if (!inRange(dParams.workers!, 1, 16)) {
-      log.warning(
-        `Workers (${dParams.workers}) out of range (1 <= workers <= 16). Chances are this will make tgsnake unstable.`
-      );
-    }
     return client.downloadFile(
       new Api.InputDocumentFileLocation({
         id: bigInt(String(this._id)),
@@ -134,7 +123,8 @@ export class MediaVoice extends Media {
         fileReference: Buffer.from(this._fileReference, 'hex'),
         thumbSize: 'w',
       }),
-      dParams!
+      // @ts-ignore
+      dParams
     );
   }
 }

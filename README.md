@@ -56,4 +56,4 @@ Cloning branch dev in your repo.
   
 Thanks to all the frameworks and references that I use, several people who helped in developing this framework that I cannot mention one by one.   
   
-Build with ♥️ by [tgsnake dev](https://t.me/+Fdu8unNApTg3ZGU1).
+Build with ♥️ by [tgsnake dev](https://t.me/tgsnakechat).

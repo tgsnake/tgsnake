@@ -23,7 +23,7 @@ export class MediaDocument extends Media {
   _fileReference!: string;
   dcId!: number;
   mimeType!: string;
-  size!: number;
+  size!: bigint;
   width!: number;
   height!: number;
   fileId!: string;
@@ -40,7 +40,7 @@ export class MediaDocument extends Media {
     this._accessHash = BigInt(String(document.accessHash));
     this._fileReference = document.fileReference.toString('hex');
     this.mimeType = document.mimeType;
-    this.size = document.size;
+    this.size = BigInt(String(document.size));
     this.dcId = document.dcId;
     for (let attribute of document.attributes) {
       if (attribute instanceof Api.DocumentAttributeImageSize) {
@@ -72,9 +72,6 @@ export class MediaDocument extends Media {
     this.snakeClient.log.debug('Downloading Document');
     const { client, log } = this.snakeClient;
     const file = fileId ?? this.fileId;
-    const inRange = (x: number, min: number, max: number) => {
-      return (x - min) * (x - max) <= 0;
-    };
     if (!file) {
       this.snakeClient.log.error('Failed to download document cause: FileId not found!');
       throw new BotError('FileId not found!', 'Document.download', String(file));
@@ -88,17 +85,15 @@ export class MediaDocument extends Media {
       let dParams = Object.assign(
         {
           dcId: dFile.dcId,
-          workers: 1,
           progressCallback: (progress) => {
             return log.debug(`Downloading document [${Math.round(progress)}]`);
           },
         },
         params ?? {}
       );
-      if (!inRange(dParams.workers!, 1, 16)) {
-        log.warning(
-          `Workers (${dParams.workers}) out of range (1 <= workers <= 16). Chances are this will make tgsnake unstable.`
-        );
+      if (dParams.fileSize && typeof dParams.fileSize == 'bigint') {
+        // @ts-ignore
+        dParams.fileSize = bigInt(String(dParams.fileSize));
       }
       return client.downloadFile(
         new Api.InputDocumentFileLocation({
@@ -107,24 +102,23 @@ export class MediaDocument extends Media {
           fileReference: Buffer.from(dFile.fileReference, 'hex'),
           thumbSize: 'w',
         }),
-        dParams!
+        // @ts-ignore
+        dParams
       );
     }
     let dParams = Object.assign(
       {
         dcId: this.dcId,
-        fileSize: this.size,
-        workers: 1,
+        fileSize: bigInt(this.size),
         progressCallback: (progress) => {
           return log.debug(`Downloading document [${Math.round(progress)}]`);
         },
       },
       params ?? {}
     );
-    if (!inRange(dParams.workers!, 1, 16)) {
-      log.warning(
-        `Workers (${dParams.workers}) out of range (1 <= workers <= 16). Chances are this will make tgsnake unstable.`
-      );
+    if (dParams.fileSize && typeof dParams.fileSize == 'bigint') {
+      // @ts-ignore
+      dParams.fileSize = bigInt(String(dParams.fileSize));
     }
     return client.downloadFile(
       new Api.InputDocumentFileLocation({
@@ -133,7 +127,8 @@ export class MediaDocument extends Media {
         fileReference: Buffer.from(this._fileReference, 'hex'),
         thumbSize: 'w',
       }),
-      dParams!
+      // @ts-ignore
+      dParams
     );
   }
 }

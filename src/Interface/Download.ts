@@ -25,15 +25,9 @@ export interface DownloadFileParams {
   dcId?: number;
   /** How much to download. The library will download until it reaches this amount.<br/>
    *  can be useful for downloading by chunks */
-  fileSize?: number;
-  /** Used to determine how many download tasks should be run in parallel. anything above 16 is unstable. */
-  workers?: number;
+  fileSize?: bigint;
   /** How much to download in each chunk. The larger the less requests to be made. (max is 512kb). */
   partSizeKb?: number;
-  /** Where to start downloading. useful for chunk downloading. */
-  start?: number;
-  /** Where to stop downloading. useful for chunk downloading. */
-  end?: number;
   /** Progress callback accepting one param. (progress :number) which is a float between 0 and 1 */
   progressCallback?: progressCallback;
 }

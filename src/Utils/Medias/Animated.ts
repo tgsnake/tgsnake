@@ -23,7 +23,7 @@ export class MediaAnimation extends Media {
   _fileReference!: string;
   dcId!: number;
   mimeType!: string;
-  size!: number;
+  size!: bigint;
   supportStreaming!: boolean;
   duration!: number;
   width!: number;
@@ -43,7 +43,7 @@ export class MediaAnimation extends Media {
     this._accessHash = BigInt(String(animated.accessHash));
     this._fileReference = animated.fileReference.toString('hex');
     this.mimeType = animated.mimeType;
-    this.size = animated.size;
+    this.size = BigInt(String(animated.size));
     this.dcId = animated.dcId;
     for (let attribute of animated.attributes) {
       if (attribute instanceof Api.DocumentAttributeVideo) {
@@ -81,9 +81,6 @@ export class MediaAnimation extends Media {
     this.snakeClient.log.debug('Downloading animation');
     const { client, log } = this.snakeClient;
     const file = fileId ?? this.fileId;
-    const inRange = (x: number, min: number, max: number) => {
-      return (x - min) * (x - max) <= 0;
-    };
     if (!file) {
       this.snakeClient.log.error('Failed to download animation cause: FileId not found!');
       throw new BotError('FileId not found!', 'Animation.download', String(file));
@@ -97,17 +94,15 @@ export class MediaAnimation extends Media {
       let dParams = Object.assign(
         {
           dcId: dFile.dcId,
-          workers: 1,
           progressCallback: (progress) => {
             return log.debug(`Downloading animation [${Math.round(progress)}]`);
           },
         },
         params ?? {}
       );
-      if (!inRange(dParams.workers!, 1, 16)) {
-        log.warning(
-          `Workers (${dParams.workers}) out of range (1 <= workers <= 16). Chances are this will make tgsnake unstable.`
-        );
+      if (dParams.fileSize && typeof dParams.fileSize == 'bigint') {
+        // @ts-ignore
+        dParams.fileSize = bigInt(String(dParams.fileSize));
       }
       return client.downloadFile(
         new Api.InputDocumentFileLocation({
@@ -116,24 +111,23 @@ export class MediaAnimation extends Media {
           fileReference: Buffer.from(dFile.fileReference, 'hex'),
           thumbSize: 'w',
         }),
-        dParams!
+        // @ts-ignore
+        dParams
       );
     }
     let dParams = Object.assign(
       {
         dcId: this.dcId,
-        fileSize: this.size,
-        workers: 1,
+        fileSize: bigInt(this.size),
         progressCallback: (progress) => {
           return log.debug(`Downloading animation [${Math.round(progress)}]`);
         },
       },
       params ?? {}
     );
-    if (!inRange(dParams.workers!, 1, 16)) {
-      log.warning(
-        `Workers (${dParams.workers}) out of range (1 <= workers <= 16). Chances are this will make tgsnake unstable.`
-      );
+    if (dParams.fileSize && typeof dParams.fileSize == 'bigint') {
+      // @ts-ignore
+      dParams.fileSize = bigInt(String(dParams.fileSize));
     }
     return client.downloadFile(
       new Api.InputDocumentFileLocation({
@@ -142,7 +136,8 @@ export class MediaAnimation extends Media {
         fileReference: Buffer.from(this._fileReference, 'hex'),
         thumbSize: 'w',
       }),
-      dParams!
+      // @ts-ignore
+      dParams
     );
   }
 }
