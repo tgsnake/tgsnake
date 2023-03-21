@@ -22,25 +22,24 @@
   "author": "butthx",
   "license": "MIT",
   "files": [
-    "lib/**/*",
-    "src"
+    "lib/**/*"
   ],
   "dependencies": {
-    "@tgsnake/core": "1.1.2",
+    "@tgsnake/core": "./tgsnake-core-1.3.1.tgz",
     "@tgsnake/fileid": "2.0.1",
-    "@tgsnake/log": "1.0.0",
+    "@tgsnake/log": "latest",
     "@tgsnake/parser": "1.1.1",
-    "axios": "1.1.2",
+    "axios": "1.2.1",
     "file-type": "16.5.3",
     "prompts": "2.4.2"
   },
   "devDependencies": {
-    "@types/node": "18.7.3",
+    "@types/node": "18.11.11",
     "dotenv": "16.0.3",
-    "prettier": "2.7.1",
+    "prettier": "2.8.0",
     "ts-node": "10.9.1",
-    "typedoc": "0.23.15",
-    "typescript": "4.8.4"
+    "typedoc": "0.23.21",
+    "typescript": "4.9.3"
   },
   "engineStrict": true,
   "engines": {

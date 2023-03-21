@@ -8,6 +8,7 @@
  * it under the terms of the MIT License as published.
  */
 import { Clients, Storages } from '@tgsnake/core';
+import { TypeLogLevel } from '@tgsnake/log';
 
 export interface Options {
   /**
@@ -33,7 +34,7 @@ export interface Options {
    *
    * default is "debug"
    */
-  logLevel?: string;
+  logLevel?: TypeLogLevel | Array<TypeLogLevel>;
   /**
    * Options for @tgsnake/core. It will be using for connection options.
    */

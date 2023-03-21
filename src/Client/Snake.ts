@@ -7,14 +7,16 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { Logger, MainContext } from '../Context';
 import { Raw, Client, Storages } from '@tgsnake/core';
+import { TypeLogLevel } from '@tgsnake/log';
+import fs from 'fs';
+import path from 'path';
 import { SnakeSession, generateName } from './SnakeSession';
 import { Options } from './Options';
 import { LoginWithCLI } from './Login/Cli';
-import fs from 'fs';
-import path from 'path';
+import { LoginWithWebPage } from './Login/WebPage';
 import * as Version from '../Version';
+import { Logger, MainContext } from '../Context';
 
 export class Snake extends MainContext {
   _options!: Options;
@@ -37,11 +39,22 @@ export class Snake extends MainContext {
       // assign field of _options.
       this._options = Object.assign(
         {
-          useWebPage: true,
-          logLevel: 'debug',
+          useWebPage: {
+            port: 8000,
+            autoOpen: true,
+          },
+          logLevel: ['debug'],
         },
         options
       );
+      if (typeof options.useWebPage === 'boolean') {
+        if (options.useWebPage) {
+          this._options.useWebPage = {
+            port: 8000,
+            autoOpen: true,
+          };
+        }
+      }
       // assign default app version.
       this._options.clientOptions = Object.assign(
         {
@@ -90,8 +103,11 @@ export class Snake extends MainContext {
         }
       }
       // setting up a log level
+      if (typeof this._options.logLevel === 'string') {
+        this._options.logLevel = String(this._options?.logLevel).split('|') as Array<TypeLogLevel>;
+      }
       // @ts-ignore
-      Logger.setLogLevel(String(this._options.logLevel).toLowerCase());
+      Logger.setLogLevel(this._options.logLevel);
     }
   }
   async run() {
@@ -107,7 +123,9 @@ export class Snake extends MainContext {
       await this._options.login.session.save();
       return process.exit();
     });
+    console.log(this._options);
     if (this._options.useWebPage) {
+      await LoginWithWebPage(this);
     } else {
       await LoginWithCLI(this);
     }

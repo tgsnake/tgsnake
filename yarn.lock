@@ -38,13 +38,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tgsnake/core@npm:1.1.2":
-  version: 1.1.2
-  resolution: "@tgsnake/core@npm:1.1.2"
+"@tgsnake/core@file:./tgsnake-core-1.3.1.tgz::locator=tgsnake%40workspace%3A.":
+  version: 1.3.1
+  resolution: "@tgsnake/core@file:./tgsnake-core-1.3.1.tgz::locator=tgsnake%40workspace%3A."
   dependencies:
     "@tgsnake/log": latest
     big-integer: 1.6.51
-  checksum: d48103cfd3f2e436d466afec02fec10c3142874fbbe5c0ed155e3faeca6c109b10119edb334e132b78635739b8289c29c4a6af751ad9ad916bb20aba128a6b5f
+  checksum: 3903cf0af0b2383b22364052192d8ecc964d539a9d47e8af1bfcc61f2ea9feed423527939946cf2ac36033a9a1647a69956987a35534df3b3594779070a5ee31
   languageName: node
   linkType: hard
 
@@ -55,12 +55,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tgsnake/log@latest, @tgsnake/log@npm:1.0.0":
-  version: 1.0.0
-  resolution: "@tgsnake/log@npm:1.0.0"
+"@tgsnake/log@npm:latest":
+  version: 1.2.0
+  resolution: "@tgsnake/log@npm:1.2.0"
   dependencies:
     chalk: 4.1.2
-  checksum: 51f7da0866d78fc43b49be22b5705136be52d686b7f3165a4f99b2f5d9330e25c6a4ec7ab9cf2eb6e1cca2ea647cdbf1eb0d6f19365cf78b3786f3ffb9e4e614
+  checksum: 9d1f74e3bde8e8a955c93ba8eb1b87877b70b696b4d180c26fc850a7ac645c1e101b0993e72bbbd6527445d8d1161406f923dd2e013fb0d2786d0708f3e1f52e
   languageName: node
   linkType: hard
 
@@ -110,10 +110,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:18.7.3":
-  version: 18.7.3
-  resolution: "@types/node@npm:18.7.3"
-  checksum: f51ed436a112235ac068d739b4823090a37b869cc186b64dd5c250dd285139c286990fcbeff2fb3ecba5d605fa885de4275247d332e5b96eafdfbb1da62e3ced
+"@types/node@npm:18.11.11":
+  version: 18.11.11
+  resolution: "@types/node@npm:18.11.11"
+  checksum: c4b1176a8f1714a3ee3fc2a5e1d568b0cd50209000282db5c68154b3c975952928dbb834ef3a0ce55bd7b345ae29f2cbf4a34635a070294d135a24254231386a
   languageName: node
   linkType: hard
 
@@ -163,14 +163,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:1.1.2":
-  version: 1.1.2
-  resolution: "axios@npm:1.1.2"
+"axios@npm:1.2.1":
+  version: 1.2.1
+  resolution: "axios@npm:1.2.1"
   dependencies:
     follow-redirects: ^1.15.0
     form-data: ^4.0.0
     proxy-from-env: ^1.1.0
-  checksum: 136c25a5031aa2845fdbda3006c36888bbe351b11d1195f1f898a23c5df1430febbdb1ad034a61f27967e83762d5b5a3e851fff8a363cb4badeb883f8ff21461
+  checksum: c4dc4e119064c9aed09a3de309bedb797a139a6fb372223aafe3e0c10a7d4a14e4d3e9c9d309467fadb9d2b490b891ee3df96ef5b55716bb971910466ff9f0c5
   languageName: node
   linkType: hard
 
@@ -772,12 +772,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:2.7.1":
-  version: 2.7.1
-  resolution: "prettier@npm:2.7.1"
+"prettier@npm:2.8.0":
+  version: 2.8.0
+  resolution: "prettier@npm:2.8.0"
   bin:
     prettier: bin-prettier.js
-  checksum: 55a4409182260866ab31284d929b3cb961e5fdb91fe0d2e099dac92eaecec890f36e524b4c19e6ceae839c99c6d7195817579cdffc8e2c80da0cb794463a748b
+  checksum: 72004ce0cc9bb097daf3e3833f62495768724392c1d5b178dd47372337616e9e50ecbb0804f236596223f7b5eb1bbe69cefc8957dca21112c5777e77ef73a564
   languageName: node
   linkType: hard
 
@@ -930,19 +930,19 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tgsnake@workspace:."
   dependencies:
-    "@tgsnake/core": 1.1.2
+    "@tgsnake/core": ./tgsnake-core-1.3.1.tgz
     "@tgsnake/fileid": 2.0.1
-    "@tgsnake/log": 1.0.0
+    "@tgsnake/log": latest
     "@tgsnake/parser": 1.1.1
-    "@types/node": 18.7.3
-    axios: 1.1.2
+    "@types/node": 18.11.11
+    axios: 1.2.1
     dotenv: 16.0.3
     file-type: 16.5.3
-    prettier: 2.7.1
+    prettier: 2.8.0
     prompts: 2.4.2
     ts-node: 10.9.1
-    typedoc: 0.23.15
-    typescript: 4.8.4
+    typedoc: 0.23.21
+    typescript: 4.9.3
   languageName: unknown
   linkType: soft
 
@@ -994,39 +994,39 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typedoc@npm:0.23.15":
-  version: 0.23.15
-  resolution: "typedoc@npm:0.23.15"
+"typedoc@npm:0.23.21":
+  version: 0.23.21
+  resolution: "typedoc@npm:0.23.21"
   dependencies:
     lunr: ^2.3.9
     marked: ^4.0.19
     minimatch: ^5.1.0
     shiki: ^0.11.1
   peerDependencies:
-    typescript: 4.6.x || 4.7.x || 4.8.x
+    typescript: 4.6.x || 4.7.x || 4.8.x || 4.9.x
   bin:
     typedoc: bin/typedoc
-  checksum: 2313bcda09755332e15e40fb2e72ac8d72447abfcd60f7c555d3a232ad1fe3596afd87ddcfbdf17eb081fc65f1cbf43b02e05adf38e6ade55f64d475da4271d7
+  checksum: 931520b21ae25ba8ea86111ea7c66f474468bb83cbe1d04c0ea19490f130ea44ba58b7ee4d12f7f02368cfe053ed1fa291c8843c466c8af383ef956de177360d
   languageName: node
   linkType: hard
 
-"typescript@npm:4.8.4":
-  version: 4.8.4
-  resolution: "typescript@npm:4.8.4"
+"typescript@npm:4.9.3":
+  version: 4.9.3
+  resolution: "typescript@npm:4.9.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 3e4f061658e0c8f36c820802fa809e0fd812b85687a9a2f5430bc3d0368e37d1c9605c3ce9b39df9a05af2ece67b1d844f9f6ea8ff42819f13bcb80f85629af0
+  checksum: 17b8f816050b412403e38d48eef0e893deb6be522d6dc7caf105e54a72e34daf6835c447735fd2b28b66784e72bfbf87f627abb4818a8e43d1fa8106396128dc
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.8.4#~builtin<compat/typescript>":
-  version: 4.8.4
-  resolution: "typescript@patch:typescript@npm%3A4.8.4#~builtin<compat/typescript>::version=4.8.4&hash=701156"
+"typescript@patch:typescript@4.9.3#~builtin<compat/typescript>":
+  version: 4.9.3
+  resolution: "typescript@patch:typescript@npm%3A4.9.3#~builtin<compat/typescript>::version=4.9.3&hash=a66ed4"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 301459fc3eb3b1a38fe91bf96d98eb55da88a9cb17b4ef80b4d105d620f4d547ba776cc27b44cc2ef58b66eda23fe0a74142feb5e79a6fb99f54fc018a696afa
+  checksum: d7bdcf5e18193f709339540d69577f7b0389000265db2bf10edfaa67336a29d6bcbee11828084150f7fdd110d605794cfa6df33bebc0a2e33daad2dbe2a7a59f
   languageName: node
   linkType: hard
 

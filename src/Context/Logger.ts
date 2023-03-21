@@ -7,10 +7,10 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { Logger } from '@tgsnake/log';
+import { Logger, TypeLogLevel } from '@tgsnake/log';
 const log = new Logger({
   name: 'tgsnake',
-  level: 'debug',
+  level: ['debug'] as Array<TypeLogLevel>,
 });
 
 export { log as Logger };

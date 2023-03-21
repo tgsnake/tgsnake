@@ -12,8 +12,12 @@ import type { Options } from '../Options';
 import { Logger } from '../../Context/Logger';
 import { Client, Raw } from '@tgsnake/core';
 import prompts from 'prompts';
-
-export async function LoginWithCLI(snake: Snake): Promise<Raw.users.UserFull> {
+const onCancel = (prompt) => {
+  Logger.info('Aborting prompt!!');
+  process.exit(1);
+  return false;
+};
+export async function LoginWithCLI(snake: Snake): Promise<Raw.users.UserFull | undefined> {
   Logger.info('Initial login with CLI.');
   if (!snake._options.apiId) {
     Logger.debug('Api Id is missing.');
@@ -52,6 +56,7 @@ export async function LoginWithCLI(snake: Snake): Promise<Raw.users.UserFull> {
       return user;
     }
     const loginAs = await AskLoginAs();
+    if (loginAs === 'undefined') return;
     Logger.debug(`Login as: ${loginAs}`);
     if (loginAs === 'bot') {
       await AskBotToken(snake);
@@ -91,56 +96,67 @@ export async function LoginWithCLI(snake: Snake): Promise<Raw.users.UserFull> {
   }
 }
 async function AskApiId(snake: Snake): Promise<string> {
-  const { value } = await prompts({
-    type: 'number',
-    name: 'value',
-    message: 'Input your api id!',
-    validate: (value) => (value ? true : false),
-  });
+  const { value } = await prompts(
+    {
+      type: 'number',
+      name: 'value',
+      message: 'Input your api id!',
+      validate: (value) => (value ? true : false),
+    },
+    { onCancel }
+  );
   snake._options.apiId = value;
   Logger.debug(`Setting up Api Id with: ${snake._options.apiId}.`);
   return String(value);
 }
 async function AskApiHash(snake: Snake): Promise<string> {
-  const { value } = await prompts({
-    type: 'text',
-    name: 'value',
-    message: 'Input your api hash!',
-    validate: (value) => (value ? true : false),
-  });
+  const { value } = await prompts(
+    {
+      type: 'text',
+      name: 'value',
+      message: 'Input your api hash!',
+      validate: (value) => (value ? true : false),
+    },
+    { onCancel }
+  );
   snake._options.apiHash = value;
   Logger.debug(`Setting up Api Hash with: ${snake._options.apiHash}.`);
   return String(value);
 }
 async function AskLoginAs(): Promise<string> {
-  const { value } = await prompts({
-    type: 'select',
-    name: 'value',
-    message: 'Login as?',
-    initial: 0,
-    choices: [
-      {
-        title: 'Bot',
-        description: 'Login as bot using bot token from bot father.',
-        value: 'bot',
-      },
-      {
-        title: 'User',
-        description: 'Login as user using phone number.',
-        value: 'user',
-      },
-    ],
-    validate: (value) => (value ? true : false),
-  });
+  const { value } = await prompts(
+    {
+      type: 'select',
+      name: 'value',
+      message: 'Login as?',
+      initial: 0,
+      choices: [
+        {
+          title: 'Bot',
+          description: 'Login as bot using bot token from bot father.',
+          value: 'bot',
+        },
+        {
+          title: 'User',
+          description: 'Login as user using phone number.',
+          value: 'user',
+        },
+      ],
+    },
+    { onCancel }
+  );
   return String(value);
 }
 async function AskBotToken(snake: Snake): Promise<string> {
-  const { value } = await prompts({
-    type: 'text',
-    name: 'value',
-    message: 'Input your bot token!',
-    validate: (value) => (value ? true : false),
-  });
+  const { value } = await prompts(
+    {
+      type: 'text',
+      name: 'value',
+      message: 'Input your bot token!',
+      validate: (value) => (value ? true : false),
+    },
+    { onCancel }
+  );
   snake._options.login.botToken = value;
   const splitedBotToken = String(snake._options.login.botToken).split(':');
   const securedBotToken = `${splitedBotToken[0]}:${splitedBotToken[1]
@@ -150,56 +166,74 @@ async function AskBotToken(snake: Snake): Promise<string> {
   return String(value);
 }
 async function AskPhoneNumber(): Promise<string> {
-  const { value } = await prompts({
-    type: 'number',
-    name: 'value',
-    message: 'Input your international phone number!',
-    validate: (value) => (value ? true : false),
-  });
+  const { value } = await prompts(
+    {
+      type: 'number',
+      name: 'value',
+      message: 'Input your international phone number!',
+      validate: (value) => (value ? true : false),
+    },
+    { onCancel }
+  );
   return String(value);
 }
 async function AskPassword(hint: string): Promise<string> {
-  const { value } = await prompts({
-    type: 'password',
-    name: 'value',
-    message: `Input your two factor authentication password!\n\nHint : ${hint}`,
-    validate: (value) => (value ? true : false),
-  });
+  const { value } = await prompts(
+    {
+      type: 'password',
+      name: 'value',
+      message: `Input your two factor authentication password!\n\nHint : ${hint}`,
+      validate: (value) => (value ? true : false),
+    },
+    { onCancel }
+  );
   return String(value);
 }
 async function AskRecoveryCode(): Promise<string> {
-  const { value } = await prompts({
-    type: 'number',
-    name: 'value',
-    message: 'Input your recovery code from your email address!',
-    validate: (value) => (value ? true : false),
-  });
+  const { value } = await prompts(
+    {
+      type: 'number',
+      name: 'value',
+      message: 'Input your recovery code from your email address!',
+      validate: (value) => (value ? true : false),
+    },
+    { onCancel }
+  );
   return String(value);
 }
 async function AskOTPCode(): Promise<string> {
-  const { value } = await prompts({
-    type: 'number',
-    name: 'value',
-    message: 'Input your otp code from telegram application or sms!',
-    validate: (value) => (value ? true : false),
-  });
+  const { value } = await prompts(
+    {
+      type: 'number',
+      name: 'value',
+      message: 'Input your otp code from telegram application or sms!',
+      validate: (value) => (value ? true : false),
+    },
+    { onCancel }
+  );
   return String(value);
 }
 async function AskFirstName(): Promise<string> {
-  const { value } = await prompts({
-    type: 'text',
-    name: 'value',
-    message: 'Input your first name!',
-    validate: (value) => (value ? true : false),
-  });
+  const { value } = await prompts(
+    {
+      type: 'text',
+      name: 'value',
+      message: 'Input your first name!',
+      validate: (value) => (value ? true : false),
+    },
+    { onCancel }
+  );
   return String(value);
 }
 async function AskLastName(): Promise<string> {
-  const { value } = await prompts({
-    type: 'text',
-    name: 'value',
-    message: 'Input your last name!',
-    validate: (value) => (value ? true : false),
-  });
+  const { value } = await prompts(
+    {
+      type: 'text',
+      name: 'value',
+      message: 'Input your last name!',
+      validate: (value) => (value ? true : false),
+    },
+    { onCancel }
+  );
   return String(value);
 }
