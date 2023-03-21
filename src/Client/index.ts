@@ -10,3 +10,5 @@
 
 export { Snake } from './Snake';
 export { SnakeSession } from './SnakeSession';
+export { LoginWithCLI } from './Login/Cli';
+export { Options, LoginWithSession } from './Options';

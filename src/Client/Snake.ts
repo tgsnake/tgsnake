@@ -14,7 +14,6 @@ import path from 'path';
 import { SnakeSession, generateName } from './SnakeSession';
 import { Options } from './Options';
 import { LoginWithCLI } from './Login/Cli';
-import { LoginWithWebPage } from './Login/WebPage';
 import * as Version from '../Version';
 import { Logger, MainContext } from '../Context';
 
@@ -23,7 +22,7 @@ export class Snake extends MainContext {
   _client!: Client;
   constructor(options?: Options) {
     super();
-    Logger.log(`Welcome to the jungle!`);
+    Logger.log(`Welcome to tgsnake!`);
     Logger.log(`Using version: ${Version.version} - ${Version.getType()}`);
     Logger.log(`Thanks for using tgsnake`);
     if (!options) {
@@ -39,22 +38,10 @@ export class Snake extends MainContext {
       // assign field of _options.
       this._options = Object.assign(
         {
-          useWebPage: {
-            port: 8000,
-            autoOpen: true,
-          },
           logLevel: ['debug'],
         },
         options
       );
-      if (typeof options.useWebPage === 'boolean') {
-        if (options.useWebPage) {
-          this._options.useWebPage = {
-            port: 8000,
-            autoOpen: true,
-          };
-        }
-      }
       // assign default app version.
       this._options.clientOptions = Object.assign(
         {
@@ -123,10 +110,31 @@ export class Snake extends MainContext {
       await this._options.login.session.save();
       return process.exit();
     });
-    console.log(this._options);
-    if (this._options.useWebPage) {
-      await LoginWithWebPage(this);
-    } else {
+    let hasLoginPlugin = false;
+    if (this._options.plugins && this._options.plugins?.length) {
+      for (const plugin of this._options.plugins) {
+        if (typeof plugin === 'function') {
+          if (/^Login/.test(plugin.name)) {
+            if (!hasLoginPlugin) {
+              // prevent multiple plugin with same function
+              hasLoginPlugin = true;
+              try {
+                await plugin(this);
+              } catch (error: any) {
+                Logger.error(`Failed to running ${plugin.name}`, error);
+              }
+            }
+          } else {
+            try {
+              await plugin(this);
+            } catch (error: any) {
+              Logger.error(`Failed to running ${plugin.name}`, error);
+            }
+          }
+        }
+      }
+    }
+    if (!hasLoginPlugin) {
       await LoginWithCLI(this);
     }
     return true;

@@ -8,6 +8,4 @@
 
 const { Snake } = require('../lib/src/Client/Snake');
 const bot = new Snake();
-bot.run().then(async () => {
-  console.log(await bot._client.exportSession());
-});
+bot.run();

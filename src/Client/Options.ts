@@ -9,7 +9,7 @@
  */
 import { Clients, Storages } from '@tgsnake/core';
 import { TypeLogLevel } from '@tgsnake/log';
-
+import type { Snake } from './Snake';
 export interface Options {
   /**
    * App id, you can create one from my.telegram.org
@@ -24,12 +24,6 @@ export interface Options {
    */
   login: LoginWithSession;
   /**
-   * For login method, you can use web page. Open it on localhost:8000. <br/>
-   *
-   * Default is true
-   */
-  useWebPage?: boolean | WebPageOption;
-  /**
    * The logger level, it should be "debug" | "verbose" | "info" | "error" | "warn" | "none". <br/>
    *
    * default is "debug"
@@ -39,6 +33,10 @@ export interface Options {
    * Options for @tgsnake/core. It will be using for connection options.
    */
   clientOptions?: Clients.ClientInterface;
+  /**
+   * Use a special plugin. The plugin must be a function that returns a boolean. For session, it won't work if you put it here, put at login options.
+   */
+  plugins?: Array<{ (snake: Snake): boolean | Promise<boolean> }>;
 }
 export interface LoginWithSession {
   /**
@@ -62,16 +60,4 @@ export interface LoginWithSession {
    * default is "tgsnake"
    */
   sessionName?: string;
-}
-export interface WebPageOption {
-  /**
-   * Change the default login port.
-   * default is 8000.
-   */
-  port?: number;
-  /**
-   * Do you want to automatically open the login page using the browser on your device.
-   * default is true.
-   */
-  autoOpen?: boolean;
 }
