@@ -46,12 +46,15 @@ export class Contact extends TLObject {
     this.vcard = vcard;
   }
   static parse(client: Snake, contact: Raw.MessageMediaContact) {
-    return new Contact({
-      phoneNumber: contact.phoneNumber,
-      firstName: contact.firstName,
-      lastName: contact.lastName,
-      userId: contact.userId,
-      vcard: contact.vcard,
-    }, client);
+    return new Contact(
+      {
+        phoneNumber: contact.phoneNumber,
+        firstName: contact.firstName,
+        lastName: contact.lastName,
+        userId: contact.userId,
+        vcard: contact.vcard,
+      },
+      client
+    );
   }
 }
