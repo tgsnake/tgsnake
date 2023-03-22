@@ -54,7 +54,7 @@ export class VideoNote extends TLObject {
     client: Snake
   ) {
     super(client);
-    this.className = 'VideoNote';
+    this.className = 'videoNote';
     this.classType = 'types';
     this.constructorId = 0x8fd4c4d8; // Raw.Document
     this.subclassOfId = 0x211fe820; // Raw.Document
