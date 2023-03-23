@@ -1,0 +1,80 @@
+/**
+ * tgsnake - Telegram MTProto framework for nodejs.
+ * Copyright (C) 2022 butthx <https://github.com/butthx>
+ *
+ * THIS FILE IS PART OF TGSNAKE
+ *
+ * tgsnake is a free software : you can redistribute it and/or modify
+ * it under the terms of the MIT License as published.
+ */
+import { Raw, Helpers } from '@tgsnake/core';
+import { TLObject } from '../../TL';
+import { Animation } from './Animated';
+import { Photo } from './Photo';
+import type { Snake } from '../../../Client';
+
+export class Game extends TLObject {
+  id!: bigint;
+  shortName!: string;
+  title!: string;
+  description!: string;
+  photo?: Photo;
+  animation?: Animation;
+  constructor(
+    {
+      id,
+      shortName,
+      title,
+      description,
+      photo,
+      animation,
+    }: {
+      id: bigint;
+      shortName: string;
+      title: string;
+      description: string;
+      photo?: Photo;
+      animation?: Animation;
+    },
+    client: Snake
+  ) {
+    super(client);
+    this.classType = 'types';
+    this.className = 'game';
+    this.constructorId = 0xbdf9653b;
+    this.subclassOfId = 0x83199eb2;
+    this.id = id;
+    this.shortName = shortName;
+    this.title = title;
+    this.description = description;
+    this.photo = photo;
+    this.animation = animation;
+  }
+  static parse(client: Snake, game: Raw.Game) {
+    let photo: Photo | undefined = undefined;
+    let animation: Animation | undefined = undefined;
+    if (game.photo && game.photo instanceof Raw.Photo) {
+      photo = Photo.parse(client, game.photo as Raw.Photo);
+    }
+    if (game.document && game.document instanceof Raw.Document) {
+      if (
+        (game.document as Raw.Document).attributes.some(
+          (attribute) => attribute instanceof Raw.DocumentAttributeAnimated
+        )
+      ) {
+        animation = Animation.parse(client, game.document as Raw.Document);
+      }
+    }
+    return new Game(
+      {
+        photo,
+        animation,
+        id: game.id,
+        shortName: game.shortName,
+        title: game.title,
+        description: game.description,
+      },
+      client
+    );
+  }
+}
