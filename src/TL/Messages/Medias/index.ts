@@ -8,7 +8,7 @@
  * it under the terms of the MIT License as published.
  */
 
-export { Animation } from './Animation';
+export { Animation } from './Animated';
 export { Audio } from './Audio';
 export { Contact } from './Contact';
 export { Dice } from './Dice';

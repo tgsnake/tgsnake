@@ -10,6 +10,6 @@ export { SnakeSession } from './Client/SnakeSession';
 export { Options, LoginWithSession } from './Client/Options';
 export * as Clients from './Client';
 export * as Contexts from './Context';
-export * as TLs from ' ./TL';
+export * as TLs from './TL';
 export * as Utilities from './Utilities';
 export * as Versions from './Version';

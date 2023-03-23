@@ -13,3 +13,4 @@ export { ChatPermission } from './ChatPermission';
 export { ChatPhoto } from './ChatPhoto';
 export { Restriction } from './Restriction';
 export { User } from './User';
+export { WebAppData } from './WebApp';
