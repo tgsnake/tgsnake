@@ -137,6 +137,7 @@ export class Snake extends MainContext {
     if (!hasLoginPlugin) {
       await LoginWithCLI(this);
     }
+    this._client.addHandler((update) => this.handleUpdate(update, this));
     return true;
   }
 }

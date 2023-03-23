@@ -66,11 +66,11 @@ export class SnakeSession extends Storages.BaseSession {
     let cacheName = `${this._name}.cache`;
     if (fs.existsSync(path.join(process.cwd(), cacheName))) {
       let bytes = new Raws.BytesIO(fs.readFileSync(path.join(process.cwd(), cacheName)));
-      let length = Raws.Primitive.Int.read(bytes);
+      let length = await Raws.Primitive.Int.read(bytes);
       // bytes[VectorLength + VectorBytes[bytes[contentLength + content]]]
       for (let i = 0; i < length; i++) {
-        let count = Raws.Primitive.Int.read(bytes);
-        peer.push(buildPeerFromBytes(bytes.read(count)));
+        let count = await Raws.Primitive.Int.read(bytes);
+        peer.push(await buildPeerFromBytes(bytes.read(count)));
       }
     }
     return peer as unknown as Array<
@@ -156,21 +156,23 @@ export function buildBytesFromPeer(
  * Creating valid peer schema from bytes.
  * @param bytes {Buffer} - Bytes will be converted to peer schema.
  */
-export function buildPeerFromBytes(
+export async function buildPeerFromBytes(
   bytes: Buffer
-): [id: bigint, accessHash: bigint, type: string, username?: string, phoneNumber?: string] {
+): Promise<
+  [id: bigint, accessHash: bigint, type: string, username?: string, phoneNumber?: string]
+> {
   let b = new Raws.BytesIO(bytes);
   // @ts-ignore
   let results: Array<any> = [];
-  let flags = Raws.Primitive.Int.read(b);
-  results.push(Raws.Primitive.Long.read(b));
-  results.push(Raws.Primitive.Long.read(b));
-  results.push(Raws.Primitive.String.read(b));
+  let flags = await Raws.Primitive.Int.read(b);
+  results.push(await Raws.Primitive.Long.read(b));
+  results.push(await Raws.Primitive.Long.read(b));
+  results.push(await Raws.Primitive.String.read(b));
   if (flags & (1 << 4)) {
-    results.push(Raws.Primitive.String.read(b));
+    results.push(await Raws.Primitive.String.read(b));
   }
   if (flags & (1 << 5)) {
-    results.push(Raws.Primitive.String.read(b));
+    results.push(await Raws.Primitive.String.read(b));
   }
   return results as unknown as [
     id: bigint,

@@ -10,7 +10,7 @@
 import type { Snake } from '../Snake';
 import type { Options } from '../Options';
 import { Logger } from '../../Context/Logger';
-import { Client, Raw } from '@tgsnake/core';
+import { Client, Raw, Clients } from '@tgsnake/core';
 import prompts from 'prompts';
 const onCancel = (prompt) => {
   Logger.info('Aborting prompt!!');
@@ -91,8 +91,8 @@ export async function LoginWithCLI(snake: Snake): Promise<Raw.users.UserFull | u
     await snake._options.login.session.save();
     return user;
   } else {
-    await snake._client.connect();
-    return await snake._client.getMe();
+    await Clients.Session.connect(snake._client);
+    return await Clients.Auth.getMe(snake._client);
   }
 }
 async function AskApiId(snake: Snake): Promise<string> {

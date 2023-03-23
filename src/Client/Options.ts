@@ -32,7 +32,7 @@ export interface Options {
   /**
    * Options for @tgsnake/core. It will be using for connection options.
    */
-  clientOptions?: Clients.ClientInterface;
+  clientOptions?: Clients.Client.ClientOptions;
   /**
    * Use a special plugin. The plugin must be a function that returns a boolean. For session, it won't work if you put it here, put at login options.
    */
