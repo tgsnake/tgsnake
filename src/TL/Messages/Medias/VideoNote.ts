@@ -27,8 +27,8 @@ export class VideoNote extends TLObject {
   height!: number;
   duration!: number;
   thumb!: Array<PhotoSize>;
-  date!:Date;
-  dcId!:number;
+  date!: Date;
+  dcId!: number;
   mimeType?: string;
   fileSize?: bigint;
   constructor(
@@ -50,7 +50,7 @@ export class VideoNote extends TLObject {
       height: number;
       duration: number;
       thumb: Array<PhotoSize>;
-      date:Date;
+      date: Date;
       dcId: number;
       filename?: string;
       supportStreaming?: boolean;
@@ -126,8 +126,8 @@ export class VideoNote extends TLObject {
         duration,
         fileSize: document.size,
         mimeType: document.mimeType,
-        dcId : document.dcId,
-        date : new Date(document.date * 1000)
+        dcId: document.dcId,
+        date: new Date(document.date * 1000),
       },
       client
     );

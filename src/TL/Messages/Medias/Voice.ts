@@ -19,8 +19,8 @@ export class Voice extends TLObject {
   fileUniqueId!: string;
   duration!: number;
   thumb!: Array<PhotoSize>;
-  date!:Date;
-  dcId!:number;
+  date!: Date;
+  dcId!: number;
   performer?: string;
   title?: string;
   filename?: string;
@@ -44,7 +44,7 @@ export class Voice extends TLObject {
       fileUniqueId: string;
       duration: number;
       thumb: Array<PhotoSize>;
-      date:Date;
+      date: Date;
       dcId: number;
       performer?: string;
       title?: string;
@@ -128,8 +128,8 @@ export class Voice extends TLObject {
         filename,
         mimeType: document.mimeType,
         fileSize: document.size,
-        dcId : document.dcId,
-        date : new Date(document.date * 1000)
+        dcId: document.dcId,
+        date: new Date(document.date * 1000),
       },
       client
     );

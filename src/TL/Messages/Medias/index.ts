@@ -13,6 +13,7 @@ export { Audio } from './Audio';
 export { Contact } from './Contact';
 export { Dice } from './Dice';
 export { Document } from './Document';
+export { Photo } from './Photo';
 export { PhotoSize } from './PhotoSize';
 export { Poll, PollAnswer } from './Poll';
 export { Venue, Location } from './Venue';

@@ -18,8 +18,8 @@ export class Document extends TLObject {
   fileId!: string;
   fileUniqueId!: string;
   thumb!: Array<PhotoSize>;
-  date!:Date;
-  dcId!:number;
+  date!: Date;
+  dcId!: number;
   filename?: string;
   mimeType?: string;
   fileSize?: bigint;
@@ -37,7 +37,7 @@ export class Document extends TLObject {
       fileId: string;
       fileUniqueId: string;
       thumb: Array<PhotoSize>;
-      date:Date;
+      date: Date;
       dcId: number;
       filename?: string;
       mimeType?: string;
@@ -104,8 +104,8 @@ export class Document extends TLObject {
         filename,
         mimeType: document.mimeType,
         fileSize: document.size,
-        dcId : document.dcId,
-        date : new Date(document.date * 1000)
+        dcId: document.dcId,
+        date: new Date(document.date * 1000),
       },
       client
     );
