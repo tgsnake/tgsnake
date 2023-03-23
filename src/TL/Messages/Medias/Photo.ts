@@ -22,7 +22,7 @@ export class Photo extends TLObject {
   size!: bigint;
   width!: number;
   height!: number;
-  hasSticker?: boolean;
+  hasStickers?: boolean;
   constructor(
     {
       fileId,
@@ -33,7 +33,7 @@ export class Photo extends TLObject {
       size,
       width,
       height,
-      hasSticker,
+      hasStickers,
     }: {
       fileId: string;
       fileUniqueId: string;
@@ -43,7 +43,7 @@ export class Photo extends TLObject {
       size: bigint;
       width: number;
       height: number;
-      hasSticker?: boolean;
+      hasStickers?: boolean;
     },
     client: Snake
   ) {
@@ -60,7 +60,7 @@ export class Photo extends TLObject {
     this.size = size;
     this.width = width;
     this.height = height;
-    this.hasSticker = hasSticker;
+    this.hasStickers = hasStickers;
   }
   static parse(client: Snake, photo: Raw.Photo) {
     let thumb: Array<PhotoSize> = [];
@@ -90,7 +90,11 @@ export class Photo extends TLObject {
         }
       }
     }
-    const psort = collect.sort((a, b) => a.size - b.size);
+    const psort = collect.sort((a, b) => {
+      if (a > b) return 1;
+      if (a < b) return -1;
+      return 0;
+    });
     const main = psort[psort.length - 1];
     const file = FileId.encode({
       version: 4,
@@ -117,7 +121,7 @@ export class Photo extends TLObject {
         size: main.size,
         width: main.w,
         height: main.h,
-        hasSticker: photo.hasSticker,
+        hasStickers: photo.hasStickers,
       },
       client
     );

@@ -74,7 +74,7 @@ export class Sticker extends TLObject {
     this.mimeType = mimeType;
     this.emoji = emoji;
   }
-  static parse(client: Snake, document: Raw.Document): Document {
+  static parse(client: Snake, document: Raw.Document): Sticker {
     const { fileId, fileUniqueId } = FileId.encode({
       version: 4,
       subVersion: 32,
@@ -88,9 +88,10 @@ export class Sticker extends TLObject {
       fileReference: document.fileReference,
     });
     let thumb: Array<PhotoSize> = [];
-    let image: Raw.DocumentAttributeImageSize;
-    let video: Raw.DocumentAttributeVideo;
-    let sticker: Raw.DocumentAttributeSticker | DocumentAttributeCustomEmoji;
+    let image: Raw.DocumentAttributeImageSize | undefined = undefined;
+    let video: Raw.DocumentAttributeVideo | undefined = undefined;
+    let sticker: Raw.DocumentAttributeSticker | Raw.DocumentAttributeCustomEmoji | undefined =
+      undefined;
     for (let attribute of document.attributes) {
       if (!image && attribute instanceof Raw.DocumentAttributeImageSize) {
         image = attribute as Raw.DocumentAttributeImageSize;
