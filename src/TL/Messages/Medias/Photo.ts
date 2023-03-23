@@ -64,11 +64,20 @@ export class Photo extends TLObject {
   }
   static parse(client: Snake, photo: Raw.Photo) {
     let thumb: Array<PhotoSize> = [];
-    let collect: Array<{ type: string; w: number; h: number; size: number }> = [];
+    let collect: Array<{ type: string; w: number; h: number; size: bigint }> = [];
     if (photo.sizes) {
       for (const psize of photo.sizes) {
         if (psize instanceof Raw.PhotoSize) {
-          thumb.push(PhotoSize.parse(client, psize as Raw.PhotoSize));
+          thumb.push(
+            PhotoSize.parse(
+              client,
+              psize as Raw.PhotoSize,
+              photo.id,
+              photo.accessHash,
+              photo.fileReference,
+              photo.dcId
+            )
+          );
         }
         if (psize instanceof Raw.PhotoSizeProgressive) {
           psize as Raw.PhotoSizeProgressive;
@@ -76,7 +85,7 @@ export class Photo extends TLObject {
             type: psize.type,
             w: psize.w,
             h: psize.h,
-            size: Math.max(...psize.sizes),
+            size: BigInt(Math.max(...psize.sizes)),
           });
         }
       }
