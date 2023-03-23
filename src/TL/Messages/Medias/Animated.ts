@@ -27,6 +27,8 @@ export class Animation extends TLObject {
   height!: number;
   duration!: number;
   thumb!: Array<PhotoSize>;
+  date!:Date;
+  dcId!:number;
   filename?: string;
   mimeType?: string;
   fileSize?: bigint;
@@ -38,6 +40,8 @@ export class Animation extends TLObject {
       height,
       duration,
       thumb,
+      date,
+      dcId,
       filename,
       mimeType,
       fileSize,
@@ -48,6 +52,8 @@ export class Animation extends TLObject {
       height: number;
       duration: number;
       thumb: Array<PhotoSize>;
+      date:Date;
+      dcId: number;
       filename?: string;
       mimeType?: string;
       fileSize?: bigint;
@@ -65,6 +71,8 @@ export class Animation extends TLObject {
     this.height = height;
     this.duration = duration;
     this.thumb = thumb;
+    this.date = date;
+    this.dcId = dcId;
     this.filename = filename;
     this.mimeType = mimeType;
     this.fileSize = fileSize;
@@ -131,6 +139,8 @@ export class Animation extends TLObject {
         duration,
         fileSize: document.size,
         mimeType: document.mimeType,
+        dcId : document.dcId,
+        date : new Date(document.date * 1000)
       },
       client
     );

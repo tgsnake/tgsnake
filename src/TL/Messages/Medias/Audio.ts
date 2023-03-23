@@ -19,6 +19,8 @@ export class Audio extends TLObject {
   fileUniqueId!: string;
   duration!: number;
   thumb!: Array<PhotoSize>;
+  date!:Date;
+  dcId!:number;
   performer?: string;
   title?: string;
   filename?: string;
@@ -30,6 +32,8 @@ export class Audio extends TLObject {
       fileUniqueId,
       duration,
       thumb,
+      date,
+      dcId,
       performer,
       title,
       filename,
@@ -40,6 +44,8 @@ export class Audio extends TLObject {
       fileUniqueId: string;
       duration: number;
       thumb: Array<PhotoSize>;
+      date:Date;
+      dcId: number;
       performer?: string;
       title?: string;
       filename?: string;
@@ -57,6 +63,8 @@ export class Audio extends TLObject {
     this.fileUniqueId = fileUniqueId;
     this.duration = duration;
     this.thumb = thumb;
+    this.date = date;
+    this.dcId = dcId;
     this.performer = performer;
     this.title = title;
     this.filename = filename;
@@ -120,6 +128,8 @@ export class Audio extends TLObject {
         filename,
         mimeType: document.mimeType,
         fileSize: document.size,
+        dcId : document.dcId,
+        date : new Date(document.date * 1000)
       },
       client
     );

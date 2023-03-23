@@ -27,6 +27,8 @@ export class Video extends TLObject {
   height!: number;
   duration!: number;
   thumb!: Array<PhotoSize>;
+  date!:Date;
+  dcId!:number;
   filename?: string;
   supportStreaming?: boolean;
   mimeType?: string;
@@ -39,6 +41,8 @@ export class Video extends TLObject {
       height,
       duration,
       thumb,
+      date,
+      dcId,
       filename,
       supportStreaming,
       mimeType,
@@ -50,6 +54,8 @@ export class Video extends TLObject {
       height: number;
       duration: number;
       thumb: Array<PhotoSize>;
+      date:Date;
+      dcId: number;
       filename?: string;
       supportStreaming?: boolean;
       mimeType?: string;
@@ -68,6 +74,8 @@ export class Video extends TLObject {
     this.height = height;
     this.duration = duration;
     this.thumb = thumb;
+    this.date = date;
+    this.dcId = dcId;
     this.filename = filename;
     this.supportStreaming = supportStreaming;
     this.mimeType = mimeType;
@@ -133,6 +141,8 @@ export class Video extends TLObject {
         supportStreaming,
         fileSize: document.size,
         mimeType: document.mimeType,
+        dcId : document.dcId,
+        date : new Date(document.date * 1000)
       },
       client
     );
