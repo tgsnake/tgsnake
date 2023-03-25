@@ -33,6 +33,10 @@ const ContextEntityType = {
   'Raw.MessageEntitySpoiler': 'spoiler',
   'Raw.MessageEntityCustomEmoji': 'customEmoji',
 };
+function generateName(className: string) {
+  const name = className.replace('Raw.MessageEntity', '');
+  return name.replace(name[0], name[0].toLowerCase());
+}
 export class Entity extends TLObject {
   type!:
     | 'unknown'
@@ -118,7 +122,7 @@ export class Entity extends TLObject {
     this.language = language;
     this.customEmojiId = customEmojiId;
   }
-  static parse(entity: Raw.TypeMessageEntity, client: Snake): Entity {
+  static parse(client: Snake, entity: Raw.TypeMessageEntity): Entity {
     if (
       entity instanceof Raw.MessageEntityUnknown ||
       entity instanceof Raw.MessageEntityMention ||
@@ -140,7 +144,7 @@ export class Entity extends TLObject {
     ) {
       return new Entity(
         {
-          className: entity.className.replace('Raw.', ''),
+          className: generateName(entity.className),
           constructorId: entity.constructorId,
           type: ContextEntityType[entity.className],
           offset: entity.offset,
@@ -153,7 +157,7 @@ export class Entity extends TLObject {
       entity as Raw.MessageEntityTextUrl;
       return new Entity(
         {
-          className: entity.className.replace('Raw.', ''),
+          className: generateName(entity.className),
           constructorId: entity.constructorId,
           type: ContextEntityType[entity.className],
           offset: entity.offset,
@@ -167,7 +171,7 @@ export class Entity extends TLObject {
       entity as Raw.MessageEntityMentionName;
       return new Entity(
         {
-          className: entity.className.replace('Raw.', ''),
+          className: generateName(entity.className),
           constructorId: entity.constructorId,
           type: ContextEntityType[entity.className],
           offset: entity.offset,
@@ -181,7 +185,7 @@ export class Entity extends TLObject {
       entity as Raw.MessageEntityCustomEmoji;
       return new Entity(
         {
-          className: entity.className.replace('Raw.', ''),
+          className: generateName(entity.className),
           constructorId: entity.constructorId,
           type: ContextEntityType[entity.className],
           offset: entity.offset,
@@ -193,7 +197,7 @@ export class Entity extends TLObject {
     }
     return new Entity(
       {
-        className: entity.className.replace('Raw.', ''),
+        className: generateName(entity.className),
         constructorId: entity.constructorId,
         type: 'unknown',
         offset: entity.offset,

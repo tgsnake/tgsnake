@@ -8,8 +8,9 @@
  * it under the terms of the MIT License as published.
  */
 import type { Snake } from '../Client';
+import type { Telegram } from '../Methods/Telegram';
 export class TLObject {
-  protected _client?: Snake;
+  protected _client!: Snake;
   className!: string;
   classType!: string;
   constructorId!: number;
@@ -24,6 +25,9 @@ export class TLObject {
   get client() {
     return this._client;
   }
+  get api(): Telegram {
+    return this._client.api;
+  }
   [Symbol.for('nodejs.util.inspect.custom')](): { [key: string]: any } {
     const toPrint: { [key: string]: any } = {
       _: this.className,
@@ -33,7 +37,7 @@ export class TLObject {
       if (this.hasOwnProperty(key)) {
         const value = this[key];
         if (ignore.includes(key)) continue;
-        if (!key.startsWith('_')) {
+        if (!key.startsWith('_') && value !== undefined && value !== null) {
           toPrint[key] = value;
         }
       }
@@ -49,7 +53,7 @@ export class TLObject {
       if (this.hasOwnProperty(key)) {
         const value = this[key];
         if (ignore.includes(key)) continue;
-        if (!key.startsWith('_')) {
+        if (!key.startsWith('_') && value !== undefined && value !== null) {
           toPrint[key] = typeof value === 'bigint' ? String(value) : value;
         }
       }

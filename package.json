@@ -26,7 +26,7 @@
   ],
   "dependencies": {
     "@tgsnake/core": "1.6.2",
-    "@tgsnake/fileid": "2.0.1",
+    "@tgsnake/fileid": "2.0.2",
     "@tgsnake/log": "latest",
     "@tgsnake/parser": "1.1.1",
     "axios": "1.3.4",

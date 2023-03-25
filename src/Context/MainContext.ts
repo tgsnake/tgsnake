@@ -9,8 +9,11 @@
 import { Raw } from '@tgsnake/core';
 import { Composer, run, ErrorHandler, Combine } from './Composer';
 import { Logger } from './Logger';
+import { Update } from '../TL/Updates/Update';
 import type { Snake } from '../Client/Snake';
 
+type TypeChat = Raw.Chat | Raw.Channel;
+type TypeUser = Raw.User;
 export class MainContext<T = {}> extends Composer<T> {
   /** @hidden */
   protected _errorHandler: ErrorHandler<T> = (error, update) => {
@@ -29,18 +32,35 @@ export class MainContext<T = {}> extends Composer<T> {
       );
     };
     const parsed = await this.parseUpdate(update, client);
-    try {
-      // @ts-ignore
-      await run<Raw.TypeUpdate>(this.middleware(), parsed);
-    } catch (error: any) {
-      // @ts-ignore
-      return this._errorHandler(error, parsed);
+    for (const _update of parsed) {
+      try {
+        // @ts-ignore
+        await run<Update>(this.middleware(), _update);
+      } catch (error: any) {
+        // @ts-ignore
+        return this._errorHandler(error, _update);
+      }
     }
   }
-  async parseUpdate(update: Raw.TypeUpdate, client: Snake): Promise<object> {
-    // Why Promise<object> ? because the return of parseUpdate is can by anything, but it must be a class or json object.
+  async parseUpdate(update: Raw.TypeUpdate, client: Snake): Promise<Array<object>> {
+    // Why Promise<Array<object>> ? because the return of parseUpdate is can by anything, but it must be a class or json object.
     // Possible plugin for make their own parse function.
-    return update;
+    const parsedUpdate: Array<Update> = [];
+    if (update instanceof Raw.Updates) {
+      const { updates, chats, users } = update as Raw.Updates;
+      const filterChats: Array<TypeChat> = chats.filter((chat): chat is TypeChat => {
+        if (chat instanceof Raw.Chat) return true;
+        if (chat instanceof Raw.Channel) return true;
+        return false;
+      });
+      const filterUsers: Array<TypeUser> = users.filter((user): user is TypeUser => {
+        return user instanceof Raw.User;
+      });
+      for (const _update of updates) {
+        parsedUpdate.push(await Update.parse(client, _update, filterChats, filterUsers));
+      }
+    }
+    return parsedUpdate;
   }
   catch(errorHandler: ErrorHandler<T>) {
     if (typeof errorHandler === 'function') {

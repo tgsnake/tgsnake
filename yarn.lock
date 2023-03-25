@@ -50,10 +50,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tgsnake/fileid@npm:2.0.1":
-  version: 2.0.1
-  resolution: "@tgsnake/fileid@npm:2.0.1"
-  checksum: e71c64e2854752818f58b9b71436bfa4dca6ac97394da96e9dc3069682245e81441b9b586a68b9b470bd24927a262cfcaec827fdce3252fa7052a40c70242283
+"@tgsnake/fileid@npm:2.0.2":
+  version: 2.0.2
+  resolution: "@tgsnake/fileid@npm:2.0.2"
+  checksum: b9b410dc1fac4826cc75406fa7a60ef4ca8c7a02c978d2b53abec22b77e28d52b4fdda02b50f0a26c0f9437b5cd3ebeb1c7acd4aa5ee4bd6f009d8320930a028
   languageName: node
   linkType: hard
 
@@ -907,7 +907,7 @@ __metadata:
   resolution: "tgsnake@workspace:."
   dependencies:
     "@tgsnake/core": 1.6.2
-    "@tgsnake/fileid": 2.0.1
+    "@tgsnake/fileid": 2.0.2
     "@tgsnake/log": latest
     "@tgsnake/parser": 1.1.1
     "@types/node": 18.11.11

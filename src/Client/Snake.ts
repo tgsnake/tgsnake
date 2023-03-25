@@ -16,10 +16,14 @@ import { Options } from './Options';
 import { LoginWithCLI } from './Login/Cli';
 import * as Version from '../Version';
 import { Logger, MainContext } from '../Context';
+import { Telegram } from '../Methods/Telegram';
+import type { Message } from '../TL/Messages/Message';
 
 export class Snake extends MainContext {
   _options!: Options;
   _client!: Client;
+  _cacheMessage!: Map<bigint, Map<number, Message>>;
+  api!: Telegram;
   constructor(options?: Options) {
     super();
     Logger.log(`Welcome to tgsnake!`);
@@ -96,6 +100,8 @@ export class Snake extends MainContext {
       // @ts-ignore
       Logger.setLogLevel(this._options.logLevel);
     }
+    this._cacheMessage = new Map();
+    this.api = new Telegram(this);
   }
   async run() {
     process.on('SIGINT', async () => {

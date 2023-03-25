@@ -9,6 +9,7 @@
  */
 import { TLObject } from '../TL';
 import { Raw } from '@tgsnake/core';
+import { Message } from '../Messages/Message';
 import type { Snake } from '../../Client';
 
 export class Update extends TLObject {
@@ -69,5 +70,32 @@ export class Update extends TLObject {
     this.poll = poll;
     this.pollAnswer = pollAnswer;
     this.chatJoinRequest = chatJoinRequest;
+  }
+  static async parse(
+    client: Snake,
+    update: Raw.TypeUpdate,
+    chats: Array<Raw.Chat | Raw.Channel>,
+    users: Array<Raw.User>
+  ): Promise<Update> {
+    if (update instanceof Raw.UpdateNewMessage) {
+      return Update.updateNewMessage(client, update as Raw.UpdateNewMessage, chats, users);
+    }
+    if (update instanceof Raw.UpdateNewChannelMessage) {
+      return Update.updateNewMessage(client, update as Raw.UpdateNewChannelMessage, chats, users);
+    }
+    return new Update({}, client);
+  }
+  static async updateNewMessage(
+    client: Snake,
+    update: Raw.UpdateNewMessage | Raw.UpdateNewChannelMessage,
+    chats: Array<Raw.Chat | Raw.Channel>,
+    users: Array<Raw.User>
+  ): Promise<Update> {
+    return new Update(
+      {
+        message: await Message.parse(client, update.message as Raw.Message, chats, users),
+      },
+      client
+    );
   }
 }

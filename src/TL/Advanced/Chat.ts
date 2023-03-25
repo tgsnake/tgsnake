@@ -13,6 +13,7 @@ import type { Snake } from '../../Client';
 import { ChatPermission } from './ChatPermission';
 import { Restriction } from './Restriction';
 import { ChatPhoto } from './ChatPhoto';
+import { getId } from '../../Utilities';
 
 // https://core.telegram.org/bots/api#chat
 export class Chat extends TLObject {
@@ -293,53 +294,22 @@ export class Chat extends TLObject {
     chats: Array<Raw.Chat | Raw.Channel>,
     chat?: boolean
   ): Chat | undefined {
-    let peerId = BigInt(0);
-    let fromId = BigInt(0);
-    switch (message.peerId.constructor) {
-      case Raw.PeerUser:
-        message.peerId as Raw.PeerUser;
-        // @ts-ignore
-        peerId = message.peerId.userId;
-        break;
-      case Raw.PeerChannel:
-        message.peerId as Raw.PeerChannel;
-        // @ts-ignore
-        peerId = message.peerId.channelId;
-        break;
-      case Raw.PeerChat:
-        message.peerId as Raw.PeerChat;
-        // @ts-ignore
-        peerId = message.peerId.chatid;
-        break;
-      default:
-    }
-    switch (message.fromId?.constructor) {
-      case Raw.PeerUser:
-        message.fromId as Raw.PeerUser;
-        // @ts-ignore
-        peerId = message.fromId.userId;
-        break;
-      case Raw.PeerChannel:
-        message.fromId as Raw.PeerChannel;
-        // @ts-ignore
-        peerId = message.fromId.channelId;
-        break;
-      case Raw.PeerChat:
-        message.fromId as Raw.PeerChat;
-        // @ts-ignore
-        peerId = message.fromId.chatid;
-        break;
-      default:
-    }
+    let peerId = getId(message.peerId);
+    let fromId = getId(message.fromId!);
     let chatId = chat ? peerId : fromId;
+    let merge: Array<Raw.User | Raw.Channel | Raw.Chat> = [...users, ...chats];
     if (!chatId) return;
-    if (message.peerId instanceof Raw.PeerUser) {
-      return Chat.parseUser(client, users.filter((c) => c.id === chatId)[0]);
+    let filtered = merge.filter((c) => c.id === chatId)[0];
+    if (filtered) {
+      if (filtered instanceof Raw.User) {
+        return Chat.parseUser(client, filtered as Raw.User);
+      }
+      if (filtered instanceof Raw.Chat) {
+        return Chat.parseChat(client, filtered as Raw.Chat);
+      }
+      return Chat.parseChannel(client, filtered as Raw.Channel);
     }
-    if (message.peerId instanceof Raw.PeerChat) {
-      return Chat.parseChat(client, chats.filter((c) => c.id === chatId)[0] as Raw.Chat);
-    }
-    return Chat.parseChannel(client, chats.filter((c) => c.id === chatId)[0] as Raw.Channel);
+    return;
   }
   static parseChat(client: Snake, chat?: Raw.Chat): Chat | undefined {
     if (chat) {
@@ -426,14 +396,18 @@ export class Chat extends TLObject {
     users: Array<Raw.User>,
     chats: Array<Raw.Chat | Raw.Channel>
   ): Chat | undefined {
-    if (peer instanceof Raw.PeerUser) {
-      peer as Raw.PeerUser;
-      return Chat.parseUser(client, users.filter((c) => c.id === peer.userId)[0]);
-    } else if (peer instanceof Raw.PeerChat) {
-      peer as Raw.PeerChat;
-      return Chat.parseUser(client, chats.filter((c) => c.id === peer.chatId)[0]);
-    } else if (peer instanceof Raw.PeerChannel) {
-      return Chat.parseUser(client, chats.filter((c) => c.id === peer.channelId)[0]);
+    let peerId = getId(peer);
+    let merge: Array<Raw.User | Raw.Channel | Raw.Chat> = [...users, ...chats];
+    if (!peerId) return;
+    let filtered = merge.filter((c) => c.id === peerId)[0];
+    if (filtered) {
+      if (filtered instanceof Raw.User) {
+        return Chat.parseUser(client, filtered as Raw.User);
+      } else if (filtered instanceof Raw.Chat) {
+        return Chat.parseChat(client, filtered as Raw.Chat);
+      } else if (filtered instanceof Raw.Channel) {
+        return Chat.parseChannel(client, filtered as Raw.Channel);
+      }
     }
   }
   // static parseFull() {}
