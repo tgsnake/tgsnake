@@ -579,6 +579,12 @@ export class Message extends TLObject {
             }
           }
         }
+        if (message.replyMarkup) {
+          parsedMessage.replyMarkup = await ReplyMarkup.convertReplyMarkup(
+            message.replyMarkup!,
+            client
+          );
+        }
         if (!parsedMessage.poll) {
           let cchat: Map<number, Message> | undefined = client._cacheMessage.get(
             parsedMessage.chat?.id!

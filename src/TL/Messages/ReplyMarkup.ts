@@ -7,7 +7,7 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { Raw, Helpers } from '@tgsnake/core';
+import { Raw, Helpers, Clients } from '@tgsnake/core';
 import type { Snake } from '../../Client';
 export type TypeReplyMarkup = inlineKeyboard | replyKeyboard | removeKeyboard | forceReplyMarkup;
 /**
@@ -120,6 +120,8 @@ export interface inlineKeyboardButton {
   callbackGame?: string;
   /** description of product */
   buy?: string;
+  /** Url of WebApp*/
+  webApp?: string;
 }
 export interface loginUrl {
   /**
@@ -150,8 +152,8 @@ export interface BotLoginUrl {
    */
   accessHash: bigint;
 }
-/*
-export async function BuildReplyMarkup(replyMarkup: TypeReplyMarkup, snakeClient: Snake) {
+
+export async function buildReplyMarkup(replyMarkup: TypeReplyMarkup, snakeClient: Snake) {
   // inlineKeyboard
   if ('inlineKeyboard' in replyMarkup) {
     return await replyMarkupInlineKeyboard(replyMarkup as inlineKeyboard, snakeClient);
@@ -176,25 +178,24 @@ async function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard, snakeClien
     for (let col = 0; col < replyMarkup.inlineKeyboard[row].length; col++) {
       let btn: inlineKeyboardButton = replyMarkup.inlineKeyboard[row][col] as inlineKeyboardButton;
       // button url
-      if (btn.url) {
+      if ('url' in btn) {
         if (String(btn.url).startsWith('tg://user?id=')) {
-          let [id, type, peer] = await toBigInt(
-            BigInt(String(btn.url).replace('tg://user?id=', '')),
-            snakeClient
+          const peer = snakeClient._client.resolvePeer(
+            BigInt(String(btn.url).replace('tg://user?id=', ''))
           );
-          if (type !== 'user') continue;
-          tempCol.push(
-            new Raw.InputKeyboardButtonUserProfile({
-              text: String(btn.text),
-              //@ts-ignore
-              userId: new Raw.InputUser({
-                //@ts-ignore
-                userId: peer.userId,
-                //@ts-ignore
-                accessHash: peer.accessHash,
-              }),
-            })
-          );
+          if (peer && peer instanceof Raw.InputPeerUser) {
+            tempCol.push(
+              new Raw.InputKeyboardButtonUserProfile({
+                text: String(btn.text),
+                userId: new Raw.InputUser({
+                  userId: (peer as Raw.InputPeerUser).userId,
+                  accessHash: (peer as Raw.InputPeerUser).accessHash,
+                }),
+              })
+            );
+          } else {
+            continue;
+          }
         } else {
           tempCol.push(
             new Raw.KeyboardButtonUrl({
@@ -206,7 +207,7 @@ async function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard, snakeClien
         continue;
       }
       // button login url
-      if (btn.loginUrl) {
+      if ('loginUrl' in btn) {
         tempCol.push(
           new Raw.InputKeyboardButtonUrlAuth({
             text: String(btn.text),
@@ -214,15 +215,15 @@ async function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard, snakeClien
             fwdText: btn.loginUrl?.forwardText || String(btn.text),
             url: String(btn.loginUrl?.url),
             bot: new Raw.InputUser({
-              userId: bigInt(btn.loginUrl?.bot.id! as bigint) as BigInteger,
-              accessHash: bigInt(btn.loginUrl?.bot.accessHash! as bigint) as BigInteger,
+              userId: btn.loginUrl?.bot.id!,
+              accessHash: btn.loginUrl?.bot.accessHash!,
             }),
           })
         );
         continue;
       }
       // button callbackData
-      if (btn.callbackData) {
+      if ('callbackData' in btn) {
         tempCol.push(
           new Raw.KeyboardButtonCallback({
             text: String(btn.text),
@@ -233,7 +234,7 @@ async function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard, snakeClien
         continue;
       }
       // button switch inline query
-      if (btn.switchInlineQuery) {
+      if ('switchInlineQuery' in btn) {
         tempCol.push(
           new Raw.KeyboardButtonSwitchInline({
             text: String(btn.text),
@@ -244,7 +245,7 @@ async function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard, snakeClien
         continue;
       }
       // button switch inline query current peer
-      if (btn.switchInlineQueryCurrentChat) {
+      if ('switchInlineQueryCurrentChat' in btn) {
         tempCol.push(
           new Raw.KeyboardButtonSwitchInline({
             text: String(btn.text),
@@ -255,7 +256,7 @@ async function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard, snakeClien
         continue;
       }
       // button game
-      if (btn.callbackGame) {
+      if ('callbackGame' in btn) {
         tempCol.push(
           new Raw.KeyboardButtonGame({
             text: String(btn.text),
@@ -264,13 +265,22 @@ async function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard, snakeClien
         continue;
       }
       // button buy
-      if (btn.buy) {
+      if ('buy' in btn) {
         tempCol.push(
           new Raw.KeyboardButtonBuy({
             text: String(btn.text),
           })
         );
         continue;
+      }
+      // button webapp
+      if ('webApp' in btn) {
+        tempCol.push(
+          new Raw.KeyboardButtonWebView({
+            text: String(btn.text),
+            url: String(btn.webApp),
+          })
+        );
       }
     }
     rows.push(
@@ -300,7 +310,7 @@ function replyMarkupKeyboard(replyMarkup: replyKeyboard) {
       if (typeof replyMarkup.keyboard[row][col] !== 'string') {
         let btn: replyKeyboardButton = replyMarkup.keyboard[row][col] as replyKeyboardButton;
         // keyboard requestContact
-        if (btn.requestContact) {
+        if ('requestContact' in btn) {
           tempCol.push(
             new Raw.KeyboardButtonRequestPhone({
               text: String(btn.text),
@@ -309,7 +319,7 @@ function replyMarkupKeyboard(replyMarkup: replyKeyboard) {
           continue;
         }
         //keyboard requestLocation
-        if (btn.requestLocation) {
+        if ('requestLocation' in btn) {
           tempCol.push(
             new Raw.KeyboardButtonRequestGeoLocation({
               text: String(btn.text),
@@ -318,17 +328,17 @@ function replyMarkupKeyboard(replyMarkup: replyKeyboard) {
           continue;
         }
         //keyboard requestPoll
-        if (btn.requestPoll) {
+        if ('requestPoll' in btn) {
           tempCol.push(
             new Raw.KeyboardButtonRequestPoll({
               text: String(btn.text),
-              quiz: Boolean(btn.requestPoll.toLowerCase() == 'quiz'),
+              quiz: Boolean(btn.requestPoll?.toLowerCase() == 'quiz'),
             })
           );
           continue;
         }
         // keyboard text
-        if (btn.text) {
+        if ('text' in btn) {
           if (!btn.requestPoll && !btn.requestLocation && !btn.requestContact) {
             tempCol.push(
               new Raw.KeyboardButton({
@@ -469,10 +479,11 @@ export async function convertReplyMarkup(
         }
         if (btn instanceof Raw.KeyboardButtonUrlAuth) {
           btn as Raw.KeyboardButtonUrlAuth;
-          let me = await SnakeClient.telegram.getMe();
+          let me = ((await Clients.Auth.getMe(SnakeClient._client)) as Raw.users.UserFull)
+            .users[0] as Raw.User;
           let ee: BotLoginUrl = {
             id: me.id!,
-            accessHash: me.accessHash! as bigint,
+            accessHash: me.accessHash!,
           };
           let dd: loginUrl = {
             requestWriteAccess: true,
@@ -526,6 +537,22 @@ export async function convertReplyMarkup(
           };
           col.push(cc);
         }
+        if (btn instanceof Raw.KeyboardButtonWebView) {
+          btn as Raw.KeyboardButtonWebView;
+          let cc: inlineKeyboardButton = {
+            text: btn.text,
+            webApp: btn.url,
+          };
+          col.push(cc);
+        }
+        if (btn instanceof Raw.KeyboardButtonSimpleWebView) {
+          btn as Raw.KeyboardButtonSimpleWebView;
+          let cc: inlineKeyboardButton = {
+            text: btn.text,
+            webApp: btn.url,
+          };
+          col.push(cc);
+        }
       }
       rows.push(col);
     }
@@ -535,4 +562,3 @@ export async function convertReplyMarkup(
     return markup;
   }
 }
-*/

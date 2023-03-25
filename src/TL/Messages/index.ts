@@ -9,4 +9,5 @@
  */
 
 export * as Medias from './Medias';
+export * as ReplyMarkups from './ReplyMarkup';
 export { Entity } from './Entity';
