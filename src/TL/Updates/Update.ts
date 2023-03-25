@@ -91,9 +91,17 @@ export class Update extends TLObject {
     chats: Array<Raw.Chat | Raw.Channel>,
     users: Array<Raw.User>
   ): Promise<Update> {
+    if (update.message instanceof Raw.Message && (update.message as Raw.Message).post) {
+      return new Update(
+        {
+          channelPost: await Message.parse(client, update.message, chats, users),
+        },
+        client
+      );
+    }
     return new Update(
       {
-        message: await Message.parse(client, update.message as Raw.Message, chats, users),
+        message: await Message.parse(client, update.message, chats, users),
       },
       client
     );
