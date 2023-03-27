@@ -48,49 +48,47 @@ export class ChatPhoto extends TLObject {
     if (!chatPhoto) return;
     if (chatPhoto instanceof Raw.ChatPhoto) {
       chatPhoto as Raw.ChatPhoto;
-      let bigFileId = FileId.encode({
-        version: 4,
-        subVersion: 32,
-        fileType: FileType.CHAT_PHOTO,
-        thumbnailSource: ThumbnailSource.CHAT_PHOTO_BIG,
-        thumbnailFileType: FileType.CHAT_PHOTO,
-        fileTypeUniqueId: FileTypeUniqueId.DOCUMENT,
-        // @ts-ignore
-        id: chatPhoto?.photoId,
-        // @ts-ignore
-        dcId: chatPhoto?.dcId,
-        accessHash: BigInt(0),
-        volumeId: BigInt(0),
-        localId: 0,
-        chatId: chatId,
-        chatAccessHash: chatAccessHash,
-      });
-      let smallFileId = FileId.encode({
-        version: 4,
-        subVersion: 32,
-        fileType: FileType.CHAT_PHOTO,
-        thumbnailSource: ThumbnailSource.CHAT_PHOTO_SMALL,
-        thumbnailFileType: FileType.CHAT_PHOTO,
-        fileTypeUniqueId: FileTypeUniqueId.DOCUMENT,
-        // @ts-ignore
-        id: chatPhoto?.photoId,
-        // @ts-ignore
-        dcId: chatPhoto?.dcId,
-        accessHash: BigInt(0),
-        volumeId: BigInt(0),
-        localId: 0,
-        chatId: chatId!,
-        chatAccessHash: chatAccessHash!,
-      });
-      return new ChatPhoto(
-        {
-          smallFileId: smallFileId.fileId,
-          smallUniqueId: smallFileId.fileUniqueId,
-          bigFileId: bigFileId.fileId,
-          bigUniqueId: bigFileId.fileUniqueId,
-        },
-        client
-      );
+      if (chatPhoto.photoId && chatPhoto.dcId) {
+        let bigFileId = FileId.encode({
+          version: 4,
+          subVersion: 32,
+          fileType: FileType.CHAT_PHOTO,
+          thumbnailSource: ThumbnailSource.CHAT_PHOTO_BIG,
+          thumbnailFileType: FileType.CHAT_PHOTO,
+          fileTypeUniqueId: FileTypeUniqueId.DOCUMENT,
+          id: chatPhoto.photoId,
+          dcId: chatPhoto.dcId,
+          accessHash: BigInt(0),
+          volumeId: BigInt(0),
+          localId: 0,
+          chatId: chatId,
+          chatAccessHash: chatAccessHash,
+        });
+        let smallFileId = FileId.encode({
+          version: 4,
+          subVersion: 32,
+          fileType: FileType.CHAT_PHOTO,
+          thumbnailSource: ThumbnailSource.CHAT_PHOTO_SMALL,
+          thumbnailFileType: FileType.CHAT_PHOTO,
+          fileTypeUniqueId: FileTypeUniqueId.DOCUMENT,
+          id: chatPhoto.photoId,
+          dcId: chatPhoto.dcId,
+          accessHash: BigInt(0),
+          volumeId: BigInt(0),
+          localId: 0,
+          chatId: chatId!,
+          chatAccessHash: chatAccessHash!,
+        });
+        return new ChatPhoto(
+          {
+            smallFileId: smallFileId.fileId,
+            smallUniqueId: smallFileId.fileUniqueId,
+            bigFileId: bigFileId.fileId,
+            bigUniqueId: bigFileId.fileUniqueId,
+          },
+          client
+        );
+      }
     }
     if (chatPhoto instanceof Raw.UserProfilePhoto) {
       chatPhoto as Raw.UserProfilePhoto;
