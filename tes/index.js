@@ -10,7 +10,7 @@ const { createContext } = require('vm');
 const { Snake } = require('../lib/src/Client/Snake');
 const filter = require('../lib/src/Context/Filters');
 const bot = new Snake();
-bot.on('message', (ctx) => {
+bot.on('message.replyToMessage', (ctx) => {
   console.log(ctx.message);
 });
 bot.run();

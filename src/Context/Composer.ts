@@ -6,7 +6,7 @@
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
 import { Raw } from '@tgsnake/core';
-import { FilterQuery, filter } from './Filters';
+import { FilterContext, filter } from './Filters';
 import { TypeUpdate } from '../TL/Updates';
 
 export type MaybeArray<T> = T | T[];
@@ -77,9 +77,9 @@ export class Composer<T = {}> implements MiddlewareObj<Combine<TypeUpdate, T>> {
     this.handler = concat(this.handler, flatten(composer));
     return composer;
   }
-  on<K extends keyof TypeUpdate>(
+  on<K extends keyof FilterContext>(
     filters: MaybeArray<K>,
-    ...middleware: Array<MiddlewareFn<Combine<FilterQuery<TypeUpdate, K>, T>>>
+    ...middleware: Array<MiddlewareFn<Combine<FilterContext[K], T>>>
   ): Composer<T> {
     return this.filter((ctx) => filter(filters, ctx), ...middleware);
   }
