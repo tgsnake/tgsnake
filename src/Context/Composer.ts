@@ -6,7 +6,8 @@
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
 import { Raw } from '@tgsnake/core';
-import { Context } from './TypeUpdate';
+import { FilterQuery, filter } from './Filters';
+import { TypeUpdate } from '../TL/Updates';
 
 export type MaybeArray<T> = T | T[];
 export type MaybePromise<T> = T | Promise<T>;
@@ -59,66 +60,28 @@ function toArray(e) {
 export async function run<C>(middleware: MiddlewareFn<C>, ctx: C) {
   await middleware(ctx, leaf);
 }
-function filterEvent(filter, ctx) {
-  let filters = toArray(filter);
-  let h: Array<string> = [];
-  h.push('*');
-  switch (ctx.className) {
-    case 'UpdateNewMessage':
-    case 'UpdateShortMessage':
-    case 'UpdateShortChatMessage':
-    case 'UpdateNewChannelMessage':
-      h.push('message');
-      // filter message action
-      break;
-    case 'UpdateInlineBotCallbackQuery':
-    case 'UpdateBotCallbackQuery':
-      h.push('callbackQuery');
-      break;
-    case 'UpdateBotInlineQuery':
-      h.push('inlineQuery');
-      break;
-    case 'UpdateEditChannelMessage':
-    case 'UpdateEditMessage':
-      h.push('editMessage');
-      break;
-    case 'UpdateBotPrecheckoutQuery':
-      h.push('precheckoutQuery');
-      break;
-    case 'UpdateBotShippingQuery':
-      h.push('shippingQuery');
-      break;
-    default:
-      h.push(ctx.className);
-  }
-  let passed: string[] = [];
-  for (let f of filters) {
-    if (h.includes(f)) passed.push(f);
-  }
-  return Boolean(passed.length > 0);
-}
-export class Composer<T = {}> implements MiddlewareObj<Combine<Raw.TypeUpdate, T>> {
+export class Composer<T = {}> implements MiddlewareObj<Combine<TypeUpdate, T>> {
   /** @hidden */
-  private handler!: MiddlewareFn<Combine<Raw.TypeUpdate, T>>;
+  private handler!: MiddlewareFn<Combine<TypeUpdate, T>>;
   /** @hidden */
   context: Partial<T> = {};
   prefix: string = '.!/';
-  constructor(...middleware: Array<MiddlewareFn<Combine<Raw.TypeUpdate, T>>>) {
+  constructor(...middleware: Array<MiddlewareFn<Combine<TypeUpdate, T>>>) {
     this.handler = middleware.length === 0 ? pass : middleware.map(flatten).reduce(concat);
   }
-  middleware(): MiddlewareFn<Combine<Raw.TypeUpdate, T>> {
+  middleware(): MiddlewareFn<Combine<TypeUpdate, T>> {
     return this.handler;
   }
-  use(...middleware: Array<MiddlewareFn<Combine<Raw.TypeUpdate, T>>>): Composer<T> {
+  use(...middleware: Array<MiddlewareFn<Combine<TypeUpdate, T>>>): Composer<T> {
     const composer = new Composer(...middleware);
     this.handler = concat(this.handler, flatten(composer));
     return composer;
   }
-  on<K extends keyof Context>(
-    filter: MaybeArray<K>,
-    ...middleware: Array<MiddlewareFn<Combine<Context[K], T>>>
+  on<K extends keyof TypeUpdate>(
+    filters: MaybeArray<K>,
+    ...middleware: Array<MiddlewareFn<Combine<FilterQuery<TypeUpdate, K>, T>>>
   ): Composer<T> {
-    return this.filter((ctx) => filterEvent(filter, ctx), ...middleware);
+    return this.filter((ctx) => filter(filters, ctx), ...middleware);
   }
   filter(predicate, ...middleware): Composer<T> {
     const composer = new Composer(...middleware);

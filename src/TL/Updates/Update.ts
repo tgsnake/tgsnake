@@ -12,10 +12,24 @@ import { Raw } from '@tgsnake/core';
 import { Message } from '../Messages/Message';
 import type { Snake } from '../../Client';
 
-export class Update extends TLObject {
-  message?: TLObject;
+export interface TypeUpdate {
+  message?: Message;
   editedMessage?: TLObject;
-  channelPost?: TLObject;
+  channelPost?: Message;
+  editedChannelPost?: TLObject;
+  inlineQuery?: TLObject;
+  chosenInlineResult?: TLObject;
+  callbackQuery?: TLObject;
+  shippingQuery?: TLObject;
+  preCheckoutQuery?: TLObject;
+  poll?: TLObject;
+  pollAnswer?: TLObject;
+  chatJoinRequest?: TLObject;
+}
+export class Update extends TLObject {
+  message?: Message;
+  editedMessage?: TLObject;
+  channelPost?: Message;
   editedChannelPost?: TLObject;
   inlineQuery?: TLObject;
   chosenInlineResult?: TLObject;
@@ -39,20 +53,7 @@ export class Update extends TLObject {
       poll,
       pollAnswer,
       chatJoinRequest,
-    }: {
-      message?: TLObject;
-      editedMessage?: TLObject;
-      channelPost?: TLObject;
-      editedChannelPost?: TLObject;
-      inlineQuery?: TLObject;
-      chosenInlineResult?: TLObject;
-      callbackQuery?: TLObject;
-      shippingQuery?: TLObject;
-      preCheckoutQuery?: TLObject;
-      poll?: TLObject;
-      pollAnswer?: TLObject;
-      chatJoinRequest?: TLObject;
-    },
+    }: TypeUpdate,
     client: Snake
   ) {
     super(client);

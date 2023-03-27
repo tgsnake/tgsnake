@@ -8,4 +8,4 @@
  * it under the terms of the MIT License as published.
  */
 
-export { Update } from './Update';
+export { Update, TypeUpdate } from './Update';

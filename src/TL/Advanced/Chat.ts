@@ -15,6 +15,44 @@ import { Restriction } from './Restriction';
 import { ChatPhoto } from './ChatPhoto';
 import { getId } from '../../Utilities';
 
+export interface TypeChat {
+  id: bigint;
+  accessHash?: bigint;
+  type: string;
+  title?: string;
+  username?: string;
+  firstname?: string;
+  lastname?: string;
+  photo?: ChatPhoto;
+  bio?: string;
+  hasPrivateForwards?: boolean;
+  joinToSendMessages?: boolean;
+  joinByRequest?: boolean;
+  description?: string;
+  inviteLink?: string;
+  pinnedMessage?: TLObject;
+  permissions?: ChatPermission;
+  slowModeDelay?: number;
+  messageAutoDeleteTime?: number;
+  hasProtectContent?: boolean;
+  stickerSetName?: string;
+  canSetStickerSet?: boolean;
+  linkedChatId?: bigint;
+  location?: TLObject;
+  isVerified?: boolean;
+  isRestricted?: boolean;
+  isCreator?: boolean;
+  isScam?: boolean;
+  isFake?: boolean;
+  isSupport?: boolean;
+  dcId?: number;
+  membersCount?: number;
+  restrictions?: Array<Restriction>;
+  sendAsChat?: Chat;
+  availableReactions?: Array<string>;
+  isLeft?: boolean;
+  isInactive?: boolean;
+}
 // https://core.telegram.org/bots/api#chat
 export class Chat extends TLObject {
   /**
@@ -205,44 +243,7 @@ export class Chat extends TLObject {
       availableReactions,
       isLeft,
       isInactive,
-    }: {
-      id: bigint;
-      accessHash?: bigint;
-      type: string;
-      title?: string;
-      username?: string;
-      firstname?: string;
-      lastname?: string;
-      photo?: ChatPhoto;
-      bio?: string;
-      hasPrivateForwards?: boolean;
-      joinToSendMessages?: boolean;
-      joinByRequest?: boolean;
-      description?: string;
-      inviteLink?: string;
-      pinnedMessage?: TLObject;
-      permissions?: ChatPermission;
-      slowModeDelay?: number;
-      messageAutoDeleteTime?: number;
-      hasProtectContent?: boolean;
-      stickerSetName?: string;
-      canSetStickerSet?: boolean;
-      linkedChatId?: bigint;
-      location?: TLObject;
-      isVerified?: boolean;
-      isRestricted?: boolean;
-      isCreator?: boolean;
-      isScam?: boolean;
-      isFake?: boolean;
-      isSupport?: boolean;
-      dcId?: number;
-      membersCount?: number;
-      restrictions?: Array<Restriction>;
-      sendAsChat?: Chat;
-      availableReactions?: Array<string>;
-      isLeft?: boolean;
-      isInactive?: boolean;
-    },
+    }: TypeChat,
     client: Snake
   ) {
     super(client);

@@ -13,6 +13,36 @@ import type { Snake } from '../../Client';
 import { Restriction } from './Restriction';
 import { ChatPhoto } from './ChatPhoto';
 
+export interface TypeUser {
+  id: bigint;
+  accessHash?: bigint;
+  isSelf?: boolean;
+  isContact?: boolean;
+  isMutualContact?: boolean;
+  isDeleted?: boolean;
+  isBot?: boolean;
+  isVerified?: boolean;
+  isRestricted?: boolean;
+  isScam?: boolean;
+  isFake?: boolean;
+  isSupport?: boolean;
+  isPremium?: boolean;
+  firstname?: string;
+  lastname?: string;
+  status?: string;
+  lastOnlineDate?: Date;
+  nextOfflineDate?: Date;
+  username?: string;
+  languageCode?: string;
+  dcId?: number;
+  phoneNumber?: string;
+  photo?: ChatPhoto;
+  restrictions?: Array<Restriction>;
+  addedToAttachmentMenu?: boolean;
+  canJoinGroups?: boolean;
+  canReadAllGroupMessages?: boolean;
+  supportsInlineQueries?: boolean;
+}
 // https://core.telegram.org/bots/api#user
 export class User extends TLObject {
   /**
@@ -160,36 +190,7 @@ export class User extends TLObject {
       canJoinGroups,
       canReadAllGroupMessages,
       supportsInlineQueries,
-    }: {
-      id: bigint;
-      accessHash?: bigint;
-      isSelf?: boolean;
-      isContact?: boolean;
-      isMutualContact?: boolean;
-      isDeleted?: boolean;
-      isBot?: boolean;
-      isVerified?: boolean;
-      isRestricted?: boolean;
-      isScam?: boolean;
-      isFake?: boolean;
-      isSupport?: boolean;
-      isPremium?: boolean;
-      firstname?: string;
-      lastname?: string;
-      status?: string;
-      lastOnlineDate?: Date;
-      nextOfflineDate?: Date;
-      username?: string;
-      languageCode?: string;
-      dcId?: number;
-      phoneNumber?: string;
-      photo?: ChatPhoto;
-      restrictions?: Array<Restriction>;
-      addedToAttachmentMenu?: boolean;
-      canJoinGroups?: boolean;
-      canReadAllGroupMessages?: boolean;
-      supportsInlineQueries?: boolean;
-    },
+    }: TypeUser,
     client: Snake
   ) {
     super(client);
