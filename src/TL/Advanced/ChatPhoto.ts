@@ -48,7 +48,7 @@ export class ChatPhoto extends TLObject {
     if (!chatPhoto) return;
     if (chatPhoto instanceof Raw.ChatPhoto) {
       chatPhoto as Raw.ChatPhoto;
-      if (chatPhoto.photoId && chatPhoto.dcId) {
+      if (chatPhoto.photoId && chatPhoto.dcId && chatId && chatAccessHash) {
         let bigFileId = FileId.encode({
           version: 4,
           subVersion: 32,

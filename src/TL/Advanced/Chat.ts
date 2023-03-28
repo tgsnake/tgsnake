@@ -319,7 +319,7 @@ export class Chat extends TLObject {
           id: -chat.id,
           type: 'group',
           title: chat.title,
-          photo: ChatPhoto.parse(client, chat.photo, chat.id, BigInt(0)),
+          photo: ChatPhoto.parse(client, chat.photo, -chat.id, BigInt(0)),
           permissions: ChatPermission.parse(client, chat.defaultBannedRights),
           hasProtectContent: chat.noforwards,
           isCreator: chat.creator,
@@ -342,7 +342,12 @@ export class Chat extends TLObject {
           type: channel.broadcast ? 'channel' : 'supergroup',
           title: channel.title,
           username: channel.username,
-          photo: ChatPhoto.parse(client, channel.photo),
+          photo: ChatPhoto.parse(
+            client,
+            channel.photo,
+            Helpers.getChannelId(channel.id),
+            channel.accessHash
+          ),
           hasPrivateForwards: channel.noforwards,
           joinToSendMessages: channel.joinToSend,
           joinByRequest: channel.joinRequest,
