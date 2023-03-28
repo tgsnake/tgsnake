@@ -15,6 +15,7 @@ import * as Medias from './Medias';
 import * as ReplyMarkup from './ReplyMarkup';
 import { getId, getPeerId } from '../../Utilities';
 import type { Snake } from '../../Client';
+import type { sendMessageParams } from '../../Methods/Messages';
 
 export interface TypeMessage {
   id: number;
@@ -608,5 +609,30 @@ export class Message extends TLObject {
       },
       client
     );
+  }
+
+  // bound method
+  reply(text: string, more: sendMessageParams = {}) {
+    if (this.chat) {
+      return this.api.sendMessage(
+        this.chat.id!,
+        text,
+        Object.assign(
+          {
+            replyToMessageId: this.id
+          },
+          more
+        )
+      );
+    }
+  }
+  respond(text: string, more: sendMessageParams = {}) {
+    if (this.chat) {
+      return this.api.sendMessage(
+        this.chat.id!,
+        text,
+        more
+      );
+    }
   }
 }

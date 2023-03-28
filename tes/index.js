@@ -11,6 +11,7 @@ const { Snake } = require('../lib/src/Client/Snake');
 const filter = require('../lib/src/Context/Filters');
 const bot = new Snake();
 bot.cmd('start', async (ctx) => {
-  console.log(await ctx.api.sendMessage(ctx.message.chat.id, 'starto'));
+  console.log(await ctx.message.reply('startooo'));
+  console.log(await ctx.message.respond('endddddd'));
 });
 bot.run();

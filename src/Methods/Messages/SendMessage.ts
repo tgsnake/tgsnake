@@ -26,6 +26,7 @@ export interface sendMessageParams {
   protectContent?: boolean;
   replyMarkup?: ReplyMarkup.TypeReplyMarkup;
   entities?: Array<Entities>;
+  parseMode?: 'html' | 'markdown';
 }
 export async function sendMessage(
   client: Snake,
@@ -33,7 +34,7 @@ export async function sendMessage(
   text: string,
   more: sendMessageParams = {}
 ) {
-  const {
+  var {
     disableWebPagePreview,
     disableNotification,
     replyToMessageId,
@@ -43,8 +44,16 @@ export async function sendMessage(
     protectContent,
     replyMarkup,
     entities,
+    parseMode,
   } = more;
   const peer = await client._client.resolvePeer(chatId);
+  if (parseMode) {
+    const [t, e] = await Parser.parse(text, parseMode);
+    if (!entities) {
+      entities = e;
+    }
+    text = t;
+  }
   const res = await client._client.invoke(
     new Raw.messages.SendMessage({
       noWebpage: disableWebPagePreview,
