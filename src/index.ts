@@ -1,5 +1,5 @@
 // Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2022 Butthx <https://github.com/butthx>
+// Copyright (C) 2023 Butthx <https://github.com/butthx>
 //
 // This file is part of Tgsnake
 //

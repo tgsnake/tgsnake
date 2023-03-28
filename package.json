@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "ts-node ./tes/index.ts",
     "build": "rm -rf ./lib && tsc",
+    "build:license": "node ./generator/license",
     "prettier": "prettier -w .",
     "update": "yarn up \"**\" --interactive",
     "prepare": "echo \"🐍 Building snake package.\" && rm -rf ./lib && tsc"
