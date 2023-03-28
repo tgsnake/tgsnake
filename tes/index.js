@@ -13,5 +13,6 @@ const bot = new Snake();
 bot.cmd('start', async (ctx) => {
   console.log(await ctx.message.reply('startooo'));
   console.log(await ctx.message.respond('endddddd'));
+  console.log(await ctx.api.getParticipants(ctx.message.chat.id));
 });
 bot.run();

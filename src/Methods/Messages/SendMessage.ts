@@ -8,7 +8,6 @@
  * it under the terms of the MIT License as published.
  */
 import { Parser, type Entities } from '@tgsnake/parser';
-import { TLObject } from '../../TL/TL';
 import { Raw, Helpers } from '@tgsnake/core';
 import { parseMessages } from '../../Utilities';
 import * as ReplyMarkup from '../../TL/Messages/ReplyMarkup';

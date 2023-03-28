@@ -1,6 +1,6 @@
 /**
  * tgsnake - Telegram MTProto framework for nodejs.
- * Copyright (C) 2023 butthx <https://github.com/butthx>
+ * Copyright (C) 2022 butthx <https://github.com/butthx>
  *
  * THIS FILE IS PART OF TGSNAKE
  *
@@ -11,6 +11,7 @@ import { TLObject } from '../TL/TL';
 import { Raw, Helpers } from '@tgsnake/core';
 import type { Snake } from '../Client';
 import { getMessages, sendMessage, sendMessageParams } from './Messages';
+import { getParticipants, getParticipantsParams } from './Chats';
 
 export class Telegram extends TLObject {
   constructor(client: Snake) {
@@ -26,5 +27,8 @@ export class Telegram extends TLObject {
   }
   sendMessage(chatId: bigint | string, text: string, more?: sendMessageParams) {
     return sendMessage(this.client!, chatId, text, more);
+  }
+  getParticipants(chatId: bigint | string, more?: getParticipantsParams) {
+    return getParticipants(this.client, chatId, more);
   }
 }
