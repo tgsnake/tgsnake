@@ -36,7 +36,7 @@ export interface Options {
   /**
    * Use a special plugin. The plugin must be a function that returns a boolean. For session, it won't work if you put it here, put at login options.
    */
-  plugins?: Array<{ (snake: Snake): boolean | Promise<boolean> }>;
+  plugins?: Array<{ (snake: Snake): any | Promise<any> }>;
 }
 export interface LoginWithSession {
   /**

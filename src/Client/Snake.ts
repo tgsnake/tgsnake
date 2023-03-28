@@ -7,7 +7,7 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { Raw, Client, Storages } from '@tgsnake/core';
+import { Raw, Client, Storages, Clients, Sessions } from '@tgsnake/core';
 import { TypeLogLevel } from '@tgsnake/log';
 import fs from 'fs';
 import path from 'path';
@@ -23,6 +23,8 @@ export class Snake extends MainContext {
   _options!: Options;
   _client!: Client;
   _cacheMessage!: Map<bigint, Map<number, Message>>;
+  _me!: Raw.User;
+  _rndMsgId!: Sessions.MsgId;
   api!: Telegram;
   constructor(options?: Options) {
     super();
@@ -102,6 +104,7 @@ export class Snake extends MainContext {
     }
     this._cacheMessage = new Map();
     this.api = new Telegram(this);
+    this._rndMsgId = new Sessions.MsgId();
   }
   async run() {
     process.on('SIGINT', async () => {
@@ -125,7 +128,10 @@ export class Snake extends MainContext {
               // prevent multiple plugin with same function
               hasLoginPlugin = true;
               try {
-                await plugin(this);
+                let user = await plugin(this);
+                if (user) {
+                  this._me = (user as unknown as Raw.users.UserFull).users[0] as Raw.User;
+                }
               } catch (error: any) {
                 Logger.error(`Failed to running ${plugin.name}`, error);
               }
@@ -141,7 +147,10 @@ export class Snake extends MainContext {
       }
     }
     if (!hasLoginPlugin) {
-      await LoginWithCLI(this);
+      let user = await LoginWithCLI(this);
+      if (user) {
+        this._me = (user as Raw.users.UserFull).users[0] as Raw.User;
+      }
     }
     this._client.addHandler((update) => this.handleUpdate(update, this));
     return true;

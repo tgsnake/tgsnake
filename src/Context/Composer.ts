@@ -150,22 +150,21 @@ export class Composer<T = {}> implements MiddlewareObj<Combine<TypeUpdate, T>> {
   toString() {
     return `[constructor of ${this.constructor.name}] ${JSON.stringify(this, null, 2)}`;
   }
-
-  /*command(
+  command(
     trigger: MaybeArray<string | RegExp>,
-    ...middleware: Array<MiddlewareFn<Combine<MessageContext, T>>>
+    ...middleware: Array<MiddlewareFn<Combine<TypeUpdate, T>>>
   ): Composer<T> {
     let key = toArray(trigger);
     let filterCmd = (ctx) => {
-      const { text } = ctx;
-      const { aboutMe } = ctx.SnakeClient;
+      const { text } = ctx.message;
+      const { _me } = ctx.client;
       let s = text.split(' ');
       let passed: RegExpExecArray[] = [];
       for (let cmd of key) {
         if (typeof cmd == 'string') {
           cmd as string;
           let r = new RegExp(
-            `^[${this.prefix}](${cmd})${aboutMe.username ? `(@${aboutMe.username})?` : ``}$`,
+            `^[${this.prefix}](${cmd})${_me?.username ? `(@${_me?.username})?` : ``}$`,
             'i'
           );
           if (r.test(String(s[0]))) {
@@ -182,31 +181,31 @@ export class Composer<T = {}> implements MiddlewareObj<Combine<TypeUpdate, T>> {
       ctx.match = passed;
       return Boolean(passed.length);
     };
-    return this.on(['message', 'editMessage']).filter(filterCmd, ...middleware);
+    return this.on('message.text').filter(filterCmd, ...middleware);
   }
   cmd(
     trigger: MaybeArray<string | RegExp>,
-    ...middleware: Array<MiddlewareFn<Combine<MessageContext, T>>>
+    ...middleware: Array<MiddlewareFn<Combine<TypeUpdate, T>>>
   ): Composer<T> {
     return this.command(trigger, ...middleware);
   }
   hears(
     trigger: MaybeArray<string | RegExp>,
-    ...middleware: Array<MiddlewareFn<Combine<MessageContext, T>>>
+    ...middleware: Array<MiddlewareFn<Combine<TypeUpdate, T>>>
   ): Composer<T> {
     let tgr = triggerFn(trigger);
-    return this.on(['message', 'editMessage']).filter((ctx) => {
-      const { text } = ctx;
+    return this.on(['message.text']).filter((ctx) => {
+      const { text } = ctx.message;
       return match(ctx, String(text), tgr);
     }, ...middleware);
   }
   hear(
     trigger: MaybeArray<string | RegExp>,
-    ...middleware: Array<MiddlewareFn<Combine<MessageContext, T>>>
+    ...middleware: Array<MiddlewareFn<Combine<TypeUpdate, T>>>
   ): Composer<T> {
     return this.hears(trigger, ...middleware);
   }
-  action(
+  /*action(
     trigger: MaybeArray<string | RegExp>,
     ...middleware: Array<
       MiddlewareFn<

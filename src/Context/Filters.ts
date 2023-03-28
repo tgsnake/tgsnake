@@ -21,48 +21,27 @@ export interface FilterContext {
   pollAnswer?: FilterQuery<TypeUpdate, 'pollAnswer'>;
   chatJoinRequest?: FilterQuery<TypeUpdate, 'chatJoinRequest'>;
   /* shorthand */
-  'message.text'?: FilterQuery<TypeUpdateExtended<Message, 'text'>, 'message' | 'channelPost'>;
-  'message.caption'?: FilterQuery<
-    TypeUpdateExtended<Message, 'caption'>,
-    'message' | 'channelPost'
-  >;
-  'message.chat'?: FilterQuery<TypeUpdateExtended<Message, 'chat'>, 'message' | 'channelPost'>;
-  'message.from'?: FilterQuery<TypeUpdateExtended<Message, 'from'>, 'message' | 'channelPost'>;
-  'message.animation'?: FilterQuery<
-    TypeUpdateExtended<Message, 'animation'>,
-    'message' | 'channelPost'
-  >;
-  'message.audio'?: FilterQuery<TypeUpdateExtended<Message, 'audio'>, 'message' | 'channelPost'>;
-  'message.document'?: FilterQuery<
-    TypeUpdateExtended<Message, 'document'>,
-    'message' | 'channelPost'
-  >;
-  'message.photo'?: FilterQuery<TypeUpdateExtended<Message, 'photo'>, 'message' | 'channelPost'>;
-  'message.sticker'?: FilterQuery<
-    TypeUpdateExtended<Message, 'sticker'>,
-    'message' | 'channelPost'
-  >;
-  'message.video'?: FilterQuery<TypeUpdateExtended<Message, 'video'>, 'message' | 'channelPost'>;
-  'message.videoNote'?: FilterQuery<
-    TypeUpdateExtended<Message, 'videoNote'>,
-    'message' | 'channelPost'
-  >;
-  'message.voice'?: FilterQuery<TypeUpdateExtended<Message, 'voice'>, 'message' | 'channelPost'>;
-  'message.webpage'?: FilterQuery<
-    TypeUpdateExtended<Message, 'webpage'>,
-    'message' | 'channelPost'
-  >;
-  'message.replyToMessage'?: FilterQuery<
-    TypeUpdateExtended<Message, 'replyToMessage'>,
-    'message' | 'channelPost'
-  >;
+  'message.text'?: FilterQuery<TypeUpdateExtended<Message, 'text'>, 'message'>;
+  'message.caption'?: FilterQuery<TypeUpdateExtended<Message, 'caption'>, 'message'>;
+  'message.chat'?: FilterQuery<TypeUpdateExtended<Message, 'chat'>, 'message'>;
+  'message.from'?: FilterQuery<TypeUpdateExtended<Message, 'from'>, 'message'>;
+  'message.animation'?: FilterQuery<TypeUpdateExtended<Message, 'animation'>, 'message'>;
+  'message.audio'?: FilterQuery<TypeUpdateExtended<Message, 'audio'>, 'message'>;
+  'message.document'?: FilterQuery<TypeUpdateExtended<Message, 'document'>, 'message'>;
+  'message.photo'?: FilterQuery<TypeUpdateExtended<Message, 'photo'>, 'message'>;
+  'message.sticker'?: FilterQuery<TypeUpdateExtended<Message, 'sticker'>, 'message'>;
+  'message.video'?: FilterQuery<TypeUpdateExtended<Message, 'video'>, 'message'>;
+  'message.videoNote'?: FilterQuery<TypeUpdateExtended<Message, 'videoNote'>, 'message'>;
+  'message.voice'?: FilterQuery<TypeUpdateExtended<Message, 'voice'>, 'message'>;
+  'message.webpage'?: FilterQuery<TypeUpdateExtended<Message, 'webpage'>, 'message'>;
+  'message.replyToMessage'?: FilterQuery<TypeUpdateExtended<Message, 'replyToMessage'>, 'message'>;
   'message.replyToMessageId'?: FilterQuery<
     TypeUpdateExtended<Message, 'replyToMessageId'>,
-    'message' | 'channelPost'
+    'message'
   >;
   'message.replyToTopMessageId'?: FilterQuery<
     TypeUpdateExtended<Message, 'replyToTopMessageId'>,
-    'message' | 'channelPost'
+    'message'
   >;
 }
 export type FilterQuery<T, P extends keyof T> = T & {
@@ -79,13 +58,7 @@ export function filter(key: string | string[], ctx: TypeUpdate) {
       }
       let sk = k.split('.');
       if (sk.length) {
-        switch (sk[0]) {
-          case 'message':
-            return ctx[sk[0]][sk[1]] !== undefined;
-            break;
-          default:
-            return false;
-        }
+        return ctx[sk[0]][sk[1]] !== undefined;
       }
     }
   } else {
@@ -97,13 +70,7 @@ export function filter(key: string | string[], ctx: TypeUpdate) {
     }
     let sk = key.split('.');
     if (sk.length) {
-      switch (sk[0]) {
-        case 'message':
-          return ctx[sk[0]][sk[1]] !== undefined;
-          break;
-        default:
-          return false;
-      }
+      return ctx[sk[0]][sk[1]] !== undefined;
     }
   }
   return false;
