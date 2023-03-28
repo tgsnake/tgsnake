@@ -8,11 +8,10 @@
  * it under the terms of the MIT License as published.
  */
 import { Raw, Helpers } from '@tgsnake/core';
-import Parser, { Entities } from '@tgsnake/parser';
+import { Parser, type Entities } from '@tgsnake/parser';
 import { TLObject } from '../../TL';
 import type { Snake } from '../../../Client';
 
-const parser = new Parser(Raw);
 export class PollAnswer extends TLObject {
   text!: string;
   chosen!: boolean;
@@ -148,7 +147,7 @@ export class Poll extends TLObject {
         totalVoters: poll.results.totalVoters ?? 0,
         recentVoters: poll.results.recentVoters,
         solution: poll.results.solution,
-        solutionEntities: parser.fromRaw(poll.results.solutionEntities ?? []),
+        solutionEntities: Parser.fromRaw(poll.results.solutionEntities ?? []),
       },
       client
     );

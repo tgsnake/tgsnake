@@ -7,7 +7,7 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { Raw, Helpers, Clients } from '@tgsnake/core';
+import { Raw, Helpers } from '@tgsnake/core';
 import type { Snake } from '../../Client';
 export type TypeReplyMarkup = inlineKeyboard | replyKeyboard | removeKeyboard | forceReplyMarkup;
 /**
@@ -479,11 +479,10 @@ export async function convertReplyMarkup(
         }
         if (btn instanceof Raw.KeyboardButtonUrlAuth) {
           btn as Raw.KeyboardButtonUrlAuth;
-          let me = ((await Clients.Auth.getMe(SnakeClient._client)) as Raw.users.UserFull)
-            .users[0] as Raw.User;
+          let me = SnakeClient._me;
           let ee: BotLoginUrl = {
-            id: me.id!,
-            accessHash: me.accessHash!,
+            id: me?.id!,
+            accessHash: me?.accessHash!,
           };
           let dd: loginUrl = {
             requestWriteAccess: true,

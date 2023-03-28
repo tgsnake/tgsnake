@@ -9,10 +9,10 @@
  */
 import { TLObject } from '../TL';
 import { Raw, Helpers } from '@tgsnake/core';
+import { Parser, type Entities } from '@tgsnake/parser';
 import * as Advanceds from '../Advanced';
 import * as Medias from './Medias';
 import * as ReplyMarkup from './ReplyMarkup';
-import { Entity } from './Entity';
 import { getId, getPeerId } from '../../Utilities';
 import type { Snake } from '../../Client';
 
@@ -42,7 +42,7 @@ export interface TypeMessage {
   mediaGroupId?: bigint;
   authorSignatrure?: string;
   text?: string;
-  entities?: Array<Entity>;
+  entities?: Array<Entities>;
   animation?: Medias.Animation;
   audio?: Medias.Audio;
   document?: Medias.Document;
@@ -53,7 +53,7 @@ export interface TypeMessage {
   voice?: Medias.Voice;
   webpage?: Medias.WebPage;
   caption?: string;
-  captionEntities?: Array<Entity>;
+  captionEntities?: Array<Entities>;
   hasSpoilerMode?: boolean;
   contact?: Medias.Contact;
   dice?: Medias.Dice;
@@ -121,7 +121,7 @@ export class Message extends TLObject {
   mediaGroupId?: bigint;
   authorSignatrure?: string;
   text?: string;
-  entities?: Array<Entity>;
+  entities?: Array<Entities>;
   animation?: Medias.Animation;
   audio?: Medias.Audio;
   document?: Medias.Document;
@@ -131,7 +131,7 @@ export class Message extends TLObject {
   videoNote?: Medias.VideoNote;
   voice?: Medias.Voice;
   caption?: string;
-  captionEntities?: Array<Entity>;
+  captionEntities?: Array<Entities>;
   hasSpoilerMode?: boolean;
   contact?: Medias.Contact;
   dice?: Medias.Dice;
@@ -381,9 +381,9 @@ export class Message extends TLObject {
       }
       if (message instanceof Raw.Message) {
         message as Raw.Message;
-        let entities: Array<Entity> | undefined = message.entities
-          ?.map((entity) => Entity.parse(client, entity))
-          ?.sort((a, b) => a.offset - b.offset);
+        let entities: Array<Entities> = Parser.fromRaw(message.entities ?? []).sort(
+          (a, b) => a.offset - b.offset
+        );
         let forwardFrom;
         let forwardFromChat;
         let forwardFromMessageId;
