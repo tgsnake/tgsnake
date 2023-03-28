@@ -9,3 +9,4 @@
  */
 
 export { getMessages } from './GetMessages';
+export { sendMessage, sendMessageParams } from './SendMessage';

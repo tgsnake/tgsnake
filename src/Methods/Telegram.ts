@@ -10,7 +10,7 @@
 import { TLObject } from '../TL/TL';
 import { Raw, Helpers } from '@tgsnake/core';
 import type { Snake } from '../Client';
-import { getMessages } from './Messages';
+import { getMessages, sendMessage, sendMessageParams } from './Messages';
 
 export class Telegram extends TLObject {
   constructor(client: Snake) {
@@ -23,5 +23,8 @@ export class Telegram extends TLObject {
     replies?: number
   ) {
     return getMessages(this.client!, chatId, msgIds, replyToMsgIds, replies);
+  }
+  sendMessage(chatId: bigint | string, text: string, more?: sendMessageParams) {
+    return sendMessage(this.client!, chatId, text, more);
   }
 }
