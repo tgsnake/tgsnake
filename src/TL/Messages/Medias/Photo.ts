@@ -91,8 +91,8 @@ export class Photo extends TLObject {
       }
     }
     const psort = collect.sort((a, b) => {
-      if (a > b) return 1;
-      if (a < b) return -1;
+      if (a.size > b.size) return 1;
+      if (a.size < b.size) return -1;
       return 0;
     });
     const main = psort[psort.length - 1];
@@ -102,7 +102,7 @@ export class Photo extends TLObject {
       fileType: FileType.PHOTO,
       thumbnailSource: ThumbnailSource.THUMBNAIL,
       thumbnailFileType: FileType.PHOTO,
-      thumbnailSize: main.type,
+      thumbnailSize: main?.type ?? 'y',
       fileTypeUniqueId: FileTypeUniqueId.DOCUMENT,
       volumeId: BigInt(0),
       localId: 0,
@@ -118,9 +118,9 @@ export class Photo extends TLObject {
         thumb: thumb,
         date: new Date(photo.date * 1000),
         dcId: photo.dcId,
-        size: main.size,
-        width: main.w,
-        height: main.h,
+        size: main?.size ?? BigInt(0),
+        width: main?.w ?? 0,
+        height: main?.h ?? 0,
         hasStickers: photo.hasStickers,
       },
       client
