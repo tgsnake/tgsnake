@@ -58,7 +58,11 @@ export function filter(key: string | string[], ctx: TypeUpdate) {
       }
       let sk = k.split('.');
       if (sk.length) {
-        return ctx[sk[0]][sk[1]] !== undefined;
+        if(ctx[sk[0]] && ctx[sk[0]][sk[1]] !== undefined) {
+          return true
+        } else {
+          return false
+        }
       }
     }
   } else {
@@ -70,7 +74,11 @@ export function filter(key: string | string[], ctx: TypeUpdate) {
     }
     let sk = key.split('.');
     if (sk.length) {
-      return ctx[sk[0]][sk[1]] !== undefined;
+      if(ctx[sk[0]] && ctx[sk[0]][sk[1]] !== undefined) {
+        return true
+      } else {
+        return false
+      }
     }
   }
   return false;
