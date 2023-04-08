@@ -8,8 +8,8 @@
 
 const { Snake } = require('../lib/src/Client/Snake');
 const bot = new Snake();
-bot.on('cb.data', (update) => {
-  console.log(update);
+bot.action('press', (update) => {
+  update.callbackQuery.message.respond('Why you click?!!');
 });
 bot.cmd('start', (update) => {
   update.message.reply('Yo man!!', {

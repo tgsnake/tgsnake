@@ -205,17 +205,13 @@ export class Composer<T = {}> implements MiddlewareObj<Combine<TypeUpdate, T>> {
   ): Composer<T> {
     return this.hears(trigger, ...middleware);
   }
-  /*action(
+  action(
     trigger: MaybeArray<string | RegExp>,
-    ...middleware: Array<
-      MiddlewareFn<
-        Combine<Raw.UpdateBotCallbackQuery | Raw.UpdateInlineBotCallbackQuery, T>
-      >
-    >
+    ...middleware: Array<MiddlewareFn<Combine<TypeUpdate, T>>>
   ): Composer<T> {
     let key = toArray(trigger);
     let filterCmd = (ctx) => {
-      const { data } = ctx;
+      const { data } = ctx.callbackQuery;
       let passed: any[] = [];
       for (let cmd of key) {
         if (typeof cmd == 'string') {
@@ -229,9 +225,9 @@ export class Composer<T = {}> implements MiddlewareObj<Combine<TypeUpdate, T>> {
       }
       return Boolean(passed.length);
     };
-    return this.on('callbackQuery').filter(filterCmd, ...middleware);
+    return this.on('cb.data').filter(filterCmd, ...middleware);
   }
-  inlineQuery(
+  /*inlineQuery(
     trigger: MaybeArray<string | RegExp>,
     ...middleware: Array<MiddlewareFn<Combine<Raw.UpdateBotInlineQuery, T>>>
   ): Composer<T> {
