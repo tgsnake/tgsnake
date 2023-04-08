@@ -1,10 +1,11 @@
 import { Raw } from '@tgsnake/core';
-import { TypeUpdate } from '../TL/Updates';
+import type { TypeUpdate, CallbackQuery } from '../TL/Updates';
 import type { Message } from '../TL/Messages';
 
 export type TypeUpdateExtended<T, P extends keyof T> = TypeUpdate & {
   message?: FilterQuery<T, P>;
   channelPost?: FilterQuery<T, P>;
+  callbackQuery?: FilterQuery<T, P>;
 };
 export interface FilterContext {
   any: TypeUpdate | Raw.TypeUpdates;
@@ -43,11 +44,17 @@ export interface FilterContext {
     TypeUpdateExtended<Message, 'replyToTopMessageId'>,
     'message'
   >;
+  'cb.data'?: FilterQuery<TypeUpdateExtended<CallbackQuery, 'data'>, 'callbackQuery'>;
+  'cb.message'?: FilterQuery<TypeUpdateExtended<CallbackQuery, 'message'>, 'callbackQuery'>;
 }
 export type FilterQuery<T, P extends keyof T> = T & {
   [K in P]-?: T[K];
 };
 export function filter(key: string | string[], ctx: TypeUpdate) {
+  const aliases = {
+    cb: 'callbackQuery',
+    message: 'message',
+  };
   if (Array.isArray(key)) {
     for (const k of key) {
       if (k === 'any') {
@@ -58,7 +65,7 @@ export function filter(key: string | string[], ctx: TypeUpdate) {
       }
       let sk = k.split('.');
       if (sk.length) {
-        if (ctx[sk[0]] && ctx[sk[0]][sk[1]] !== undefined) {
+        if (ctx[aliases[sk[0]]] && ctx[aliases[sk[0]]][sk[1]] !== undefined) {
           return true;
         } else {
           return false;
@@ -74,7 +81,7 @@ export function filter(key: string | string[], ctx: TypeUpdate) {
     }
     let sk = key.split('.');
     if (sk.length) {
-      if (ctx[sk[0]] && ctx[sk[0]][sk[1]] !== undefined) {
+      if (ctx[aliases[sk[0]]] && ctx[aliases[sk[0]]][sk[1]] !== undefined) {
         return true;
       } else {
         return false;

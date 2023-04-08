@@ -1,0 +1,132 @@
+/**
+ * tgsnake - Telegram MTProto framework for nodejs.
+ * Copyright (C) 2023 butthx <https://github.com/butthx>
+ *
+ * THIS FILE IS PART OF TGSNAKE
+ *
+ * tgsnake is a free software : you can redistribute it and/or modify
+ * it under the terms of the MIT License as published.
+ */
+import { TLObject } from '../TL';
+import { Raw } from '@tgsnake/core';
+import { Message } from '../Messages/Message';
+import { User } from '../Advanced/User';
+import { getId, getPeerId, createInlineMsgId } from '../../Utilities';
+import type { Snake } from '../../Client';
+
+export class CallbackQuery extends TLObject {
+  id!: bigint;
+  from?: User;
+  message?: Message;
+  data?: string;
+  chatInstance?: bigint;
+  inlineMessageId?: string;
+  gameShortName?: string;
+  constructor(
+    {
+      id,
+      from,
+      message,
+      data,
+      chatInstance,
+      inlineMessageId,
+      gameShortName,
+    }: {
+      id: bigint;
+      from?: User;
+      message?: Message;
+      data?: string;
+      chatInstance?: bigint;
+      inlineMessageId?: string;
+      gameShortName?: string;
+    },
+    client: Snake
+  ) {
+    super(client);
+    this.className = 'CallbackQuery';
+    this.classType = 'types';
+    this.id = id;
+    this.from = from;
+    this.message = message;
+    this.data = data;
+    this.chatInstance = chatInstance;
+    this.inlineMessageId = inlineMessageId;
+    this.gameShortName = gameShortName;
+  }
+  static async parse(
+    client: Snake,
+    update: Raw.UpdateBotCallbackQuery | Raw.UpdateInlineBotCallbackQuery,
+    chats: Array<Raw.Chat | Raw.Channel>,
+    users: Array<Raw.User>
+  ): Promise<CallbackQuery> {
+    if (update instanceof Raw.UpdateInlineBotCallbackQuery) {
+      return CallbackQuery.parseInline(
+        client,
+        update as Raw.UpdateInlineBotCallbackQuery,
+        chats,
+        users
+      );
+    }
+    return CallbackQuery.parseBot(client, update as Raw.UpdateBotCallbackQuery, chats, users);
+  }
+  static async parseBot(
+    client: Snake,
+    update: Raw.UpdateBotCallbackQuery,
+    chats: Array<Raw.Chat | Raw.Channel>,
+    users: Array<Raw.User>
+  ) {
+    const chatId = getPeerId(update.peer);
+    const cb = new CallbackQuery(
+      {
+        id: update.queryId,
+        chatInstance: update.chatInstance,
+        gameShortName: update.gameShortName,
+        data: update.data ? update.data.toString('utf8') : undefined,
+        from: await User.parse(
+          client,
+          users.find((user) => user.id === update.userId)
+        ),
+      },
+      client
+    );
+    const cchat = client._cacheMessage.get(chatId!);
+    if (cchat) {
+      const cmsg = cchat.get(update.msgId);
+      if (cmsg) {
+        cb.message = cmsg;
+      } else {
+        try {
+          let fmsg = await client.api.getMessages(chatId!, [update.msgId]);
+          cb.message = fmsg[0];
+        } catch (error) {}
+      }
+    } else {
+      try {
+        let fmsg = await client.api.getMessages(chatId!, [update.msgId]);
+        cb.message = fmsg[0];
+      } catch (error) {}
+    }
+    return cb;
+  }
+  static async parseInline(
+    client: Snake,
+    update: Raw.UpdateInlineBotCallbackQuery,
+    chats: Array<Raw.Chat | Raw.Channel>,
+    users: Array<Raw.User>
+  ) {
+    return new CallbackQuery(
+      {
+        id: update.queryId,
+        chatInstance: update.chatInstance,
+        gameShortName: update.gameShortName,
+        data: update.data ? update.data.toString('utf8') : undefined,
+        inlineMessageId: createInlineMsgId(update.msgId),
+        from: await User.parse(
+          client,
+          users.find((user) => user.id === update.userId)
+        ),
+      },
+      client
+    );
+  }
+}

@@ -9,6 +9,7 @@
  */
 import { exec } from 'child_process';
 import { Raw, Helpers } from '@tgsnake/core';
+import { Writer, base64_url_encode } from '@tgsnake/fileid';
 import { Message } from './TL/Messages/Message';
 import type { Snake } from './Client/Snake';
 
@@ -97,4 +98,20 @@ export function getPeerId(peer: Raw.TypePeer): bigint | undefined {
   if (peer instanceof Raw.PeerChannel)
     return Helpers.MAX_CHANNEL_ID - (peer as Raw.PeerChannel).channelId;
   return;
+}
+export function createInlineMsgId(
+  msgId: Raw.InputBotInlineMessageID | Raw.InputBotInlineMessageID64
+) {
+  if (msgId instanceof Raw.InputBotInlineMessageID) {
+    const writer = new Writer();
+    writer.writeInt(msgId.dcId).writeBigInt(msgId.id).writeBigInt(msgId.accessHash);
+    return base64_url_encode(writer.results());
+  }
+  const writer = new Writer();
+  writer
+    .writeInt(msgId.dcId)
+    .writeBigInt(msgId.ownerId)
+    .writeInt(msgId.id)
+    .writeBigInt(msgId.accessHash);
+  return base64_url_encode(writer.results());
 }

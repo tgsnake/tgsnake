@@ -9,3 +9,4 @@
  */
 
 export { Update, TypeUpdate } from './Update';
+export { CallbackQuery } from './callbackQuery';

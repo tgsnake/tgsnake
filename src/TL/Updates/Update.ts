@@ -10,6 +10,7 @@
 import { TLObject } from '../TL';
 import { Raw } from '@tgsnake/core';
 import { Message } from '../Messages/Message';
+import { CallbackQuery } from './callbackQuery';
 import type { Snake } from '../../Client';
 
 export interface TypeUpdate {
@@ -19,7 +20,7 @@ export interface TypeUpdate {
   editedChannelPost?: TLObject;
   inlineQuery?: TLObject;
   chosenInlineResult?: TLObject;
-  callbackQuery?: TLObject;
+  callbackQuery?: CallbackQuery;
   shippingQuery?: TLObject;
   preCheckoutQuery?: TLObject;
   poll?: TLObject;
@@ -33,7 +34,7 @@ export class Update extends TLObject {
   editedChannelPost?: TLObject;
   inlineQuery?: TLObject;
   chosenInlineResult?: TLObject;
-  callbackQuery?: TLObject;
+  callbackQuery?: CallbackQuery;
   shippingQuery?: TLObject;
   preCheckoutQuery?: TLObject;
   poll?: TLObject;
@@ -83,6 +84,17 @@ export class Update extends TLObject {
     }
     if (update instanceof Raw.UpdateNewChannelMessage) {
       return Update.updateNewMessage(client, update as Raw.UpdateNewChannelMessage, chats, users);
+    }
+    if (
+      update instanceof Raw.UpdateBotCallbackQuery ||
+      update instanceof Raw.UpdateInlineBotCallbackQuery
+    ) {
+      return new Update(
+        {
+          callbackQuery: await CallbackQuery.parse(client, update, chats, users),
+        },
+        client
+      );
     }
     return new Update({}, client);
   }
