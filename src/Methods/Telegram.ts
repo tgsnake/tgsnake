@@ -17,6 +17,9 @@ export class Telegram extends TLObject {
   constructor(client: Snake) {
     super(client);
   }
+  invoke(query: Raw.TypesTLRequest, retries?: number, timeout?: number, sleepTreshold?: number) {
+    return this.client._client.invoke(query, retries, timeout, sleepTreshold);
+  }
   getMessages(
     chatId: bigint | string,
     msgIds?: Array<number>,
