@@ -16,5 +16,5 @@ interface MyContext {
 }
 const bot = new Snake();
 bot.log.setLogLevel('debug');
-bot.on('message', console.log);
+bot.on('any', console.log);
 bot.run();

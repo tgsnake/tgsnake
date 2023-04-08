@@ -7,7 +7,7 @@ export type TypeUpdateExtended<T, P extends keyof T> = TypeUpdate & {
   channelPost?: FilterQuery<T, P>;
 };
 export interface FilterContext {
-  any: TypeUpdate;
+  any: TypeUpdate | Raw.TypeUpdates;
   message?: FilterQuery<TypeUpdate, 'message'>;
   editedMessage?: FilterQuery<TypeUpdate, 'editedMessage'>;
   channelPost?: FilterQuery<TypeUpdate, 'channelPost'>;
@@ -58,10 +58,10 @@ export function filter(key: string | string[], ctx: TypeUpdate) {
       }
       let sk = k.split('.');
       if (sk.length) {
-        if(ctx[sk[0]] && ctx[sk[0]][sk[1]] !== undefined) {
-          return true
+        if (ctx[sk[0]] && ctx[sk[0]][sk[1]] !== undefined) {
+          return true;
         } else {
-          return false
+          return false;
         }
       }
     }
@@ -74,10 +74,10 @@ export function filter(key: string | string[], ctx: TypeUpdate) {
     }
     let sk = key.split('.');
     if (sk.length) {
-      if(ctx[sk[0]] && ctx[sk[0]][sk[1]] !== undefined) {
-        return true
+      if (ctx[sk[0]] && ctx[sk[0]][sk[1]] !== undefined) {
+        return true;
       } else {
-        return false
+        return false;
       }
     }
   }

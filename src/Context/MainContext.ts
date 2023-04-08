@@ -45,9 +45,9 @@ export class MainContext<T = {}> extends Composer<T> {
   async parseUpdate(update: Raw.TypeUpdate, client: Snake): Promise<Array<object>> {
     // Why Promise<Array<object>> ? because the return of parseUpdate is can by anything, but it must be a class or json object.
     // Possible plugin for make their own parse function.
-    const parsedUpdate: Array<Update> = [];
-    if (update instanceof Raw.Updates) {
-      const { updates, chats, users } = update as Raw.Updates;
+    const parsedUpdate: Array<Update | Raw.TypeUpdates> = [];
+    if (update instanceof Raw.Updates || update instanceof Raw.UpdatesCombined) {
+      const { updates, chats, users } = update;
       const filterChats: Array<TypeChat> = chats.filter((chat): chat is TypeChat => {
         if (chat instanceof Raw.Chat) return true;
         if (chat instanceof Raw.Channel) return true;
@@ -59,7 +59,46 @@ export class MainContext<T = {}> extends Composer<T> {
       for (const _update of updates) {
         parsedUpdate.push(await Update.parse(client, _update, filterChats, filterUsers));
       }
+    } else if (
+      update instanceof Raw.UpdateShortMessage ||
+      update instanceof Raw.UpdateShortChatMessage
+    ) {
+      const difference = await client.api.invoke(
+        new Raw.updates.GetDifference({
+          pts: update.pts - update.ptsCount,
+          date: update.date,
+          qts: -1,
+        })
+      );
+      const { newMessages, otherUpdates, chats, users } = difference;
+      const filterChats: Array<TypeChat> = chats.filter((chat): chat is TypeChat => {
+        if (chat instanceof Raw.Chat) return true;
+        if (chat instanceof Raw.Channel) return true;
+        return false;
+      });
+      const filterUsers: Array<TypeUser> = users.filter((user): user is TypeUser => {
+        return user instanceof Raw.User;
+      });
+      if (newMessages) {
+        parsedUpdate.push(
+          await Update.parse(
+            client,
+            new Raw.UpdateNewMessage({
+              message: newMessages[0],
+              pts: update.pts,
+              ptsCount: update.ptsCount,
+            }),
+            filterChats,
+            filterUsers
+          )
+        );
+      } else if (otherUpdates) {
+        parsedUpdate.push(await Update.parse(client, otherUpdates, filterChats, filterUsers));
+      }
+    } else if (update instanceof Raw.UpdateShort) {
+      parsedUpdate.push(await Update.parse(client, update.update, [], []));
     }
+    parsedUpdate.push(update);
     return parsedUpdate;
   }
   catch(errorHandler: ErrorHandler<T>) {
