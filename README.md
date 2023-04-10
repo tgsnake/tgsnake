@@ -1,16 +1,16 @@
 ![tgsnakeicon-flaticon](./media/tgsnake.jpg)  
-Hi, **tgsnake** is a framework developed based on gram.js  
+tgsnake is a modern MTProto framework for javascript or typescript.  
 [![github-repo](https://img.shields.io/badge/Github-butthx-blue.svg?style=for-the-badge&logo=github)](https://github.com/butthx/tgsnake) [![telegram-chat](https://img.shields.io/badge/Telegram-Chat-blue.svg?style=for-the-badge&logo=telegram)](https://t.me/tgsnakechat)  
 [![telegram-channel](https://img.shields.io/badge/Telegram-Channel-blue.svg?style=for-the-badge&logo=telegram)](https://t.me/tgsnake)
 
-> WARNING! <br/> Maybe your account will be banned if you login using this framework. I don't know what caused it to happen. I am not responsible if your account is banned!
+Don't forget to read our FAQ in our site!!
 
 ### Example :
 
 - Installation :
 
 ```bash
-yarn add tgsnake@latest
+npx create-tgsnake-app myapp
 ```
 
 - Simple Hello World :
@@ -21,17 +21,17 @@ const { Snake } = require('tgsnake');
 const bot = new Snake({
   apiHash: 'abcde', //your api hash
   apiId: 123456, // your api id
-  logger: 'none', // gramjs logger
+  logLevel: 'none', // logger level
 });
 bot.run(); //snake running
-bot.on('message', (ctx) => {
+bot.on('msg.text', (ctx) => {
   //handle new message event.
-  ctx.reply('Hello World'); // reply with "Hello World"
+  ctx.msg.reply('Hello World'); // reply with "Hello World"
   //console.log(ctx) // see json of message.
 });
 ```
 
-More example you can found in example folder or in website.
+More example you can found in our website.
 
 ### Contribution
 
@@ -43,15 +43,15 @@ Welcome, You can contribute to this project.
 - Clone your fork repo using git.
 
 ```bash
-git clone <your github repo url> -b "dev"
+git clone <your github repo url>
 ```
 
 Cloning branch dev in your repo.
 
 - Edit and make something.
-- Pull new update from branch `dev` original repo (this repo).
-- Push update to your branch `dev` in fork repo.
-- Create pull request to branch `dev` original repo from branch `dev` frok repo.
+- Pull new update from branch `master` original repo (this repo).
+- Push update to your branch `master` in fork repo.
+- Create pull request to branch `master` original repo from branch `master` frok repo.
 
 ### Reference
 
