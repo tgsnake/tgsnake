@@ -6,6 +6,8 @@ export type TypeUpdateExtended<T, P extends keyof T> = TypeUpdate & {
   message?: FilterQuery<T, P>;
   channelPost?: FilterQuery<T, P>;
   callbackQuery?: FilterQuery<T, P>;
+  editedMessage?: FilterQuery<T, P>;
+  editedChannelPost?: FilterQuery<T, P>;
 };
 export interface FilterContext {
   any: TypeUpdate | Raw.TypeUpdates;
@@ -22,30 +24,31 @@ export interface FilterContext {
   pollAnswer?: FilterQuery<TypeUpdate, 'pollAnswer'>;
   chatJoinRequest?: FilterQuery<TypeUpdate, 'chatJoinRequest'>;
   /* shorthand */
-  'message.text'?: FilterQuery<TypeUpdateExtended<Message, 'text'>, 'message'>;
-  'message.caption'?: FilterQuery<TypeUpdateExtended<Message, 'caption'>, 'message'>;
-  'message.chat'?: FilterQuery<TypeUpdateExtended<Message, 'chat'>, 'message'>;
-  'message.from'?: FilterQuery<TypeUpdateExtended<Message, 'from'>, 'message'>;
-  'message.animation'?: FilterQuery<TypeUpdateExtended<Message, 'animation'>, 'message'>;
-  'message.audio'?: FilterQuery<TypeUpdateExtended<Message, 'audio'>, 'message'>;
-  'message.document'?: FilterQuery<TypeUpdateExtended<Message, 'document'>, 'message'>;
-  'message.photo'?: FilterQuery<TypeUpdateExtended<Message, 'photo'>, 'message'>;
-  'message.sticker'?: FilterQuery<TypeUpdateExtended<Message, 'sticker'>, 'message'>;
-  'message.video'?: FilterQuery<TypeUpdateExtended<Message, 'video'>, 'message'>;
-  'message.videoNote'?: FilterQuery<TypeUpdateExtended<Message, 'videoNote'>, 'message'>;
-  'message.voice'?: FilterQuery<TypeUpdateExtended<Message, 'voice'>, 'message'>;
-  'message.webpage'?: FilterQuery<TypeUpdateExtended<Message, 'webpage'>, 'message'>;
-  'message.replyToMessage'?: FilterQuery<TypeUpdateExtended<Message, 'replyToMessage'>, 'message'>;
-  'message.replyToMessageId'?: FilterQuery<
-    TypeUpdateExtended<Message, 'replyToMessageId'>,
-    'message'
-  >;
-  'message.replyToTopMessageId'?: FilterQuery<
+  'msg.text'?: FilterQuery<TypeUpdateExtended<Message, 'text'>, 'message'>;
+  'msg.caption'?: FilterQuery<TypeUpdateExtended<Message, 'caption'>, 'message'>;
+  'msg.chat'?: FilterQuery<TypeUpdateExtended<Message, 'chat'>, 'message'>;
+  'msg.from'?: FilterQuery<TypeUpdateExtended<Message, 'from'>, 'message'>;
+  'msg.animation'?: FilterQuery<TypeUpdateExtended<Message, 'animation'>, 'message'>;
+  'msg.audio'?: FilterQuery<TypeUpdateExtended<Message, 'audio'>, 'message'>;
+  'msg.document'?: FilterQuery<TypeUpdateExtended<Message, 'document'>, 'message'>;
+  'msg.photo'?: FilterQuery<TypeUpdateExtended<Message, 'photo'>, 'message'>;
+  'msg.sticker'?: FilterQuery<TypeUpdateExtended<Message, 'sticker'>, 'message'>;
+  'msg.video'?: FilterQuery<TypeUpdateExtended<Message, 'video'>, 'message'>;
+  'msg.videoNote'?: FilterQuery<TypeUpdateExtended<Message, 'videoNote'>, 'message'>;
+  'msg.voice'?: FilterQuery<TypeUpdateExtended<Message, 'voice'>, 'message'>;
+  'msg.webpage'?: FilterQuery<TypeUpdateExtended<Message, 'webpage'>, 'message'>;
+  'msg.replyToMessage'?: FilterQuery<TypeUpdateExtended<Message, 'replyToMessage'>, 'message'>;
+  'msg.replyToMessageId'?: FilterQuery<TypeUpdateExtended<Message, 'replyToMessageId'>, 'message'>;
+  'msg.replyToTopMessageId'?: FilterQuery<
     TypeUpdateExtended<Message, 'replyToTopMessageId'>,
     'message'
   >;
   'cb.data'?: FilterQuery<TypeUpdateExtended<CallbackQuery, 'data'>, 'callbackQuery'>;
   'cb.message'?: FilterQuery<TypeUpdateExtended<CallbackQuery, 'message'>, 'callbackQuery'>;
+  'editMsg.text'?: FilterQuery<TypeUpdateExtended<Message, 'text'>, 'editedMessage'>;
+  'editMsg.caption'?: FilterQuery<TypeUpdateExtended<Message, 'caption'>, 'editedMessage'>;
+  'editPost.text'?: FilterQuery<TypeUpdateExtended<Message, 'text'>, 'editedChannelPost'>;
+  'editPost.caption'?: FilterQuery<TypeUpdateExtended<Message, 'caption'>, 'editedChannelPost'>;
 }
 export type FilterQuery<T, P extends keyof T> = T & {
   [K in P]-?: T[K];
@@ -53,7 +56,9 @@ export type FilterQuery<T, P extends keyof T> = T & {
 export function filter(key: string | string[], ctx: TypeUpdate) {
   const aliases = {
     cb: 'callbackQuery',
-    message: 'message',
+    msg: 'message',
+    editMsg: 'editedMessage',
+    editPost: 'editedChannelPost',
   };
   if (Array.isArray(key)) {
     for (const k of key) {
@@ -67,8 +72,6 @@ export function filter(key: string | string[], ctx: TypeUpdate) {
       if (sk.length) {
         if (ctx[aliases[sk[0]]] && ctx[aliases[sk[0]]][sk[1]] !== undefined) {
           return true;
-        } else {
-          return false;
         }
       }
     }
@@ -83,8 +86,6 @@ export function filter(key: string | string[], ctx: TypeUpdate) {
     if (sk.length) {
       if (ctx[aliases[sk[0]]] && ctx[aliases[sk[0]]][sk[1]] !== undefined) {
         return true;
-      } else {
-        return false;
       }
     }
   }

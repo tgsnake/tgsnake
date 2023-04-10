@@ -15,9 +15,9 @@ import type { Snake } from '../../Client';
 
 export interface TypeUpdate {
   message?: Message;
-  editedMessage?: TLObject;
+  editedMessage?: Message;
   channelPost?: Message;
-  editedChannelPost?: TLObject;
+  editedChannelPost?: Message;
   inlineQuery?: TLObject;
   chosenInlineResult?: TLObject;
   callbackQuery?: CallbackQuery;
@@ -29,9 +29,9 @@ export interface TypeUpdate {
 }
 export class Update extends TLObject {
   message?: Message;
-  editedMessage?: TLObject;
+  editedMessage?: Message;
   channelPost?: Message;
-  editedChannelPost?: TLObject;
+  editedChannelPost?: Message;
   inlineQuery?: TLObject;
   chosenInlineResult?: TLObject;
   callbackQuery?: CallbackQuery;
@@ -79,11 +79,11 @@ export class Update extends TLObject {
     chats: Array<Raw.Chat | Raw.Channel>,
     users: Array<Raw.User>
   ): Promise<Update> {
-    if (update instanceof Raw.UpdateNewMessage) {
-      return Update.updateNewMessage(client, update as Raw.UpdateNewMessage, chats, users);
+    if (update instanceof Raw.UpdateNewMessage || update instanceof Raw.UpdateNewChannelMessage) {
+      return Update.updateNewMessage(client, update, chats, users);
     }
-    if (update instanceof Raw.UpdateNewChannelMessage) {
-      return Update.updateNewMessage(client, update as Raw.UpdateNewChannelMessage, chats, users);
+    if (update instanceof Raw.UpdateEditMessage || update instanceof Raw.UpdateEditChannelMessage) {
+      return Update.updateEditMessage(client, update, chats, users);
     }
     if (
       update instanceof Raw.UpdateBotCallbackQuery ||
@@ -118,5 +118,36 @@ export class Update extends TLObject {
       },
       client
     );
+  }
+  static async updateEditMessage(
+    client: Snake,
+    update: Raw.UpdateEditMessage | Raw.UpdateEditChannelMessage,
+    chats: Array<Raw.Chat | Raw.Channel>,
+    users: Array<Raw.User>
+  ): Promise<Update> {
+    if (update instanceof Raw.UpdateEditChannelMessage) {
+      return new Update(
+        {
+          editedChannelPost: await Message.parse(client, update.message, chats, users),
+        },
+        client
+      );
+    }
+    return new Update(
+      {
+        editedMessage: await Message.parse(client, update.message, chats, users),
+      },
+      client
+    );
+  }
+
+  /* shorthand */
+  get msg(): Message | undefined {
+    if (this.channelPost) return this.channelPost;
+    if (this.editedChannelPost) return this.editedChannelPost;
+    if (this.editedMessage) return this.editedMessage;
+    if (this.message) return this.message;
+    if (this.callbackQuery?.message) return this.callbackQuery.message;
+    return;
   }
 }

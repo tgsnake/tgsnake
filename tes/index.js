@@ -12,7 +12,7 @@ bot.action('press', (update) => {
   update.callbackQuery.message.respond('Why you click?!!');
 });
 bot.cmd('start', (update) => {
-  update.message.reply('Yo man!!', {
+  update.msg?.reply('Yo man!!', {
     replyMarkup: {
       inlineKeyboard: [[{ text: "Don't press me!", callbackData: 'press' }]],
     },

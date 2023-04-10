@@ -156,7 +156,7 @@ export class Composer<T = {}> implements MiddlewareObj<Combine<TypeUpdate, T>> {
   ): Composer<T> {
     let key = toArray(trigger);
     let filterCmd = (ctx) => {
-      const { text } = ctx.message;
+      const text = ctx.editedMessage ? ctx.editedMessage.text : ctx.message.text;
       const { _me } = ctx.client;
       let s = text.split(' ');
       let passed: RegExpExecArray[] = [];
@@ -181,7 +181,7 @@ export class Composer<T = {}> implements MiddlewareObj<Combine<TypeUpdate, T>> {
       ctx.match = passed;
       return Boolean(passed.length);
     };
-    return this.on('message.text').filter(filterCmd, ...middleware);
+    return this.on(['msg.text', 'editMsg.text']).filter(filterCmd, ...middleware);
   }
   cmd(
     trigger: MaybeArray<string | RegExp>,
@@ -194,8 +194,8 @@ export class Composer<T = {}> implements MiddlewareObj<Combine<TypeUpdate, T>> {
     ...middleware: Array<MiddlewareFn<Combine<TypeUpdate, T>>>
   ): Composer<T> {
     let tgr = triggerFn(trigger);
-    return this.on(['message.text']).filter((ctx) => {
-      const { text } = ctx.message;
+    return this.on(['msg.text', 'editMsg.text']).filter((ctx) => {
+      const text = ctx.editedMessage ? ctx.editedMessage.text : ctx.message.text;
       return match(ctx, String(text), tgr);
     }, ...middleware);
   }
