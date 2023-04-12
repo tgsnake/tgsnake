@@ -8,18 +8,18 @@
  * it under the terms of the MIT License as published.
  */
 
-export { Animation } from './Animated';
-export { Audio } from './Audio';
-export { Contact } from './Contact';
-export { Dice } from './Dice';
-export { Document } from './Document';
-export { Game } from './Game';
-export { Photo } from './Photo';
-export { PhotoSize } from './PhotoSize';
-export { Poll, PollAnswer } from './Poll';
-export { Sticker } from './Sticker';
-export { Venue, Location } from './Venue';
-export { Video } from './Video';
-export { VideoNote } from './VideoNote';
-export { Voice } from './Voice';
-export { WebPage } from './WebPage';
+export { Animation } from './Animated.ts';
+export { Audio } from './Audio.ts';
+export { Contact } from './Contact.ts';
+export { Dice } from './Dice.ts';
+export { Document } from './Document.ts';
+export { Game } from './Game.ts';
+export { Photo } from './Photo.ts';
+export { PhotoSize } from './PhotoSize.ts';
+export { Poll, PollAnswer } from './Poll.ts';
+export { Sticker } from './Sticker.ts';
+export { Venue, Location } from './Venue.ts';
+export { Video } from './Video.ts';
+export { VideoNote } from './VideoNote.ts';
+export { Voice } from './Voice.ts';
+export { WebPage } from './WebPage.ts';

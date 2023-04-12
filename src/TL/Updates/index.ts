@@ -8,5 +8,5 @@
  * it under the terms of the MIT License as published.
  */
 
-export { Update, TypeUpdate } from './Update';
-export { CallbackQuery } from './callbackQuery';
+export { Update, type TypeUpdate } from './Update.ts';
+export { CallbackQuery } from './callbackQuery.ts';

@@ -7,9 +7,8 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { Clients, Storages } from '@tgsnake/core';
-import { TypeLogLevel } from '@tgsnake/log';
-import type { Snake } from './Snake';
+import { Clients, Storages, TypeLogLevel } from '../platform.deno.ts';
+import type { Snake } from './Snake.ts';
 export interface Options {
   /**
    * App id, you can create one from my.telegram.org

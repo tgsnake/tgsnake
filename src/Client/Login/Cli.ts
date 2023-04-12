@@ -7,14 +7,18 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import type { Snake } from '../Snake';
-import type { Options } from '../Options';
-import { Logger } from '../../Context/Logger';
-import { Client, Raw, Clients } from '@tgsnake/core';
-import prompts from 'prompts';
+import type { Snake } from '../Snake.ts';
+import type { Options } from '../Options.ts';
+import { Logger } from '../../Context/Logger.ts';
+import { Client, Raw, Clients, prompts, isDeno } from '../../platform.deno.ts';
 const onCancel = (prompt) => {
   Logger.info('Aborting prompt!!');
-  process.exit(1);
+  if (isDeno) {
+    // @ts-ignore
+    Deno.exit(1);
+  } else {
+    process.exit(1);
+  }
   return false;
 };
 export async function LoginWithCLI(snake: Snake): Promise<Raw.users.UserFull | undefined> {

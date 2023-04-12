@@ -7,10 +7,9 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { Raw, Helpers } from '@tgsnake/core';
-import { Parser, type Entities } from '@tgsnake/parser';
-import { TLObject } from '../../TL';
-import type { Snake } from '../../../Client';
+import { Raw, Helpers, Parser, type Entities } from '../../../platform.deno.ts';
+import { TLObject } from '../../TL.ts';
+import type { Snake } from '../../../Client/index.ts';
 
 export class PollAnswer extends TLObject {
   text!: string;

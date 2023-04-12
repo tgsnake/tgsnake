@@ -8,5 +8,5 @@
  * it under the terms of the MIT License as published.
  */
 
-export { getMessages } from './GetMessages';
-export { sendMessage, sendMessageParams } from './SendMessage';
+export { getMessages } from './GetMessages.ts';
+export { sendMessage, type sendMessageParams } from './SendMessage.ts';

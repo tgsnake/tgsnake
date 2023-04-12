@@ -7,10 +7,9 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { Storages, Raws } from '@tgsnake/core';
-import * as fs from 'fs';
-import * as path from 'path';
-import { Logger } from '../Context/Logger';
+import { Storages, Raws, path, cwd } from '../platform.deno.ts';
+import fs from 'node:fs';
+import { Logger } from '../Context/Logger.ts';
 
 export class SnakeSession extends Storages.BaseSession {
   private _name!: string;
@@ -20,9 +19,9 @@ export class SnakeSession extends Storages.BaseSession {
   }
   async load() {
     let sessionName = `${this._name}.session`;
-    if (fs.existsSync(path.join(process.cwd(), sessionName))) {
+    if (fs.existsSync(path.join(cwd(), sessionName))) {
       let start = Math.floor(Date.now() / 1000);
-      let bytes = fs.readFileSync(path.join(process.cwd(), sessionName));
+      let bytes = fs.readFileSync(path.join(cwd(), sessionName));
       Logger.debug(`Session have a ${bytes.length} bytes`);
       this._dcId = bytes.readUInt8(0); // 1
       Logger.debug(`Found dcId: ${this._dcId}.`);
@@ -46,15 +45,15 @@ export class SnakeSession extends Storages.BaseSession {
     let sessionName = `${this._name}.session`;
     let cacheName = `${this._name}.cache`;
     // save session when it unavailable.
-    if (!fs.existsSync(path.join(process.cwd(), sessionName))) {
+    if (!fs.existsSync(path.join(cwd(), sessionName))) {
       fs.writeFileSync(
-        path.join(process.cwd(), sessionName),
+        path.join(cwd(), sessionName),
         Buffer.from(await this.exportString(), 'base64url')
       );
-      Logger.info(`Session saved to: "${path.join(process.cwd(), sessionName)}".`);
+      Logger.info(`Session saved to: "${path.join(cwd(), sessionName)}".`);
     }
-    fs.writeFileSync(path.join(process.cwd(), cacheName), await this._makeCache());
-    Logger.info(`Cache saved to: "${path.join(process.cwd(), cacheName)}".`);
+    fs.writeFileSync(path.join(cwd(), cacheName), await this._makeCache());
+    Logger.info(`Cache saved to: "${path.join(cwd(), cacheName)}".`);
   }
   /**
    * Load the tgsnake peers cache.
@@ -64,8 +63,8 @@ export class SnakeSession extends Storages.BaseSession {
   > {
     let peer: Array<any> = [];
     let cacheName = `${this._name}.cache`;
-    if (fs.existsSync(path.join(process.cwd(), cacheName))) {
-      let bytes = new Raws.BytesIO(fs.readFileSync(path.join(process.cwd(), cacheName)));
+    if (fs.existsSync(path.join(cwd(), cacheName))) {
+      let bytes = new Raws.BytesIO(fs.readFileSync(path.join(cwd(), cacheName)));
       let length = await Raws.Primitive.Int.read(bytes);
       // bytes[VectorLength + VectorBytes[bytes[contentLength + content]]]
       for (let i = 0; i < length; i++) {
@@ -188,8 +187,8 @@ export function generateName(base: string): string {
   while (true) {
     let name = i === 0 ? base : `${base}${i}`;
     if (
-      !fs.existsSync(path.join(process.cwd(), `${name}.session`)) &&
-      !fs.existsSync(path.join(process.cwd(), `${name}.cache`))
+      !fs.existsSync(path.join(cwd(), `${name}.session`)) &&
+      !fs.existsSync(path.join(cwd(), `${name}.cache`))
     ) {
       return name;
     }

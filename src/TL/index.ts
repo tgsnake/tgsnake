@@ -8,7 +8,7 @@
  * it under the terms of the MIT License as published.
  */
 
-export * as Advanceds from './Advanced';
-export * as Messages from './Messages';
-export * as Updates from './Updates';
-export { TLObject } from './TL';
+export * as Advanceds from './Advanced/index.ts';
+export * as Messages from './Messages/index.ts';
+export * as Updates from './Updates/index.ts';
+export { TLObject } from './TL.ts';

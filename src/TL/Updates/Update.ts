@@ -7,11 +7,11 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { TLObject } from '../TL';
-import { Raw } from '@tgsnake/core';
-import { Message } from '../Messages/Message';
-import { CallbackQuery } from './callbackQuery';
-import type { Snake } from '../../Client';
+import { TLObject } from '../TL.ts';
+import { Raw } from '../../platform.deno.ts';
+import { Message } from '../Messages/Message.ts';
+import { CallbackQuery } from './callbackQuery.ts';
+import type { Snake } from '../../Client/index.ts';
 
 export interface TypeUpdate {
   message?: Message;

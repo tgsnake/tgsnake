@@ -7,11 +7,11 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { TLObject } from '../TL';
-import { Raw } from '@tgsnake/core';
-import type { Snake } from '../../Client';
-import { Restriction } from './Restriction';
-import { ChatPhoto } from './ChatPhoto';
+import { TLObject } from '../TL.ts';
+import { Raw } from '../../platform.deno.ts';
+import type { Snake } from '../../Client/index.ts';
+import { Restriction } from './Restriction.ts';
+import { ChatPhoto } from './ChatPhoto.ts';
 
 export interface TypeUser {
   id: bigint;

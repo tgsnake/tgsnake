@@ -7,10 +7,10 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { Raw, Helpers } from '@tgsnake/core';
-import { parseMessages } from '../../Utilities';
-import type { Snake } from '../../Client';
-import type { Message } from '../../TL/Messages/Message';
+import { Raw, Helpers } from '../../platform.deno.ts';
+import { parseMessages } from '../../Utilities.ts';
+import type { Snake } from '../../Client/index.ts';
+import type { Message } from '../../TL/Messages/Message.ts';
 
 export async function getMessages(
   client: Snake,

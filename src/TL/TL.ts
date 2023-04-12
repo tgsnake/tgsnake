@@ -7,8 +7,8 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import type { Snake } from '../Client';
-import type { Telegram } from '../Methods/Telegram';
+import type { Snake } from '../Client/index.ts';
+import type { Telegram } from '../Methods/Telegram.ts';
 export class TLObject {
   protected _client!: Snake;
   className!: string;

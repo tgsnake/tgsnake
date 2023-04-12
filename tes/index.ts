@@ -6,15 +6,16 @@
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
 
-//import {Snake,GramJs,Composer,Updates} from "../src"
-import { Snake, GramJs } from '../src/';
-import * as Medias from '../src/Utils/Medias';
-import fs from 'fs';
-import path from 'path';
-interface MyContext {
-  hello?: string;
-}
+import { Snake } from '../src/index.ts';
 const bot = new Snake();
-bot.log.setLogLevel('debug');
-bot.on('any', console.log);
+bot.action('press', (update) => {
+  update.callbackQuery.message.respond('Why you click?!!');
+});
+bot.cmd('start', (update) => {
+  update.msg?.reply('Yo man!!', {
+    replyMarkup: {
+      inlineKeyboard: [[{ text: "Don't press me!", callbackData: 'press' }]],
+    },
+  });
+});
 bot.run();

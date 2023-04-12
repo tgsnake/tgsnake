@@ -5,9 +5,9 @@
 //
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
-import { Raw } from '@tgsnake/core';
-import { FilterContext, filter } from './Filters';
-import { TypeUpdate } from '../TL/Updates';
+import { Raw } from '../platform.deno.ts';
+import { FilterContext, filter } from './Filters.ts';
+import { TypeUpdate } from '../TL/Updates/index.ts';
 
 export type MaybeArray<T> = T | T[];
 export type MaybePromise<T> = T | Promise<T>;

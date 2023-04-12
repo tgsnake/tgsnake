@@ -7,11 +7,10 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { exec } from 'child_process';
-import { Raw, Helpers } from '@tgsnake/core';
-import { Writer, base64_url_encode } from '@tgsnake/fileid';
-import { Message } from './TL/Messages/Message';
-import type { Snake } from './Client/Snake';
+import { exec } from 'node:child_process';
+import { Raw, Helpers, Writer, base64_url_encode } from './platform.deno.ts';
+import { Message } from './TL/Messages/Message.ts';
+import type { Snake } from './Client/Snake.ts';
 
 export type TypeChat = Raw.Chat | Raw.Channel;
 export type TypeUser = Raw.User;

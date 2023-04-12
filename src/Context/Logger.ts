@@ -7,7 +7,7 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { Logger, TypeLogLevel } from '@tgsnake/log';
+import { Logger, TypeLogLevel } from '../platform.deno.ts';
 const log = new Logger({
   name: 'tgsnake',
   level: ['debug'] as Array<TypeLogLevel>,

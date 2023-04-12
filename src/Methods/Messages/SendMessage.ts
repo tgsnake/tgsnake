@@ -7,13 +7,12 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { Parser, type Entities } from '@tgsnake/parser';
-import { Raw, Helpers } from '@tgsnake/core';
-import { parseMessages } from '../../Utilities';
-import * as ReplyMarkup from '../../TL/Messages/ReplyMarkup';
-import type { Snake } from '../../Client';
-import { Message } from '../../TL/Messages';
-import { Chat } from '../../TL/Advanced';
+import { Parser, type Entities, Raw, Helpers } from '../../platform.deno.ts';
+import { parseMessages } from '../../Utilities.ts';
+import * as ReplyMarkup from '../../TL/Messages/ReplyMarkup.ts';
+import type { Snake } from '../../Client/index.ts';
+import { Message } from '../../TL/Messages/index.ts';
+import { Chat } from '../../TL/Advanced/index.ts';
 
 export interface sendMessageParams {
   disableWebPagePreview?: boolean;

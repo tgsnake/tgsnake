@@ -8,4 +8,4 @@
  * it under the terms of the MIT License as published.
  */
 
-export { getParticipants, getParticipantsParams } from './GetParticipants';
+export { getParticipants, type getParticipantsParams } from './GetParticipants.ts';

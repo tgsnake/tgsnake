@@ -7,14 +7,14 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { Raw, Helpers } from '@tgsnake/core';
-import { TLObject } from '../../TL';
-import { Audio } from './Audio';
-import { Document } from './Document';
-import { Photo } from './Photo';
-import { Animation } from './Animated';
-import { Video } from './Video';
-import type { Snake } from '../../../Client';
+import { Raw, Helpers } from '../../../platform.deno.ts';
+import { TLObject } from '../../TL.ts';
+import { Audio } from './Audio.ts';
+import { Document } from './Document.ts';
+import { Photo } from './Photo.ts';
+import { Animation } from './Animated.ts';
+import { Video } from './Video.ts';
+import type { Snake } from '../../../Client/index.ts';
 
 // https://github.com/pyrogram/pyrogram/blob/master/pyrogram/types/messages_and_media/web_page.py
 export class WebPage extends TLObject {

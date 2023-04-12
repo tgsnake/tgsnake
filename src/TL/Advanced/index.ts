@@ -8,9 +8,9 @@
  * it under the terms of the MIT License as published.
  */
 
-export { Chat, TypeChat } from './Chat';
-export { ChatPermission } from './ChatPermission';
-export { ChatPhoto } from './ChatPhoto';
-export { Restriction } from './Restriction';
-export { User, TypeUser } from './User';
-export { WebAppData } from './WebApp';
+export { Chat, type TypeChat } from './Chat.ts';
+export { ChatPermission } from './ChatPermission.ts';
+export { ChatPhoto } from './ChatPhoto.ts';
+export { Restriction } from './Restriction.ts';
+export { User, type TypeUser } from './User.ts';
+export { WebAppData } from './WebApp.ts';

@@ -7,11 +7,11 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { TLObject } from '../TL/TL';
-import { Raw, Helpers } from '@tgsnake/core';
-import type { Snake } from '../Client';
-import { getMessages, sendMessage, sendMessageParams } from './Messages';
-import { getParticipants, getParticipantsParams } from './Chats';
+import { TLObject } from '../TL/TL.ts';
+import { Raw, Helpers } from '../platform.deno.ts';
+import type { Snake } from '../Client/index.ts';
+import { getMessages, sendMessage, sendMessageParams } from './Messages/index.ts';
+import { getParticipants, getParticipantsParams } from './Chats/index.ts';
 
 export class Telegram extends TLObject {
   constructor(client: Snake) {

@@ -6,16 +6,22 @@
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
 export {
-  MaybeArray,
-  MaybePromise,
-  NextFn,
-  MiddlewareFn,
-  ErrorHandler,
-  Middleware,
+  type MaybeArray,
+  type MaybePromise,
+  type NextFn,
+  type MiddlewareFn,
+  type ErrorHandler,
+  type Middleware,
+  type MiddlewareObj,
+  type Combine,
   run,
   Composer,
-  MiddlewareObj,
-  Combine,
-} from './Composer';
-export { MainContext } from './MainContext';
-export { Logger } from './Logger';
+} from './Composer.ts';
+export { MainContext } from './MainContext.ts';
+export { Logger } from './Logger.ts';
+export {
+  filter,
+  type FilterQuery,
+  type FilterContext,
+  type TypeUpdateExtended,
+} from './Filters.ts';

@@ -7,17 +7,26 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { Raw, Client, Storages, Clients, Sessions } from '@tgsnake/core';
-import { TypeLogLevel } from '@tgsnake/log';
-import fs from 'fs';
-import path from 'path';
-import { SnakeSession, generateName } from './SnakeSession';
-import { Options } from './Options';
-import { LoginWithCLI } from './Login/Cli';
-import * as Version from '../Version';
-import { Logger, MainContext } from '../Context';
-import { Telegram } from '../Methods/Telegram';
-import type { Message } from '../TL/Messages/Message';
+import {
+  Raw,
+  Client,
+  Storages,
+  Clients,
+  Sessions,
+  TypeLogLevel,
+  path,
+  cwd,
+  isDeno,
+} from '../platform.deno.ts';
+import fs from 'node:fs';
+import { createRequire } from 'node:module';
+import { SnakeSession, generateName } from './SnakeSession.ts';
+import { Options, LoginWithSession } from './Options.ts';
+import { LoginWithCLI } from './Login/Cli.ts';
+import * as Version from '../Version.deno.ts';
+import { Logger, MainContext } from '../Context/index.ts';
+import { Telegram } from '../Methods/Telegram.ts';
+import type { Message } from '../TL/Messages/Message.ts';
 
 export class Snake extends MainContext {
   _options!: Options;
@@ -31,10 +40,17 @@ export class Snake extends MainContext {
     Logger.log(`Welcome to tgsnake!`);
     Logger.log(`Using version: ${Version.version} - ${Version.getType()}`);
     Logger.log(`Thanks for using tgsnake`);
+    if (isDeno) {
+    }
     if (!options) {
-      if (fs.existsSync(path.join(process.cwd(), 'tgsnake.config.js'))) {
-        Logger.info(`Found config file: ${path.join(process.cwd(), 'tgsnake.config.js')}`);
-        options = require(path.join(process.cwd(), 'tgsnake.config.js'));
+      if (fs.existsSync(path.join(cwd(), 'tgsnake.config.js'))) {
+        Logger.info(`Found config file: ${path.join(cwd(), 'tgsnake.config.js')}`);
+        if (isDeno) {
+          const require = createRequire(import.meta.url);
+          options = require(path.join(cwd(), 'tgsnake.config.js'));
+        } else {
+          options = require(path.join(cwd(), 'tgsnake.config.js'));
+        }
       } else {
         // @ts-ignore
         options = {};
@@ -107,18 +123,37 @@ export class Snake extends MainContext {
     this._rndMsgId = new Sessions.MsgId();
   }
   async run() {
-    process.on('SIGINT', async () => {
-      Logger.info('Saving session before killed.');
+    if (isDeno) {
       // @ts-ignore
-      await this._options.login.session.save();
-      return process.exit();
-    });
-    process.on('SIGTERM', async () => {
-      Logger.info('Saving session before killed.');
+      Deno.addSignalListener('SIGINT', async () => {
+        Logger.info('Saving session before killed.');
+        // @ts-ignore
+        await this._options.login.session.save();
+        // @ts-ignore
+        return Deno.exit();
+      });
       // @ts-ignore
-      await this._options.login.session.save();
-      return process.exit();
-    });
+      Deno.addSignalListener('SIGTERM', async () => {
+        Logger.info('Saving session before killed.');
+        // @ts-ignore
+        await this._options.login.session.save();
+        // @ts-ignore
+        return Deno.exit();
+      });
+    } else {
+      process.on('SIGINT', async () => {
+        Logger.info('Saving session before killed.');
+        // @ts-ignore
+        await this._options.login.session.save();
+        return process.exit();
+      });
+      process.on('SIGTERM', async () => {
+        Logger.info('Saving session before killed.');
+        // @ts-ignore
+        await this._options.login.session.save();
+        return process.exit();
+      });
+    }
     let hasLoginPlugin = false;
     if (this._options.plugins && this._options.plugins?.length) {
       for (const plugin of this._options.plugins) {
@@ -153,6 +188,14 @@ export class Snake extends MainContext {
       }
     }
     this._client.addHandler((update) => this.handleUpdate(update, this));
+    Logger.info('Client is running');
+    if (this._me) {
+      Logger.log(
+        `Loggined as : ${
+          this._me.lastName ? `${this._me.firstName} ${this._me.lastName}` : this._me.firstName
+        } - ${this._me.id}`
+      );
+    }
     return true;
   }
 }

@@ -7,8 +7,8 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { Raw, Helpers } from '@tgsnake/core';
-import type { Snake } from '../../Client';
+import { Raw, Helpers } from '../../platform.deno.ts';
+import type { Snake } from '../../Client/index.ts';
 export type TypeReplyMarkup = inlineKeyboard | replyKeyboard | removeKeyboard | forceReplyMarkup;
 /**
  * Upon receiving a message with this object, Telegram clients will display a reply interface to the user (act as if the user has selected the bot's message and tapped 'Reply')

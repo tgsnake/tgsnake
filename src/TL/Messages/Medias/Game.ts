@@ -7,11 +7,11 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { Raw, Helpers } from '@tgsnake/core';
-import { TLObject } from '../../TL';
-import { Animation } from './Animated';
-import { Photo } from './Photo';
-import type { Snake } from '../../../Client';
+import { Raw, Helpers } from '../../../platform.deno.ts';
+import { TLObject } from '../../TL.ts';
+import { Animation } from './Animated.ts';
+import { Photo } from './Photo.ts';
+import type { Snake } from '../../../Client/index.ts';
 
 export class Game extends TLObject {
   id!: bigint;

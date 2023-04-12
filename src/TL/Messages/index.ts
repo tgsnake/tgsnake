@@ -8,6 +8,6 @@
  * it under the terms of the MIT License as published.
  */
 
-export * as Medias from './Medias';
-export * as ReplyMarkups from './ReplyMarkup';
-export { Message, TypeMessage } from './Message';
+export * as Medias from './Medias/index.ts';
+export * as ReplyMarkups from './ReplyMarkup.ts';
+export { Message, type TypeMessage } from './Message.ts';

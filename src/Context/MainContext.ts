@@ -6,11 +6,11 @@
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
 
-import { Raw } from '@tgsnake/core';
-import { Composer, run, ErrorHandler, Combine } from './Composer';
-import { Logger } from './Logger';
-import { Update } from '../TL/Updates/Update';
-import type { Snake } from '../Client/Snake';
+import { Raw } from '../platform.deno.ts';
+import { Composer, run, ErrorHandler, Combine } from './Composer.ts';
+import { Logger } from './Logger.ts';
+import { Update } from '../TL/Updates/Update.ts';
+import type { Snake } from '../Client/Snake.ts';
 
 type TypeChat = Raw.Chat | Raw.Channel;
 type TypeUser = Raw.User;

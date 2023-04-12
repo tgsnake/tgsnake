@@ -1,6 +1,6 @@
-import { Raw } from '@tgsnake/core';
-import type { TypeUpdate, CallbackQuery } from '../TL/Updates';
-import type { Message } from '../TL/Messages';
+import { Raw } from '../platform.deno.ts';
+import type { TypeUpdate, CallbackQuery } from '../TL/Updates/index.ts';
+import type { Message } from '../TL/Messages/index.ts';
 
 export type TypeUpdateExtended<T, P extends keyof T> = TypeUpdate & {
   message?: FilterQuery<T, P>;
