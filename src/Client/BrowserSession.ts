@@ -7,11 +7,11 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { Storages, Raws, Helpers, path, cwd } from '../platform.deno.ts';
-import fs from 'node:fs';
+import { Storages, Raws, Helpers } from '../platform.deno.ts';
 import { Logger } from '../Context/Logger.ts';
+import { buildBytesFromPeer, buildPeerFromBytes } from './SnakeSession.ts';
 
-export class SnakeSession extends Storages.BaseSession {
+export class BrowserSession extends Storages.BaseSession {
   private _name!: string;
   constructor(name: string) {
     super();
@@ -19,9 +19,9 @@ export class SnakeSession extends Storages.BaseSession {
   }
   async load() {
     let sessionName = `${this._name}.session`;
-    if (fs.existsSync(path.join(cwd(), sessionName))) {
+    if (localStorage.getItem(sessionName) !== null) {
       let start = Math.floor(Date.now() / 1000);
-      let bytes = fs.readFileSync(path.join(cwd(), sessionName));
+      let bytes = Buffer.from(localStorage.getItem(sessionName) as string, 'base64');
       Logger.debug(`Session have a ${bytes.length} bytes`);
       this._dcId = bytes.readUInt8(0); // 1
       Logger.debug(`Found dcId: ${this._dcId}.`);
@@ -45,15 +45,12 @@ export class SnakeSession extends Storages.BaseSession {
     let sessionName = `${this._name}.session`;
     let cacheName = `${this._name}.cache`;
     // save session when it unavailable.
-    if (!fs.existsSync(path.join(cwd(), sessionName))) {
-      fs.writeFileSync(
-        path.join(cwd(), sessionName),
-        Buffer.from(Helpers.base64urlTobase64(await this.exportString()), 'base64')
-      );
-      Logger.info(`Session saved to: "${path.join(cwd(), sessionName)}".`);
+    if (localStorage.getItem(sessionName) !== null) {
+      localStorage.setItem(sessionName, Helpers.base64urlTobase64(await this.exportString()));
+      Logger.info(`Session saved to: "localStorage:${sessionName}".`);
     }
-    fs.writeFileSync(path.join(cwd(), cacheName), await this._makeCache());
-    Logger.info(`Cache saved to: "${path.join(cwd(), cacheName)}".`);
+    localStorage.setItem(cacheName, (await this._makeCache()).toString('base64'));
+    Logger.info(`Cache saved to: "localStorage:${cacheName}".`);
   }
   /**
    * Load the tgsnake peers cache.
@@ -63,8 +60,10 @@ export class SnakeSession extends Storages.BaseSession {
   > {
     let peer: Array<any> = [];
     let cacheName = `${this._name}.cache`;
-    if (fs.existsSync(path.join(cwd(), cacheName))) {
-      let bytes = new Raws.BytesIO(fs.readFileSync(path.join(cwd(), cacheName)));
+    if (localStorage.getItem(cacheName) !== null) {
+      let bytes = new Raws.BytesIO(
+        Buffer.from(localStorage.getItem(cacheName) as string, 'base64')
+      );
       let length = await Raws.Primitive.Int.read(bytes);
       // bytes[VectorLength + VectorBytes[bytes[contentLength + content]]]
       for (let i = 0; i < length; i++) {
@@ -122,76 +121,5 @@ export class SnakeSession extends Storages.BaseSession {
   /** @hidden */
   toString(): string {
     return `[constructor of ${this.constructor.name}] ${JSON.stringify(this, null, 2)}`;
-  }
-}
-/**
- * Creating valid bytes from peer schema.
- * @param peer {Array} - Peer will be convert to bytes
- */
-export function buildBytesFromPeer(
-  peer: [id: bigint, accessHash: bigint, type: string, username?: string, phoneNumber?: string]
-): Buffer {
-  let bytes = new Raws.BytesIO();
-  let flags = 0;
-  if (peer[3]) {
-    flags |= 1 << 4;
-  }
-  if (peer[4]) {
-    flags |= 1 << 5;
-  }
-  bytes.write(Raws.Primitive.Int.write(flags));
-  bytes.write(Raws.Primitive.Long.write(peer[0]));
-  bytes.write(Raws.Primitive.Long.write(peer[1]));
-  bytes.write(Raws.Primitive.String.write(peer[2]));
-  if (peer[3]) {
-    bytes.write(Raws.Primitive.String.write(peer[3]));
-  }
-  if (peer[4]) {
-    bytes.write(Raws.Primitive.String.write(peer[4]));
-  }
-  return bytes.buffer;
-}
-/**
- * Creating valid peer schema from bytes.
- * @param bytes {Buffer} - Bytes will be converted to peer schema.
- */
-export async function buildPeerFromBytes(
-  bytes: Buffer
-): Promise<
-  [id: bigint, accessHash: bigint, type: string, username?: string, phoneNumber?: string]
-> {
-  let b = new Raws.BytesIO(bytes);
-  // @ts-ignore
-  let results: Array<any> = [];
-  let flags = await Raws.Primitive.Int.read(b);
-  results.push(await Raws.Primitive.Long.read(b));
-  results.push(await Raws.Primitive.Long.read(b));
-  results.push(await Raws.Primitive.String.read(b));
-  if (flags & (1 << 4)) {
-    results.push(await Raws.Primitive.String.read(b));
-  }
-  if (flags & (1 << 5)) {
-    results.push(await Raws.Primitive.String.read(b));
-  }
-  return results as unknown as [
-    id: bigint,
-    accessHash: bigint,
-    type: string,
-    username?: string,
-    phoneNumber?: string
-  ];
-}
-
-export function generateName(base: string): string {
-  let i = 0;
-  while (true) {
-    let name = i === 0 ? base : `${base}${i}`;
-    if (
-      !fs.existsSync(path.join(cwd(), `${name}.session`)) &&
-      !fs.existsSync(path.join(cwd(), `${name}.cache`))
-    ) {
-      return name;
-    }
-    i++;
   }
 }

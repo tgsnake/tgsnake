@@ -24,14 +24,14 @@
     "lib/**/*"
   ],
   "dependencies": {
-    "@tgsnake/core": "1.6.4",
-    "@tgsnake/fileid": "2.0.2",
+    "@tgsnake/core": "1.6.5",
+    "@tgsnake/fileid": "2.1.0",
     "@tgsnake/log": "latest",
-    "@tgsnake/parser": "2.0.0",
+    "@tgsnake/parser": "2.0.1",
     "prompts": "2.4.2"
   },
   "devDependencies": {
-    "@types/node": "18.15.10",
+    "@types/node": "18.15.11",
     "deno2node": "1.8.1",
     "dotenv": "16.0.3",
     "prettier": "2.8.7"

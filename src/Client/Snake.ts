@@ -17,10 +17,11 @@ import {
   path,
   cwd,
   isDeno,
+  isBrowser,
 } from '../platform.deno.ts';
 import fs from 'node:fs';
-import { createRequire } from 'node:module';
 import { SnakeSession, generateName } from './SnakeSession.ts';
+import { BrowserSession } from './BrowserSession.ts';
 import { Options, LoginWithSession } from './Options.ts';
 import { LoginWithCLI } from './Login/Cli.ts';
 import * as Version from '../Version.deno.ts';
@@ -37,19 +38,24 @@ export class Snake extends MainContext {
   api!: Telegram;
   constructor(options?: Options) {
     super();
+    this._options = options!;
+  }
+  private async _init() {
+    let options = this._options;
     Logger.log(`Welcome to tgsnake!`);
     Logger.log(`Using version: ${Version.version} - ${Version.getType()}`);
     Logger.log(`Thanks for using tgsnake`);
-    if (isDeno) {
-    }
     if (!options) {
       if (fs.existsSync(path.join(cwd(), 'tgsnake.config.js'))) {
-        Logger.info(`Found config file: ${path.join(cwd(), 'tgsnake.config.js')}`);
-        if (isDeno) {
-          const require = createRequire(import.meta.url);
-          options = require(path.join(cwd(), 'tgsnake.config.js'));
+        if (isBrowser) {
+          Logger.error(`Config file is not supported on browser!`);
         } else {
-          options = require(path.join(cwd(), 'tgsnake.config.js'));
+          Logger.info(`Found config file: ${path.join(cwd(), 'tgsnake.config.js')}`);
+          if (isDeno) {
+            options = (await import(path.join(cwd(), 'tgsnake.config.js'))).default;
+          } else {
+            options = require(path.join(cwd(), 'tgsnake.config.js'));
+          }
         }
       } else {
         // @ts-ignore
@@ -92,7 +98,11 @@ export class Snake extends MainContext {
                   `Creating \`${this._options.login.sessionName}\` dot session. Change default sessionName to \`${this._options.login.sessionName}\` for login in next time.`
                 );
               }
-              this._options.login.session = new SnakeSession(this._options.login.sessionName!);
+              if (isBrowser) {
+                this._options.login.session = new BrowserSession(this._options.login.sessionName!);
+              } else {
+                this._options.login.session = new SnakeSession(this._options.login.sessionName!);
+              }
             } else {
               this._options.login.session = new Storages.StringSession(this._options.login.session);
             }
@@ -103,7 +113,11 @@ export class Snake extends MainContext {
               Logger.info(
                 `Creating \`${this._options.login.sessionName}\` dot session. Change default sessionName to \`${this._options.login.sessionName}\` for login in next time.`
               );
-              this._options.login.session = new SnakeSession(this._options.login.sessionName!);
+              if (isBrowser) {
+                this._options.login.session = new BrowserSession(this._options.login.sessionName!);
+              } else {
+                this._options.login.session = new SnakeSession(this._options.login.sessionName!);
+              }
               _session.move(this._options.login.session);
             } else {
               this._options.login.session = _session;
@@ -123,6 +137,7 @@ export class Snake extends MainContext {
     this._rndMsgId = new Sessions.MsgId();
   }
   async run() {
+    await this._init();
     if (isDeno) {
       // @ts-ignore
       Deno.addSignalListener('SIGINT', async () => {
@@ -140,7 +155,7 @@ export class Snake extends MainContext {
         // @ts-ignore
         return Deno.exit();
       });
-    } else {
+    } else if (!isBrowser) {
       process.on('SIGINT', async () => {
         Logger.info('Saving session before killed.');
         // @ts-ignore

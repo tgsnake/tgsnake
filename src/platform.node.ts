@@ -23,6 +23,5 @@ import path from 'path';
 import prompts from 'prompts';
 export { path, prompts };
 export const { cwd } = process;
-// @ts-ignore
 export const isBrowser = typeof window !== 'undefined';
 export const isDeno = false;

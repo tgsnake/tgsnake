@@ -10,5 +10,6 @@
 
 export { Snake } from './Snake.ts';
 export { SnakeSession } from './SnakeSession.ts';
+export { BrowserSession } from './BrowserSession.ts';
 export { LoginWithCLI } from './Login/Cli.ts';
 export { type Options, type LoginWithSession } from './Options.ts';
