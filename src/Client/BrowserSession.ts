@@ -9,7 +9,12 @@
  */
 import { Storages, Raws, Helpers } from '../platform.deno.ts';
 import { Logger } from '../Context/Logger.ts';
-import { buildBytesFromPeer, buildPeerFromBytes } from './SnakeSession.ts';
+import {
+  buildBytesFromPeer,
+  buildPeerFromBytes,
+  buildBytesFromSecretChat,
+  buildSecretChatFromBytes,
+} from './SnakeSession.ts';
 
 export class BrowserSession extends Storages.BaseSession {
   private _name!: string;
@@ -37,8 +42,12 @@ export class BrowserSession extends Storages.BaseSession {
       Logger.debug(`Found isBot: ${this._isBot}.`);
       Logger.debug(`Done parsing string session (${Math.floor(Date.now() / 1000) - start}s)`);
     }
-    for (let peer of await this._loadCache()) {
+    const [peers, secretChats] = await this._loadCache();
+    for (let peer of peers) {
       this._peers.set(peer[0], peer);
+    }
+    for (let secretChat of secretChats) {
+      this._secretChats.set(secretChat.id, secretChat);
     }
   }
   async save() {
@@ -56,24 +65,64 @@ export class BrowserSession extends Storages.BaseSession {
    * Load the tgsnake peers cache.
    */
   private async _loadCache(): Promise<
-    Array<[id: bigint, accessHash: bigint, type: string, username?: string, phoneNumber?: string]>
+    [
+      Array<
+        [id: bigint, accessHash: bigint, type: string, username?: string, phoneNumber?: string]
+      >,
+      Array<Storages.SecretChat>
+    ]
   > {
     let peer: Array<any> = [];
     let cacheName = `${this._name}.cache`;
+    let e2e: Array<Storages.SecretChat> = [];
     if (localStorage.getItem(cacheName) !== null) {
-      let bytes = new Raws.BytesIO(
-        Buffer.from(localStorage.getItem(cacheName) as string, 'base64')
-      );
-      let length = await Raws.Primitive.Int.read(bytes);
-      // bytes[VectorLength + VectorBytes[bytes[contentLength + content]]]
-      for (let i = 0; i < length; i++) {
-        let count = await Raws.Primitive.Int.read(bytes);
-        peer.push(await buildPeerFromBytes(bytes.read(count)));
+      let buffer = Buffer.from(localStorage.getItem(cacheName) as string, 'base64');
+      if (buffer[0] === 2) {
+        Logger.info(`Load cache version: 2`);
+        let bytes = new Raws.BytesIO(buffer.slice(1));
+        // bytes[version + CacheBytesLength + CacheBytes[VectorLength + VectorBytes[bytes[contentLength + content]]] + E2EBytesLength + E2E]
+        let cacheLength = await Raws.Primitive.Int.read(bytes);
+        let cacheBytes = new Raws.BytesIO(await bytes.read(cacheLength));
+        let peerLength = await Raws.Primitive.Int.read(cacheBytes);
+        let E2ELength = await Raws.Primitive.Int.read(bytes);
+        if (E2ELength) {
+          e2e = await this._loadE2E(await bytes.read(E2ELength));
+        }
+        for (let i = 0; i < peerLength; i++) {
+          let count = await Raws.Primitive.Int.read(cacheBytes);
+          peer.push(await buildPeerFromBytes(cacheBytes.read(count)));
+        }
+      } else {
+        // legacy version
+        Logger.info(`Load cache version: 1`);
+        let bytes = new Raws.BytesIO(buffer);
+        let length = await Raws.Primitive.Int.read(bytes);
+        // bytes[VectorLength + VectorBytes[bytes[contentLength + content]]]
+        for (let i = 0; i < length; i++) {
+          let count = await Raws.Primitive.Int.read(bytes);
+          peer.push(await buildPeerFromBytes(bytes.read(count)));
+        }
       }
     }
-    return peer as unknown as Array<
-      [id: bigint, accessHash: bigint, type: string, username?: string, phoneNumber?: string]
-    >;
+    return [
+      peer as unknown as Array<
+        [id: bigint, accessHash: bigint, type: string, username?: string, phoneNumber?: string]
+      >,
+      e2e,
+    ];
+  }
+  private async _loadE2E(bytes: Buffer): Promise<Array<Storages.SecretChat>> {
+    let secretChat: Array<Storages.SecretChat> = [];
+    if (bytes[0] === 1) {
+      let b = new Raws.BytesIO(bytes.slice(1));
+      let length = await Raws.Primitive.Int.read(b);
+      // bytes[version + VectorLength + VectorBytes[bytes[contentLength + content]]]
+      for (let i = 0; i < length; i++) {
+        let count = await Raws.Primitive.Int.read(b);
+        secretChat.push(await buildSecretChatFromBytes(b.read(count)));
+      }
+    }
+    return secretChat;
   }
   /**
    * Make a bytes cache of peers.
@@ -86,7 +135,30 @@ export class BrowserSession extends Storages.BaseSession {
       let content = await buildBytesFromPeer(value);
       bytes.write(Buffer.concat([Raws.Primitive.Int.write(content.length), content]));
     }
-    return Buffer.concat([Raws.Primitive.Int.write(count), bytes.buffer]);
+    let e2e = Buffer.alloc(0);
+    if (this._secretChats.size) {
+      e2e = await this._makeE2E();
+    }
+    // bytes[version + CacheBytesLength + CacheBytes[VectorLength + VectorBytes[bytes[contentLength + content]]] + E2EBytesLength + E2E]
+    const cache = Buffer.concat([Raws.Primitive.Int.write(count), bytes.buffer]);
+    return Buffer.concat([
+      Buffer.from([2]),
+      Raws.Primitive.Int.write(cache.length),
+      cache,
+      Raws.Primitive.Int.write(e2e.length),
+      e2e,
+    ]);
+  }
+  private async _makeE2E(): Promise<Buffer> {
+    let count = 0;
+    let bytes = new Raws.BytesIO();
+    for (let [key, value] of this._secretChats) {
+      count += 1;
+      let content = await buildBytesFromSecretChat(value);
+      bytes.write(Buffer.concat([Raws.Primitive.Int.write(content.length), content]));
+    }
+    // bytes[version + VectorLength - VectorBytes[bytes[contentLength + content]]]
+    return Buffer.concat([Buffer.from([1]), Raws.Primitive.Int.write(count), bytes.buffer]);
   }
   /** @hidden */
   [Symbol.for('nodejs.util.inspect.custom')](): { [key: string]: any } {

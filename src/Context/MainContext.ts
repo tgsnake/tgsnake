@@ -6,7 +6,7 @@
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
 
-import { Raw } from '../platform.deno.ts';
+import { Raw, Raws } from '../platform.deno.ts';
 import { Composer, run, ErrorHandler, Combine } from './Composer.ts';
 import { Logger } from './Logger.ts';
 import { Update } from '../TL/Updates/Update.ts';
@@ -24,7 +24,7 @@ export class MainContext<T = {}> extends Composer<T> {
   constructor() {
     super();
   }
-  async handleUpdate(update: Raw.TypeUpdate, client: Snake) {
+  async handleUpdate(update: Raw.TypeUpdate | Raws.UpdateSecretChatMessage, client: Snake) {
     if (!update) return false;
     this.use = () => {
       throw new Error(
@@ -42,7 +42,10 @@ export class MainContext<T = {}> extends Composer<T> {
       }
     }
   }
-  async parseUpdate(update: Raw.TypeUpdate, client: Snake): Promise<Array<object>> {
+  async parseUpdate(
+    update: Raw.TypeUpdate | Raws.UpdateSecretChatMessage,
+    client: Snake
+  ): Promise<Array<object>> {
     // Why Promise<Array<object>> ? because the return of parseUpdate is can by anything, but it must be a class or json object.
     // Possible plugin for make their own parse function.
     const parsedUpdate: Array<Update | Raw.TypeUpdates> = [];

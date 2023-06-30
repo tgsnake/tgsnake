@@ -71,7 +71,6 @@ typings/
 
 # Output of 'npm pack'
 *.tgz
-!tg-file-id-1.1.3.tgz
 # Yarn Integrity file
 .yarn-integrity
 
@@ -119,3 +118,4 @@ dist
 tgsnake.config.js
 *.session
 *.cache
+*.e2e

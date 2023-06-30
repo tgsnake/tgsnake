@@ -8,14 +8,7 @@
 
 const { Snake } = require('../lib/src/Client/Snake');
 const bot = new Snake();
-bot.action('press', (update) => {
-  update.callbackQuery.message.respond('Why you click?!!');
-});
-bot.cmd('start', (update) => {
-  update.msg?.reply('Yo man!!', {
-    replyMarkup: {
-      inlineKeyboard: [[{ text: "Don't press me!", callbackData: 'press' }]],
-    },
-  });
+bot.cmd('start', (ctx) => {
+  ctx.message.reply('Starting');
 });
 bot.run();
