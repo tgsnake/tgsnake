@@ -43,6 +43,9 @@ export interface FilterContext {
     TypeUpdateExtended<Message, 'replyToTopMessageId'>,
     'message'
   >;
+  'msg.newChatMembers'?: FilterQuery<TypeUpdateExtended<Message, 'newChatMembers'>, 'message'>;
+  'msg.leftChatMember'?: FilterQuery<TypeUpdateExtended<Message, 'leftChatMember'>, 'message'>;
+  'msg.pinnedMessage'?: FilterQuery<TypeUpdateExtended<Message, 'pinnedMessage'>, 'message'>;
   'cb.data'?: FilterQuery<TypeUpdateExtended<CallbackQuery, 'data'>, 'callbackQuery'>;
   'cb.message'?: FilterQuery<TypeUpdateExtended<CallbackQuery, 'message'>, 'callbackQuery'>;
   'editMsg.text'?: FilterQuery<TypeUpdateExtended<Message, 'text'>, 'editedMessage'>;

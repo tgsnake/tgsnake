@@ -11,6 +11,7 @@ import { TLObject } from '../TL.ts';
 import { Raw } from '../../platform.deno.ts';
 import { Message } from '../Messages/Message.ts';
 import { CallbackQuery } from './callbackQuery.ts';
+import { Logger } from '../../Context/Logger.ts';
 import type { Snake } from '../../Client/index.ts';
 
 export interface TypeUpdate {
@@ -79,6 +80,7 @@ export class Update extends TLObject {
     chats: Array<Raw.Chat | Raw.Channel>,
     users: Array<Raw.User>
   ): Promise<Update> {
+    Logger.debug(`Parsing update: ${update.className}`);
     if (update instanceof Raw.UpdateNewMessage || update instanceof Raw.UpdateNewChannelMessage) {
       return Update.updateNewMessage(client, update, chats, users);
     }

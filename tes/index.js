@@ -8,7 +8,15 @@
 
 const { Snake } = require('../lib/src/Client/Snake');
 const bot = new Snake();
+bot.on('msg.pinnedMessage', (ctx) => {
+  ctx.message.reply(`Seseorang menyematkan pesan ini!`);
+});
 bot.cmd('start', (ctx) => {
-  ctx.message.reply('Starting');
+  try {
+    ctx.message.reply('Starting');
+    // bot._client.startSecretChat(ctx.message.chat.id);
+  } catch (e) {
+    console.log(e);
+  }
 });
 bot.run();

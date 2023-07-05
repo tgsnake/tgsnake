@@ -42,15 +42,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tgsnake/core@npm:1.7.1":
-  version: 1.7.1
-  resolution: "@tgsnake/core@npm:1.7.1"
+"@tgsnake/core@file:../core/tgsnake-core-1.8.0-alpha.2.tgz::locator=tgsnake%40workspace%3A.":
+  version: 1.8.0-alpha.2
+  resolution: "@tgsnake/core@file:../core/tgsnake-core-1.8.0-alpha.2.tgz::locator=tgsnake%40workspace%3A."
   dependencies:
     "@tgsnake/log": latest
     async-mutex: 0.4.0
     big-integer: 1.6.51
     socks: 2.7.1
-  checksum: 23638e03832d5111b881843fc928c1bccf35687494d5be19e9f6b2ff148511aa9168f2f1e86e96405565e15e774616532214ceb021f406830bb68d25e83a6354
+  checksum: 02bc0d10fef391f35ce0a79049c7cae19c436cf85b7d9bf263825d0c4208164361601ad7bd044059e315df95fe20d8fd816a9a310e64afb17f735474397601d3
   languageName: node
   linkType: hard
 
@@ -483,7 +483,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tgsnake@workspace:."
   dependencies:
-    "@tgsnake/core": 1.7.1
+    "@tgsnake/core": ../core/tgsnake-core-1.8.0-alpha.2.tgz
     "@tgsnake/fileid": 2.1.0
     "@tgsnake/log": latest
     "@tgsnake/parser": 2.0.1

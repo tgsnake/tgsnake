@@ -67,9 +67,8 @@ export interface TypeMessage {
   newChatPhoto?: Medias.Photo;
   deleteChatPhoto?: boolean;
   groupChatCreated?: boolean;
-  supergroupChatCreated?: boolean;
   channelChatCreated?: boolean;
-  messageAutoDeleteTimeChanged?: any;
+  messageAutoDeleteTimeChanged?: boolean;
   migrateToChatId?: bigint;
   migrateFromChatId?: bigint;
   pinnedMessage?: Message;
@@ -82,16 +81,18 @@ export interface TypeMessage {
   passportData?: any;
   forumTopicCreated?: Raw.MessageActionTopicCreate;
   forumTopicEdited?: Raw.MessageActionTopicEdit;
-  videoChatScheduled?: any;
-  videoChatEnded?: any;
-  videoChatStarted?: any;
+  videoChatScheduled?: Date;
+  videoChatEnded?: number;
+  videoChatStarted?: boolean;
   videoChatParticipantInvalid?: any;
+  videoChatInvited?: Array<Advanceds.User>;
   webAppData?: Advanceds.WebAppData;
   replyMarkup?: ReplyMarkup.TypeReplyMarkup;
   giftPremium?: Raw.MessageActionGiftPremium;
   chatThemeChanged?: Raw.MessageActionSetChatTheme;
-  setMessagesTTL?: Raw.MessageActionSetMessagesTTL;
   screenshot?: boolean;
+  secretChat?: boolean;
+  ttl?: number;
 }
 // TODO:
 // Support message services
@@ -146,9 +147,8 @@ export class Message extends TLObject {
   newChatPhoto?: Medias.Photo;
   deleteChatPhoto?: boolean;
   groupChatCreated?: boolean;
-  supergroupChatCreated?: boolean;
   channelChatCreated?: boolean;
-  messageAutoDeleteTimeChanged?: any;
+  messageAutoDeleteTimeChanged?: boolean;
   migrateToChatId?: bigint;
   migrateFromChatId?: bigint;
   pinnedMessage?: Message;
@@ -161,16 +161,18 @@ export class Message extends TLObject {
   passportData?: any;
   forumTopicCreated?: Raw.MessageActionTopicCreate;
   forumTopicEdited?: Raw.MessageActionTopicEdit;
-  videoChatScheduled?: any;
-  videoChatEnded?: any;
-  videoChatStarted?: any;
+  videoChatScheduled?: Date;
+  videoChatEnded?: number;
+  videoChatStarted?: boolean;
   videoChatParticipantInvalid?: any;
+  videoChatInvited?: Array<Advanceds.User>;
   webAppData?: Advanceds.WebAppData;
   replyMarkup?: ReplyMarkup.TypeReplyMarkup;
   giftPremium?: Raw.MessageActionGiftPremium;
   chatThemeChanged?: Raw.MessageActionSetChatTheme;
-  setMessagesTTL?: Raw.MessageActionSetMessagesTTL;
   screenshot?: boolean;
+  secretChat?: boolean;
+  ttl?: number;
   constructor(
     {
       id,
@@ -223,7 +225,6 @@ export class Message extends TLObject {
       newChatPhoto,
       deleteChatPhoto,
       groupChatCreated,
-      supergroupChatCreated,
       channelChatCreated,
       messageAutoDeleteTimeChanged,
       migrateToChatId,
@@ -242,12 +243,14 @@ export class Message extends TLObject {
       videoChatEnded,
       videoChatStarted,
       videoChatParticipantInvalid,
+      videoChatInvited,
       webAppData,
       replyMarkup,
       giftPremium,
       chatThemeChanged,
-      setMessagesTTL,
       screenshot,
+      secretChat,
+      ttl,
     }: TypeMessage,
     client: Snake
   ) {
@@ -302,7 +305,6 @@ export class Message extends TLObject {
     this.newChatPhoto = newChatPhoto;
     this.deleteChatPhoto = deleteChatPhoto;
     this.groupChatCreated = groupChatCreated;
-    this.supergroupChatCreated = supergroupChatCreated;
     this.channelChatCreated = channelChatCreated;
     this.messageAutoDeleteTimeChanged = messageAutoDeleteTimeChanged;
     this.migrateToChatId = migrateToChatId;
@@ -321,12 +323,14 @@ export class Message extends TLObject {
     this.videoChatEnded = videoChatEnded;
     this.videoChatStarted = videoChatStarted;
     this.videoChatParticipantInvalid = videoChatParticipantInvalid;
+    this.videoChatInvited = videoChatInvited;
     this.webAppData = webAppData;
     this.replyMarkup = replyMarkup;
     this.giftPremium = giftPremium;
     this.chatThemeChanged = chatThemeChanged;
-    this.setMessagesTTL = setMessagesTTL;
     this.screenshot = screenshot;
+    this.secretChat = secretChat;
+    this.ttl = ttl;
   }
   static async parse(
     client: Snake,
@@ -364,9 +368,11 @@ export class Message extends TLObject {
           client,
           users.find((user) => user.id === userId)
         );
-        let senderChat = Advanceds.Chat.parseMessage(client, message, users, chats, false);
+        let senderChat = from
+          ? undefined
+          : Advanceds.Chat.parseMessage(client, message, users, chats, false);
         let chat = Advanceds.Chat.parseMessage(client, message, users, chats, true);
-        return new Message(
+        let parsedMessage = new Message(
           {
             from,
             senderChat,
@@ -375,9 +381,113 @@ export class Message extends TLObject {
             id: message.id,
             empty: false,
             date: new Date(message.date * 1000),
+            mentioned: message.mentioned,
           },
           client
         );
+        if (message.action) {
+          const action = message.action;
+          if (action instanceof Raw.MessageActionChatCreate) {
+            parsedMessage.groupChatCreated = true;
+          } else if (action instanceof Raw.MessageActionChatEditTitle) {
+            parsedMessage.newChatTitle = (action as Raw.MessageActionChatEditTitle).title;
+          } else if (action instanceof Raw.MessageActionChatEditPhoto) {
+            if ((action as Raw.MessageActionChatEditPhoto).photo instanceof Raw.Photo) {
+              parsedMessage.newChatPhoto = Medias.Photo.parse(
+                client,
+                (action as Raw.MessageActionChatEditPhoto).photo as Raw.Photo
+              );
+            }
+          } else if (action instanceof Raw.MessageActionChatDeletePhoto) {
+            parsedMessage.deleteChatPhoto = true;
+          } else if (action instanceof Raw.MessageActionChatAddUser) {
+            parsedMessage.newChatMembers = (action as Raw.MessageActionChatAddUser).users
+              .map((id) =>
+                Advanceds.User.parse(
+                  client,
+                  users.find((u) => u.id === id)
+                )
+              )
+              .filter((u) => u !== undefined) as unknown as Array<Advanceds.User>;
+          } else if (action instanceof Raw.MessageActionChatDeleteUser) {
+            parsedMessage.leftChatMember = Advanceds.User.parse(
+              client,
+              users.find((u) => u.id === (action as Raw.MessageActionChatDeleteUser).userId)
+            );
+          } else if (action instanceof Raw.MessageActionChatJoinedByLink) {
+            parsedMessage.newChatMembers = [
+              Advanceds.User.parse(
+                client,
+                users.find((u) => u.id === getId(message.fromId!))
+              ),
+            ].filter((u) => u !== undefined) as unknown as Array<Advanceds.User>;
+          } else if (action instanceof Raw.MessageActionChannelCreate) {
+            parsedMessage.channelChatCreated = true;
+          } else if (action instanceof Raw.MessageActionChatMigrateTo) {
+            parsedMessage.migrateToChatId = (action as Raw.MessageActionChatMigrateTo).channelId;
+          } else if (action instanceof Raw.MessageActionGroupCall) {
+            if ((action as Raw.MessageActionGroupCall).duration) {
+              parsedMessage.videoChatEnded = (action as Raw.MessageActionGroupCall).duration;
+            } else {
+              parsedMessage.videoChatStarted = true;
+            }
+          } else if (action instanceof Raw.MessageActionInviteToGroupCall) {
+            parsedMessage.videoChatInvited = (action as Raw.MessageActionInviteToGroupCall).users
+              .map((id) =>
+                Advanceds.User.parse(
+                  client,
+                  users.find((u) => u.id === id)
+                )
+              )
+              .filter((u) => u !== undefined) as unknown as Array<Advanceds.User>;
+          } else if (action instanceof Raw.MessageActionGroupCallScheduled) {
+            parsedMessage.videoChatScheduled = new Date(
+              (action as Raw.MessageActionGroupCallScheduled).scheduleDate * 1000
+            );
+          } else if (action instanceof Raw.MessageActionChannelMigrateFrom) {
+            parsedMessage.migrateFromChatId = (
+              action as Raw.MessageActionChannelMigrateFrom
+            ).chatId;
+          } else if (action instanceof Raw.MessageActionPinMessage) {
+            try {
+              parsedMessage.pinnedMessage = (
+                await client.api.getMessages(parsedMessage.chat?.id!, [], [message.id], 0)
+              )[0];
+            } catch (error) {}
+          } else if (action instanceof Raw.MessageActionTopicCreate) {
+            parsedMessage.forumTopicCreated = action as Raw.MessageActionTopicCreate;
+          } else if (action instanceof Raw.MessageActionTopicEdit) {
+            parsedMessage.forumTopicEdited = action as Raw.MessageActionTopicEdit;
+          }
+        }
+        if (message.replyTo) {
+          parsedMessage.isTopicMessage = message.replyTo?.forumTopic ?? false;
+          parsedMessage.replyToMessageId = message.replyTo?.replyToMsgId;
+          parsedMessage.replyToTopMessageId = message.replyTo?.replyToTopId;
+          if (replies) {
+            let cchat = client._cacheMessage.get(parsedMessage.chat?.id!);
+            if (cchat) {
+              let cmsg = cchat.get(parsedMessage?.replyToMessageId!);
+              if (cmsg) {
+                parsedMessage.replyToMessage = cmsg;
+              } else {
+                try {
+                  let fmsg = await client.api.getMessages(
+                    parsedMessage.chat?.id!,
+                    [],
+                    [message.id],
+                    replies - 1
+                  );
+                  parsedMessage.replyToMessage = fmsg[0];
+                } catch (error) {}
+              }
+            }
+          }
+        }
+        if (message.ttlPeriod) {
+          parsedMessage.ttl = message.ttlPeriod;
+        }
+        return parsedMessage;
       }
       if (message instanceof Raw.Message) {
         message as Raw.Message;
@@ -513,7 +623,9 @@ export class Message extends TLObject {
           client,
           users.find((user) => user.id === userId)
         );
-        let senderChat = Advanceds.Chat.parseMessage(client, message, users, chats, false);
+        let senderChat = from
+          ? undefined
+          : Advanceds.Chat.parseMessage(client, message, users, chats, false);
         let chat = Advanceds.Chat.parseMessage(client, message, users, chats, true);
         let parsedMessage = new Message(
           {
@@ -597,6 +709,9 @@ export class Message extends TLObject {
             cmsg.set(parsedMessage.id, parsedMessage);
             client._cacheMessage.set(parsedMessage.chat?.id!, cmsg);
           }
+        }
+        if (message.ttlPeriod) {
+          parsedMessage.ttl = message.ttlPeriod;
         }
         return parsedMessage;
       }

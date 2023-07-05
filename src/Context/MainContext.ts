@@ -24,8 +24,9 @@ export class MainContext<T = {}> extends Composer<T> {
   constructor() {
     super();
   }
-  async handleUpdate(update: Raw.TypeUpdate | Raws.UpdateSecretChatMessage, client: Snake) {
+  async handleUpdate(update: Raw.TypeUpdates, client: Snake) {
     if (!update) return false;
+    Logger.debug(`Receive update: ${update.className}`);
     this.use = () => {
       throw new Error(
         `bot.use is unavailable when bot running. so kill bot first then add bot.use in your source code then running again.`
@@ -42,10 +43,7 @@ export class MainContext<T = {}> extends Composer<T> {
       }
     }
   }
-  async parseUpdate(
-    update: Raw.TypeUpdate | Raws.UpdateSecretChatMessage,
-    client: Snake
-  ): Promise<Array<object>> {
+  async parseUpdate(update: Raw.TypeUpdates, client: Snake): Promise<Array<object>> {
     // Why Promise<Array<object>> ? because the return of parseUpdate is can by anything, but it must be a class or json object.
     // Possible plugin for make their own parse function.
     const parsedUpdate: Array<Update | Raw.TypeUpdates> = [];

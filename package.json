@@ -24,7 +24,7 @@
     "lib/**/*"
   ],
   "dependencies": {
-    "@tgsnake/core": "1.7.1",
+    "@tgsnake/core": "../core/tgsnake-core-1.8.0-alpha.2.tgz",
     "@tgsnake/fileid": "2.1.0",
     "@tgsnake/log": "latest",
     "@tgsnake/parser": "2.0.1",

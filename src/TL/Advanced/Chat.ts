@@ -297,7 +297,7 @@ export class Chat extends TLObject {
   ): Chat | undefined {
     let peerId = getId(message.peerId);
     let fromId = getId(message.fromId!);
-    let chatId = chat ? peerId : fromId;
+    let chatId = chat ? peerId || fromId : fromId || peerId;
     let merge: Array<Raw.User | Raw.Channel | Raw.Chat> = [...users, ...chats];
     if (!chatId) return;
     let filtered = merge.filter((c) => c.id === chatId)[0];
