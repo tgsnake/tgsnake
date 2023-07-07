@@ -20,12 +20,17 @@ export function parseDialog(
 ): [chats: Array<TypeChat>, users: Array<TypeUser>] {
   return [
     chats.filter((chat): chat is TypeChat => {
-      if (chat instanceof Raw.Chat) return true;
-      if (chat instanceof Raw.Channel) return true;
+      if (
+        chat instanceof Raw.Chat ||
+        chat instanceof Raw.ChatEmpty ||
+        chat instanceof Raw.ChatForbidden
+      )
+        return true;
+      if (chat instanceof Raw.Channel || chat instanceof Raw.ChannelForbidden) return true;
       return false;
     }),
     users.filter((user): user is TypeUser => {
-      return user instanceof Raw.User;
+      return user instanceof Raw.User || user instanceof Raw.UserEmpty;
     }),
   ];
 }

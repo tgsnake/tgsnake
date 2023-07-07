@@ -56,8 +56,8 @@ export class CallbackQuery extends TLObject {
   static async parse(
     client: Snake,
     update: Raw.UpdateBotCallbackQuery | Raw.UpdateInlineBotCallbackQuery,
-    chats: Array<Raw.Chat | Raw.Channel>,
-    users: Array<Raw.User>
+    chats: Array<Raw.TypeChat>,
+    users: Array<Raw.TypeUser>
   ): Promise<CallbackQuery> {
     if (update instanceof Raw.UpdateInlineBotCallbackQuery) {
       return CallbackQuery.parseInline(
@@ -72,8 +72,8 @@ export class CallbackQuery extends TLObject {
   static async parseBot(
     client: Snake,
     update: Raw.UpdateBotCallbackQuery,
-    chats: Array<Raw.Chat | Raw.Channel>,
-    users: Array<Raw.User>
+    chats: Array<Raw.TypeChat>,
+    users: Array<Raw.TypeUser>
   ) {
     const chatId = getPeerId(update.peer);
     const cb = new CallbackQuery(
@@ -111,8 +111,8 @@ export class CallbackQuery extends TLObject {
   static async parseInline(
     client: Snake,
     update: Raw.UpdateInlineBotCallbackQuery,
-    chats: Array<Raw.Chat | Raw.Channel>,
-    users: Array<Raw.User>
+    chats: Array<Raw.TypeChat>,
+    users: Array<Raw.TypeUser>
   ) {
     return new CallbackQuery(
       {

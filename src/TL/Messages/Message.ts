@@ -91,7 +91,6 @@ export interface TypeMessage {
   giftPremium?: Raw.MessageActionGiftPremium;
   chatThemeChanged?: Raw.MessageActionSetChatTheme;
   screenshot?: boolean;
-  secretChat?: boolean;
   ttl?: number;
 }
 // TODO:
@@ -171,7 +170,6 @@ export class Message extends TLObject {
   giftPremium?: Raw.MessageActionGiftPremium;
   chatThemeChanged?: Raw.MessageActionSetChatTheme;
   screenshot?: boolean;
-  secretChat?: boolean;
   ttl?: number;
   constructor(
     {
@@ -249,7 +247,6 @@ export class Message extends TLObject {
       giftPremium,
       chatThemeChanged,
       screenshot,
-      secretChat,
       ttl,
     }: TypeMessage,
     client: Snake
@@ -329,14 +326,13 @@ export class Message extends TLObject {
     this.giftPremium = giftPremium;
     this.chatThemeChanged = chatThemeChanged;
     this.screenshot = screenshot;
-    this.secretChat = secretChat;
     this.ttl = ttl;
   }
   static async parse(
     client: Snake,
     message: Raw.TypeMessage,
-    chats: Array<Raw.Chat | Raw.Channel>,
-    users: Array<Raw.User>,
+    chats: Array<Raw.TypeChat>,
+    users: Array<Raw.TypeUser>,
     replies: number = 1
   ) {
     if (!(message instanceof Raw.MessageEmpty)) {

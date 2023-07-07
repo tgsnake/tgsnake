@@ -291,29 +291,55 @@ export class Chat extends TLObject {
   static parseMessage(
     client: Snake,
     message: Raw.Message | Raw.MessageService,
-    users: Array<Raw.User>,
-    chats: Array<Raw.Chat | Raw.Channel>,
+    users: Array<Raw.TypeUser>,
+    chats: Array<Raw.TypeChat>,
     chat?: boolean
   ): Chat | undefined {
     let peerId = getId(message.peerId);
     let fromId = getId(message.fromId!);
     let chatId = chat ? peerId || fromId : fromId || peerId;
-    let merge: Array<Raw.User | Raw.Channel | Raw.Chat> = [...users, ...chats];
+    let merge: Array<Raw.TypeUser | Raw.TypeChat> = [...users, ...chats];
     if (!chatId) return;
     let filtered = merge.filter((c) => c.id === chatId)[0];
     if (filtered) {
-      if (filtered instanceof Raw.User) {
-        return Chat.parseUser(client, filtered as Raw.User);
+      if (filtered instanceof Raw.User || filtered instanceof Raw.UserEmpty) {
+        return Chat.parseUser(client, filtered!);
       }
-      if (filtered instanceof Raw.Chat) {
-        return Chat.parseChat(client, filtered as Raw.Chat);
+      if (
+        filtered instanceof Raw.Chat ||
+        filtered instanceof Raw.ChatEmpty ||
+        filtered instanceof Raw.ChatForbidden
+      ) {
+        return Chat.parseChat(client, filtered!);
       }
-      return Chat.parseChannel(client, filtered as Raw.Channel);
+      return Chat.parseChannel(client, filtered!);
     }
     return;
   }
-  static parseChat(client: Snake, chat?: Raw.Chat): Chat | undefined {
+  static parseChat(
+    client: Snake,
+    chat?: Raw.ChatEmpty | Raw.Chat | Raw.ChatForbidden
+  ): Chat | undefined {
     if (chat) {
+      if (chat instanceof Raw.ChatEmpty) {
+        return new Chat(
+          {
+            id: -chat.id,
+            type: 'group',
+          },
+          client
+        );
+      }
+      if (chat instanceof Raw.ChatForbidden) {
+        return new Chat(
+          {
+            id: -chat.id,
+            title: chat.title,
+            type: 'group',
+          },
+          client
+        );
+      }
       return new Chat(
         {
           id: -chat.id,
@@ -333,8 +359,22 @@ export class Chat extends TLObject {
       );
     }
   }
-  static parseChannel(client: Snake, channel?: Raw.Channel): Chat | undefined {
+  static parseChannel(
+    client: Snake,
+    channel?: Raw.Channel | Raw.ChannelForbidden
+  ): Chat | undefined {
     if (channel) {
+      if (channel instanceof Raw.ChannelForbidden) {
+        return new Chat(
+          {
+            id: Helpers.getChannelId(channel.id),
+            accessHash: channel.accessHash,
+            type: channel.broadcast ? 'channel' : 'supergroup',
+            title: channel.title,
+          },
+          client
+        );
+      }
       return new Chat(
         {
           id: Helpers.getChannelId(channel.id),
@@ -371,8 +411,17 @@ export class Chat extends TLObject {
       );
     }
   }
-  static parseUser(client: Snake, user?: Raw.User): Chat | undefined {
+  static parseUser(client: Snake, user?: Raw.User | Raw.UserEmpty): Chat | undefined {
     if (user) {
+      if (user instanceof Raw.UserEmpty) {
+        return new Chat(
+          {
+            id: user.id,
+            type: 'private',
+          },
+          client
+        );
+      }
       return new Chat(
         {
           id: user.id,
@@ -399,21 +448,25 @@ export class Chat extends TLObject {
   static parseDialog(
     client: Snake,
     peer: Raw.TypePeer,
-    users: Array<Raw.User>,
-    chats: Array<Raw.Chat | Raw.Channel>
+    users: Array<Raw.TypeUser>,
+    chats: Array<Raw.TypeChat>
   ): Chat | undefined {
     let peerId = getId(peer);
-    let merge: Array<Raw.User | Raw.Channel | Raw.Chat> = [...users, ...chats];
+    let merge: Array<Raw.TypeUser | Raw.TypeChat> = [...users, ...chats];
     if (!peerId) return;
     let filtered = merge.filter((c) => c.id === peerId)[0];
     if (filtered) {
-      if (filtered instanceof Raw.User) {
-        return Chat.parseUser(client, filtered as Raw.User);
-      } else if (filtered instanceof Raw.Chat) {
-        return Chat.parseChat(client, filtered as Raw.Chat);
-      } else if (filtered instanceof Raw.Channel) {
-        return Chat.parseChannel(client, filtered as Raw.Channel);
+      if (filtered instanceof Raw.User || filtered instanceof Raw.UserEmpty) {
+        return Chat.parseUser(client, filtered!);
       }
+      if (
+        filtered instanceof Raw.Chat ||
+        filtered instanceof Raw.ChatEmpty ||
+        filtered instanceof Raw.ChatForbidden
+      ) {
+        return Chat.parseChat(client, filtered!);
+      }
+      return Chat.parseChannel(client, filtered!);
     }
   }
   // static parseFull() {}

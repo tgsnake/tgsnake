@@ -8,9 +8,10 @@
 
 const { Snake } = require('../lib/src/Client/Snake');
 const bot = new Snake();
-bot.on('msg.pinnedMessage', (ctx) => {
-  ctx.message.reply(`Seseorang menyematkan pesan ini!`);
-});
+/*bot.on('any', (ctx) => {
+  console.log(ctx);
+  //ctx.message.reply(`Seseorang menyematkan pesan ini!`);
+});*/
 bot.cmd('start', (ctx) => {
   try {
     ctx.message.reply('Starting');

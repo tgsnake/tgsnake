@@ -10,3 +10,4 @@
 
 export { Update, type TypeUpdate } from './Update.ts';
 export { CallbackQuery } from './callbackQuery.ts';
+export * as chatMembers from './chatMember.ts';

@@ -23,6 +23,9 @@ export interface FilterContext {
   poll?: FilterQuery<TypeUpdate, 'poll'>;
   pollAnswer?: FilterQuery<TypeUpdate, 'pollAnswer'>;
   chatJoinRequest?: FilterQuery<TypeUpdate, 'chatJoinRequest'>;
+  myChatMember?: FilterQuery<TypeUpdate, 'myChatMember'>;
+  chatMember?: FilterQuery<TypeUpdate, 'chatMember'>;
+  secretChat?: FilterQuery<TypeUpdate, 'secretChat'>;
   /* shorthand */
   'msg.text'?: FilterQuery<TypeUpdateExtended<Message, 'text'>, 'message'>;
   'msg.caption'?: FilterQuery<TypeUpdateExtended<Message, 'caption'>, 'message'>;

@@ -49,16 +49,16 @@ export class MainContext<T = {}> extends Composer<T> {
     const parsedUpdate: Array<Update | Raw.TypeUpdates> = [];
     if (update instanceof Raw.Updates || update instanceof Raw.UpdatesCombined) {
       const { updates, chats, users } = update;
-      const filterChats: Array<TypeChat> = chats.filter((chat): chat is TypeChat => {
+      /*const filterChats: Array<TypeChat> = chats.filter((chat): chat is TypeChat => {
         if (chat instanceof Raw.Chat) return true;
         if (chat instanceof Raw.Channel) return true;
         return false;
       });
       const filterUsers: Array<TypeUser> = users.filter((user): user is TypeUser => {
         return user instanceof Raw.User;
-      });
+      });*/
       for (const _update of updates) {
-        parsedUpdate.push(await Update.parse(client, _update, filterChats, filterUsers));
+        parsedUpdate.push(await Update.parse(client, _update, chats, users));
       }
     } else if (
       update instanceof Raw.UpdateShortMessage ||
@@ -72,14 +72,14 @@ export class MainContext<T = {}> extends Composer<T> {
         })
       );
       const { newMessages, otherUpdates, chats, users } = difference;
-      const filterChats: Array<TypeChat> = chats.filter((chat): chat is TypeChat => {
+      /*const filterChats: Array<TypeChat> = chats.filter((chat): chat is TypeChat => {
         if (chat instanceof Raw.Chat) return true;
         if (chat instanceof Raw.Channel) return true;
         return false;
       });
       const filterUsers: Array<TypeUser> = users.filter((user): user is TypeUser => {
         return user instanceof Raw.User;
-      });
+      });*/
       if (newMessages) {
         parsedUpdate.push(
           await Update.parse(
@@ -89,12 +89,12 @@ export class MainContext<T = {}> extends Composer<T> {
               pts: update.pts,
               ptsCount: update.ptsCount,
             }),
-            filterChats,
-            filterUsers
+            chats,
+            users
           )
         );
       } else if (otherUpdates) {
-        parsedUpdate.push(await Update.parse(client, otherUpdates, filterChats, filterUsers));
+        parsedUpdate.push(await Update.parse(client, otherUpdates, chats, users));
       }
     } else if (update instanceof Raw.UpdateShort) {
       parsedUpdate.push(await Update.parse(client, update.update, [], []));

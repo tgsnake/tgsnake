@@ -273,6 +273,7 @@ export class User extends TLObject {
           client
         );
       }
+      return new User({ id: user.id }, client);
     }
     return;
   }

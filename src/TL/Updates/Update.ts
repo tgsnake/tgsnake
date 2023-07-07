@@ -8,9 +8,10 @@
  * it under the terms of the MIT License as published.
  */
 import { TLObject } from '../TL.ts';
-import { Raw } from '../../platform.deno.ts';
+import { Raws } from '../../platform.deno.ts';
 import { Message } from '../Messages/Message.ts';
 import { CallbackQuery } from './callbackQuery.ts';
+import { ChatMemberUpdated } from './chatMember.ts';
 import { Logger } from '../../Context/Logger.ts';
 import type { Snake } from '../../Client/index.ts';
 
@@ -26,7 +27,10 @@ export interface TypeUpdate {
   preCheckoutQuery?: TLObject;
   poll?: TLObject;
   pollAnswer?: TLObject;
+  myChatMember?: ChatMemberUpdated;
+  chatMember?: ChatMemberUpdated;
   chatJoinRequest?: TLObject;
+  secretChat?: Raws.UpdateSecretChatMessage;
 }
 export class Update extends TLObject {
   message?: Message;
@@ -41,6 +45,9 @@ export class Update extends TLObject {
   poll?: TLObject;
   pollAnswer?: TLObject;
   chatJoinRequest?: TLObject;
+  myChatMember?: ChatMemberUpdated;
+  chatMember?: ChatMemberUpdated;
+  secretChat?: Raws.UpdateSecretChatMessage;
   constructor(
     {
       message,
@@ -55,6 +62,9 @@ export class Update extends TLObject {
       poll,
       pollAnswer,
       chatJoinRequest,
+      myChatMember,
+      chatMember,
+      secretChat,
     }: TypeUpdate,
     client: Snake
   ) {
@@ -73,23 +83,32 @@ export class Update extends TLObject {
     this.poll = poll;
     this.pollAnswer = pollAnswer;
     this.chatJoinRequest = chatJoinRequest;
+    this.myChatMember = myChatMember;
+    this.chatMember = chatMember;
+    this.secretChat = secretChat;
   }
   static async parse(
     client: Snake,
-    update: Raw.TypeUpdate,
-    chats: Array<Raw.Chat | Raw.Channel>,
-    users: Array<Raw.User>
+    update: Raws.Raw.TypeUpdate,
+    chats: Array<Raws.Raw.TypeChat>,
+    users: Array<Raws.Raw.TypeUser>
   ): Promise<Update> {
     Logger.debug(`Parsing update: ${update.className}`);
-    if (update instanceof Raw.UpdateNewMessage || update instanceof Raw.UpdateNewChannelMessage) {
+    if (
+      update instanceof Raws.Raw.UpdateNewMessage ||
+      update instanceof Raws.Raw.UpdateNewChannelMessage
+    ) {
       return Update.updateNewMessage(client, update, chats, users);
     }
-    if (update instanceof Raw.UpdateEditMessage || update instanceof Raw.UpdateEditChannelMessage) {
+    if (
+      update instanceof Raws.Raw.UpdateEditMessage ||
+      update instanceof Raws.Raw.UpdateEditChannelMessage
+    ) {
       return Update.updateEditMessage(client, update, chats, users);
     }
     if (
-      update instanceof Raw.UpdateBotCallbackQuery ||
-      update instanceof Raw.UpdateInlineBotCallbackQuery
+      update instanceof Raws.Raw.UpdateBotCallbackQuery ||
+      update instanceof Raws.Raw.UpdateInlineBotCallbackQuery
     ) {
       return new Update(
         {
@@ -98,15 +117,43 @@ export class Update extends TLObject {
         client
       );
     }
+    if (update instanceof Raws.UpdateSecretChatMessage) {
+      return new Update(
+        {
+          secretChat: update,
+        },
+        client
+      );
+    }
+    if (
+      update instanceof Raws.Raw.UpdateChannelParticipant ||
+      update instanceof Raws.Raw.UpdateChatParticipant
+    ) {
+      const chatmember = ChatMemberUpdated.parse(client, update, chats, users);
+      if (chatmember.from.isSelf) {
+        return new Update(
+          {
+            myChatMember: chatmember,
+          },
+          client
+        );
+      }
+      return new Update(
+        {
+          chatMember: chatmember,
+        },
+        client
+      );
+    }
     return new Update({}, client);
   }
   static async updateNewMessage(
     client: Snake,
-    update: Raw.UpdateNewMessage | Raw.UpdateNewChannelMessage,
-    chats: Array<Raw.Chat | Raw.Channel>,
-    users: Array<Raw.User>
+    update: Raws.Raw.UpdateNewMessage | Raws.Raw.UpdateNewChannelMessage,
+    chats: Array<Raws.Raw.TypeChat>,
+    users: Array<Raws.Raw.TypeUser>
   ): Promise<Update> {
-    if (update.message instanceof Raw.Message && (update.message as Raw.Message).post) {
+    if (update.message instanceof Raws.Raw.Message && (update.message as Raws.Raw.Message).post) {
       return new Update(
         {
           channelPost: await Message.parse(client, update.message, chats, users),
@@ -123,11 +170,11 @@ export class Update extends TLObject {
   }
   static async updateEditMessage(
     client: Snake,
-    update: Raw.UpdateEditMessage | Raw.UpdateEditChannelMessage,
-    chats: Array<Raw.Chat | Raw.Channel>,
-    users: Array<Raw.User>
+    update: Raws.Raw.UpdateEditMessage | Raws.Raw.UpdateEditChannelMessage,
+    chats: Array<Raws.Raw.TypeChat>,
+    users: Array<Raws.Raw.TypeUser>
   ): Promise<Update> {
-    if (update instanceof Raw.UpdateEditChannelMessage) {
+    if (update instanceof Raws.Raw.UpdateEditChannelMessage) {
       return new Update(
         {
           editedChannelPost: await Message.parse(client, update.message, chats, users),
