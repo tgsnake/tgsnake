@@ -14,7 +14,7 @@ import type { Snake } from '../Client/Snake.ts';
 
 type TypeChat = Raw.Chat | Raw.Channel;
 type TypeUser = Raw.User;
-export class MainContext<T = {}> extends Composer<T> {
+export class MainContext<T> extends Composer<T> {
   /** @hidden */
   protected _errorHandler: ErrorHandler<T> = (error, update) => {
     Logger.error(`Snake error (${error.message}) when processing update :`);

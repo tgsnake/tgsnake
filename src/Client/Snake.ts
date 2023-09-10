@@ -29,7 +29,7 @@ import { Logger, MainContext } from '../Context/index.ts';
 import { Telegram } from '../Methods/Telegram.ts';
 import type { Message } from '../TL/Messages/Message.ts';
 
-export class Snake extends MainContext {
+export class Snake<T = {}> extends MainContext<T> {
   _options!: Options;
   _client!: Client;
   _cacheMessage!: Map<bigint, Map<number, Message>>;
