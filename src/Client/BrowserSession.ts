@@ -69,7 +69,7 @@ export class BrowserSession extends Storages.BaseSession {
       Array<
         [id: bigint, accessHash: bigint, type: string, username?: string, phoneNumber?: string]
       >,
-      Array<Storages.SecretChat>
+      Array<Storages.SecretChat>,
     ]
   > {
     let peer: Array<any> = [];

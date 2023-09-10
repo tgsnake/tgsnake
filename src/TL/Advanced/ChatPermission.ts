@@ -65,7 +65,7 @@ export class ChatPermission extends TLObject {
       canInviteUsers?: boolean;
       canPinMessages?: boolean;
     },
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.className = 'ChatPermission';
@@ -99,7 +99,7 @@ export class ChatPermission extends TLObject {
         canInviteUsers: !bannedPermission.inviteUsers,
         canPinMessages: !bannedPermission.pinMessages,
       },
-      client
+      client,
     );
   }
 }

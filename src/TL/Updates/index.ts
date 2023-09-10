@@ -8,6 +8,6 @@
  * it under the terms of the MIT License as published.
  */
 
-export { Update, type TypeUpdate } from './Update.ts';
+export { Update, type TypeUpdate, type ContextUpdate } from './Update.ts';
 export { CallbackQuery } from './callbackQuery.ts';
 export * as chatMembers from './chatMember.ts';

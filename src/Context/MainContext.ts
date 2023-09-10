@@ -29,7 +29,7 @@ export class MainContext<T = {}> extends Composer<T> {
     Logger.debug(`Receive update: ${update.className}`);
     this.use = () => {
       throw new Error(
-        `bot.use is unavailable when bot running. so kill bot first then add bot.use in your source code then running again.`
+        `bot.use is unavailable when bot running. so kill bot first then add bot.use in your source code then running again.`,
       );
     };
     const parsed = await this.parseUpdate(update, client);
@@ -49,14 +49,6 @@ export class MainContext<T = {}> extends Composer<T> {
     const parsedUpdate: Array<Update | Raw.TypeUpdates> = [];
     if (update instanceof Raw.Updates || update instanceof Raw.UpdatesCombined) {
       const { updates, chats, users } = update;
-      /*const filterChats: Array<TypeChat> = chats.filter((chat): chat is TypeChat => {
-        if (chat instanceof Raw.Chat) return true;
-        if (chat instanceof Raw.Channel) return true;
-        return false;
-      });
-      const filterUsers: Array<TypeUser> = users.filter((user): user is TypeUser => {
-        return user instanceof Raw.User;
-      });*/
       for (const _update of updates) {
         parsedUpdate.push(await Update.parse(client, _update, chats, users));
       }
@@ -69,32 +61,33 @@ export class MainContext<T = {}> extends Composer<T> {
           pts: update.pts - update.ptsCount,
           date: update.date,
           qts: -1,
-        })
+        }),
       );
-      const { newMessages, otherUpdates, chats, users } = difference;
-      /*const filterChats: Array<TypeChat> = chats.filter((chat): chat is TypeChat => {
-        if (chat instanceof Raw.Chat) return true;
-        if (chat instanceof Raw.Channel) return true;
-        return false;
-      });
-      const filterUsers: Array<TypeUser> = users.filter((user): user is TypeUser => {
-        return user instanceof Raw.User;
-      });*/
-      if (newMessages) {
-        parsedUpdate.push(
-          await Update.parse(
-            client,
-            new Raw.UpdateNewMessage({
-              message: newMessages[0],
-              pts: update.pts,
-              ptsCount: update.ptsCount,
-            }),
-            chats,
-            users
-          )
-        );
-      } else if (otherUpdates) {
-        parsedUpdate.push(await Update.parse(client, otherUpdates, chats, users));
+      if (
+        difference instanceof Raw.updates.Difference ||
+        difference instanceof Raw.updates.DifferenceSlice
+      ) {
+        const { newMessages, otherUpdates, chats, users } = difference;
+        if (newMessages) {
+          for (const newMessage of newMessages) {
+            parsedUpdate.push(
+              await Update.parse(
+                client,
+                new Raw.UpdateNewMessage({
+                  message: newMessage,
+                  pts: update.pts,
+                  ptsCount: update.ptsCount,
+                }),
+                chats,
+                users,
+              ),
+            );
+          }
+        } else if (otherUpdates) {
+          for (const otherUpdate of otherUpdates) {
+            parsedUpdate.push(await Update.parse(client, otherUpdate, chats, users));
+          }
+        }
       }
     } else if (update instanceof Raw.UpdateShort) {
       parsedUpdate.push(await Update.parse(client, update.update, [], []));

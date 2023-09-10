@@ -68,14 +68,14 @@ export class Snake extends MainContext {
         {
           logLevel: ['debug'],
         },
-        options
+        options,
       );
       // assign default app version.
       this._options.clientOptions = Object.assign(
         {
           appVersion: '3.0.0',
         },
-        this._options.clientOptions
+        this._options.clientOptions,
       );
       // assign default login options
       this._options.login = Object.assign(
@@ -84,7 +84,7 @@ export class Snake extends MainContext {
           forceDotSession: true,
           sessionName: 'tgsnake',
         },
-        this._options.login
+        this._options.login,
       );
       // validate session.
       if (this._options.login.session !== undefined) {
@@ -95,7 +95,7 @@ export class Snake extends MainContext {
               if (!options.login.sessionName) {
                 this._options.login.sessionName = generateName(this._options.login.sessionName!);
                 Logger.info(
-                  `Creating \`${this._options.login.sessionName}\` dot session. Change default sessionName to \`${this._options.login.sessionName}\` for login in next time.`
+                  `Creating \`${this._options.login.sessionName}\` dot session. Change default sessionName to \`${this._options.login.sessionName}\` for login in next time.`,
                 );
               }
               if (isBrowser) {
@@ -111,7 +111,7 @@ export class Snake extends MainContext {
             if (this._options.login.forceDotSession) {
               this._options.login.sessionName = generateName(this._options.login.sessionName!);
               Logger.info(
-                `Creating \`${this._options.login.sessionName}\` dot session. Change default sessionName to \`${this._options.login.sessionName}\` for login in next time.`
+                `Creating \`${this._options.login.sessionName}\` dot session. Change default sessionName to \`${this._options.login.sessionName}\` for login in next time.`,
               );
               if (isBrowser) {
                 this._options.login.session = new BrowserSession(this._options.login.sessionName!);
@@ -208,7 +208,7 @@ export class Snake extends MainContext {
       Logger.log(
         `Loggined as : ${
           this._me.lastName ? `${this._me.firstName} ${this._me.lastName}` : this._me.firstName
-        } - ${this._me.id}`
+        } - ${this._me.id}`,
       );
     }
     return true;

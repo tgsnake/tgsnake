@@ -40,7 +40,7 @@ export class CallbackQuery extends TLObject {
       inlineMessageId?: string;
       gameShortName?: string;
     },
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.className = 'CallbackQuery';
@@ -57,14 +57,14 @@ export class CallbackQuery extends TLObject {
     client: Snake,
     update: Raw.UpdateBotCallbackQuery | Raw.UpdateInlineBotCallbackQuery,
     chats: Array<Raw.TypeChat>,
-    users: Array<Raw.TypeUser>
+    users: Array<Raw.TypeUser>,
   ): Promise<CallbackQuery> {
     if (update instanceof Raw.UpdateInlineBotCallbackQuery) {
       return CallbackQuery.parseInline(
         client,
         update as Raw.UpdateInlineBotCallbackQuery,
         chats,
-        users
+        users,
       );
     }
     return CallbackQuery.parseBot(client, update as Raw.UpdateBotCallbackQuery, chats, users);
@@ -73,7 +73,7 @@ export class CallbackQuery extends TLObject {
     client: Snake,
     update: Raw.UpdateBotCallbackQuery,
     chats: Array<Raw.TypeChat>,
-    users: Array<Raw.TypeUser>
+    users: Array<Raw.TypeUser>,
   ) {
     const chatId = getPeerId(update.peer);
     const cb = new CallbackQuery(
@@ -84,10 +84,10 @@ export class CallbackQuery extends TLObject {
         data: update.data ? update.data.toString('utf8') : undefined,
         from: await User.parse(
           client,
-          users.find((user) => user.id === update.userId)
+          users.find((user) => user.id === update.userId),
         ),
       },
-      client
+      client,
     );
     const cchat = client._cacheMessage.get(chatId!);
     if (cchat) {
@@ -112,7 +112,7 @@ export class CallbackQuery extends TLObject {
     client: Snake,
     update: Raw.UpdateInlineBotCallbackQuery,
     chats: Array<Raw.TypeChat>,
-    users: Array<Raw.TypeUser>
+    users: Array<Raw.TypeUser>,
   ) {
     return new CallbackQuery(
       {
@@ -123,10 +123,10 @@ export class CallbackQuery extends TLObject {
         inlineMessageId: createInlineMsgId(update.msgId),
         from: await User.parse(
           client,
-          users.find((user) => user.id === update.userId)
+          users.find((user) => user.id === update.userId),
         ),
       },
-      client
+      client,
     );
   }
 }

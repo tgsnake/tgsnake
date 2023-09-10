@@ -31,7 +31,7 @@ export class PollAnswer extends TLObject {
       voters: number;
       option: string;
     },
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.className = 'pollAnswer';
@@ -92,7 +92,7 @@ export class Poll extends TLObject {
       solution?: string;
       solutionEntities?: Array<Entities>;
     },
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.className = 'poll';
@@ -135,7 +135,7 @@ export class Poll extends TLObject {
                   voters: results.voters ?? 0,
                   option: element.option.toString('utf8'),
                 },
-                client
+                client,
               );
             }
           }
@@ -148,7 +148,7 @@ export class Poll extends TLObject {
         solution: poll.results.solution,
         solutionEntities: Parser.fromRaw(poll.results.solutionEntities ?? []),
       },
-      client
+      client,
     );
   }
 }

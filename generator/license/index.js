@@ -38,6 +38,6 @@ function start(route) {
   }
 }
 console.log(
-  "--- WARNING!! ---\n\nTHIS ACTION WILL BE CHANGE COPYRIGHT YEAR IN ALL FILE.\nTHIS ACTION CAN'T BE CANCELLED!\n\n--- build:license ---"
+  "--- WARNING!! ---\n\nTHIS ACTION WILL BE CHANGE COPYRIGHT YEAR IN ALL FILE.\nTHIS ACTION CAN'T BE CANCELLED!\n\n--- build:license ---",
 );
 start(process.cwd());

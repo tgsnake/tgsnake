@@ -67,7 +67,7 @@ export class Video extends TLObject {
       mimeType?: string;
       fileSize?: bigint;
     },
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.className = 'video';
@@ -129,8 +129,8 @@ export class Video extends TLObject {
               document.id,
               document.accessHash,
               document.fileReference,
-              document.dcId
-            )
+              document.dcId,
+            ),
           );
         }
       }
@@ -150,7 +150,7 @@ export class Video extends TLObject {
         dcId: document.dcId,
         date: new Date(document.date * 1000),
       },
-      client
+      client,
     );
   }
 }

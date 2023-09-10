@@ -92,6 +92,8 @@ export interface TypeMessage {
   chatThemeChanged?: Raw.MessageActionSetChatTheme;
   screenshot?: boolean;
   ttl?: number;
+  replyToStoryId?: number;
+  repliedStoryUser?: Advanceds.User;
 }
 // TODO:
 // Support message services
@@ -171,6 +173,8 @@ export class Message extends TLObject {
   chatThemeChanged?: Raw.MessageActionSetChatTheme;
   screenshot?: boolean;
   ttl?: number;
+  replyToStoryId?: number;
+  repliedStoryUser?: Advanceds.User;
   constructor(
     {
       id,
@@ -248,8 +252,10 @@ export class Message extends TLObject {
       chatThemeChanged,
       screenshot,
       ttl,
+      replyToStoryId,
+      repliedStoryUser,
     }: TypeMessage,
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.id = id;
@@ -327,13 +333,15 @@ export class Message extends TLObject {
     this.chatThemeChanged = chatThemeChanged;
     this.screenshot = screenshot;
     this.ttl = ttl;
+    this.replyToStoryId = replyToStoryId;
+    this.repliedStoryUser = repliedStoryUser;
   }
   static async parse(
     client: Snake,
     message: Raw.TypeMessage,
     chats: Array<Raw.TypeChat>,
     users: Array<Raw.TypeUser>,
-    replies: number = 1
+    replies: number = 1,
   ) {
     if (!(message instanceof Raw.MessageEmpty)) {
       const fromId = getId(message.fromId!);
@@ -353,7 +361,7 @@ export class Message extends TLObject {
                 await client._client.resolvePeer(fromId!),
                 await client._client.resolvePeer(peerId!),
               ],
-            })
+            }),
           );
           users = users.concat(user);
         }
@@ -362,7 +370,7 @@ export class Message extends TLObject {
         message as Raw.MessageService;
         let from = Advanceds.User.parse(
           client,
-          users.find((user) => user.id === userId)
+          users.find((user) => user.id === userId),
         );
         let senderChat = from
           ? undefined
@@ -379,7 +387,7 @@ export class Message extends TLObject {
             date: new Date(message.date * 1000),
             mentioned: message.mentioned,
           },
-          client
+          client,
         );
         if (message.action) {
           const action = message.action;
@@ -391,7 +399,7 @@ export class Message extends TLObject {
             if ((action as Raw.MessageActionChatEditPhoto).photo instanceof Raw.Photo) {
               parsedMessage.newChatPhoto = Medias.Photo.parse(
                 client,
-                (action as Raw.MessageActionChatEditPhoto).photo as Raw.Photo
+                (action as Raw.MessageActionChatEditPhoto).photo as Raw.Photo,
               );
             }
           } else if (action instanceof Raw.MessageActionChatDeletePhoto) {
@@ -401,20 +409,20 @@ export class Message extends TLObject {
               .map((id) =>
                 Advanceds.User.parse(
                   client,
-                  users.find((u) => u.id === id)
-                )
+                  users.find((u) => u.id === id),
+                ),
               )
               .filter((u) => u !== undefined) as unknown as Array<Advanceds.User>;
           } else if (action instanceof Raw.MessageActionChatDeleteUser) {
             parsedMessage.leftChatMember = Advanceds.User.parse(
               client,
-              users.find((u) => u.id === (action as Raw.MessageActionChatDeleteUser).userId)
+              users.find((u) => u.id === (action as Raw.MessageActionChatDeleteUser).userId),
             );
           } else if (action instanceof Raw.MessageActionChatJoinedByLink) {
             parsedMessage.newChatMembers = [
               Advanceds.User.parse(
                 client,
-                users.find((u) => u.id === getId(message.fromId!))
+                users.find((u) => u.id === getId(message.fromId!)),
               ),
             ].filter((u) => u !== undefined) as unknown as Array<Advanceds.User>;
           } else if (action instanceof Raw.MessageActionChannelCreate) {
@@ -432,13 +440,13 @@ export class Message extends TLObject {
               .map((id) =>
                 Advanceds.User.parse(
                   client,
-                  users.find((u) => u.id === id)
-                )
+                  users.find((u) => u.id === id),
+                ),
               )
               .filter((u) => u !== undefined) as unknown as Array<Advanceds.User>;
           } else if (action instanceof Raw.MessageActionGroupCallScheduled) {
             parsedMessage.videoChatScheduled = new Date(
-              (action as Raw.MessageActionGroupCallScheduled).scheduleDate * 1000
+              (action as Raw.MessageActionGroupCallScheduled).scheduleDate * 1000,
             );
           } else if (action instanceof Raw.MessageActionChannelMigrateFrom) {
             parsedMessage.migrateFromChatId = (
@@ -457,25 +465,30 @@ export class Message extends TLObject {
           }
         }
         if (message.replyTo) {
-          parsedMessage.isTopicMessage = message.replyTo?.forumTopic ?? false;
-          parsedMessage.replyToMessageId = message.replyTo?.replyToMsgId;
-          parsedMessage.replyToTopMessageId = message.replyTo?.replyToTopId;
-          if (replies) {
-            let cchat = client._cacheMessage.get(parsedMessage.chat?.id!);
-            if (cchat) {
-              let cmsg = cchat.get(parsedMessage?.replyToMessageId!);
-              if (cmsg) {
-                parsedMessage.replyToMessage = cmsg;
-              } else {
-                try {
-                  let fmsg = await client.api.getMessages(
-                    parsedMessage.chat?.id!,
-                    [],
-                    [message.id],
-                    replies - 1
-                  );
-                  parsedMessage.replyToMessage = fmsg[0];
-                } catch (error) {}
+          if (message.replyTo instanceof Raw.MessageReplyHeader) {
+            parsedMessage.isTopicMessage =
+              (message.replyTo as Raw.MessageReplyHeader)?.forumTopic ?? false;
+            parsedMessage.replyToMessageId = (message.replyTo as Raw.MessageReplyHeader)
+              ?.replyToMsgId;
+            parsedMessage.replyToTopMessageId = (message.replyTo as Raw.MessageReplyHeader)
+              ?.replyToTopId;
+            if (replies) {
+              let cchat = client._cacheMessage.get(parsedMessage.chat?.id!);
+              if (cchat) {
+                let cmsg = cchat.get(parsedMessage?.replyToMessageId!);
+                if (cmsg) {
+                  parsedMessage.replyToMessage = cmsg;
+                } else {
+                  try {
+                    let fmsg = await client.api.getMessages(
+                      parsedMessage.chat?.id!,
+                      [],
+                      [message.id],
+                      replies - 1,
+                    );
+                    parsedMessage.replyToMessage = fmsg[0];
+                  } catch (error) {}
+                }
               }
             }
           }
@@ -488,7 +501,7 @@ export class Message extends TLObject {
       if (message instanceof Raw.Message) {
         message as Raw.Message;
         let entities: Array<Entities> = Parser.fromRaw(message.entities ?? []).sort(
-          (a, b) => a.offset - b.offset
+          (a, b) => a.offset - b.offset,
         );
         let forwardFrom;
         let forwardFromChat;
@@ -504,14 +517,14 @@ export class Message extends TLObject {
             if (bfromId !== undefined && bfromId > 0) {
               forwardFrom = Advanceds.User.parse(
                 client,
-                users.find((user) => user.id === afromId)
+                users.find((user) => user.id === afromId),
               );
             } else {
               forwardFromChat = Advanceds.Chat.parseDialog(
                 client,
                 message.fwdFrom.fromId!,
                 users,
-                chats
+                chats,
               );
               forwardFromMessageId = message.fwdFrom.channelPost;
               forwardSignature = message.fwdFrom.postAuthor;
@@ -542,7 +555,7 @@ export class Message extends TLObject {
             if (message.media.photo instanceof Raw.Photo) {
               photo = Medias.Photo.parse(
                 client,
-                (message.media as Raw.MessageMediaPhoto).photo as Raw.Photo
+                (message.media as Raw.MessageMediaPhoto).photo as Raw.Photo,
               );
             }
           }
@@ -559,7 +572,7 @@ export class Message extends TLObject {
             if (message.media.game instanceof Raw.Game) {
               game = Medias.Game.parse(
                 client,
-                (message.media as Raw.MessageMediaGame).game as Raw.Game
+                (message.media as Raw.MessageMediaGame).game as Raw.Game,
               );
             }
           }
@@ -573,7 +586,7 @@ export class Message extends TLObject {
             if (message.media.webpage instanceof Raw.WebPage) {
               webpage = Medias.WebPage.parse(
                 client,
-                (message.media as Raw.MessageMediaWebPage).webpage as Raw.WebPage
+                (message.media as Raw.MessageMediaWebPage).webpage as Raw.WebPage,
               );
             }
           }
@@ -584,7 +597,7 @@ export class Message extends TLObject {
               doc.attributes.some((attribute) => attribute instanceof Raw.DocumentAttributeAudio)
             ) {
               let attr = doc.attributes.find(
-                (attribute) => attribute instanceof Raw.DocumentAttributeAudio
+                (attribute) => attribute instanceof Raw.DocumentAttributeAudio,
               );
               if ((attr as Raw.DocumentAttributeAudio)?.voice) {
                 voice = Medias.Voice.parse(client, doc);
@@ -599,7 +612,7 @@ export class Message extends TLObject {
               doc.attributes.some((attribute) => attribute instanceof Raw.DocumentAttributeVideo)
             ) {
               let attr = doc.attributes.find(
-                (attribute) => attribute instanceof Raw.DocumentAttributeVideo
+                (attribute) => attribute instanceof Raw.DocumentAttributeVideo,
               );
               if ((attr as Raw.DocumentAttributeVideo)?.roundMessage) {
                 videoNote = Medias.VideoNote.parse(client, doc);
@@ -617,7 +630,7 @@ export class Message extends TLObject {
         }
         let from = Advanceds.User.parse(
           client,
-          users.find((user) => user.id === userId)
+          users.find((user) => user.id === userId),
         );
         let senderChat = from
           ? undefined
@@ -662,41 +675,55 @@ export class Message extends TLObject {
             mediaGroupId: message.groupedId,
             authorSignatrure: message.postAuthor,
           },
-          client
+          client,
         );
         if (message.replyTo) {
-          parsedMessage.isTopicMessage = message.replyTo?.forumTopic ?? false;
-          parsedMessage.replyToMessageId = message.replyTo?.replyToMsgId;
-          parsedMessage.replyToTopMessageId = message.replyTo?.replyToTopId;
-          if (replies) {
-            let cchat = client._cacheMessage.get(parsedMessage.chat?.id!);
-            if (cchat) {
-              let cmsg = cchat.get(parsedMessage?.replyToMessageId!);
-              if (cmsg) {
-                parsedMessage.replyToMessage = cmsg;
-              } else {
-                try {
-                  let fmsg = await client.api.getMessages(
-                    parsedMessage.chat?.id!,
-                    [],
-                    [message.id],
-                    replies - 1
-                  );
-                  parsedMessage.replyToMessage = fmsg[0];
-                } catch (error) {}
+          if (message.replyTo instanceof Raw.MessageReplyHeader) {
+            parsedMessage.isTopicMessage =
+              (message.replyTo as Raw.MessageReplyHeader)?.forumTopic ?? false;
+            parsedMessage.replyToMessageId = (message.replyTo as Raw.MessageReplyHeader)
+              ?.replyToMsgId;
+            parsedMessage.replyToTopMessageId = (message.replyTo as Raw.MessageReplyHeader)
+              ?.replyToTopId;
+            if (replies) {
+              let cchat = client._cacheMessage.get(parsedMessage.chat?.id!);
+              if (cchat) {
+                let cmsg = cchat.get(parsedMessage?.replyToMessageId!);
+                if (cmsg) {
+                  parsedMessage.replyToMessage = cmsg;
+                } else {
+                  try {
+                    let fmsg = await client.api.getMessages(
+                      parsedMessage.chat?.id!,
+                      [],
+                      [message.id],
+                      replies - 1,
+                    );
+                    parsedMessage.replyToMessage = fmsg[0];
+                  } catch (error) {}
+                }
               }
             }
+          }
+          if (message.replyTo instanceof Raw.MessageReplyStoryHeader) {
+            parsedMessage.replyToStoryId = (message.replyTo as Raw.MessageReplyStoryHeader).storyId;
+            parsedMessage.repliedStoryUser = Advanceds.User.parse(
+              client,
+              users.find(
+                (user) => user.id === (message.replyTo as Raw.MessageReplyStoryHeader).userId,
+              ),
+            );
           }
         }
         if (message.replyMarkup) {
           parsedMessage.replyMarkup = await ReplyMarkup.convertReplyMarkup(
             message.replyMarkup!,
-            client
+            client,
           );
         }
         if (!parsedMessage.poll) {
           let cchat: Map<number, Message> | undefined = client._cacheMessage.get(
-            parsedMessage.chat?.id!
+            parsedMessage.chat?.id!,
           );
           if (cchat) {
             cchat.set(parsedMessage.id, parsedMessage);
@@ -717,7 +744,7 @@ export class Message extends TLObject {
         empty: true,
         id: (message as Raw.MessageEmpty).id,
       },
-      client
+      client,
     );
   }
 
@@ -731,8 +758,8 @@ export class Message extends TLObject {
           {
             replyToMessageId: this.id,
           },
-          more
-        )
+          more,
+        ),
       );
     }
   }

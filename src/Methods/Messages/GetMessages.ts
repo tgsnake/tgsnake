@@ -17,7 +17,7 @@ export async function getMessages(
   chatId: bigint | string,
   messageIds: Array<number> = [],
   replyToMessageIds: Array<number> = [],
-  replies: number = 1
+  replies: number = 1,
 ): Promise<Array<Message>> {
   if (!messageIds.length && !replyToMessageIds.length) {
     throw new Error('Missing argument');
@@ -34,14 +34,14 @@ export async function getMessages(
       new Raw.channels.GetMessages({
         channel: peer,
         id: parsedMsgIds,
-      })
+      }),
     );
-    return await parseMessages(client, msg, replies);
+    return await parseMessages(client, msg as unknown as Raw.messages.Messages, replies);
   }
   let msg = await client._client.invoke(
     new Raw.messages.GetMessages({
       id: parsedMsgIds,
-    })
+    }),
   );
-  return await parseMessages(client, msg, replies);
+  return await parseMessages(client, msg as unknown as Raw.messages.Messages, replies);
 }

@@ -36,7 +36,7 @@ export class Game extends TLObject {
       photo?: Photo;
       animation?: Animation;
     },
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.classType = 'types';
@@ -59,7 +59,7 @@ export class Game extends TLObject {
     if (game.document && game.document instanceof Raw.Document) {
       if (
         (game.document as Raw.Document).attributes.some(
-          (attribute) => attribute instanceof Raw.DocumentAttributeAnimated
+          (attribute) => attribute instanceof Raw.DocumentAttributeAnimated,
         )
       ) {
         animation = Animation.parse(client, game.document as Raw.Document);
@@ -74,7 +74,7 @@ export class Game extends TLObject {
         title: game.title,
         description: game.description,
       },
-      client
+      client,
     );
   }
 }

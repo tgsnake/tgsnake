@@ -244,7 +244,7 @@ export class Chat extends TLObject {
       isLeft,
       isInactive,
     }: TypeChat,
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.className = 'Chat';
@@ -293,7 +293,7 @@ export class Chat extends TLObject {
     message: Raw.Message | Raw.MessageService,
     users: Array<Raw.TypeUser>,
     chats: Array<Raw.TypeChat>,
-    chat?: boolean
+    chat?: boolean,
   ): Chat | undefined {
     let peerId = getId(message.peerId);
     let fromId = getId(message.fromId!);
@@ -318,7 +318,7 @@ export class Chat extends TLObject {
   }
   static parseChat(
     client: Snake,
-    chat?: Raw.ChatEmpty | Raw.Chat | Raw.ChatForbidden
+    chat?: Raw.ChatEmpty | Raw.Chat | Raw.ChatForbidden,
   ): Chat | undefined {
     if (chat) {
       if (chat instanceof Raw.ChatEmpty) {
@@ -327,7 +327,7 @@ export class Chat extends TLObject {
             id: -chat.id,
             type: 'group',
           },
-          client
+          client,
         );
       }
       if (chat instanceof Raw.ChatForbidden) {
@@ -337,7 +337,7 @@ export class Chat extends TLObject {
             title: chat.title,
             type: 'group',
           },
-          client
+          client,
         );
       }
       return new Chat(
@@ -355,13 +355,13 @@ export class Chat extends TLObject {
           isInactive: chat.deactivated,
           isLeft: chat.left,
         },
-        client
+        client,
       );
     }
   }
   static parseChannel(
     client: Snake,
-    channel?: Raw.Channel | Raw.ChannelForbidden
+    channel?: Raw.Channel | Raw.ChannelForbidden,
   ): Chat | undefined {
     if (channel) {
       if (channel instanceof Raw.ChannelForbidden) {
@@ -372,7 +372,7 @@ export class Chat extends TLObject {
             type: channel.broadcast ? 'channel' : 'supergroup',
             title: channel.title,
           },
-          client
+          client,
         );
       }
       return new Chat(
@@ -386,7 +386,7 @@ export class Chat extends TLObject {
             client,
             channel.photo,
             Helpers.getChannelId(channel.id),
-            channel.accessHash
+            channel.accessHash,
           ),
           hasPrivateForwards: channel.noforwards,
           joinToSendMessages: channel.joinToSend,
@@ -403,11 +403,11 @@ export class Chat extends TLObject {
           membersCount: channel.participantsCount,
           restrictions: Chat.parseRestrictions(
             client,
-            channel.restrictionReason ? channel.restrictionReason : []
+            channel.restrictionReason ? channel.restrictionReason : [],
           ),
           isLeft: channel.left,
         },
-        client
+        client,
       );
     }
   }
@@ -419,7 +419,7 @@ export class Chat extends TLObject {
             id: user.id,
             type: 'private',
           },
-          client
+          client,
         );
       }
       return new Chat(
@@ -438,10 +438,10 @@ export class Chat extends TLObject {
           dcId: user.photo ? user.photo.dcId : undefined,
           restrictions: Chat.parseRestrictions(
             client,
-            user.restrictionReason ? user.restrictionReason : []
+            user.restrictionReason ? user.restrictionReason : [],
           ),
         },
-        client
+        client,
       );
     }
   }
@@ -449,7 +449,7 @@ export class Chat extends TLObject {
     client: Snake,
     peer: Raw.TypePeer,
     users: Array<Raw.TypeUser>,
-    chats: Array<Raw.TypeChat>
+    chats: Array<Raw.TypeChat>,
   ): Chat | undefined {
     let peerId = getId(peer);
     let merge: Array<Raw.TypeUser | Raw.TypeChat> = [...users, ...chats];
@@ -478,7 +478,7 @@ export class Chat extends TLObject {
    */
   static parseRestrictions(
     client: Snake,
-    restrictions: Array<Raw.TypeRestrictionReason>
+    restrictions: Array<Raw.TypeRestrictionReason>,
   ): Array<Restriction> | undefined {
     let results: Array<Restriction> = [];
     for (let restriction of restrictions) {

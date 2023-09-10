@@ -49,7 +49,7 @@ export class ChatMemberUpdated extends TLObject {
       newChatMember,
       inviteLink,
     }: TypeChatMemberUpdated,
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.className = 'ChatMemberUpdated';
@@ -66,16 +66,16 @@ export class ChatMemberUpdated extends TLObject {
     client: Snake,
     update: Raw.UpdateChannelParticipant | Raw.UpdateChatParticipant,
     chats: Array<Raw.TypeChat>,
-    users: Array<Raw.TypeUser>
+    users: Array<Raw.TypeUser>,
   ): ChatMemberUpdated {
     if (update instanceof Raw.UpdateChatParticipant) {
       const chat = Chat.parseChat(
         client,
-        chats.find((c) => c.id === (update as Raw.UpdateChatParticipant).chatId)
+        chats.find((c) => c.id === (update as Raw.UpdateChatParticipant).chatId),
       ) as unknown as Chat;
       const user = User.parse(
         client,
-        users.find((u) => u.id === (update as Raw.UpdateChatParticipant).userId)
+        users.find((u) => u.id === (update as Raw.UpdateChatParticipant).userId),
       ) as unknown as User;
       return new ChatMemberUpdated(
         {
@@ -85,28 +85,28 @@ export class ChatMemberUpdated extends TLObject {
           oldChatMember: ChatMember(
             client,
             users,
-            (update as Raw.UpdateChatParticipant).prevParticipant
+            (update as Raw.UpdateChatParticipant).prevParticipant,
           ),
           newChatMember: ChatMember(
             client,
             users,
-            (update as Raw.UpdateChatParticipant).newParticipant
+            (update as Raw.UpdateChatParticipant).newParticipant,
           ),
           viaChatFolderInviteLink: false,
           // @ts-ignore
           inviteLink: (update as Raw.UpdateChatParticipant).invite?.link,
         },
-        client
+        client,
       );
     }
     const chat = Chat.parseChannel(
       client,
       // @ts-ignore
-      chats.find((c) => c.id === (update as Raw.UpdateChannelParticipant).channelId)
+      chats.find((c) => c.id === (update as Raw.UpdateChannelParticipant).channelId),
     ) as unknown as Chat;
     const user = User.parse(
       client,
-      users.find((u) => u.id === (update as Raw.UpdateChannelParticipant).userId)
+      users.find((u) => u.id === (update as Raw.UpdateChannelParticipant).userId),
     ) as unknown as User;
     return new ChatMemberUpdated(
       {
@@ -116,18 +116,18 @@ export class ChatMemberUpdated extends TLObject {
         oldChatMember: ChatMember(
           client,
           users,
-          (update as Raw.UpdateChannelParticipant).prevParticipant
+          (update as Raw.UpdateChannelParticipant).prevParticipant,
         ),
         newChatMember: ChatMember(
           client,
           users,
-          (update as Raw.UpdateChannelParticipant).newParticipant
+          (update as Raw.UpdateChannelParticipant).newParticipant,
         ),
         viaChatFolderInviteLink: (update as Raw.UpdateChannelParticipant).viaChatlist ?? false,
         // @ts-ignore
         inviteLink: (update as Raw.UpdateChannelParticipant).invite?.link,
       },
-      client
+      client,
     );
   }
 }
@@ -155,12 +155,12 @@ export class ChatMemberOwner extends TLObject {
   static parse(
     client: Snake,
     member: Raw.ChannelParticipantCreator | Raw.ChatParticipantCreator,
-    users: Array<Raw.TypeUser>
+    users: Array<Raw.TypeUser>,
   ): ChatMemberOwner {
     if (member instanceof Raw.ChatParticipantCreator) {
       const user = User.parse(
         client,
-        users.find((u) => u.id === (member as Raw.ChatParticipantCreator).userId)
+        users.find((u) => u.id === (member as Raw.ChatParticipantCreator).userId),
       ) as unknown as User;
       return new ChatMemberOwner(
         {
@@ -168,12 +168,12 @@ export class ChatMemberOwner extends TLObject {
           isAnonymous: false,
           user: user,
         },
-        client
+        client,
       );
     }
     const user = User.parse(
       client,
-      users.find((u) => u.id === (member as Raw.ChannelParticipantCreator).userId)
+      users.find((u) => u.id === (member as Raw.ChannelParticipantCreator).userId),
     ) as unknown as User;
     return new ChatMemberOwner(
       {
@@ -182,7 +182,7 @@ export class ChatMemberOwner extends TLObject {
         customTitle: (member as Raw.ChannelParticipantCreator).rank,
         isAnonymous: (member as Raw.ChannelParticipantCreator).adminRights.anonymous || false,
       },
-      client
+      client,
     );
   }
 }
@@ -244,7 +244,7 @@ export class ChatMemberAdministrator extends TLObject {
       canManageTopics,
       customTitle,
     }: TypeChatMemberAdministrator,
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.className = 'ChatMemberAdministrator';
@@ -270,12 +270,12 @@ export class ChatMemberAdministrator extends TLObject {
   static parse(
     client: Snake,
     member: Raw.ChatParticipantAdmin | Raw.ChannelParticipantAdmin,
-    users: Array<Raw.TypeUser>
+    users: Array<Raw.TypeUser>,
   ): ChatMemberAdministrator {
     if (member instanceof Raw.ChatParticipantAdmin) {
       const user = User.parse(
         client,
-        users.find((u) => u.id === (member as Raw.ChatParticipantAdmin).userId)
+        users.find((u) => u.id === (member as Raw.ChatParticipantAdmin).userId),
       ) as unknown as User;
       return new ChatMemberAdministrator(
         {
@@ -292,12 +292,12 @@ export class ChatMemberAdministrator extends TLObject {
           canInviteUsers: true,
           joinedDate: new Date((member as Raw.ChatParticipantAdmin).date * 1000),
         },
-        client
+        client,
       );
     }
     const user = User.parse(
       client,
-      users.find((u) => u.id === (member as Raw.ChannelParticipantAdmin).userId)
+      users.find((u) => u.id === (member as Raw.ChannelParticipantAdmin).userId),
     ) as unknown as User;
     return new ChatMemberAdministrator(
       {
@@ -342,7 +342,7 @@ export class ChatMemberAdministrator extends TLObject {
         ).manageTopics,
         customTitle: (member as Raw.ChannelParticipantAdmin).rank,
       },
-      client
+      client,
     );
   }
 }
@@ -367,12 +367,12 @@ export class ChatMemberMember extends TLObject {
   static parse(
     client: Snake,
     member: Raw.ChatParticipant | Raw.ChannelParticipant | Raw.ChannelParticipantSelf,
-    users: Array<Raw.TypeUser>
+    users: Array<Raw.TypeUser>,
   ): ChatMemberMember {
     if (member instanceof Raw.ChatParticipant) {
       const user = User.parse(
         client,
-        users.find((u) => u.id === (member as Raw.ChatParticipant).userId)
+        users.find((u) => u.id === (member as Raw.ChatParticipant).userId),
       ) as unknown as User;
       return new ChatMemberMember(
         {
@@ -380,13 +380,13 @@ export class ChatMemberMember extends TLObject {
           user: user,
           joinedDate: new Date((member as Raw.ChatParticipant).date * 1000),
         },
-        client
+        client,
       );
     }
     if (member instanceof Raw.ChannelParticipantSelf) {
       const user = User.parse(
         client,
-        users.find((u) => u.id === (member as Raw.ChannelParticipantSelf).userId)
+        users.find((u) => u.id === (member as Raw.ChannelParticipantSelf).userId),
       ) as unknown as User;
       return new ChatMemberMember(
         {
@@ -394,12 +394,12 @@ export class ChatMemberMember extends TLObject {
           user: user,
           joinedDate: new Date((member as Raw.ChannelParticipantSelf).date * 1000),
         },
-        client
+        client,
       );
     }
     const user = User.parse(
       client,
-      users.find((u) => u.id === (member as Raw.ChannelParticipant).userId)
+      users.find((u) => u.id === (member as Raw.ChannelParticipant).userId),
     ) as unknown as User;
     return new ChatMemberMember(
       {
@@ -407,7 +407,7 @@ export class ChatMemberMember extends TLObject {
         user: user,
         joinedDate: new Date((member as Raw.ChannelParticipant).date * 1000),
       },
-      client
+      client,
     );
   }
 }
@@ -475,7 +475,7 @@ export class ChatMemberRestricted extends TLObject {
       untilDate,
       joinedDate,
     }: TypeChatMemberRestricted,
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.className = 'ChatMemberRestricted';
@@ -503,12 +503,12 @@ export class ChatMemberRestricted extends TLObject {
   static parse(
     client: Snake,
     member: Raw.ChannelParticipantBanned,
-    users: Array<Raw.TypeUser>
+    users: Array<Raw.TypeUser>,
   ): ChatMemberRestricted {
     const uid = getId(member.peer) ?? BigInt(0);
     const user = User.parse(
       client,
-      users.find((u) => u.id === uid)
+      users.find((u) => u.id === uid),
     ) as unknown as User;
     return new ChatMemberRestricted(
       {
@@ -521,10 +521,10 @@ export class ChatMemberRestricted extends TLObject {
         canSendPhotos: Boolean(!member.bannedRights.sendMedia && !member.bannedRights.sendPhotos),
         canSendVideos: Boolean(!member.bannedRights.sendMedia && !member.bannedRights.sendVideos),
         canSendVideoNotes: Boolean(
-          !member.bannedRights.sendMedia && !member.bannedRights.sendRoundvideos
+          !member.bannedRights.sendMedia && !member.bannedRights.sendRoundvideos,
         ),
         canSendVoiceNotes: Boolean(
-          !member.bannedRights.sendMedia && !member.bannedRights.sendVoices
+          !member.bannedRights.sendMedia && !member.bannedRights.sendVoices,
         ),
         canSendPolls: Boolean(!member.bannedRights.sendMedia && !member.bannedRights.sendPolls),
         canSendOtherMessages: [
@@ -544,7 +544,7 @@ export class ChatMemberRestricted extends TLObject {
             : new Date(member.bannedRights.untilDate * 1000),
         joinedDate: new Date(member.date * 1000),
       },
-      client
+      client,
     );
   }
 }
@@ -566,19 +566,19 @@ export class ChatMemberLeft extends TLObject {
   static parse(
     client: Snake,
     member: Raw.ChannelParticipantLeft,
-    users: Array<Raw.TypeUser>
+    users: Array<Raw.TypeUser>,
   ): ChatMemberLeft {
     const uid = getId(member.peer) ?? BigInt(0);
     const user = User.parse(
       client,
-      users.find((u) => u.id === uid)
+      users.find((u) => u.id === uid),
     ) as unknown as User;
     return new ChatMemberLeft(
       {
         status: 'left',
         user: user,
       },
-      client
+      client,
     );
   }
 }
@@ -606,12 +606,12 @@ export class ChatMemberBanned extends TLObject {
   static parse(
     client: Snake,
     member: Raw.ChannelParticipantBanned,
-    users: Array<Raw.TypeUser>
+    users: Array<Raw.TypeUser>,
   ): ChatMemberBanned {
     const uid = getId(member.peer) ?? BigInt(0);
     const user = User.parse(
       client,
-      users.find((u) => u.id === uid)
+      users.find((u) => u.id === uid),
     ) as unknown as User;
     return new ChatMemberBanned(
       {
@@ -623,14 +623,14 @@ export class ChatMemberBanned extends TLObject {
             : new Date(member.bannedRights.untilDate * 1000),
         joinedDate: new Date(member.date * 1000),
       },
-      client
+      client,
     );
   }
 }
 export function ChatMember(
   client: Snake,
   users: Array<Raw.TypeUser>,
-  member?: Raw.TypeChatParticipant | Raw.TypeChannelParticipant
+  member?: Raw.TypeChatParticipant | Raw.TypeChannelParticipant,
 ): TypeChatMember | undefined {
   if (member) {
     if (

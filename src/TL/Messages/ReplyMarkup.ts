@@ -181,7 +181,7 @@ async function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard, snakeClien
       if ('url' in btn) {
         if (String(btn.url).startsWith('tg://user?id=')) {
           const peer = snakeClient._client.resolvePeer(
-            BigInt(String(btn.url).replace('tg://user?id=', ''))
+            BigInt(String(btn.url).replace('tg://user?id=', '')),
           );
           if (peer && peer instanceof Raw.InputPeerUser) {
             tempCol.push(
@@ -191,7 +191,7 @@ async function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard, snakeClien
                   userId: (peer as Raw.InputPeerUser).userId,
                   accessHash: (peer as Raw.InputPeerUser).accessHash,
                 }),
-              })
+              }),
             );
           } else {
             continue;
@@ -201,7 +201,7 @@ async function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard, snakeClien
             new Raw.KeyboardButtonUrl({
               text: String(btn.text),
               url: String(btn.url),
-            })
+            }),
           );
         }
         continue;
@@ -218,7 +218,7 @@ async function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard, snakeClien
               userId: btn.loginUrl?.bot.id!,
               accessHash: btn.loginUrl?.bot.accessHash!,
             }),
-          })
+          }),
         );
         continue;
       }
@@ -229,7 +229,7 @@ async function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard, snakeClien
             text: String(btn.text),
             requiresPassword: false,
             data: Buffer.from(String(btn.callbackData)),
-          })
+          }),
         );
         continue;
       }
@@ -240,7 +240,7 @@ async function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard, snakeClien
             text: String(btn.text),
             samePeer: false,
             query: String(btn.switchInlineQuery),
-          })
+          }),
         );
         continue;
       }
@@ -251,7 +251,7 @@ async function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard, snakeClien
             text: String(btn.text),
             samePeer: true,
             query: String(btn.switchInlineQueryCurrentChat),
-          })
+          }),
         );
         continue;
       }
@@ -260,7 +260,7 @@ async function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard, snakeClien
         tempCol.push(
           new Raw.KeyboardButtonGame({
             text: String(btn.text),
-          })
+          }),
         );
         continue;
       }
@@ -269,7 +269,7 @@ async function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard, snakeClien
         tempCol.push(
           new Raw.KeyboardButtonBuy({
             text: String(btn.text),
-          })
+          }),
         );
         continue;
       }
@@ -279,14 +279,14 @@ async function replyMarkupInlineKeyboard(replyMarkup: inlineKeyboard, snakeClien
           new Raw.KeyboardButtonWebView({
             text: String(btn.text),
             url: String(btn.webApp),
-          })
+          }),
         );
       }
     }
     rows.push(
       new Raw.KeyboardButtonRow({
         buttons: tempCol,
-      })
+      }),
     );
   }
   return new Raw.ReplyInlineMarkup({
@@ -303,7 +303,7 @@ function replyMarkupKeyboard(replyMarkup: replyKeyboard) {
         tempCol.push(
           new Raw.KeyboardButton({
             text: String(replyMarkup.keyboard[row][col]),
-          })
+          }),
         );
         continue;
       }
@@ -314,7 +314,7 @@ function replyMarkupKeyboard(replyMarkup: replyKeyboard) {
           tempCol.push(
             new Raw.KeyboardButtonRequestPhone({
               text: String(btn.text),
-            })
+            }),
           );
           continue;
         }
@@ -323,7 +323,7 @@ function replyMarkupKeyboard(replyMarkup: replyKeyboard) {
           tempCol.push(
             new Raw.KeyboardButtonRequestGeoLocation({
               text: String(btn.text),
-            })
+            }),
           );
           continue;
         }
@@ -333,7 +333,7 @@ function replyMarkupKeyboard(replyMarkup: replyKeyboard) {
             new Raw.KeyboardButtonRequestPoll({
               text: String(btn.text),
               quiz: Boolean(btn.requestPoll?.toLowerCase() == 'quiz'),
-            })
+            }),
           );
           continue;
         }
@@ -343,7 +343,7 @@ function replyMarkupKeyboard(replyMarkup: replyKeyboard) {
             tempCol.push(
               new Raw.KeyboardButton({
                 text: String(btn.text),
-              })
+              }),
             );
             continue;
           }
@@ -353,7 +353,7 @@ function replyMarkupKeyboard(replyMarkup: replyKeyboard) {
     rows.push(
       new Raw.KeyboardButtonRow({
         buttons: tempCol,
-      })
+      }),
     );
   }
   return new Raw.ReplyKeyboardMarkup({
@@ -379,7 +379,7 @@ function replyMarkupForceReply(replyMarkup: forceReplyMarkup) {
 
 export async function convertReplyMarkup(
   replyMarkup: Raw.TypeReplyMarkup,
-  SnakeClient: Snake
+  SnakeClient: Snake,
 ): Promise<TypeReplyMarkup | undefined> {
   // force reply
   if (replyMarkup instanceof Raw.ReplyKeyboardForceReply) {

@@ -34,7 +34,7 @@ export class Restriction extends TLObject {
       reason: string;
       text: string;
     },
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.className = 'Restriction';
@@ -57,7 +57,7 @@ export class Restriction extends TLObject {
         reason: reason.reason,
         text: reason.text,
       },
-      client
+      client,
     );
   }
 }

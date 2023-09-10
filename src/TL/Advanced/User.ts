@@ -191,7 +191,7 @@ export class User extends TLObject {
       canReadAllGroupMessages,
       supportsInlineQueries,
     }: TypeUser,
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.className = 'User';
@@ -263,14 +263,14 @@ export class User extends TLObject {
             photo: ChatPhoto.parse(client, user.photo, user.id, user.accessHash),
             restrictions: User.parseRestrictions(
               user.restrictionReason ? user.restrictionReason : [],
-              client
+              client,
             ),
             addedToAttachmentMenu: Boolean(user.botAttachMenu && user.attachMenuEnabled),
             canJoinGroups: !user.botNochats,
             canReadAllGroupMessages: user.botChatHistory,
             supportsInlineQueries: Boolean(user.botInlineGeo && user.botInlinePlaceholder),
           },
-          client
+          client,
         );
       }
       return new User({ id: user.id }, client);
@@ -284,7 +284,7 @@ export class User extends TLObject {
    */
   static parseRestrictions(
     restrictions: Array<Raw.TypeRestrictionReason>,
-    client: Snake
+    client: Snake,
   ): Array<Restriction> {
     let results: Array<Restriction> = [];
     for (let restriction of restrictions) {
@@ -299,7 +299,7 @@ export class User extends TLObject {
    */
   static parseStatus(
     userStatus?: Raw.TypeUserStatus,
-    isBot: boolean = false
+    isBot: boolean = false,
   ): {
     status?: string;
     lastOnlineDate?: Date;
@@ -369,7 +369,7 @@ export class User extends TLObject {
         id: userStatus.userId,
         ...User.parseStatus(userStatus.status),
       },
-      client
+      client,
     );
   }
   // bound methods should be added here.

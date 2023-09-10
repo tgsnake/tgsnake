@@ -58,7 +58,7 @@ export class Voice extends TLObject {
       mimeType?: string;
       fileSize?: bigint;
     },
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.className = 'voice';
@@ -117,8 +117,8 @@ export class Voice extends TLObject {
               document.id,
               document.accessHash,
               document.fileReference,
-              document.dcId
-            )
+              document.dcId,
+            ),
           );
         }
       }
@@ -137,7 +137,7 @@ export class Voice extends TLObject {
         dcId: document.dcId,
         date: new Date(document.date * 1000),
       },
-      client
+      client,
     );
   }
 }

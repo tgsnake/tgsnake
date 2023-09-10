@@ -60,7 +60,7 @@ export class Sticker extends TLObject {
       mimeType?: string;
       emoji?: string;
     },
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.className = 'sticker';
@@ -122,8 +122,8 @@ export class Sticker extends TLObject {
               document.id,
               document.accessHash,
               document.fileReference,
-              document.dcId
-            )
+              document.dcId,
+            ),
           );
         }
       }
@@ -143,7 +143,7 @@ export class Sticker extends TLObject {
         width: image ? image.w : video ? video.w : 512,
         height: image ? image.h : video ? video.h : 512,
       },
-      client
+      client,
     );
   }
 }

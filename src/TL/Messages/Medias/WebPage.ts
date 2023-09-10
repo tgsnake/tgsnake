@@ -76,7 +76,7 @@ export class WebPage extends TLObject {
       duration?: number;
       author?: string;
     },
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.classType = 'types';
@@ -114,19 +114,19 @@ export class WebPage extends TLObject {
     if (webpage.document && webpage.document instanceof Raw.Document) {
       if (
         (webpage.document as Raw.Document).attributes.some(
-          (attribute) => attribute instanceof Raw.DocumentAttributeAudio
+          (attribute) => attribute instanceof Raw.DocumentAttributeAudio,
         )
       ) {
         audio = Audio.parse(client, webpage.document as Raw.Document);
       } else if (
         (webpage.document as Raw.Document).attributes.some(
-          (attribute) => attribute instanceof Raw.DocumentAttributeAnimated
+          (attribute) => attribute instanceof Raw.DocumentAttributeAnimated,
         )
       ) {
         animation = Animation.parse(client, webpage.document as Raw.Document);
       } else if (
         (webpage.document as Raw.Document).attributes.some(
-          (attribute) => attribute instanceof Raw.DocumentAttributeVideo
+          (attribute) => attribute instanceof Raw.DocumentAttributeVideo,
         )
       ) {
         video = Video.parse(client, webpage.document as Raw.Document);
@@ -155,7 +155,7 @@ export class WebPage extends TLObject {
         duration: webpage.duration,
         author: webpage.author,
       },
-      client
+      client,
     );
   }
 }

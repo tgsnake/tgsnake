@@ -37,7 +37,7 @@ export async function LoginWithCLI(snake: Snake): Promise<Raw.users.UserFull | u
     snake._options.login.session,
     snake._options.apiHash,
     snake._options.apiId,
-    snake._options.clientOptions
+    snake._options.clientOptions,
   );
   // @ts-ignore
   await snake._options.login.session.load();
@@ -53,7 +53,7 @@ export async function LoginWithCLI(snake: Snake): Promise<Raw.users.UserFull | u
           snake._options.login.forceDotSession
             ? `(${snake._options.login.sessionName}.session)`
             : ``
-        } Loggined as: `
+        } Loggined as: `,
       );
       // @ts-ignore
       await snake._options.login.session.save();
@@ -72,7 +72,7 @@ export async function LoginWithCLI(snake: Snake): Promise<Raw.users.UserFull | u
           snake._options.login.forceDotSession
             ? `(${snake._options.login.sessionName}.session)`
             : ``
-        } Loggined as: `
+        } Loggined as: `,
       );
       // @ts-ignore
       await snake._options.login.session.save();
@@ -89,7 +89,7 @@ export async function LoginWithCLI(snake: Snake): Promise<Raw.users.UserFull | u
     Logger.log(
       `${
         snake._options.login.forceDotSession ? `(${snake._options.login.sessionName}.session)` : ``
-      } Loggined as: `
+      } Loggined as: `,
     );
     // @ts-ignore
     await snake._options.login.session.save();
@@ -107,7 +107,7 @@ async function AskApiId(snake: Snake): Promise<string> {
       message: 'Input your api id!',
       validate: (value) => (value ? true : false),
     },
-    { onCancel }
+    { onCancel },
   );
   snake._options.apiId = value;
   Logger.debug(`Setting up Api Id with: ${snake._options.apiId}.`);
@@ -121,7 +121,7 @@ async function AskApiHash(snake: Snake): Promise<string> {
       message: 'Input your api hash!',
       validate: (value) => (value ? true : false),
     },
-    { onCancel }
+    { onCancel },
   );
   snake._options.apiHash = value;
   Logger.debug(`Setting up Api Hash with: ${snake._options.apiHash}.`);
@@ -147,7 +147,7 @@ async function AskLoginAs(): Promise<string> {
         },
       ],
     },
-    { onCancel }
+    { onCancel },
   );
   return String(value);
 }
@@ -159,7 +159,7 @@ async function AskBotToken(snake: Snake): Promise<string> {
       message: 'Input your bot token!',
       validate: (value) => (value ? true : false),
     },
-    { onCancel }
+    { onCancel },
   );
   snake._options.login.botToken = value;
   const splitedBotToken = String(snake._options.login.botToken).split(':');
@@ -177,7 +177,7 @@ async function AskPhoneNumber(): Promise<string> {
       message: 'Input your international phone number!',
       validate: (value) => (value ? true : false),
     },
-    { onCancel }
+    { onCancel },
   );
   return String(value);
 }
@@ -189,7 +189,7 @@ async function AskPassword(hint: string): Promise<string> {
       message: `Input your two factor authentication password!\n\nHint : ${hint}`,
       validate: (value) => (value ? true : false),
     },
-    { onCancel }
+    { onCancel },
   );
   return String(value);
 }
@@ -201,7 +201,7 @@ async function AskRecoveryCode(): Promise<string> {
       message: 'Input your recovery code from your email address!',
       validate: (value) => (value ? true : false),
     },
-    { onCancel }
+    { onCancel },
   );
   return String(value);
 }
@@ -213,7 +213,7 @@ async function AskOTPCode(): Promise<string> {
       message: 'Input your otp code from telegram application or sms!',
       validate: (value) => (value ? true : false),
     },
-    { onCancel }
+    { onCancel },
   );
   return String(value);
 }
@@ -225,7 +225,7 @@ async function AskFirstName(): Promise<string> {
       message: 'Input your first name!',
       validate: (value) => (value ? true : false),
     },
-    { onCancel }
+    { onCancel },
   );
   return String(value);
 }
@@ -237,7 +237,7 @@ async function AskLastName(): Promise<string> {
       message: 'Input your last name!',
       validate: (value) => (value ? true : false),
     },
-    { onCancel }
+    { onCancel },
   );
   return String(value);
 }

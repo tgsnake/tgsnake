@@ -16,7 +16,7 @@ export type TypeChat = Raw.Chat | Raw.Channel;
 export type TypeUser = Raw.User;
 export function parseDialog(
   chats: Array<Raw.TypeChat>,
-  users: Array<Raw.TypeUser>
+  users: Array<Raw.TypeUser>,
 ): [chats: Array<TypeChat>, users: Array<TypeUser>] {
   return [
     chats.filter((chat): chat is TypeChat => {
@@ -48,7 +48,7 @@ export function open(url: string) {
 export async function parseMessages(
   client: Snake,
   messages: Raw.messages.Messages,
-  replies: number = 1
+  replies: number = 1,
 ): Promise<Array<Message>> {
   let [chats, users] = parseDialog(messages.chats, messages.users);
   const parsedMessages: Array<Message> = [];
@@ -59,8 +59,15 @@ export async function parseMessages(
     if (replies) {
       let messagesWithReplies: Map<number, number> = new Map();
       for (let message of messages.messages) {
-        if (!(message instanceof Raw.MessageEmpty) && message.replyTo) {
-          messagesWithReplies.set(message.id, message.replyTo.replyToMsgId);
+        if (
+          !(message instanceof Raw.MessageEmpty) &&
+          message.replyTo &&
+          message.replyTo instanceof Raw.MessageReplyHeader
+        ) {
+          messagesWithReplies.set(
+            message.id,
+            (message.replyTo as Raw.MessageReplyHeader).replyToMsgId,
+          );
         }
       }
       if (messagesWithReplies.size) {
@@ -75,7 +82,7 @@ export async function parseMessages(
           chatId,
           [],
           [...messagesWithReplies.keys()],
-          replies - 1
+          replies - 1,
         );
         for (let msg of parsedMessages) {
           let replyId = messagesWithReplies.get(msg.id);
@@ -104,7 +111,7 @@ export function getPeerId(peer: Raw.TypePeer): bigint | undefined {
   return;
 }
 export function createInlineMsgId(
-  msgId: Raw.InputBotInlineMessageID | Raw.InputBotInlineMessageID64
+  msgId: Raw.InputBotInlineMessageID | Raw.InputBotInlineMessageID64,
 ) {
   if (msgId instanceof Raw.InputBotInlineMessageID) {
     const writer = new Writer();

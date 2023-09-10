@@ -28,7 +28,7 @@ export class ChatPhoto extends TLObject {
       bigFileId: string;
       bigUniqueId: string;
     },
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.className = 'ChatPhoto';
@@ -42,7 +42,7 @@ export class ChatPhoto extends TLObject {
     client: Snake,
     chatPhoto?: Raw.TypeChatPhoto | Raw.TypeUserProfilePhoto,
     chatId?: bigint,
-    chatAccessHash?: bigint
+    chatAccessHash?: bigint,
   ): ChatPhoto | undefined {
     if (!chatPhoto) return;
     if (chatPhoto instanceof Raw.ChatPhoto) {
@@ -85,7 +85,7 @@ export class ChatPhoto extends TLObject {
             bigFileId: bigFileId.fileId,
             bigUniqueId: bigFileId.fileUniqueId,
           },
-          client
+          client,
         );
       }
     }
@@ -128,7 +128,7 @@ export class ChatPhoto extends TLObject {
           bigFileId: bigFileId.fileId,
           bigUniqueId: bigFileId.fileUniqueId,
         },
-        client
+        client,
       );
     }
     return;

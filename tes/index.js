@@ -15,9 +15,12 @@ const bot = new Snake();
 bot.cmd('start', (ctx) => {
   try {
     ctx.message.reply('Starting');
-    // bot._client.startSecretChat(ctx.message.chat.id);
+    bot._client.startSecretChat(ctx.message.chat.id);
   } catch (e) {
     console.log(e);
   }
+});
+bot.on('any', (ctx) => {
+  console.log(ctx);
 });
 bot.run();

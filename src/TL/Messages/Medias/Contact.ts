@@ -32,7 +32,7 @@ export class Contact extends TLObject {
       userId?: bigint;
       vcard?: string;
     },
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.className = 'contact';
@@ -54,7 +54,7 @@ export class Contact extends TLObject {
         userId: contact.userId,
         vcard: contact.vcard,
       },
-      client
+      client,
     );
   }
 }

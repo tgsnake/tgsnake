@@ -52,7 +52,7 @@ export class SnakeSession extends Storages.BaseSession {
     if (!fs.existsSync(path.join(cwd(), sessionName))) {
       fs.writeFileSync(
         path.join(cwd(), sessionName),
-        Buffer.from(Helpers.base64urlTobase64(await this.exportString()), 'base64')
+        Buffer.from(Helpers.base64urlTobase64(await this.exportString()), 'base64'),
       );
       Logger.info(`Session saved to: "${path.join(cwd(), sessionName)}".`);
     }
@@ -67,7 +67,7 @@ export class SnakeSession extends Storages.BaseSession {
       Array<
         [id: bigint, accessHash: bigint, type: string, username?: string, phoneNumber?: string]
       >,
-      Array<Storages.SecretChat>
+      Array<Storages.SecretChat>,
     ]
   > {
     let peer: Array<any> = [];
@@ -198,7 +198,7 @@ export class SnakeSession extends Storages.BaseSession {
  * @param peer {Array} - Peer will be convert to bytes
  */
 export function buildBytesFromPeer(
-  peer: [id: bigint, accessHash: bigint, type: string, username?: string, phoneNumber?: string]
+  peer: [id: bigint, accessHash: bigint, type: string, username?: string, phoneNumber?: string],
 ): Buffer {
   let bytes = new Raws.BytesIO();
   let flags = 0;
@@ -225,7 +225,7 @@ export function buildBytesFromPeer(
  * @param bytes {Buffer} - Bytes will be converted to peer schema.
  */
 export async function buildPeerFromBytes(
-  bytes: Buffer
+  bytes: Buffer,
 ): Promise<
   [id: bigint, accessHash: bigint, type: string, username?: string, phoneNumber?: string]
 > {
@@ -247,7 +247,7 @@ export async function buildPeerFromBytes(
     accessHash: bigint,
     type: string,
     username?: string,
-    phoneNumber?: string
+    phoneNumber?: string,
   ];
 }
 

@@ -22,7 +22,7 @@ export class WebAppData extends TLObject {
       data: string;
       buttonText: string;
     },
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.classType = 'types';
@@ -38,7 +38,7 @@ export class WebAppData extends TLObject {
         data: webApp.data,
         buttonText: webApp.text,
       },
-      client
+      client,
     );
   }
 }

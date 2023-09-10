@@ -5,13 +5,10 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@babel/runtime-corejs3@npm:^7.16.5":
-  version: 7.21.0
-  resolution: "@babel/runtime-corejs3@npm:7.21.0"
-  dependencies:
-    core-js-pure: ^3.25.1
-    regenerator-runtime: ^0.13.11
-  checksum: a47927671672b1e1644771458f804e03802303eeffcafd55f85cb121d3d3ca33032cc2fe68e086e3de6923049343d0aa599fc3eb3ad5749e30646e2a2ef6f11d
+"@deno/shim-deno-test@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "@deno/shim-deno-test@npm:0.4.0"
+  checksum: 37397110e88f7f0f450f2e44a529ca1b240f5063783cc2e29b740ddd653ecca628a3764b935069569bd8a2830dad8ba1460351579a723e81e346eff420622708
   languageName: node
   linkType: hard
 
@@ -42,15 +39,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tgsnake/core@file:../core/tgsnake-core-1.8.0-alpha.2.tgz::locator=tgsnake%40workspace%3A.":
-  version: 1.8.0-alpha.2
-  resolution: "@tgsnake/core@file:../core/tgsnake-core-1.8.0-alpha.2.tgz::locator=tgsnake%40workspace%3A."
+"@tgsnake/core@file:../core/tgsnake-core-1.10.1-alpha.0.tgz::locator=tgsnake%40workspace%3A.":
+  version: 1.10.1-alpha.0
+  resolution: "@tgsnake/core@file:../core/tgsnake-core-1.10.1-alpha.0.tgz::locator=tgsnake%40workspace%3A."
   dependencies:
     "@tgsnake/log": latest
     async-mutex: 0.4.0
     big-integer: 1.6.51
     socks: 2.7.1
-  checksum: 02bc0d10fef391f35ce0a79049c7cae19c436cf85b7d9bf263825d0c4208164361601ad7bd044059e315df95fe20d8fd816a9a310e64afb17f735474397601d3
+  checksum: 0ef94dc6559c8400c6922c60ef8ab102220f9a8eea7bcb1b0947b52e3cfc8a6eaacd6816c53dd7ad248deefb89687b2aef03b059f0f68a26236411c4ce08b110
   languageName: node
   linkType: hard
 
@@ -62,11 +59,11 @@ __metadata:
   linkType: hard
 
 "@tgsnake/log@npm:latest":
-  version: 1.4.1
-  resolution: "@tgsnake/log@npm:1.4.1"
+  version: 1.5.0
+  resolution: "@tgsnake/log@npm:1.5.0"
   dependencies:
     chalk: 4.1.2
-  checksum: a7d4c861a68140a5b3176a8b1af26293f5991b6694df7c629f74d832a80fba8178a74a8f6d4ca072812066561a3491e9b49ed01e3fede124b3dd838af13da576
+  checksum: 5f56c18fbb527e5f6bc270515d37657d1b6e0f3bef8642e7c98e5ff6fee08b019f0092cbcca891c1a6ad4a181be5e632bf5a6a2680f9dc56b09feb61ad4c9a86
   languageName: node
   linkType: hard
 
@@ -79,22 +76,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ts-morph/common@npm:~0.19.0":
-  version: 0.19.0
-  resolution: "@ts-morph/common@npm:0.19.0"
+"@ts-morph/common@npm:~0.20.0":
+  version: 0.20.0
+  resolution: "@ts-morph/common@npm:0.20.0"
   dependencies:
     fast-glob: ^3.2.12
     minimatch: ^7.4.3
     mkdirp: ^2.1.6
     path-browserify: ^1.0.1
-  checksum: 6b02a63ded0ce77e2bf86e135c17a6d5126307bbb926a4085d3cc2acaf28cb732780cf8d16961e9600efcc599876f706a2c9e8d135f7668704bb04a1a6fd37ec
+  checksum: eb02480971fbe045b4dd099d1ddb262d47d657197fefb73a4a2c89523975bfb0b23050207d49d19e853ef23bffdcb9d89a778f52f6b3385ae5bcf63322523700
   languageName: node
   linkType: hard
 
-"@types/node@npm:18.15.11":
-  version: 18.15.11
-  resolution: "@types/node@npm:18.15.11"
-  checksum: 977b4ad04708897ff0eb049ecf82246d210939c82461922d20f7d2dcfd81bbc661582ba3af28869210f7e8b1934529dcd46bff7d448551400f9d48b9d3bddec3
+"@types/node@npm:20.5.0":
+  version: 20.5.0
+  resolution: "@types/node@npm:20.5.0"
+  checksum: 659bc5fc93b5c02bd88ca4bfae4f6b9dc307d45884d1dd9d69df85819a9943cdc00cd3c87eec3048866df6a67f52297f74d170e47a44f61edb3e8f770d94e85e
   languageName: node
   linkType: hard
 
@@ -181,22 +178,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"core-js-pure@npm:^3.25.1":
-  version: 3.30.0
-  resolution: "core-js-pure@npm:3.30.0"
-  checksum: 57573b18d8900ad0a34a0806491bb49774dfcbb6d022b61094d6afc9f6c3d833c1b6c1f5afb5e6a7caca235fa4db00b317de80bfd8ac8e2d9a4f738c4bf233ed
-  languageName: node
-  linkType: hard
-
-"deno2node@npm:1.8.1":
-  version: 1.8.1
-  resolution: "deno2node@npm:1.8.1"
+"deno2node@npm:1.9.0":
+  version: 1.9.0
+  resolution: "deno2node@npm:1.9.0"
   dependencies:
-    ts-morph: ^18.0.0
-    xregexp: ^5.1.0
+    "@deno/shim-deno-test": ^0.4.0
+    ts-morph: ^19.0.0
   bin:
     deno2node: lib/cli.js
-  checksum: a30f2b32e5332c2976e23258e876cda9b2fd2d8584810c69597dfd8e65a25cbb8ade39baa8721fb0bbff4693196c38d29da4a4fde352742d86523617fcd6327c
+  checksum: 890e2520e7da337b3e94910e86a5a88180dc8143c46a601b7ece00a2641bed8610146b012d10448af23794e17b94394e346861f39629342d56cca170afd8d3c3
   languageName: node
   linkType: hard
 
@@ -238,10 +228,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:16.0.3":
-  version: 16.0.3
-  resolution: "dotenv@npm:16.0.3"
-  checksum: afcf03f373d7a6d62c7e9afea6328e62851d627a4e73f2e12d0a8deae1cd375892004f3021883f8aec85932cd2834b091f568ced92b4774625b321db83b827f8
+"dotenv@npm:16.3.1":
+  version: 16.3.1
+  resolution: "dotenv@npm:16.3.1"
+  checksum: 15d75e7279018f4bafd0ee9706593dd14455ddb71b3bcba9c52574460b7ccaf67d5cf8b2c08a5af1a9da6db36c956a04a1192b101ee102a3e0cf8817bbcf3dfd
   languageName: node
   linkType: hard
 
@@ -397,12 +387,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:2.8.7":
-  version: 2.8.7
-  resolution: "prettier@npm:2.8.7"
+"prettier@npm:3.0.1":
+  version: 3.0.1
+  resolution: "prettier@npm:3.0.1"
   bin:
-    prettier: bin-prettier.js
-  checksum: fdc8f2616f099f5f0d685907f4449a70595a0fc1d081a88919604375989e0d5e9168d6121d8cc6861f21990b31665828e00472544d785d5940ea08a17660c3a6
+    prettier: bin/prettier.cjs
+  checksum: e1f3f16c7fe0495de3faa182597871f74927d787cce3c52095a66ff5d7eacc05173371d5f58bf12141a0a1b6bfe739a338531d6cf18b92c7256c1319f2c84e73
   languageName: node
   linkType: hard
 
@@ -420,13 +410,6 @@ __metadata:
   version: 1.2.3
   resolution: "queue-microtask@npm:1.2.3"
   checksum: b676f8c040cdc5b12723ad2f91414d267605b26419d5c821ff03befa817ddd10e238d22b25d604920340fd73efd8ba795465a0377c4adf45a4a41e4234e42dc4
-  languageName: node
-  linkType: hard
-
-"regenerator-runtime@npm:^0.13.11":
-  version: 0.13.11
-  resolution: "regenerator-runtime@npm:0.13.11"
-  checksum: 27481628d22a1c4e3ff551096a683b424242a216fee44685467307f14d58020af1e19660bf2e26064de946bad7eff28950eae9f8209d55723e2d9351e632bbb4
   languageName: node
   linkType: hard
 
@@ -483,14 +466,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tgsnake@workspace:."
   dependencies:
-    "@tgsnake/core": ../core/tgsnake-core-1.8.0-alpha.2.tgz
+    "@tgsnake/core": ../core/tgsnake-core-1.10.1-alpha.0.tgz
     "@tgsnake/fileid": 2.1.0
     "@tgsnake/log": latest
     "@tgsnake/parser": 2.0.1
-    "@types/node": 18.15.11
-    deno2node: 1.8.1
-    dotenv: 16.0.3
-    prettier: 2.8.7
+    "@types/node": 20.5.0
+    deno2node: 1.9.0
+    dotenv: 16.3.1
+    prettier: 3.0.1
     prompts: 2.4.2
   languageName: unknown
   linkType: soft
@@ -504,13 +487,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-morph@npm:^18.0.0":
-  version: 18.0.0
-  resolution: "ts-morph@npm:18.0.0"
+"ts-morph@npm:^19.0.0":
+  version: 19.0.0
+  resolution: "ts-morph@npm:19.0.0"
   dependencies:
-    "@ts-morph/common": ~0.19.0
+    "@ts-morph/common": ~0.20.0
     code-block-writer: ^12.0.0
-  checksum: e3d3099b9a632dfcea2ddc75f00e0d0866b4f6d27b73f9e0ff96cf64fe24ce8074098d6709873afce9edb852c2127c40ad4013f54fdf68dafe0231f1a71827c8
+  checksum: c2546da8dcbdfd5f987ef39f30e52de5cc89391b7357ad45e7a09d05d2fd0cabb92c9d1cf14860ba27e9e3476707b854ba9671a1c8e0a925b6457305ef3e23ea
   languageName: node
   linkType: hard
 
@@ -518,14 +501,5 @@ __metadata:
   version: 2.6.0
   resolution: "tslib@npm:2.6.0"
   checksum: c01066038f950016a18106ddeca4649b4d76caa76ec5a31e2a26e10586a59fceb4ee45e96719bf6c715648e7c14085a81fee5c62f7e9ebee68e77a5396e5538f
-  languageName: node
-  linkType: hard
-
-"xregexp@npm:^5.1.0":
-  version: 5.1.1
-  resolution: "xregexp@npm:5.1.1"
-  dependencies:
-    "@babel/runtime-corejs3": ^7.16.5
-  checksum: b7fee45db0daacc68d8f747c9d3865af6b1135866c6dbd72980fc7d61138310018c397effdc0ec1f50ced71b9437ccb70c27818f4470e28e48dc59ea6e3900a0
   languageName: node
   linkType: hard

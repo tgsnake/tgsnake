@@ -30,7 +30,7 @@ export interface getParticipantsParams {
 export async function getParticipants(
   client: Snake,
   chatId: bigint | string,
-  more: getParticipantsParams = {}
+  more: getParticipantsParams = {},
 ) {
   var { offset, limit, query, filter } = Object.assign(
     {
@@ -39,7 +39,7 @@ export async function getParticipants(
       query: '',
       filter: 'all',
     },
-    more
+    more,
   );
   const { _client } = client;
   const peer = await _client.resolvePeer(chatId);
@@ -47,7 +47,7 @@ export async function getParticipants(
     const results = await _client.invoke(
       new Raw.messages.GetFullChat({
         chatId: (peer as Raw.InputPeerChat).chatId,
-      })
+      }),
     );
     return ((results as Raw.messages.ChatFull).fullChat as Raw.ChatFull).participants;
   }
@@ -86,7 +86,7 @@ export async function getParticipants(
         offset: offset,
         limit: limit,
         hash: BigInt(0),
-      })
+      }),
     );
   }
 }

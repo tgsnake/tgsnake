@@ -17,14 +17,19 @@ export class Telegram extends TLObject {
   constructor(client: Snake) {
     super(client);
   }
-  invoke(query: Raw.TypesTLRequest, retries?: number, timeout?: number, sleepTreshold?: number) {
+  invoke<T extends Raw.TypesTLRequest>(
+    query: T,
+    retries?: number,
+    timeout?: number,
+    sleepTreshold?: number,
+  ): Promise<T['__response__']> {
     return this.client._client.invoke(query, retries, timeout, sleepTreshold);
   }
   getMessages(
     chatId: bigint | string,
     msgIds?: Array<number>,
     replyToMsgIds?: Array<number>,
-    replies?: number
+    replies?: number,
   ) {
     return getMessages(this.client!, chatId, msgIds, replyToMsgIds, replies);
   }

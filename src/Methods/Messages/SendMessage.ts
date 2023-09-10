@@ -30,7 +30,7 @@ export async function sendMessage(
   client: Snake,
   chatId: bigint | string,
   text: string,
-  more: sendMessageParams = {}
+  more: sendMessageParams = {},
 ) {
   var {
     disableWebPagePreview,
@@ -59,8 +59,12 @@ export async function sendMessage(
       clearDraft: true,
       noforwards: protectContent,
       peer: peer,
-      replyToMsgId: replyToMessageId,
-      topMsgId: messageThreadId,
+      replyTo: replyToMessageId
+        ? new Raw.InputReplyToMessage({
+            replyToMsgId: replyToMessageId,
+            topMsgId: messageThreadId,
+          })
+        : undefined,
       message: text,
       randomId: client._rndMsgId.getMsgId(),
       replyMarkup: replyMarkup
@@ -69,7 +73,7 @@ export async function sendMessage(
       entities: entities ? await Parser.toRaw(client._client, entities!) : undefined,
       scheduleDate: scheduleDate,
       sendAs: sendAsChannel ? await client._client.resolvePeer(sendAsChannel!) : undefined,
-    })
+    }),
   );
   if (res instanceof Raw.UpdateShortSentMessage) {
     let peerId = BigInt(0);
@@ -89,7 +93,7 @@ export async function sendMessage(
             type: peerType,
             accessHash: BigInt(0),
           },
-          client
+          client,
         ),
         date: new Date((res as Raw.UpdateShortSentMessage).date * 1000),
         empty: false,
@@ -97,26 +101,26 @@ export async function sendMessage(
         replyMarkup,
         entities,
       },
-      client
+      client,
     );
   }
-  if (res.updates) {
+  if ('updates' in res) {
     for (const update of res.updates) {
       if (
         update instanceof Raw.UpdateNewMessage ||
         update instanceof Raw.UpdateNewChannelMessage ||
         update instanceof Raw.UpdateNewScheduledMessage
       ) {
-        return await Message.parse(client, update.message, res.chats, res.users);
+        return await Message.parse(client, update.message, res.chats || [], res.users || []);
       }
     }
   }
   return new Message(
     {
-      id: res.id,
+      id: 'id' in res ? res.id : 0,
       outgoing: true,
       empty: true,
     },
-    client
+    client,
   );
 }

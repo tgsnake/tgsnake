@@ -63,7 +63,7 @@ export class VideoNote extends TLObject {
       mimeType?: string;
       fileSize?: bigint;
     },
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.className = 'videoNote';
@@ -116,8 +116,8 @@ export class VideoNote extends TLObject {
               document.id,
               document.accessHash,
               document.fileReference,
-              document.dcId
-            )
+              document.dcId,
+            ),
           );
         }
       }
@@ -135,7 +135,7 @@ export class VideoNote extends TLObject {
         dcId: document.dcId,
         date: new Date(document.date * 1000),
       },
-      client
+      client,
     );
   }
 }

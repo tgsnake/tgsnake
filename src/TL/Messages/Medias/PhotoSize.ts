@@ -39,7 +39,7 @@ export class PhotoSize extends TLObject {
       height: number;
       fileSize?: number;
     },
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.className = 'PhotoSize';
@@ -58,7 +58,7 @@ export class PhotoSize extends TLObject {
     mediaId: bigint,
     accessHash: bigint,
     fileReference: Buffer,
-    dcId: number
+    dcId: number,
   ): PhotoSize {
     let file = FileId.encode({
       version: 4,
@@ -83,7 +83,7 @@ export class PhotoSize extends TLObject {
         height: photoSize.h,
         fileSize: photoSize.size,
       },
-      client
+      client,
     );
   }
 }

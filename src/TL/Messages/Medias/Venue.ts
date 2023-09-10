@@ -29,7 +29,7 @@ export class Location extends TLObject {
       latitude: number;
       horizontalAccuracy: number;
     },
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.className = 'location';
@@ -51,7 +51,7 @@ export class Location extends TLObject {
           latitude: 0,
           horizontalAccuracy: 0,
         },
-        client
+        client,
       );
     }
     location as Raw.GeoPoint;
@@ -62,7 +62,7 @@ export class Location extends TLObject {
         latitude: location.lat,
         horizontalAccuracy: location.accuracyRadius ?? 0,
       },
-      client
+      client,
     );
   }
 }
@@ -90,7 +90,7 @@ export class Venue extends TLObject {
       foursquareType: string;
       provider: string;
     },
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.className = 'venue';
@@ -114,7 +114,7 @@ export class Venue extends TLObject {
         foursquareType: venue.venueType,
         provider: venue.provider,
       },
-      client
+      client,
     );
   }
 }

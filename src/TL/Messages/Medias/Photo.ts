@@ -51,7 +51,7 @@ export class Photo extends TLObject {
       height: number;
       hasStickers?: boolean;
     },
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.classType = 'types';
@@ -81,8 +81,8 @@ export class Photo extends TLObject {
               photo.id,
               photo.accessHash,
               photo.fileReference,
-              photo.dcId
-            )
+              photo.dcId,
+            ),
           );
         }
         if (psize instanceof Raw.PhotoSizeProgressive) {
@@ -129,7 +129,7 @@ export class Photo extends TLObject {
         height: main?.h ?? 0,
         hasStickers: photo.hasStickers,
       },
-      client
+      client,
     );
   }
 }

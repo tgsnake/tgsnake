@@ -23,7 +23,7 @@ export class Dice extends TLObject {
       emoji: string;
       value: number;
     },
-    client: Snake
+    client: Snake,
   ) {
     super(client);
     this.className = 'dice';
@@ -39,7 +39,7 @@ export class Dice extends TLObject {
         emoji: dice.emoticon,
         value: dice.value,
       },
-      client
+      client,
     );
   }
 }
