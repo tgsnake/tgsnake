@@ -10,4 +10,5 @@
 
 export { Update, type TypeUpdate, type ContextUpdate } from './Update.ts';
 export { CallbackQuery } from './callbackQuery.ts';
+export { ChatJoinRequest } from './chatJoinRequest.ts';
 export * as chatMembers from './chatMember.ts';

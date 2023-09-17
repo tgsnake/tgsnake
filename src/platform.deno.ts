@@ -16,7 +16,7 @@ export {
   Clients,
   Sessions,
   Client,
-} from 'https://deno.land/x/tgsnake_core@1.6.5/src/index.ts';
+} from 'https://deno.land/x/tgsnake_core@1.10.1/src/index.ts';
 export {
   Writer,
   base64_url_encode,
@@ -25,7 +25,7 @@ export {
   ThumbnailSource,
   FileTypeUniqueId,
 } from 'https://deno.land/x/tgsnake_fileid@2.1.0/src/index.ts';
-export { Parser, type Entities } from 'https://deno.land/x/tgsnake_parser@2.0.1/src/index.ts';
+export { Parser, type Entities } from 'https://deno.land/x/tgsnake_parser@2.0.2/src/index.ts';
 export { Logger, type TypeLogLevel } from 'https://deno.land/x/tgsnake_log@1.4.1/src/index.ts';
 import * as path from 'https://deno.land/std@0.182.0/path/mod.ts';
 import prompts from 'https://esm.sh/prompts@2.4.2';

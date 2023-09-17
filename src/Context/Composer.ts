@@ -62,21 +62,32 @@ export async function run<C>(middleware: MiddlewareFn<C>, ctx: C) {
   await middleware(ctx, leaf);
 }
 export class Composer<T = {}>
-  implements MiddlewareObj<Combine<Combine<TypeUpdate, ContextUpdate>, T>>
+  implements
+    MiddlewareObj<Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>>
 {
-  /** @hidden */
-  private handler!: MiddlewareFn<Combine<Combine<TypeUpdate, ContextUpdate>, T>>;
-  /** @hidden */
+  /** @ignore */
+  private handler!: MiddlewareFn<
+    Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>
+  >;
+  /** @ignore */
   context: Partial<T> = {};
   prefix: string = '.!/';
-  constructor(...middleware: Array<MiddlewareFn<Combine<Combine<TypeUpdate, ContextUpdate>, T>>>) {
+  constructor(
+    ...middleware: Array<
+      MiddlewareFn<Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>>
+    >
+  ) {
     this.handler = middleware.length === 0 ? pass : middleware.map(flatten).reduce(concat);
   }
-  middleware(): MiddlewareFn<Combine<Combine<TypeUpdate, ContextUpdate>, T>> {
+  middleware(): MiddlewareFn<
+    Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>
+  > {
     return this.handler;
   }
   use(
-    ...middleware: Array<MiddlewareFn<Combine<Combine<TypeUpdate, ContextUpdate>, T>>>
+    ...middleware: Array<
+      MiddlewareFn<Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>>
+    >
   ): Composer<T> {
     const composer = new Composer(...middleware);
     this.handler = concat(this.handler, flatten(composer));
@@ -124,6 +135,7 @@ export class Composer<T = {}>
   branch(predicate, trueMiddleware, falseMiddleware): Composer<T> {
     return this.lazy(async (ctx) => ((await predicate(ctx)) ? trueMiddleware : falseMiddleware));
   }
+  /** @ignore */
   [Symbol.for('nodejs.util.inspect.custom')](): { [key: string]: any } {
     const toPrint: { [key: string]: any } = {
       _: this.constructor.name,
@@ -138,6 +150,7 @@ export class Composer<T = {}>
     }
     return toPrint;
   }
+  /** @ignore */
   toJSON(): { [key: string]: any } {
     const toPrint: { [key: string]: any } = {
       _: this.constructor.name,
@@ -152,6 +165,7 @@ export class Composer<T = {}>
     }
     return toPrint;
   }
+  /** @ignore */
   toString() {
     return `[constructor of ${this.constructor.name}] ${JSON.stringify(this, null, 2)}`;
   }

@@ -12,6 +12,7 @@ import { Raws } from '../../platform.deno.ts';
 import { Message } from '../Messages/Message.ts';
 import { CallbackQuery } from './callbackQuery.ts';
 import { ChatMemberUpdated } from './chatMember.ts';
+import { ChatJoinRequest } from './chatJoinRequest.ts';
 import { Logger } from '../../Context/Logger.ts';
 import type { Snake } from '../../Client/index.ts';
 import type { Telegram } from '../../Methods/Telegram.ts';
@@ -30,7 +31,7 @@ export interface TypeUpdate {
   pollAnswer?: TLObject;
   myChatMember?: ChatMemberUpdated;
   chatMember?: ChatMemberUpdated;
-  chatJoinRequest?: TLObject;
+  chatJoinRequest?: ChatJoinRequest;
   secretChat?: Raws.UpdateSecretChatMessage;
 }
 export interface ContextUpdate {
@@ -54,7 +55,7 @@ export class Update extends TLObject {
   preCheckoutQuery?: TLObject;
   poll?: TLObject;
   pollAnswer?: TLObject;
-  chatJoinRequest?: TLObject;
+  chatJoinRequest?: ChatJoinRequest;
   myChatMember?: ChatMemberUpdated;
   chatMember?: ChatMemberUpdated;
   secretChat?: Raws.UpdateSecretChatMessage;
@@ -151,6 +152,19 @@ export class Update extends TLObject {
       return new Update(
         {
           chatMember: chatmember,
+        },
+        client,
+      );
+    }
+    if (update instanceof Raws.Raw.UpdateBotChatInviteRequester) {
+      return new Update(
+        {
+          chatJoinRequest: await ChatJoinRequest.parse(
+            client,
+            update as Raws.Raw.UpdateBotChatInviteRequester,
+            chats,
+            users,
+          ),
         },
         client,
       );
