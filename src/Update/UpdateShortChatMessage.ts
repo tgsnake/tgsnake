@@ -56,11 +56,11 @@ export class UpdateShortChatMessage extends Update {
       await fwd.init(update.fwdFrom, SnakeClient);
       this.message.fwdFrom = fwd;
     }
-    if (update.replyTo) {
+    if (update.replyTo instanceof Api.MessageReplyHeader) {
       this.SnakeClient.log.debug(`Creating replyToMessage`);
       let replyTo = await this.SnakeClient.telegram.getMessages(
         this.message.chat.id,
-        [update.replyTo.replyToMsgId],
+        [(update.replyTo as Api.MessageReplyHeader).replyToMsgId],
         false
       );
       this.message.replyToMessage = replyTo.messages[0];

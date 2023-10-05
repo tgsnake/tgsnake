@@ -1,15 +1,14 @@
 {
   "name": "tgsnake",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Telegram MTProto framework base gram.js",
   "main": "./lib/index.js",
   "scripts": {
     "dev": "ts-node ./tes/index.ts --project ./tsconfig.json",
     "build": "rm -rf ./lib && tsc",
-    "pretty-quick": "pretty-quick --staged --pattern \"src/**/*.*(js|jsx|ts|tsx)\"",
     "prettier": "prettier -w ./src",
     "update": "yarn up \"**\" --interactive",
-    "prepare": "husky install && echo \"🐍 Building snake package.\" && rm -rf ./lib && tsc"
+    "prepare": "echo \"🐍 Building snake package.\" && rm -rf ./lib && tsc"
   },
   "homepage": "https://tgsnake.js.org",
   "keywords": [
@@ -28,24 +27,23 @@
   ],
   "dependencies": {
     "@tgsnake/parser": "1.1.1",
-    "axios": "1.2.1",
+    "axios": "1.5.1",
     "big-integer": "1.6.51",
     "chalk": "4.1.2",
     "file-type": "16.5.3",
-    "husky": "8.0.2",
     "prompts": "2.4.2",
-    "telegram": "2.14.7",
+    "telegram": "2.19.4",
     "tg-file-id": "https://github.com/butthx/tg-file-id#prebuild",
     "util": "0.12.5"
   },
   "devDependencies": {
-    "@types/node": "18.11.14",
-    "dotenv": "16.0.3",
-    "prettier": "2.8.1",
+    "@types/node": "20.8.2",
+    "dotenv": "16.3.1",
+    "prettier": "3.0.3",
     "pretty-quick": "3.1.3",
     "ts-node": "10.9.1",
-    "typedoc": "0.23.22",
-    "typescript": "4.9.4"
+    "typedoc": "0.25.1",
+    "typescript": "5.2.2"
   },
   "engineStrict": true,
   "engines": {

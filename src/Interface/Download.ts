@@ -30,4 +30,6 @@ export interface DownloadFileParams {
   partSizeKb?: number;
   /** Progress callback accepting one param. (progress :number) which is a float between 0 and 1 */
   progressCallback?: progressCallback;
+  /** Path of file hat should be saved */
+  outputFile?: string;
 }

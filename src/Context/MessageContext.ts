@@ -130,9 +130,11 @@ export class MessageContext extends Message {
       }
     };
     const makeFilter = async (callback: {
-      (btn: inlineKeyboardButton | replyKeyboardButton, r: number, c: number):
-        | Promise<boolean>
-        | boolean;
+      (
+        btn: inlineKeyboardButton | replyKeyboardButton,
+        r: number,
+        c: number
+      ): Promise<boolean> | boolean;
     }) => {
       //@ts-ignore
       if (this.replyMarkup?.inlineKeyboard) {

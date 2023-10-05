@@ -237,10 +237,13 @@ export class Composer<T = {}> implements MiddlewareObj<Combine<Updates.TypeUpdat
     ...middleware: Array<MiddlewareFn<Combine<MessageContext, T>>>
   ): Composer<T> {
     let tgr = triggerFn(trigger);
-    return this.on(['message', 'editMessage']).filter((ctx) => {
-      const { text } = ctx;
-      return match(ctx, String(text), tgr);
-    }, ...middleware);
+    return this.on(['message', 'editMessage']).filter(
+      (ctx) => {
+        const { text } = ctx;
+        return match(ctx, String(text), tgr);
+      },
+      ...middleware
+    );
   }
   hear(
     trigger: MaybeArray<string | RegExp>,

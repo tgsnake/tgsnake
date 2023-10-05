@@ -35,9 +35,11 @@ export interface ClickButton {
    * Make a filter to get the row,col of button. it must be returned a boolean.
    */
   filter?: {
-    (keyboard: replyKeyboardButton | inlineKeyboardButton, row: number, col: number):
-      | boolean
-      | Promise<boolean>;
+    (
+      keyboard: replyKeyboardButton | inlineKeyboardButton,
+      row: number,
+      col: number
+    ): boolean | Promise<boolean>;
   };
   /**
    * find one the button when callbackData of button is matches

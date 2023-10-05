@@ -307,9 +307,12 @@ export class Snake<T = {}> extends MainContext<T> {
   }
   async run(params?: InterfaceSnakeEvent) {
     await this.start();
-    this._client.addEventHandler((update: Api.TypeUpdate) => {
-      return this.handleUpdate(update, this);
-    }, new SnakeEvent(this, params || {}));
+    this._client.addEventHandler(
+      (update: Api.TypeUpdate) => {
+        return this.handleUpdate(update, this);
+      },
+      new SnakeEvent(this, params || {})
+    );
     return this;
   }
   async start() {

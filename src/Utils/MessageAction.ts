@@ -36,13 +36,13 @@ export class MessageAction {
   reason?: string;
   duration?: number;
   message!: string;
-  domain!: string;
   values!: Api.TypeSecureValue[];
   credentials!: Api.TypeSecureCredentialsEncrypted;
   types!: Api.TypeSecureValueType[];
   call!: Api.InputGroupCall;
   scheduleDate!: number;
   emoticon!: string;
+  domain?: string;
   constructor() {}
   async init(messageAction: Api.TypeMessageAction, snakeClient: Snake) {
     snakeClient.log.debug(`Creating messageAction`);
