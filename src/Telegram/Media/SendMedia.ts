@@ -6,11 +6,12 @@
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published.
 
+import * as crypto from 'crypto';
 import { Api } from 'telegram';
 import { Snake } from '../../Client';
 import { TypeReplyMarkup, BuildReplyMarkup } from '../../Utils/ReplyMarkup';
 import Parser, { Entities } from '@tgsnake/parser';
-import BigInt from 'big-integer';
+import bigInt from 'big-integer';
 import * as Update from '../../Update';
 import path from 'path';
 import { toBigInt, toString, convertId } from '../../Utils/ToBigInt';
@@ -92,11 +93,21 @@ export async function SendMedia(
           peer: peer,
           media: media,
           message: parseText || '',
-          randomId: BigInt(-Math.floor(Math.random() * 10000000000000)),
+          randomId: bigInt(crypto.randomBytes(8).readBigInt64LE()),
           //@ts-ignore
           entities: entities,
           replyMarkup: replyMarkup,
-          ...more,
+          silent: more?.silent,
+          background: more?.background,
+          clearDraft: more?.clearDraft,
+          scheduleDate: more?.scheduleDate,
+          noforwards: more?.noforwards,
+          sendAs: more?.sendAs,
+          replyTo: more?.replyToMsgId
+            ? new Api.InputReplyToMessage({
+                replyToMsgId: more!.replyToMsgId,
+              })
+            : undefined,
         })
       ),
       snakeClient

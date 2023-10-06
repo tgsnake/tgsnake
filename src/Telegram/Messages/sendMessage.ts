@@ -5,7 +5,7 @@
 //
 // Tgsnake is a free software : you can redistribute it and/or modify
 //  it under the terms of the MIT License as published..
-
+import * as crypto from 'crypto';
 import { Api } from 'telegram';
 import { Snake } from '../../Client';
 import { TypeReplyMarkup, BuildReplyMarkup } from '../../Utils/ReplyMarkup';
@@ -74,11 +74,22 @@ export async function sendMessage(
       new Api.messages.SendMessage({
         peer: peer,
         message: parseText,
-        randomId: bigInt(-Math.floor(Math.random() * 10000000000000)),
+        randomId: bigInt(crypto.randomBytes(8).readBigInt64LE()),
         //@ts-ignore
         entities: entities,
         replyMarkup: replyMarkup,
-        ...more,
+        noWebpage: more?.noWebpage,
+        silent: more?.silent,
+        background: more?.background,
+        clearDraft: more?.clearDraft,
+        scheduleDate: more?.scheduleDate,
+        noforwards: more?.noforwards,
+        sendAs: more?.sendAs,
+        replyTo: more?.replyToMsgId
+          ? new Api.InputReplyToMessage({
+              replyToMsgId: more!.replyToMsgId,
+            })
+          : undefined,
       })
     );
     return await createResults(results, snakeClient);
