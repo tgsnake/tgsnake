@@ -37,10 +37,6 @@ export class Restriction extends TLObject {
     client: Snake,
   ) {
     super(client);
-    this.className = 'Restriction';
-    this.classType = 'types';
-    this.constructorId = 0xd072acb4;
-    this.subclassOfId = 0x6ad95ad;
     this.platform = platform;
     this.reason = reason;
     this.text = text;

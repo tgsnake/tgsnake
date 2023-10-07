@@ -68,11 +68,6 @@ export class ChatPermission extends TLObject {
     client: Snake,
   ) {
     super(client);
-    this.className = 'ChatPermission';
-    this.classType = 'types';
-    // overwrite Raw.ChatBannedRights
-    this.constructorId = 0x9f120418;
-    this.subclassOfId = 0x4b5445a9;
     this.canSendMessages = canSendMessages;
     this.canSendMediaMessages = canSendMediaMessages;
     this.canSendPolls = canSendPolls;

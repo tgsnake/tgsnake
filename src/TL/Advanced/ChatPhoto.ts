@@ -31,8 +31,6 @@ export class ChatPhoto extends TLObject {
     client: Snake,
   ) {
     super(client);
-    this.className = 'ChatPhoto';
-    this.classType = 'types';
     this.smallUniqueId = smallUniqueId;
     this.smallFileId = smallFileId;
     this.bigFileId = bigFileId;

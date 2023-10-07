@@ -5,13 +5,6 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@deno/shim-deno-test@npm:^0.4.0":
-  version: 0.4.0
-  resolution: "@deno/shim-deno-test@npm:0.4.0"
-  checksum: 37397110e88f7f0f450f2e44a529ca1b240f5063783cc2e29b740ddd653ecca628a3764b935069569bd8a2830dad8ba1460351579a723e81e346eff420622708
-  languageName: node
-  linkType: hard
-
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -39,15 +32,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tgsnake/core@npm:1.10.1":
-  version: 1.10.1
-  resolution: "@tgsnake/core@npm:1.10.1"
+"@tgsnake/core@npm:1.10.2":
+  version: 1.10.2
+  resolution: "@tgsnake/core@npm:1.10.2"
   dependencies:
     "@tgsnake/log": latest
     async-mutex: 0.4.0
     big-integer: 1.6.51
     socks: 2.7.1
-  checksum: a7031d6ae5effc95eadd63841dccd70a878a63ff0ac44338f8cee327e8476dbb042b05f454536f2ebb2ea0a418287959c2fe0eeb1fb4d3a1cdb04d8a7391f485
+  checksum: b49f3fa5cd65d66f1d1e1648bcded51458b62ff260b705b312f6b8a9ba1589b9681230893a24148dccab9c841a8b7f91e90bba048367824b935380552c249332
   languageName: node
   linkType: hard
 
@@ -76,22 +69,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ts-morph/common@npm:~0.20.0":
-  version: 0.20.0
-  resolution: "@ts-morph/common@npm:0.20.0"
+"@ts-morph/common@npm:~0.21.0":
+  version: 0.21.0
+  resolution: "@ts-morph/common@npm:0.21.0"
   dependencies:
     fast-glob: ^3.2.12
     minimatch: ^7.4.3
     mkdirp: ^2.1.6
     path-browserify: ^1.0.1
-  checksum: eb02480971fbe045b4dd099d1ddb262d47d657197fefb73a4a2c89523975bfb0b23050207d49d19e853ef23bffdcb9d89a778f52f6b3385ae5bcf63322523700
+  checksum: c322e2a58608d7d924646b10ba9ad432b03e7b119788c9f0f270550bd5aca22947fcaa1c63f27e80898a50de3ed99fc8d9c23569c6a2f3f36c9307e35ceba3ed
   languageName: node
   linkType: hard
 
-"@types/node@npm:20.6.2":
-  version: 20.6.2
-  resolution: "@types/node@npm:20.6.2"
-  checksum: 96fe5303872640a173f3fd43e289a451776ed5b8f0090094447c6790b43f23fb607eea8268af0829cef4d132e5afa0bfa4cd871aa7412e9042a414a698e9e971
+"@types/node@npm:20.8.3":
+  version: 20.8.3
+  resolution: "@types/node@npm:20.8.3"
+  checksum: bfb88b341faeb19f8fd37306a3bf433721b876c6491d10fcb0b13fd26601fa36ee45113dd82b1e1c23e3c957dff5b99f81a16493cefa03abe797e41a2487a4f7
   languageName: node
   linkType: hard
 
@@ -178,15 +171,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deno2node@npm:1.9.0":
-  version: 1.9.0
-  resolution: "deno2node@npm:1.9.0"
+"deno2node@npm:1.10.1":
+  version: 1.10.1
+  resolution: "deno2node@npm:1.10.1"
   dependencies:
-    "@deno/shim-deno-test": ^0.4.0
-    ts-morph: ^19.0.0
+    ts-morph: ^20.0.0
   bin:
     deno2node: lib/cli.js
-  checksum: 890e2520e7da337b3e94910e86a5a88180dc8143c46a601b7ece00a2641bed8610146b012d10448af23794e17b94394e346861f39629342d56cca170afd8d3c3
+  checksum: a3bad307c9a9cd43851a60648b18a1362ee9064d67b8b4c68bd5291d62621fb34862f8d88b7a2912d8cd84e72dbf873ca06c580f0a11634f0a122cb82c6df4a6
   languageName: node
   linkType: hard
 
@@ -473,12 +465,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tgsnake@workspace:."
   dependencies:
-    "@tgsnake/core": 1.10.1
+    "@tgsnake/core": 1.10.2
     "@tgsnake/fileid": 2.1.0
     "@tgsnake/log": latest
     "@tgsnake/parser": 2.0.2
-    "@types/node": 20.6.2
-    deno2node: 1.9.0
+    "@types/node": 20.8.3
+    deno2node: 1.10.1
     dotenv: 16.3.1
     prettier: 3.0.3
     prompts: 2.4.2
@@ -494,13 +486,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-morph@npm:^19.0.0":
-  version: 19.0.0
-  resolution: "ts-morph@npm:19.0.0"
+"ts-morph@npm:^20.0.0":
+  version: 20.0.0
+  resolution: "ts-morph@npm:20.0.0"
   dependencies:
-    "@ts-morph/common": ~0.20.0
+    "@ts-morph/common": ~0.21.0
     code-block-writer: ^12.0.0
-  checksum: c2546da8dcbdfd5f987ef39f30e52de5cc89391b7357ad45e7a09d05d2fd0cabb92c9d1cf14860ba27e9e3476707b854ba9671a1c8e0a925b6457305ef3e23ea
+  checksum: 8a96d72a26e4e3c4139c581834364a97207f78a5878f70aa6f58787c0f4003a9386a64f43b814bac7bf028e572ef8660939f56844641b05bfaf7ae7437be9011
   languageName: node
   linkType: hard
 

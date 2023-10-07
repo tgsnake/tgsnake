@@ -79,10 +79,6 @@ export class WebPage extends TLObject {
     client: Snake,
   ) {
     super(client);
-    this.classType = 'types';
-    this.className = 'webPage';
-    this.constructorId = 0xe89c45b2; // Raw.WebPage
-    this.subclassOfId = 0x55a97481; // Raw.TypeWebPage
     this.id = id;
     this.url = url;
     this.displayUrl = displayUrl;

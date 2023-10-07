@@ -39,10 +39,6 @@ export class Game extends TLObject {
     client: Snake,
   ) {
     super(client);
-    this.classType = 'types';
-    this.className = 'game';
-    this.constructorId = 0xbdf9653b;
-    this.subclassOfId = 0x83199eb2;
     this.id = id;
     this.shortName = shortName;
     this.title = title;

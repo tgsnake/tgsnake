@@ -70,10 +70,6 @@ export class Video extends TLObject {
     client: Snake,
   ) {
     super(client);
-    this.className = 'video';
-    this.classType = 'types';
-    this.constructorId = 0x8fd4c4d8; // Raw.Document
-    this.subclassOfId = 0x211fe820; // Raw.Document
     this.fileId = fileId;
     this.fileUniqueId = fileUniqueId;
     this.width = width;

@@ -14,8 +14,8 @@ import type { Snake } from '../../Client/index.ts';
 
 // https://core.telegram.org/bots/api#chatjoinrequest
 export class ChatJoinRequest extends TLObject {
-  chat!: Chat;
-  from!: User;
+  chat?: Chat;
+  from?: User;
   userChatId!: bigint;
   date!: Date;
   bio?: string;
@@ -29,8 +29,8 @@ export class ChatJoinRequest extends TLObject {
       bio,
       inviteLink,
     }: {
-      chat: Chat;
-      from: User;
+      chat?: Chat;
+      from?: User;
       userChatId: bigint;
       date: Date;
       bio?: string;
@@ -56,7 +56,12 @@ export class ChatJoinRequest extends TLObject {
       {
         userChatId: update.userId,
         date: new Date(update.date * 1000),
-        bio: update.bio,
+        bio:
+          'bio' in update
+            ? (update.bio as string)
+            : 'about' in update
+            ? (update.about as string)
+            : '',
         inviteLink: update.invite,
         from: await User.parse(
           client,

@@ -52,8 +52,6 @@ export class ChatMemberUpdated extends TLObject {
     client: Snake,
   ) {
     super(client);
-    this.className = 'ChatMemberUpdated';
-    this.classType = 'types';
     this.chat = chat;
     this.from = from;
     this.date = date;
@@ -145,8 +143,6 @@ export class ChatMemberOwner extends TLObject {
   customTitle?: string;
   constructor({ status, user, isAnonymous, customTitle }: TypeChatMemberOwner, client: Snake) {
     super(client);
-    this.className = 'ChatMemberOwner';
-    this.classType = 'types';
     this.status = status;
     this.user = user;
     this.isAnonymous = isAnonymous;
@@ -247,8 +243,6 @@ export class ChatMemberAdministrator extends TLObject {
     client: Snake,
   ) {
     super(client);
-    this.className = 'ChatMemberAdministrator';
-    this.classType = 'types';
     this.status = status;
     this.user = user;
     this.canBeEdited = canBeEdited;
@@ -358,8 +352,6 @@ export class ChatMemberMember extends TLObject {
   joinedDate!: Date;
   constructor({ status, user, joinedDate }: TypeChatMemberMember, client: Snake) {
     super(client);
-    this.className = 'ChatMemberMember';
-    this.classType = 'types';
     this.status = status;
     this.user = user;
     this.joinedDate = joinedDate;
@@ -478,8 +470,6 @@ export class ChatMemberRestricted extends TLObject {
     client: Snake,
   ) {
     super(client);
-    this.className = 'ChatMemberRestricted';
-    this.classType = 'types';
     this.status = status;
     this.user = user;
     this.isMember = isMember;
@@ -558,8 +548,6 @@ export class ChatMemberLeft extends TLObject {
   user!: User;
   constructor({ status, user }: TypeChatMemberLeft, client: Snake) {
     super(client);
-    this.className = 'ChatMemberLeft';
-    this.classType = 'types';
     this.status = status;
     this.user = user;
   }
@@ -596,8 +584,6 @@ export class ChatMemberBanned extends TLObject {
   joinedDate!: Date;
   constructor({ status, user, untilDate, joinedDate }: TypeChatMemberBanned, client: Snake) {
     super(client);
-    this.className = 'ChatMemberBanned';
-    this.classType = 'types';
     this.status = status;
     this.user = user;
     this.untilDate = untilDate;

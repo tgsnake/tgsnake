@@ -12,15 +12,11 @@ import type { Telegram } from '../Methods/Telegram.ts';
 export class TLObject {
   protected _client!: Snake;
   className!: string;
-  classType!: string;
   constructorId!: number;
   subclassOfId!: number;
   constructor(client: Snake) {
     this._client = client;
     this.className = this.constructor.name;
-    this.classType = 'types';
-    this.constructorId = 0;
-    this.subclassOfId = 0;
   }
   get client() {
     return this._client;
@@ -48,7 +44,7 @@ export class TLObject {
     const toPrint: { [key: string]: any } = {
       _: this.className,
     };
-    let ignore = ['className', 'constructorId', 'subclassOfId', 'classType'];
+    let ignore = ['className'];
     for (const key in this) {
       if (this.hasOwnProperty(key)) {
         const value = this[key];

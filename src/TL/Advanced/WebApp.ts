@@ -25,10 +25,6 @@ export class WebAppData extends TLObject {
     client: Snake,
   ) {
     super(client);
-    this.classType = 'types';
-    this.className = 'webAppData';
-    this.constructorId = 0x47dd8079; // Raw.MessageActionWebViewDataSentMe
-    this.subclassOfId = 0x8680d126; // Raw.TypeMessageAction
     this.data = data;
     this.buttonText = buttonText;
   }

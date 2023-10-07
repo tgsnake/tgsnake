@@ -35,10 +35,6 @@ export class Contact extends TLObject {
     client: Snake,
   ) {
     super(client);
-    this.className = 'contact';
-    this.classType = 'types';
-    this.constructorId = 0x70322949; // Raw.MessageMediaContact
-    this.subclassOfId = 0x476cbe32; // Raw.TypeMessageMedia
     this.phoneNumber = phoneNumber;
     this.firstName = firstName;
     this.lastName = lastName;

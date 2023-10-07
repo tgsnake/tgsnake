@@ -54,10 +54,6 @@ export class Photo extends TLObject {
     client: Snake,
   ) {
     super(client);
-    this.classType = 'types';
-    this.className = 'photo';
-    this.constructorId = 0xfb197a65; // Raw.Photo
-    this.subclassOfId = 0xd576ab1c; // Raw.TypePhoto
     this.fileId = fileId;
     this.fileUniqueId = fileUniqueId;
     this.thumb = thumb;

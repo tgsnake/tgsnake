@@ -194,11 +194,6 @@ export class User extends TLObject {
     client: Snake,
   ) {
     super(client);
-    this.className = 'User';
-    this.classType = 'types';
-    // overwrite Raw.User
-    this.constructorId = 0x3ff6ecb0;
-    this.subclassOfId = 0x2da17977;
     this.id = id;
     this.accessHash = accessHash;
     this.isSelf = isSelf;

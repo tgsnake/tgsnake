@@ -247,10 +247,6 @@ export class Chat extends TLObject {
     client: Snake,
   ) {
     super(client);
-    this.className = 'Chat';
-    this.classType = 'types';
-    this.constructorId = 0x41cbf256;
-    this.subclassOfId = 0xc5af5d94;
     this.id = id;
     this.accessHash = accessHash;
     this.type = type;
@@ -324,7 +320,7 @@ export class Chat extends TLObject {
       if (chat instanceof Raw.ChatEmpty) {
         return new Chat(
           {
-            id: -chat.id,
+            id: BigInt(-chat.id),
             type: 'group',
           },
           client,
@@ -333,7 +329,7 @@ export class Chat extends TLObject {
       if (chat instanceof Raw.ChatForbidden) {
         return new Chat(
           {
-            id: -chat.id,
+            id: BigInt(-chat.id),
             title: chat.title,
             type: 'group',
           },
@@ -342,7 +338,7 @@ export class Chat extends TLObject {
       }
       return new Chat(
         {
-          id: -chat.id,
+          id: BigInt(-chat.id),
           type: 'group',
           title: chat.title,
           photo: ChatPhoto.parse(client, chat.photo, -chat.id, BigInt(0)),

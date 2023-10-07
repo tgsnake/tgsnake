@@ -32,10 +32,6 @@ export class Location extends TLObject {
     client: Snake,
   ) {
     super(client);
-    this.className = 'location';
-    this.classType = 'types';
-    this.constructorId = 0xb2a2f663; // Raw.GeoPoint
-    this.subclassOfId = 0xd610e16d; // Raw.TypeGeoPoint
     this._accessHash = accessHash;
     this.longitude = longitude;
     this.latitude = latitude;
@@ -93,10 +89,6 @@ export class Venue extends TLObject {
     client: Snake,
   ) {
     super(client);
-    this.className = 'venue';
-    this.classType = 'types';
-    this.constructorId = 0x2ec0533f; // Raw.MessageMediaVenue
-    this.subclassOfId = 0x476cbe32; // Raw.TypeMessageMedia
     this.location = location;
     this.title = title;
     this.address = address;

@@ -26,10 +26,6 @@ export class Dice extends TLObject {
     client: Snake,
   ) {
     super(client);
-    this.className = 'dice';
-    this.classType = 'types';
-    this.constructorId = 0x3f7ee58b; // Raw.MessageMediaDice
-    this.subclassOfId = 0x476cbe32; // Raw.TypeMessageMedia
     this.emoji = emoji;
     this.value = value;
   }

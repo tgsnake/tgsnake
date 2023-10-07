@@ -42,10 +42,6 @@ export class PhotoSize extends TLObject {
     client: Snake,
   ) {
     super(client);
-    this.className = 'PhotoSize';
-    this.classType = 'type';
-    this.constructorId = 0x75c78e60;
-    this.subclassOfId = 0x17cc29d9;
     this.fileId = fileId;
     this.fileUniqueId = fileUniqueId;
     this.width = width;

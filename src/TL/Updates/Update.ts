@@ -10,6 +10,7 @@
 import { TLObject } from '../TL.ts';
 import { Raws } from '../../platform.deno.ts';
 import { Message } from '../Messages/Message.ts';
+import { Poll, PollAnswer } from '../Messages/Medias/Poll.ts';
 import { CallbackQuery } from './callbackQuery.ts';
 import { ChatMemberUpdated } from './chatMember.ts';
 import { ChatJoinRequest } from './chatJoinRequest.ts';
@@ -27,8 +28,8 @@ export interface TypeUpdate {
   callbackQuery?: CallbackQuery;
   shippingQuery?: TLObject;
   preCheckoutQuery?: TLObject;
-  poll?: TLObject;
-  pollAnswer?: TLObject;
+  poll?: Poll;
+  pollAnswer?: PollAnswer;
   myChatMember?: ChatMemberUpdated;
   chatMember?: ChatMemberUpdated;
   chatJoinRequest?: ChatJoinRequest;
@@ -53,8 +54,8 @@ export class Update extends TLObject {
   callbackQuery?: CallbackQuery;
   shippingQuery?: TLObject;
   preCheckoutQuery?: TLObject;
-  poll?: TLObject;
-  pollAnswer?: TLObject;
+  poll?: Poll;
+  pollAnswer?: PollAnswer;
   chatJoinRequest?: ChatJoinRequest;
   myChatMember?: ChatMemberUpdated;
   chatMember?: ChatMemberUpdated;
@@ -80,8 +81,6 @@ export class Update extends TLObject {
     client: Snake,
   ) {
     super(client);
-    this.className = 'Update';
-    this.classType = 'types';
     this.message = message;
     this.editedMessage = editedMessage;
     this.channelPost = channelPost;
@@ -162,6 +161,27 @@ export class Update extends TLObject {
           chatJoinRequest: await ChatJoinRequest.parse(
             client,
             update as Raws.Raw.UpdateBotChatInviteRequester,
+            chats,
+            users,
+          ),
+        },
+        client,
+      );
+    }
+    if (update instanceof Raws.Raw.UpdateMessagePoll) {
+      return new Update(
+        {
+          poll: await Poll.parse(client, update as Raws.Raw.UpdateMessagePoll),
+        },
+        client,
+      );
+    }
+    if (update instanceof Raws.Raw.UpdateMessagePollVote) {
+      return new Update(
+        {
+          pollAnswer: await PollAnswer.parseUpdate(
+            client,
+            update as Raws.Raw.UpdateMessagePollVote,
             chats,
             users,
           ),

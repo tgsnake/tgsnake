@@ -16,7 +16,7 @@ export { Document } from './Document.ts';
 export { Game } from './Game.ts';
 export { Photo } from './Photo.ts';
 export { PhotoSize } from './PhotoSize.ts';
-export { Poll, PollAnswer } from './Poll.ts';
+export { Poll, PollAnswer, PollOption } from './Poll.ts';
 export { Sticker } from './Sticker.ts';
 export { Venue, Location } from './Venue.ts';
 export { Video } from './Video.ts';

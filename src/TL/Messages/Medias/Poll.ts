@@ -9,9 +9,60 @@
  */
 import { Raw, Helpers, Parser, type Entities } from '../../../platform.deno.ts';
 import { TLObject } from '../../TL.ts';
+import { Chat, User } from '../../Advanced/index.ts';
+import { getId } from '../../../Utilities.ts';
 import type { Snake } from '../../../Client/index.ts';
 
+// https://core.telegram.org/bots/api#pollanswer
 export class PollAnswer extends TLObject {
+  pollId!: bigint;
+  voterChat?: Chat;
+  user?: User;
+  options!: Array<string>;
+  constructor(
+    {
+      pollId,
+      voterChat,
+      user,
+      options,
+    }: {
+      pollId: bigint;
+      voterChat?: Chat;
+      user?: User;
+      options: Array<string>;
+    },
+    client: Snake,
+  ) {
+    super(client);
+    this.pollId = pollId;
+    this.voterChat = voterChat;
+    this.user = user;
+    this.options = options;
+  }
+  static parseUpdate(
+    client: Snake,
+    vote: Raw.UpdateMessagePollVote,
+    chats: Array<Raw.TypeChat>,
+    users: Array<Raw.TypeUser>,
+  ): PollAnswer {
+    const userId = getId(vote.peer!);
+    let from = User.parse(
+      client,
+      users.find((user) => user.id === userId),
+    );
+    let chat = Chat.parseDialog(client, vote.peer, users, chats);
+    return new PollAnswer(
+      {
+        pollId: vote.pollId,
+        options: vote.options.map((el) => el.toString()),
+        user: from,
+        voterChat: from ? undefined : chat,
+      },
+      client,
+    );
+  }
+}
+export class PollOption extends TLObject {
   text!: string;
   chosen!: boolean;
   correct!: boolean;
@@ -34,10 +85,6 @@ export class PollAnswer extends TLObject {
     client: Snake,
   ) {
     super(client);
-    this.className = 'pollAnswer';
-    this.classType = 'types';
-    this.constructorId = 0; // unknown
-    this.subclassOfId = 0x248e557b; // Raw.TypePoll
     this.text = text;
     this.chosen = chosen;
     this.voters = voters;
@@ -52,7 +99,7 @@ export class Poll extends TLObject {
   multipleChoice!: boolean;
   quiz!: boolean;
   question!: string;
-  answers!: Array<PollAnswer | undefined>;
+  options!: Array<PollOption | undefined>;
   min!: boolean;
   totalVoters!: number;
   recentVoters!: any;
@@ -68,7 +115,7 @@ export class Poll extends TLObject {
       multipleChoice,
       quiz,
       question,
-      answers,
+      options,
       closePeriod,
       closeDate,
       min,
@@ -83,7 +130,7 @@ export class Poll extends TLObject {
       multipleChoice: boolean;
       quiz: boolean;
       question: string;
-      answers: Array<PollAnswer | undefined>;
+      options: Array<PollOption | undefined>;
       min: boolean;
       totalVoters: number;
       recentVoters: any;
@@ -95,17 +142,13 @@ export class Poll extends TLObject {
     client: Snake,
   ) {
     super(client);
-    this.className = 'poll';
-    this.classType = 'types';
-    this.constructorId = 0x86e18161; // Raw.Poll
-    this.subclassOfId = 0x248e557b; // Raw.TypePoll
     this.id = id;
     this.closed = closed;
     this.publicVoters = publicVoters;
     this.multipleChoice = multipleChoice;
     this.quiz = quiz;
     this.question = question;
-    this.answers = answers;
+    this.options = options;
     this.closePeriod = closePeriod;
     this.closeDate = closeDate;
     this.min = min;
@@ -114,41 +157,44 @@ export class Poll extends TLObject {
     this.solution = solution;
     this.solutionEntities = solutionEntities;
   }
-  static parse(client: Snake, poll: Raw.MessageMediaPoll) {
-    return new Poll(
-      {
-        id: poll.poll.id,
-        closed: poll.poll.closed ?? false,
-        publicVoters: poll.poll.publicVoters ?? false,
-        multipleChoice: poll.poll.multipleChoice ?? false,
-        quiz: poll.poll.quiz ?? false,
-        question: poll.poll.question,
-        answers: poll.poll.answers.map((element, index) => {
-          if (poll.results?.results) {
-            const results = poll.results.results[index];
-            if (element && results) {
-              return new PollAnswer(
-                {
-                  text: element.text,
-                  chosen: results.chosen ?? false,
-                  correct: results.correct ?? false,
-                  voters: results.voters ?? 0,
-                  option: element.option.toString('utf8'),
-                },
-                client,
-              );
+  static parse(client: Snake, poll: Raw.MessageMediaPoll | Raw.UpdateMessagePoll) {
+    if (poll.poll) {
+      return new Poll(
+        {
+          id: poll.poll.id,
+          closed: poll.poll.closed ?? false,
+          publicVoters: poll.poll.publicVoters ?? false,
+          multipleChoice: poll.poll.multipleChoice ?? false,
+          quiz: poll.poll.quiz ?? false,
+          question: poll.poll.question,
+          options: poll.poll.answers.map((element, index) => {
+            if (poll.results?.results) {
+              const results = poll.results.results[index];
+              if (element && results) {
+                return new PollOption(
+                  {
+                    text: element.text,
+                    chosen: results.chosen ?? false,
+                    correct: results.correct ?? false,
+                    voters: results.voters ?? 0,
+                    option: element.option.toString('utf8'),
+                  },
+                  client,
+                );
+              }
             }
-          }
-        }),
-        closePeriod: poll.poll.closePeriod ?? undefined,
-        closeDate: poll.poll.closeDate ? new Date(poll.poll.closeDate * 1000) : undefined,
-        min: poll.results.min ?? false,
-        totalVoters: poll.results.totalVoters ?? 0,
-        recentVoters: poll.results.recentVoters,
-        solution: poll.results.solution,
-        solutionEntities: Parser.fromRaw(poll.results.solutionEntities ?? []),
-      },
-      client,
-    );
+          }),
+          closePeriod: poll.poll.closePeriod ?? undefined,
+          closeDate: poll.poll.closeDate ? new Date(poll.poll.closeDate * 1000) : undefined,
+          min: poll.results.min ?? false,
+          totalVoters: poll.results.totalVoters ?? 0,
+          recentVoters: poll.results.recentVoters,
+          solution: poll.results.solution,
+          solutionEntities: Parser.fromRaw(poll.results.solutionEntities ?? []),
+        },
+        client,
+      );
+    }
+    return undefined;
   }
 }

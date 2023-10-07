@@ -43,8 +43,6 @@ export class CallbackQuery extends TLObject {
     client: Snake,
   ) {
     super(client);
-    this.className = 'CallbackQuery';
-    this.classType = 'types';
     this.id = id;
     this.from = from;
     this.message = message;
