@@ -119,3 +119,6 @@ tgsnake.config.js
 *.session
 *.cache
 *.e2e
+# test folder 
+/tes
+/test
