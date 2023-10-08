@@ -38,9 +38,6 @@ export interface TypeUpdate {
 }
 export interface ContextUpdate {
   className: string;
-  classType: string;
-  constructorId: number;
-  subclassOfId: number;
   client: Snake;
   api: Telegram;
   msg?: Message;

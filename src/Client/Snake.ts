@@ -213,4 +213,7 @@ export class Snake<T = {}> extends MainContext<T> {
     }
     return true;
   }
+  get core(): Client {
+    return this._client;
+  }
 }

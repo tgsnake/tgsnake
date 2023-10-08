@@ -9,11 +9,10 @@
  */
 import type { Snake } from '../Client/index.ts';
 import type { Telegram } from '../Methods/Telegram.ts';
+import type { Client } from '@tgsnake/core';
 export class TLObject {
   protected _client!: Snake;
   className!: string;
-  constructorId!: number;
-  subclassOfId!: number;
   constructor(client: Snake) {
     this._client = client;
     this.className = this.constructor.name;
@@ -23,6 +22,9 @@ export class TLObject {
   }
   get api(): Telegram {
     return this._client.api;
+  }
+  get core(): Client {
+    return this._client._client;
   }
   [Symbol.for('nodejs.util.inspect.custom')](): { [key: string]: any } {
     const toPrint: { [key: string]: any } = {
