@@ -17,7 +17,16 @@ export type TypeUpdateExtended<T, P extends keyof T> = TypeUpdate & {
   editedMessage?: FilterQuery<T, P>;
   editedChannelPost?: FilterQuery<T, P>;
 };
-export interface FilterContext {
+export interface FilterRawTypeUpdatesContext {
+  updatesTooLong?: Raw.UpdatesTooLong;
+  updateShortMessage?: Raw.UpdateShortMessage;
+  updateShortChatMessage?: Raw.UpdateShortChatMessage;
+  updateShort?: Raw.UpdateShort;
+  updatesCombined?: Raw.UpdatesCombined;
+  updates?: Raw.Updates;
+  updateShortSentMessage?: Raw.UpdateShortSentMessage;
+}
+export interface FilterContext extends FilterRawTypeUpdatesContext {
   any: TypeUpdate | Raw.TypeUpdates;
   message?: FilterQuery<TypeUpdate, 'message'>;
   editedMessage?: FilterQuery<TypeUpdate, 'editedMessage'>;
@@ -83,7 +92,7 @@ export interface FilterContext {
 export type FilterQuery<T, P extends keyof T> = T & {
   [K in P]-?: T[K];
 };
-export function filter(key: string | string[], ctx: TypeUpdate) {
+export function filter(key: string | string[], ctx: TypeUpdate | Raw.TypeUpdates) {
   const aliases = {
     cb: 'callbackQuery',
     msg: 'message',
@@ -92,12 +101,7 @@ export function filter(key: string | string[], ctx: TypeUpdate) {
   };
   if (Array.isArray(key)) {
     for (const k of key) {
-      if (k === 'any') {
-        return true;
-      }
-      if (k in ctx) {
-        return true;
-      }
+      if (k === 'any' || k in ctx || ('className' in ctx && k === ctx.className)) return true;
       let sk = k.split('.');
       if (sk.length) {
         if (ctx[aliases[sk[0]]] && ctx[aliases[sk[0]]][sk[1]] !== undefined) {
@@ -106,12 +110,7 @@ export function filter(key: string | string[], ctx: TypeUpdate) {
       }
     }
   } else {
-    if (key === 'any') {
-      return true;
-    }
-    if (key in ctx) {
-      return true;
-    }
+    if (key === 'any' || key in ctx || ('className' in ctx && key === ctx.className)) return true;
     let sk = key.split('.');
     if (sk.length) {
       if (ctx[aliases[sk[0]]] && ctx[aliases[sk[0]]][sk[1]] !== undefined) {
