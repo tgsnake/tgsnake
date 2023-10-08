@@ -257,26 +257,28 @@ export class Composer<T = {}>
     };
     return this.on('cb.data').filter(filterCmd, ...middleware);
   }
-  /*inlineQuery(
+  inlineQuery(
     trigger: MaybeArray<string | RegExp>,
-    ...middleware: Array<MiddlewareFn<Combine<Raw.UpdateBotInlineQuery, T>>>
+    ...middleware: Array<
+      MiddlewareFn<Combine<Combine<FilterContext['inlineQuery.from'], ContextUpdate>, T>>
+    >
   ): Composer<T> {
     let key = toArray(trigger);
     let filterCmd = (ctx) => {
-      const { query } = ctx;
+      const { query } = ctx.inlineQuery;
       let passed: any[] = [];
       for (let cmd of key) {
         if (typeof cmd == 'string') {
           cmd as string;
-          if (cmd == query) passed.push(cmd);
+          if (cmd == data) passed.push(cmd);
         }
         if (cmd instanceof RegExp) {
           cmd as RegExp;
-          if (cmd.test(String(query))) passed.push(cmd);
+          if (cmd.test(String(data))) passed.push(cmd);
         }
       }
       return Boolean(passed.length);
     };
-    return this.on('inlineQuery').filter(filterCmd, ...middleware);
-  }*/
+    return this.on('inlineQuery.from').filter(filterCmd, ...middleware);
+  }
 }
