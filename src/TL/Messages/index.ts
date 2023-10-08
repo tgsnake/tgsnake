@@ -11,3 +11,4 @@
 export * as Medias from './Medias/index.ts';
 export * as ReplyMarkups from './ReplyMarkup.ts';
 export { Message, type TypeMessage } from './Message.ts';
+export { InlineQuery, type TypeInlineQuery } from './inlineQuery.ts';

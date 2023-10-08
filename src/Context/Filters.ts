@@ -1,10 +1,11 @@
 import { Raw } from '../platform.deno.ts';
 import type { TypeUpdate, CallbackQuery } from '../TL/Updates/index.ts';
-import type { Message } from '../TL/Messages/index.ts';
+import type { Message, InlineQuery } from '../TL/Messages/index.ts';
 
 export type TypeUpdateExtended<T, P extends keyof T> = TypeUpdate & {
   message?: FilterQuery<T, P>;
   channelPost?: FilterQuery<T, P>;
+  inlineQuery?: FilterQuery<T, P>;
   callbackQuery?: FilterQuery<T, P>;
   editedMessage?: FilterQuery<T, P>;
   editedChannelPost?: FilterQuery<T, P>;
@@ -55,6 +56,9 @@ export interface FilterContext {
   'editMsg.caption'?: FilterQuery<TypeUpdateExtended<Message, 'caption'>, 'editedMessage'>;
   'editPost.text'?: FilterQuery<TypeUpdateExtended<Message, 'text'>, 'editedChannelPost'>;
   'editPost.caption'?: FilterQuery<TypeUpdateExtended<Message, 'caption'>, 'editedChannelPost'>;
+  'inlineQuery.from'?: FilterQuery<TypeUpdateExtended<InlineQuery, 'from'>, 'inlineQuery'>;
+  'inlineQuery.location'?: FilterQuery<TypeUpdateExtended<InlineQuery, 'location'>, 'inlineQuery'>;
+  'inlineQuery.chatType'?: FilterQuery<TypeUpdateExtended<InlineQuery, 'chatType'>, 'inlineQuery'>;
 }
 export type FilterQuery<T, P extends keyof T> = T & {
   [K in P]-?: T[K];

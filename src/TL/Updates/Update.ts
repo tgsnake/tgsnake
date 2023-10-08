@@ -10,6 +10,7 @@
 import { TLObject } from '../TL.ts';
 import { Raws } from '../../platform.deno.ts';
 import { Message } from '../Messages/Message.ts';
+import { InlineQuery } from '../Messages/inlineQuery.ts';
 import { Poll, PollAnswer } from '../Messages/Medias/Poll.ts';
 import { CallbackQuery } from './callbackQuery.ts';
 import { ChatMemberUpdated } from './chatMember.ts';
@@ -23,7 +24,7 @@ export interface TypeUpdate {
   editedMessage?: Message;
   channelPost?: Message;
   editedChannelPost?: Message;
-  inlineQuery?: TLObject;
+  inlineQuery?: InlineQuery;
   chosenInlineResult?: TLObject;
   callbackQuery?: CallbackQuery;
   shippingQuery?: TLObject;
@@ -49,7 +50,7 @@ export class Update extends TLObject {
   editedMessage?: Message;
   channelPost?: Message;
   editedChannelPost?: Message;
-  inlineQuery?: TLObject;
+  inlineQuery?: InlineQuery;
   chosenInlineResult?: TLObject;
   callbackQuery?: CallbackQuery;
   shippingQuery?: TLObject;
@@ -171,7 +172,7 @@ export class Update extends TLObject {
     if (update instanceof Raws.Raw.UpdateMessagePoll) {
       return new Update(
         {
-          poll: await Poll.parse(client, update as Raws.Raw.UpdateMessagePoll),
+          poll: Poll.parse(client, update as Raws.Raw.UpdateMessagePoll),
         },
         client,
       );
@@ -179,12 +180,20 @@ export class Update extends TLObject {
     if (update instanceof Raws.Raw.UpdateMessagePollVote) {
       return new Update(
         {
-          pollAnswer: await PollAnswer.parseUpdate(
+          pollAnswer: PollAnswer.parseUpdate(
             client,
             update as Raws.Raw.UpdateMessagePollVote,
             chats,
             users,
           ),
+        },
+        client,
+      );
+    }
+    if (update instanceof Raws.Raw.UpdateBotInlineQuery) {
+      return new Update(
+        {
+          inlineQuery: InlineQuery.parse(client, update as Raws.Raw.UpdateBotInlineQuery, users),
         },
         client,
       );

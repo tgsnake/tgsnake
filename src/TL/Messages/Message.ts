@@ -95,8 +95,6 @@ export interface TypeMessage {
   replyToStoryId?: number;
   repliedStoryUser?: Advanceds.User;
 }
-// TODO:
-// Support message services
 export class Message extends TLObject {
   id!: number;
   outgoing?: boolean;
