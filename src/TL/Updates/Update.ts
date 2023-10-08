@@ -9,8 +9,7 @@
  */
 import { TLObject } from '../TL.ts';
 import { Raws } from '../../platform.deno.ts';
-import { Message } from '../Messages/Message.ts';
-import { InlineQuery, ChosenInlineResult } from '../Messages/inlineQuery.ts';
+import { Message, InlineQuery, ChosenInlineResult, ShippingQuery } from '../Messages/index.ts';
 import { Poll, PollAnswer } from '../Messages/Medias/Poll.ts';
 import { CallbackQuery } from './callbackQuery.ts';
 import { ChatMemberUpdated } from './chatMember.ts';
@@ -27,7 +26,7 @@ export interface TypeUpdate {
   inlineQuery?: InlineQuery;
   chosenInlineResult?: ChosenInlineResult;
   callbackQuery?: CallbackQuery;
-  shippingQuery?: TLObject;
+  shippingQuery?: ShippingQuery;
   preCheckoutQuery?: TLObject;
   poll?: Poll;
   pollAnswer?: PollAnswer;
@@ -50,7 +49,7 @@ export class Update extends TLObject {
   inlineQuery?: InlineQuery;
   chosenInlineResult?: ChosenInlineResult;
   callbackQuery?: CallbackQuery;
-  shippingQuery?: TLObject;
+  shippingQuery?: ShippingQuery;
   preCheckoutQuery?: TLObject;
   poll?: Poll;
   pollAnswer?: PollAnswer;
@@ -201,6 +200,18 @@ export class Update extends TLObject {
           chosenInlineResult: ChosenInlineResult.parse(
             client,
             update as Raws.Raw.UpdateBotInlineSend,
+            users,
+          ),
+        },
+        client,
+      );
+    }
+    if (update instanceof Raws.Raw.UpdateBotShippingQuery) {
+      return new Update(
+        {
+          shippingQuery: ShippingQuery.parse(
+            client,
+            update as Raws.Raw.UpdateBotShippingQuery,
             users,
           ),
         },

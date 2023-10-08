@@ -1,6 +1,11 @@
 import { Raw } from '../platform.deno.ts';
 import type { TypeUpdate, CallbackQuery } from '../TL/Updates/index.ts';
-import type { Message, InlineQuery, ChosenInlineResult } from '../TL/Messages/index.ts';
+import type {
+  Message,
+  InlineQuery,
+  ChosenInlineResult,
+  ShippingQuery,
+} from '../TL/Messages/index.ts';
 
 export type TypeUpdateExtended<T, P extends keyof T> = TypeUpdate & {
   message?: FilterQuery<T, P>;
@@ -8,6 +13,7 @@ export type TypeUpdateExtended<T, P extends keyof T> = TypeUpdate & {
   inlineQuery?: FilterQuery<T, P>;
   chosenInlineResult?: FilterQuery<T, P>;
   callbackQuery?: FilterQuery<T, P>;
+  shippingQuery?: FilterQuery<T, P>;
   editedMessage?: FilterQuery<T, P>;
   editedChannelPost?: FilterQuery<T, P>;
 };
@@ -72,6 +78,7 @@ export interface FilterContext {
     TypeUpdateExtended<ChosenInlineResult, 'inlineMessageId'>,
     'chosenInlineResult'
   >;
+  'shippingQuery.from'?: FilterQuery<TypeUpdateExtended<ShippingQuery, 'from'>, 'shippingQuery'>;
 }
 export type FilterQuery<T, P extends keyof T> = T & {
   [K in P]-?: T[K];

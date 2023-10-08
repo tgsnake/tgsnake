@@ -10,6 +10,7 @@
 import type { Snake } from '../Client/index.ts';
 import type { Telegram } from '../Methods/Telegram.ts';
 import type { Client } from '@tgsnake/core';
+
 export class TLObject {
   protected _client!: Snake;
   className!: string;
@@ -30,7 +31,7 @@ export class TLObject {
     const toPrint: { [key: string]: any } = {
       _: this.className,
     };
-    let ignore = ['className', 'constructorId', 'subclassOfId', 'classType'];
+    let ignore = ['className'];
     for (const key in this) {
       if (this.hasOwnProperty(key)) {
         const value = this[key];

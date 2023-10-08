@@ -17,3 +17,14 @@ export {
   type TypeInlineQuery,
   type TypeChosenInlineResult,
 } from './inlineQuery.ts';
+export {
+  ShippingQuery,
+  PreCheckoutQuery,
+  ShippingAddress,
+  type TypeShippingQuery,
+  type TypeSuccessfulPayment,
+  type TypeShippingOption,
+  type TypeOrderInfo,
+  type TypeLabeledPrice,
+  type TypeShippingAddress,
+} from './Shipping.ts';
