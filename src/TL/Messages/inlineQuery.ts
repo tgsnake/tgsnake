@@ -11,6 +11,7 @@ import { TLObject } from '../TL.ts';
 import { Raw } from '../../platform.deno.ts';
 import { User } from '../Advanced/User.ts';
 import { Location } from './Medias/Venue.ts';
+import { createInlineMsgId } from '../../Utilities.ts';
 import type { Snake } from '../../Client/index.ts';
 
 export interface TypeInlineQuery {
@@ -20,6 +21,13 @@ export interface TypeInlineQuery {
   from?: User;
   chatType?: string;
   location?: Location;
+}
+export interface TypeChosenInlineResult {
+  resultId: string;
+  query: string;
+  from?: User;
+  location?: Location;
+  inlineMessageId?: string;
 }
 // https://core.telegram.org/bots/api#inlinequery
 export class InlineQuery extends TLObject {
@@ -62,6 +70,44 @@ export class InlineQuery extends TLObject {
             : update.peerType instanceof Raw.InlineQueryPeerTypeBroadcast
             ? 'channel'
             : undefined,
+        from: User.parse(
+          client,
+          users.find((user) => user.id === update.userId),
+        ),
+      },
+      client,
+    );
+  }
+}
+// https://core.telegram.org/bots/api#choseninlineresult
+export class ChosenInlineResult extends TLObject {
+  resultId!: string;
+  query!: string;
+  from?: User;
+  location?: Location;
+  inlineMessageId?: string;
+  constructor(
+    { resultId, query, from, location, inlineMessageId }: TypeChosenInlineResult,
+    client: Snake,
+  ) {
+    super(client);
+    this.resultId = resultId;
+    this.query = query;
+    this.from = from;
+    this.location = location;
+    this.inlineMessageId = inlineMessageId;
+  }
+  static parse(
+    client: Snake,
+    update: Raw.UpdateBotInlineSend,
+    users: Array<Raw.TypeUser>,
+  ): ChosenInlineResult {
+    return new ChosenInlineResult(
+      {
+        resultId: update.id,
+        query: update.query,
+        location: update.geo ? Location.parse(client, update.geo) : undefined,
+        inlineMessageId: update.msgId ? createInlineMsgId(update.msgId) : undefined,
         from: User.parse(
           client,
           users.find((user) => user.id === update.userId),
