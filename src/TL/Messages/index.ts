@@ -21,6 +21,7 @@ export {
   ShippingQuery,
   PreCheckoutQuery,
   ShippingAddress,
+  OrderInfo,
   type TypeShippingQuery,
   type TypeSuccessfulPayment,
   type TypeShippingOption,

@@ -64,7 +64,33 @@ export interface TypeOrderInfo {
   name?: string;
   phoneNumber?: string;
   email?: string;
-  shippingAddress?: TypeShippingAddress;
+  shippingAddress?: ShippingAddress;
+}
+export class OrderInfo extends TLObject {
+  name?: string;
+  phoneNumber?: string;
+  email?: string;
+  shippingAddress?: ShippingAddress;
+  constructor({ name, phoneNumber, email, shippingAddress }: TypeOrderInfo, client: Snake) {
+    super(client);
+    this.name = name;
+    this.phoneNumber = phoneNumber;
+    this.email = email;
+    this.shippingAddress = shippingAddress;
+  }
+  static parse(client: Snake, info: Raw.PaymentRequestedInfo): OrderInfo {
+    return new OrderInfo(
+      {
+        name: info.name,
+        phoneNumber: info.phone,
+        email: info.email,
+        shippingAddress: info.shippingAddress
+          ? ShippingAddress.parse(client, info.shippingAddress)
+          : undefined,
+      },
+      client,
+    );
+  }
 }
 // https://core.telegram.org/bots/api#shippingoption
 export interface TypeShippingOption {
@@ -113,4 +139,63 @@ export class ShippingQuery extends TLObject {
   }
 }
 // https://core.telegram.org/bots/api#precheckoutquery
-export class PreCheckoutQuery extends TLObject {} // as update
+export interface TypePreCheckoutQuery {
+  id: string;
+  currency: string;
+  totalAmount: bigint;
+  invoicePayload: string;
+  shippingOptionId?: string;
+  orderInfo?: OrderInfo;
+  from?: User;
+}
+export class PreCheckoutQuery extends TLObject {
+  id!: string;
+  currency!: string;
+  totalAmount!: bigint;
+  invoicePayload!: string;
+  shippingOptionId?: string;
+  orderInfo?: OrderInfo;
+  from?: User;
+  constructor(
+    {
+      id,
+      currency,
+      totalAmount,
+      invoicePayload,
+      shippingOptionId,
+      orderInfo,
+      from,
+    }: TypePreCheckoutQuery,
+    client: Snake,
+  ) {
+    super(client);
+    this.id = id;
+    this.currency = currency;
+    this.totalAmount = totalAmount;
+    this.invoicePayload = invoicePayload;
+    this.shippingOptionId = shippingOptionId;
+    this.orderInfo = orderInfo;
+    this.from = from;
+  }
+  static parse(
+    client: Snake,
+    update: Raw.UpdateBotPrecheckoutQuery,
+    users: Array<Raw.TypeUser>,
+  ): PreCheckoutQuery {
+    return new PreCheckoutQuery(
+      {
+        id: String(update.queryId),
+        currency: update.currency,
+        totalAmount: update.totalAmount,
+        invoicePayload: update.payload.toString(),
+        shippingOptionId: update.shippingOptionId,
+        orderInfo: update.info ? OrderInfo.parse(client, update.info) : undefined,
+        from: User.parse(
+          client,
+          users.find((user) => user.id === update.userId),
+        ),
+      },
+      client,
+    );
+  }
+}

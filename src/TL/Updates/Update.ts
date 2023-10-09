@@ -9,7 +9,13 @@
  */
 import { TLObject } from '../TL.ts';
 import { Raws } from '../../platform.deno.ts';
-import { Message, InlineQuery, ChosenInlineResult, ShippingQuery } from '../Messages/index.ts';
+import {
+  Message,
+  InlineQuery,
+  ChosenInlineResult,
+  ShippingQuery,
+  PreCheckoutQuery,
+} from '../Messages/index.ts';
 import { Poll, PollAnswer } from '../Messages/Medias/Poll.ts';
 import { CallbackQuery } from './callbackQuery.ts';
 import { ChatMemberUpdated } from './chatMember.ts';
@@ -27,7 +33,7 @@ export interface TypeUpdate {
   chosenInlineResult?: ChosenInlineResult;
   callbackQuery?: CallbackQuery;
   shippingQuery?: ShippingQuery;
-  preCheckoutQuery?: TLObject;
+  preCheckoutQuery?: PreCheckoutQuery;
   poll?: Poll;
   pollAnswer?: PollAnswer;
   myChatMember?: ChatMemberUpdated;
@@ -50,7 +56,7 @@ export class Update extends TLObject {
   chosenInlineResult?: ChosenInlineResult;
   callbackQuery?: CallbackQuery;
   shippingQuery?: ShippingQuery;
-  preCheckoutQuery?: TLObject;
+  preCheckoutQuery?: PreCheckoutQuery;
   poll?: Poll;
   pollAnswer?: PollAnswer;
   chatJoinRequest?: ChatJoinRequest;
@@ -214,6 +220,14 @@ export class Update extends TLObject {
             update as Raws.Raw.UpdateBotShippingQuery,
             users,
           ),
+        },
+        client,
+      );
+    }
+    if (update instanceof Raws.Raw.UpdateBotPrecheckoutQuery) {
+      return new Update(
+        {
+          preCheckoutQuery: PreCheckoutQuery.parse(client, update, users),
         },
         client,
       );

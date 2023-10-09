@@ -270,11 +270,11 @@ export class Composer<T = {}>
       for (let cmd of key) {
         if (typeof cmd == 'string') {
           cmd as string;
-          if (cmd == data) passed.push(cmd);
+          if (cmd == query) passed.push(cmd);
         }
         if (cmd instanceof RegExp) {
           cmd as RegExp;
-          if (cmd.test(String(data))) passed.push(cmd);
+          if (cmd.test(String(query))) passed.push(cmd);
         }
       }
       return Boolean(passed.length);

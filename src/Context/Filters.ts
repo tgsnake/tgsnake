@@ -18,13 +18,13 @@ export type TypeUpdateExtended<T, P extends keyof T> = TypeUpdate & {
   editedChannelPost?: FilterQuery<T, P>;
 };
 export interface FilterRawTypeUpdatesContext {
-  updatesTooLong?: Raw.UpdatesTooLong;
-  updateShortMessage?: Raw.UpdateShortMessage;
-  updateShortChatMessage?: Raw.UpdateShortChatMessage;
-  updateShort?: Raw.UpdateShort;
-  updatesCombined?: Raw.UpdatesCombined;
-  updates?: Raw.Updates;
-  updateShortSentMessage?: Raw.UpdateShortSentMessage;
+  UpdatesTooLong?: Raw.UpdatesTooLong;
+  UpdateShortMessage?: Raw.UpdateShortMessage;
+  UpdateShortChatMessage?: Raw.UpdateShortChatMessage;
+  UpdateShort?: Raw.UpdateShort;
+  UpdatesCombined?: Raw.UpdatesCombined;
+  Updates?: Raw.Updates;
+  UpdateShortSentMessage?: Raw.UpdateShortSentMessage;
 }
 export interface FilterContext extends FilterRawTypeUpdatesContext {
   any: TypeUpdate | Raw.TypeUpdates;
