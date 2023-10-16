@@ -8,14 +8,12 @@
  * it under the terms of the MIT License as published.
  */
 import { Parser, type Entities, Raw, Helpers } from '../../platform.deno.ts';
-import { parseMessages } from '../../Utilities.ts';
 import * as ReplyMarkup from '../../TL/Messages/ReplyMarkup.ts';
 import type { Snake } from '../../Client/index.ts';
 import { Message } from '../../TL/Messages/index.ts';
 import { Chat } from '../../TL/Advanced/index.ts';
 
-export interface sendMessageParams {
-  disableWebPagePreview?: boolean;
+export interface sendMediaParams {
   disableNotification?: boolean;
   replyToMessageId?: number;
   messageThreadId?: number;
@@ -25,15 +23,15 @@ export interface sendMessageParams {
   replyMarkup?: ReplyMarkup.TypeReplyMarkup;
   entities?: Array<Entities>;
   parseMode?: 'html' | 'markdown';
+  caption?: string;
 }
-export async function sendMessage(
+export async function sendMedia(
   client: Snake,
   chatId: bigint | string,
-  text: string,
-  more: sendMessageParams = {},
+  media: Raw.TypeInputMedia,
+  more: sendMediaParams = {},
 ) {
   var {
-    disableWebPagePreview,
     disableNotification,
     replyToMessageId,
     messageThreadId,
@@ -43,18 +41,18 @@ export async function sendMessage(
     replyMarkup,
     entities,
     parseMode,
+    caption,
   } = more;
   const peer = await client._client.resolvePeer(chatId);
-  if (parseMode) {
-    const [t, e] = await Parser.parse(text, parseMode);
+  if (caption && parseMode) {
+    const [t, e] = await Parser.parse(caption, parseMode);
     if (!entities) {
       entities = e;
     }
-    text = t;
+    caption = t;
   }
   const res = await client._client.invoke(
-    new Raw.messages.SendMessage({
-      noWebpage: disableWebPagePreview,
+    new Raw.messages.SendMedia({
       silent: disableNotification,
       clearDraft: true,
       noforwards: protectContent,
@@ -65,7 +63,8 @@ export async function sendMessage(
             topMsgId: messageThreadId,
           })
         : undefined,
-      message: text,
+      message: caption || '',
+      media: media,
       randomId: client._rndMsgId.getMsgId(),
       replyMarkup: replyMarkup
         ? await ReplyMarkup.buildReplyMarkup(replyMarkup!, client)
@@ -73,8 +72,10 @@ export async function sendMessage(
       entities: entities ? await Parser.toRaw(client._client, entities!) : undefined,
       scheduleDate: scheduleDate,
       sendAs: sendAsChannel ? await client._client.resolvePeer(sendAsChannel!) : undefined,
+      updateStickersetsOrder: true,
     }),
   );
+  console.log(res);
   if (res instanceof Raw.UpdateShortSentMessage) {
     let peerId = BigInt(0);
     let peerType = 'private';
@@ -97,7 +98,7 @@ export async function sendMessage(
         ),
         date: new Date((res as Raw.UpdateShortSentMessage).date * 1000),
         empty: false,
-        text,
+        caption,
         replyMarkup,
         entities,
       },

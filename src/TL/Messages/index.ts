@@ -28,5 +28,5 @@ export {
   type TypeOrderInfo,
   type TypeLabeledPrice,
   type TypeShippingAddress,
-  type TypePreCheckoutQuery
+  type TypePreCheckoutQuery,
 } from './Shipping.ts';

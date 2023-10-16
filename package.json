@@ -28,10 +28,11 @@
     "@tgsnake/fileid": "2.1.0",
     "@tgsnake/log": "latest",
     "@tgsnake/parser": "2.0.2",
+    "mime-types": "2.1.35",
     "prompts": "2.4.2"
   },
   "devDependencies": {
-    "@types/node": "20.8.3",
+    "@types/node": "20.8.6",
     "deno2node": "1.10.1",
     "dotenv": "16.3.1",
     "prettier": "3.0.3"

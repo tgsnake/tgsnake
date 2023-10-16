@@ -8,7 +8,16 @@
  * it under the terms of the MIT License as published.
  */
 import { exec } from 'node:child_process';
-import { Raw, Helpers, Writer, base64_url_encode } from './platform.deno.ts';
+import {
+  Raw,
+  Helpers,
+  Writer,
+  base64_url_encode,
+  mimetypes,
+  type Readable,
+  type Files,
+  fs,
+} from './platform.deno.ts';
 import { Message } from './TL/Messages/Message.ts';
 import type { Snake } from './Client/Snake.ts';
 
@@ -105,9 +114,9 @@ export function getId(peer: Raw.TypePeer): bigint | undefined {
 }
 export function getPeerId(peer: Raw.TypePeer): bigint | undefined {
   if (peer instanceof Raw.PeerUser) return (peer as Raw.PeerUser).userId;
-  if (peer instanceof Raw.PeerChat) return -(peer as Raw.PeerChat).chatId;
+  if (peer instanceof Raw.PeerChat) return BigInt(-(peer as Raw.PeerChat).chatId);
   if (peer instanceof Raw.PeerChannel)
-    return Helpers.MAX_CHANNEL_ID - (peer as Raw.PeerChannel).channelId;
+    return BigInt(Helpers.MAX_CHANNEL_ID - (peer as Raw.PeerChannel).channelId);
   return;
 }
 export function createInlineMsgId(
@@ -125,4 +134,29 @@ export function createInlineMsgId(
     .writeInt(msgId.id)
     .writeBigInt(msgId.accessHash);
   return base64_url_encode(writer.results());
+}
+export function findMimeType(file: string) {
+  if (/tgs$/.test(file)) {
+    return 'application/x-tgsticker';
+  }
+  const mime = mimetypes(file);
+  if (mime) {
+    return mime;
+  }
+  return 'application/zip';
+}
+export function uploadThumbnail(client: Snake, thumb: string | Buffer | Readable | Files.File) {
+  if (typeof thumb !== 'string' && 'pipe' in thumb) {
+    return client.core.saveFileStream({
+      source: thumb,
+    });
+  }
+  if (Buffer.isBuffer(thumb)) {
+    return client.core.saveFile({
+      source: thumb as Buffer,
+    });
+  }
+  return client.core.saveFileStream({
+    source: fs.createReadStream(thumb),
+  });
 }

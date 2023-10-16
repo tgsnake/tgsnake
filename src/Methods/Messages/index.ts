@@ -10,3 +10,5 @@
 
 export { getMessages } from './GetMessages.ts';
 export { sendMessage, type sendMessageParams } from './SendMessage.ts';
+export { sendMedia, type sendMediaParams } from './SendMedia.ts';
+export { sendDocument, type sendDocumentParams } from './SendDocument.ts';
