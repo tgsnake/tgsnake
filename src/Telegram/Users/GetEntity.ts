@@ -89,13 +89,14 @@ export class ResultGetEntity {
       this.scam = resultsGetEntity.scam;
       this.applyMinPhoto = resultsGetEntity.applyMinPhoto;
       this.fake = resultsGetEntity.fake;
-      if (isInstance(resultsGetEntity.id)) {
+      this.id = BigInt(String(resultsGetEntity.id));
+      /*if (isInstance(resultsGetEntity.id)) {
         //@ts-ignore
         this.id = BigInt(toString(resultsGetEntity.id));
       } else {
         //@ts-ignore
         this.id = BigInt(resultsGetEntity.id);
-      }
+      }*/
       this.accessHash = BigInt(toString(resultsGetEntity.accessHash as BigInteger) as string);
       this.firstName = resultsGetEntity.firstName;
       this.lastName = resultsGetEntity.lastName;
@@ -149,13 +150,14 @@ export class ResultGetEntity {
       this.callActive = resultsGetEntity.callActive;
       this.callNotEmpty = resultsGetEntity.callNotEmpty;
       this.noforward = resultsGetEntity.noforwards;
-      if (isInstance(resultsGetEntity.id)) {
+      this.id = BigInt(-1) * BigInt(String(resultsGetEntity.id));
+      /*if (isInstance(resultsGetEntity.id)) {
         //@ts-ignore
         this.id = BigInt(`-${toString(resultsGetEntity.id as BigInteger) as string}` as string);
       } else {
         //@ts-ignore
         this.id = BigInt(`-${resultsGetEntity.id}`);
-      }
+      }*/
       this.title = resultsGetEntity.title;
       this.participantsCount = resultsGetEntity.participantsCount;
       this.version = resultsGetEntity.version;
@@ -196,13 +198,14 @@ export class ResultGetEntity {
       this.fake = resultsGetEntity.fake;
       this.gigagroup = resultsGetEntity.gigagroup;
       this.noforward = resultsGetEntity.noforwards;
-      if (isInstance(resultsGetEntity.id)) {
+      this.id = BigInt(-1000000000000) - BigInt(String(resultsGetEntity.id));
+      /*if (isInstance(resultsGetEntity.id)) {
         //@ts-ignore
         this.id = BigInt(`-100${toString(resultsGetEntity.id as BigInteger) as string}` as string);
       } else {
         //@ts-ignore
         this.id = BigInt(`-100${resultsGetEntity.id}`);
-      }
+      }*/
       this.accessHash = BigInt(toString(resultsGetEntity.accessHash as BigInteger) as number);
       this.title = resultsGetEntity.title;
       this.username = resultsGetEntity.username;

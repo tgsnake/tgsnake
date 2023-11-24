@@ -10,7 +10,14 @@ import { Api } from 'telegram';
 import { Snake } from '../Client';
 export async function toBigInt(Ids: bigint | number | string, SnakeClient: Snake) {
   let e = await SnakeClient.telegram.getEntity(Ids, true);
-  let id = bigInt(String(e.id).replace('-100', '').replace('-', ''));
+  let id =
+    BigInt(Ids) < BigInt(0)
+      ? BigInt(-2147483647) <= BigInt(Ids)
+        ? bigInt(String(BigInt(-1) * BigInt(Ids)))
+        : BigInt(-1002147483647) <= BigInt(Ids) && BigInt(Ids) < BigInt(-1000000000000)
+        ? bigInt(String(BigInt(-1000000000000) - BigInt(Ids)))
+        : bigInt(String(Ids))
+      : bigInt(String(Ids));
   let d =
     e.type == 'channel' || e.type == 'supergroup'
       ? new Api.PeerChannel({
