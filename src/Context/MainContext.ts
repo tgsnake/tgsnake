@@ -10,6 +10,7 @@ import { Raw, Raws } from '../platform.deno.ts';
 import { Composer, run, ErrorHandler, Combine } from './Composer.ts';
 import { Logger } from './Logger.ts';
 import { Update } from '../TL/Updates/Update.ts';
+import { TgsnakeApi } from '../Plugins/index.ts';
 import type { Snake } from '../Client/Snake.ts';
 
 type TypeChat = Raw.Chat | Raw.Channel;
@@ -21,6 +22,7 @@ export class MainContext<T> extends Composer<T> {
     Logger.error(update);
     throw error;
   };
+  _plugin:TgsnakeApi<T> = new TgsnakeApi<T>()
   constructor() {
     super();
   }
@@ -38,6 +40,9 @@ export class MainContext<T> extends Composer<T> {
         // @ts-ignore
         await run<Update>(this.middleware(), _update);
       } catch (error: any) {
+        if(this._plugin){
+          return this._plugin._onErrorHandler(error,_update,this._errorHandler)
+        }
         // @ts-ignore
         return this._errorHandler(error, _update);
       }

@@ -18,7 +18,7 @@ export interface MiddlewareObj<C> {
 }
 export type ErrorHandler<T> = (
   error: Error,
-  context: Combine<Raw.TypeUpdate, T>,
+  context: Combine<Combine<Combine<TypeUpdate,ContextUpdate>,Raw.TypeUpdate>, T>,
 ) => MaybePromise<any>;
 export type Middleware<C> = MiddlewareFn<C> | MiddlewareObj<C>;
 export type Combine<T, U> = T & Partial<U>;
@@ -74,7 +74,7 @@ export class Composer<T = {}>
   prefix: string = '.!/';
   constructor(
     ...middleware: Array<
-      MiddlewareFn<Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>>
+      Middleware<Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>>
     >
   ) {
     this.handler = middleware.length === 0 ? pass : middleware.map(flatten).reduce(concat);
@@ -86,7 +86,7 @@ export class Composer<T = {}>
   }
   use(
     ...middleware: Array<
-      MiddlewareFn<Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>>
+      Middleware<Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>>
     >
   ): Composer<T> {
     const composer = new Composer(...middleware);
@@ -95,7 +95,7 @@ export class Composer<T = {}>
   }
   on<K extends keyof FilterContext>(
     filters: MaybeArray<K>,
-    ...middleware: Array<MiddlewareFn<Combine<Combine<FilterContext[K], ContextUpdate>, T>>>
+    ...middleware: Array<Middleware<Combine<Combine<FilterContext[K], ContextUpdate>, T>>>
   ): Composer<T> {
     return this.filter((ctx) => filter(filters, ctx), ...middleware);
   }
@@ -171,9 +171,7 @@ export class Composer<T = {}>
   }
   command(
     trigger: MaybeArray<string | RegExp>,
-    ...middleware: Array<
-      MiddlewareFn<Combine<Combine<FilterContext['msg.text'], ContextUpdate>, T>>
-    >
+    ...middleware: Array<Middleware<Combine<Combine<FilterContext['msg.text'], ContextUpdate>, T>>>
   ): Composer<T> {
     let key = toArray(trigger);
     let filterCmd = (ctx) => {
@@ -206,17 +204,13 @@ export class Composer<T = {}>
   }
   cmd(
     trigger: MaybeArray<string | RegExp>,
-    ...middleware: Array<
-      MiddlewareFn<Combine<Combine<FilterContext['msg.text'], ContextUpdate>, T>>
-    >
+    ...middleware: Array<Middleware<Combine<Combine<FilterContext['msg.text'], ContextUpdate>, T>>>
   ): Composer<T> {
     return this.command(trigger, ...middleware);
   }
   hears(
     trigger: MaybeArray<string | RegExp>,
-    ...middleware: Array<
-      MiddlewareFn<Combine<Combine<FilterContext['msg.text'], ContextUpdate>, T>>
-    >
+    ...middleware: Array<Middleware<Combine<Combine<FilterContext['msg.text'], ContextUpdate>, T>>>
   ): Composer<T> {
     let tgr = triggerFn(trigger);
     return this.on(['msg.text', 'editMsg.text']).filter(
@@ -229,15 +223,13 @@ export class Composer<T = {}>
   }
   hear(
     trigger: MaybeArray<string | RegExp>,
-    ...middleware: Array<
-      MiddlewareFn<Combine<Combine<FilterContext['msg.text'], ContextUpdate>, T>>
-    >
+    ...middleware: Array<Middleware<Combine<Combine<FilterContext['msg.text'], ContextUpdate>, T>>>
   ): Composer<T> {
     return this.hears(trigger, ...middleware);
   }
   action(
     trigger: MaybeArray<string | RegExp>,
-    ...middleware: Array<MiddlewareFn<Combine<Combine<FilterContext['cb.data'], ContextUpdate>, T>>>
+    ...middleware: Array<Middleware<Combine<Combine<FilterContext['cb.data'], ContextUpdate>, T>>>
   ): Composer<T> {
     let key = toArray(trigger);
     let filterCmd = (ctx) => {
@@ -260,7 +252,7 @@ export class Composer<T = {}>
   inlineQuery(
     trigger: MaybeArray<string | RegExp>,
     ...middleware: Array<
-      MiddlewareFn<Combine<Combine<FilterContext['inlineQuery.from'], ContextUpdate>, T>>
+      Middleware<Combine<Combine<FilterContext['inlineQuery.from'], ContextUpdate>, T>>
     >
   ): Composer<T> {
     let key = toArray(trigger);
