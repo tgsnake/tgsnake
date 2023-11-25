@@ -26,7 +26,7 @@ export class Snake<T = {}> extends MainContext<T> {
   /** @hidden */
   private _telegram!: Telegram;
   /** @hidden */
-  private _version: string = '2.1.0';
+  private _version: string = '2.1.4';
   /** @hidden */
   private _connectTime: number = 0;
   /** @hidden */

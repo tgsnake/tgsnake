@@ -51,10 +51,10 @@ export class MediaChatPhoto extends Media {
     file.id = this._id;
     file.accessHash = BigInt(0);
     file.photoSizeSource = 'dialogPhoto';
-    file.dialogId = dialogId;
+    file.dialogId = BigInt(String(dialogId));
     file.isSmallDialogPhoto = false;
     file.photoSizeSourceId = 3;
-    file.dialogAccessHash = dialogAccessHash;
+    file.dialogAccessHash = BigInt(String(dialogAccessHash ?? 0));
     file.volumeId = BigInt(1);
     this.fileId = await file.toFileId();
     this.uniqueFileId = await file.toFileUniqId();

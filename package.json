@@ -1,6 +1,6 @@
 {
   "name": "tgsnake",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "description": "Telegram MTProto framework base gram.js",
   "main": "./lib/index.js",
   "scripts": {
