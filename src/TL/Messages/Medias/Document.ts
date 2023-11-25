@@ -17,6 +17,7 @@ import {
   FileTypeUniqueId,
 } from '../../../platform.deno.ts';
 import type { Snake } from '../../../Client/index.ts';
+import { type sendDocumentParams } from '../../../Methods/Messages/index.ts';
 import { PhotoSize } from './PhotoSize.ts';
 
 // https://core.telegram.org/bots/api#document
@@ -111,5 +112,13 @@ export class Document extends TLObject {
       },
       client,
     );
+  }
+  /**
+   * Resend this document to a different chat.
+   * @param { bigint | string } chatId - Destination.
+   * @param { sendDocumentParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   */
+  resend(chatId: string | bigint, more?: sendDocumentParams) {
+    return this.api.sendDocument(chatId, this.fileId, more);
   }
 }
