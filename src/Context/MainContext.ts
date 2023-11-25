@@ -40,9 +40,6 @@ export class MainContext<T> extends Composer<T> {
         // @ts-ignore
         await run<Update>(this.middleware(), _update);
       } catch (error: any) {
-        if(this._plugin){
-          return this._plugin._onErrorHandler(error,_update,this._errorHandler)
-        }
         // @ts-ignore
         return this._errorHandler(error, _update);
       }
