@@ -26,7 +26,7 @@ export class Snake<T = {}> extends MainContext<T> {
   /** @hidden */
   private _telegram!: Telegram;
   /** @hidden */
-  private _version: string = '2.1.4';
+  private _version: string = '2.1.5';
   /** @hidden */
   private _connectTime: number = 0;
   /** @hidden */
@@ -308,8 +308,8 @@ export class Snake<T = {}> extends MainContext<T> {
   async run(params?: InterfaceSnakeEvent) {
     await this.start();
     this._client.addEventHandler(
-      (update: Api.TypeUpdate) => {
-        return this.handleUpdate(update, this);
+      async (update: Api.TypeUpdate) => {
+        return this.handleUpdate(await update, this);
       },
       new SnakeEvent(this, params || {})
     );

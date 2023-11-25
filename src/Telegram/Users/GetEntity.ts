@@ -89,7 +89,7 @@ export class ResultGetEntity {
       this.scam = resultsGetEntity.scam;
       this.applyMinPhoto = resultsGetEntity.applyMinPhoto;
       this.fake = resultsGetEntity.fake;
-      this.id = BigInt(String(resultsGetEntity.id))
+      this.id = BigInt(String(resultsGetEntity.id));
       /*if (isInstance(resultsGetEntity.id)) {
         //@ts-ignore
         this.id = BigInt(toString(resultsGetEntity.id));
@@ -150,7 +150,7 @@ export class ResultGetEntity {
       this.callActive = resultsGetEntity.callActive;
       this.callNotEmpty = resultsGetEntity.callNotEmpty;
       this.noforward = resultsGetEntity.noforwards;
-      this.id = BigInt(-1) * BigInt(String(resultsGetEntity.id))
+      this.id = BigInt(-1) * BigInt(String(resultsGetEntity.id));
       /*if (isInstance(resultsGetEntity.id)) {
         //@ts-ignore
         this.id = BigInt(`-${toString(resultsGetEntity.id as BigInteger) as string}` as string);
@@ -198,7 +198,7 @@ export class ResultGetEntity {
       this.fake = resultsGetEntity.fake;
       this.gigagroup = resultsGetEntity.gigagroup;
       this.noforward = resultsGetEntity.noforwards;
-      this.id = BigInt(-1000000000000) - BigInt(String(resultsGetEntity.id))
+      this.id = BigInt(-1000000000000) - BigInt(String(resultsGetEntity.id));
       /*if (isInstance(resultsGetEntity.id)) {
         //@ts-ignore
         this.id = BigInt(`-100${toString(resultsGetEntity.id as BigInteger) as string}` as string);

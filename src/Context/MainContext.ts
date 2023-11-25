@@ -64,7 +64,6 @@ export class MainContext<T = {}> extends Composer<T> {
   }
   async handleUpdate(update: Api.TypeUpdate | ResultGetEntity, SnakeClient: Snake) {
     if (!update) return false;
-    update = await Cleaning(update);
     this.use = () => {
       throw new BotError(
         `bot.use is unavailable when bot running. so kill bot first then add bot.use in your source code then running again.`,
@@ -80,7 +79,71 @@ export class MainContext<T = {}> extends Composer<T> {
         parsed = true;
         //@ts-ignore
         parsedUpdate = update;
-        await run(this.middleware(), parsedUpdate!);
+        await run(this.middleware(), await Cleaning(parsedUpdate!));
+        return update;
+      } catch (error: any | BotError) {
+        //@ts-ignore
+        if (error._isBotErrorClass) {
+          //@ts-ignore
+          return this.errorHandler(error as BotError, parsed ? parsedUpdate : update);
+        }
+        let botError = new BotError(
+          error.message!,
+          error.functionName ? error.functionName : `handleUpdate`,
+          error.functionArgs ? error.functionArgs : `[Update]`
+        );
+        this.log.info('something is wrong,set logger to "error" to see more info.');
+        //@ts-ignore
+        return this.errorHandler(botError, parsed ? parsedUpdate : update);
+      }
+    } else if (
+      update instanceof Api.UpdateShortChatMessage ||
+      update instanceof Api.UpdateShortMessage
+    ) {
+      try {
+        this.log.debug(`Receive update ${(update as Api.UpdateShortMessage).className}`);
+        const difference: Api.updates.TypeDifference = await SnakeClient.client.invoke(
+          new Api.updates.GetDifference({
+            pts:
+              (update as Api.UpdateShortMessage).pts - (update as Api.UpdateShortMessage).ptsCount,
+            date: (update as Api.UpdateShortMessage).date,
+            qts: -1,
+          })
+        );
+        if (
+          difference instanceof Api.updates.Difference ||
+          difference instanceof Api.updates.DifferenceSlice
+        ) {
+          const { newMessages, otherUpdates, chats, users } = difference;
+          if (newMessages) {
+            for (let message of newMessages) {
+              let jsonUpdate = new Updates.UpdateNewMessage();
+              await jsonUpdate.init(
+                new Api.UpdateNewMessage({
+                  message: message,
+                  pts: (update as Api.UpdateShortMessage).pts,
+                  ptsCount: (update as Api.UpdateShortMessage).ptsCount,
+                }),
+                SnakeClient
+              );
+              parsed = true;
+              // @ts-ignore
+              parsedUpdate = jsonUpdate;
+              await run(this.middleware(), await Cleaning(parsedUpdate!));
+            }
+          } else if (otherUpdates) {
+            for (let otherUpdate of otherUpdates) {
+              if (Updates[otherUpdate.className]) {
+                this.log.debug(`Receive update ${otherUpdate.className}`);
+                let jsonUpdate = new Updates[otherUpdate.className]();
+                await jsonUpdate.init(otherUpdate, SnakeClient);
+                parsed = true;
+                parsedUpdate = jsonUpdate;
+                await run(this.middleware(), await Cleaning(parsedUpdate!));
+              }
+            }
+          }
+        }
         return update;
       } catch (error: any | BotError) {
         //@ts-ignore
@@ -106,7 +169,7 @@ export class MainContext<T = {}> extends Composer<T> {
             await jsonUpdate.init(update, SnakeClient);
             parsed = true;
             parsedUpdate = jsonUpdate;
-            await run(this.middleware(), parsedUpdate!);
+            await run(this.middleware(), await Cleaning(parsedUpdate!));
             return jsonUpdate;
           } catch (error: any | BotError) {
             //@ts-ignore
