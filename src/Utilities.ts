@@ -71,11 +71,12 @@ export async function parseMessages(
         if (
           !(message instanceof Raw.MessageEmpty) &&
           message.replyTo &&
-          message.replyTo instanceof Raw.MessageReplyHeader
+          message.replyTo instanceof Raw.MessageReplyHeader &&
+          message.replyTo.replyToMsgId
         ) {
           messagesWithReplies.set(
             message.id,
-            (message.replyTo as Raw.MessageReplyHeader).replyToMsgId,
+            (message.replyTo as Raw.MessageReplyHeader).replyToMsgId as unknown as number,
           );
         }
       }
