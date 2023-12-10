@@ -60,8 +60,8 @@ export class ChatJoinRequest extends TLObject {
           'bio' in update
             ? (update.bio as string)
             : 'about' in update
-            ? (update.about as string)
-            : '',
+              ? (update.about as string)
+              : '',
         inviteLink: update.invite,
         from: await User.parse(
           client,

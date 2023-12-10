@@ -17,7 +17,8 @@ export {
   Sessions,
   Client,
   Files,
-} from 'https://deno.land/x/tgsnake_core@1.10.2/src/index.ts';
+  Cryptos,
+} from 'https://deno.land/x/tgsnake_core@1.10.4/src/index.ts';
 export {
   Writer,
   base64_url_encode,

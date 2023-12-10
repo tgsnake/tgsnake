@@ -22,7 +22,7 @@ export class MainContext<T> extends Composer<T> {
     Logger.error(update);
     throw error;
   };
-  _plugin:TgsnakeApi<T> = new TgsnakeApi<T>()
+  _plugin: TgsnakeApi<T> = new TgsnakeApi<T>();
   constructor() {
     super();
   }

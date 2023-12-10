@@ -25,8 +25,8 @@ export async function getMessages(
   let parsedMsgIds: Array<Raw.InputMessageID | Raw.InputMessageReplyTo> = messageIds.length
     ? messageIds.map((id) => new Raw.InputMessageID({ id: id }))
     : replyToMessageIds.length
-    ? replyToMessageIds.map((id) => new Raw.InputMessageReplyTo({ id: id }))
-    : [];
+      ? replyToMessageIds.map((id) => new Raw.InputMessageReplyTo({ id: id }))
+      : [];
   if (replies < 0) replies = (1 << 31) - 1;
   let peer = await client._client.resolvePeer(chatId);
   if (peer instanceof Raw.InputPeerChannel) {

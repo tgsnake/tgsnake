@@ -8,4 +8,4 @@
  * it under the terms of the MIT License as published.
  */
 
-export { TgsnakeApi } from './Api.ts'
+export { TgsnakeApi } from './Api.ts';

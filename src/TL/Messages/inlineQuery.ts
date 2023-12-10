@@ -62,14 +62,14 @@ export class InlineQuery extends TLObject {
           update.peerType instanceof Raw.InlineQueryPeerTypeBotPM
             ? 'sender'
             : update.peerType instanceof Raw.InlineQueryPeerTypePM
-            ? 'private'
-            : update.peerType instanceof Raw.InlineQueryPeerTypeChat
-            ? 'group'
-            : update.peerType instanceof Raw.InlineQueryPeerTypeMegagroup
-            ? 'supergroup'
-            : update.peerType instanceof Raw.InlineQueryPeerTypeBroadcast
-            ? 'channel'
-            : undefined,
+              ? 'private'
+              : update.peerType instanceof Raw.InlineQueryPeerTypeChat
+                ? 'group'
+                : update.peerType instanceof Raw.InlineQueryPeerTypeMegagroup
+                  ? 'supergroup'
+                  : update.peerType instanceof Raw.InlineQueryPeerTypeBroadcast
+                    ? 'channel'
+                    : undefined,
         from: User.parse(
           client,
           users.find((user) => user.id === update.userId),

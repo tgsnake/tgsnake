@@ -32,15 +32,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tgsnake/core@npm:1.10.2":
-  version: 1.10.2
-  resolution: "@tgsnake/core@npm:1.10.2"
+"@tgsnake/core@npm:1.10.4":
+  version: 1.10.4
+  resolution: "@tgsnake/core@npm:1.10.4"
   dependencies:
     "@tgsnake/log": "npm:latest"
     async-mutex: "npm:0.4.0"
-    big-integer: "npm:1.6.51"
+    big-integer: "npm:1.6.52"
     socks: "npm:2.7.1"
-  checksum: f923f789d6ecc03a2806c8895cd93740d73bcbd1da7f4f12544a95990a0a8bde1aa6d4922a0fd14977869e500f4e207fda1e1cf2ebb967d16506b8829374d69c
+  checksum: e659565af98b89a2203d50bad130c84f2f6afea3fde438bfe37a37a2061ee8ce2938183853ca6045e744e6d9d826ea217ffd6fde32c05f2b897244917698c7b8
   languageName: node
   linkType: hard
 
@@ -81,12 +81,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:20.8.10":
-  version: 20.8.10
-  resolution: "@types/node@npm:20.8.10"
+"@types/node@npm:20.10.4":
+  version: 20.10.4
+  resolution: "@types/node@npm:20.10.4"
   dependencies:
     undici-types: "npm:~5.26.4"
-  checksum: 8930039077c8ad74de74c724909412bea8110c3f8892bcef8dda3e9629073bed65632ee755f94b252bcdae8ca71cf83e89a4a440a105e2b1b7c9797b43483049
+  checksum: c10c1dd13f5c2341ad866777dc32946538a99e1ebd203ae127730814b8e5fa4aedfbcb01cb3e24a5466f1af64bcdfa16e7de6e745ff098fff0942aa779b7fe03
   languageName: node
   linkType: hard
 
@@ -115,10 +115,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"big-integer@npm:1.6.51":
-  version: 1.6.51
-  resolution: "big-integer@npm:1.6.51"
-  checksum: c7a12640901906d6f6b6bdb42a4eaba9578397b6d9a0dd090cf001ec813ff2bfcd441e364068ea0416db6175d2615f8ed19cff7d1a795115bf7c92d44993f991
+"big-integer@npm:1.6.52":
+  version: 1.6.52
+  resolution: "big-integer@npm:1.6.52"
+  checksum: 4bc6ae152a96edc9f95020f5fc66b13d26a9ad9a021225a9f0213f7e3dc44269f423aa8c42e19d6ac4a63bb2b22140b95d10be8f9ca7a6d9aa1b22b330d1f514
   languageName: node
   linkType: hard
 
@@ -404,12 +404,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:3.0.3":
-  version: 3.0.3
-  resolution: "prettier@npm:3.0.3"
+"prettier@npm:3.1.1":
+  version: 3.1.1
+  resolution: "prettier@npm:3.1.1"
   bin:
     prettier: bin/prettier.cjs
-  checksum: ccf1ead9794b017be6b42d0873f459070beef2069eb393c8b4c0d11aa3430acefc54f6d5f44a5b7ce9af05ad8daf694b912f0aa2808d1c22dfa86e61e9d563f8
+  checksum: 26a249f321b97d26c04483f1bf2eeb22e082a76f4222a2c922bebdc60111691aad4ec3979610e83942e0b956058ec361d9e9c81c185172264eb6db9aa678082b
   languageName: node
   linkType: hard
 
@@ -483,15 +483,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tgsnake@workspace:."
   dependencies:
-    "@tgsnake/core": "npm:1.10.2"
+    "@tgsnake/core": "npm:1.10.4"
     "@tgsnake/fileid": "npm:2.1.0"
     "@tgsnake/log": "npm:latest"
     "@tgsnake/parser": "npm:2.0.2"
-    "@types/node": "npm:20.8.10"
+    "@types/node": "npm:20.10.4"
     deno2node: "npm:1.10.1"
     dotenv: "npm:16.3.1"
     mime-types: "npm:2.1.35"
-    prettier: "npm:3.0.3"
+    prettier: "npm:3.1.1"
     prompts: "npm:2.4.2"
   languageName: unknown
   linkType: soft

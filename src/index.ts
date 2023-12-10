@@ -11,7 +11,7 @@ export { Snake } from './Client/Snake.ts';
 export { SnakeSession } from './Client/SnakeSession.ts';
 export { Composer } from './Context/Composer.ts';
 export { Raw } from './platform.deno.ts';
-export { Telegram } from './Methods/Telegram.ts'
+export { Telegram } from './Methods/Telegram.ts';
 export { type Options, type LoginWithSession } from './Client/Options.ts';
 export * as Clients from './Client/index.ts';
 export * as Contexts from './Context/index.ts';

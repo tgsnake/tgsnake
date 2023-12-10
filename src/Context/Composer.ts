@@ -18,7 +18,7 @@ export interface MiddlewareObj<C> {
 }
 export type ErrorHandler<T> = (
   error: Error,
-  context: Combine<Combine<Combine<TypeUpdate,ContextUpdate>,Raw.TypeUpdate>, T>,
+  context: Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdate>, T>,
 ) => MaybePromise<any>;
 export type Middleware<C> = MiddlewareFn<C> | MiddlewareObj<C>;
 export type Combine<T, U> = T & Partial<U>;
@@ -128,8 +128,8 @@ export class Composer<T = {}>
       return route === undefined
         ? []
         : (_a = routeHandlers[route]) !== null && _a !== void 0
-        ? _a
-        : fallback;
+          ? _a
+          : fallback;
     });
   }
   branch(predicate, trueMiddleware, falseMiddleware): Composer<T> {

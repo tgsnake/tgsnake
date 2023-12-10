@@ -8,11 +8,12 @@
  * it under the terms of the MIT License as published.
  */
 import { TLObject } from '../TL.ts';
-import { Raw, Helpers, Parser, type Entities } from '../../platform.deno.ts';
+import { Raw, Helpers, Parser, Cryptos, type Entities } from '../../platform.deno.ts';
 import * as Advanceds from '../Advanced/index.ts';
 import * as Medias from './Medias/index.ts';
 import * as ReplyMarkup from './ReplyMarkup.ts';
 import { getId, getPeerId } from '../../Utilities.ts';
+import { Logger } from '../../Context/Logger.ts';
 import type { Snake } from '../../Client/index.ts';
 import type { sendMessageParams } from '../../Methods/Messages/index.ts';
 
@@ -766,4 +767,236 @@ export class Message extends TLObject {
       return this.api.sendMessage(this.chat.id!, text, more);
     }
   }
+  /***/
+  async click({
+    row,
+    col,
+    text,
+    filter,
+    callbackData,
+    sharePhone,
+    shareGeo,
+    password,
+  }: ClickButtonFn) {
+    Logger.debug('message.click called');
+    if (!this.replyMarkup) {
+      throw new Error("Couldn't find any replyMarkup");
+    }
+    const _filter = async (cb: {
+      (
+        btn: ReplyMarkup.inlineKeyboardButton | ReplyMarkup.replyKeyboardButton | string,
+        r: number,
+        c: number,
+      ): Promise<boolean> | boolean;
+    }) => {
+      if (this.replyMarkup) {
+        if ('inlineKeyboard' in this.replyMarkup) {
+          let _markup: ReplyMarkup.inlineKeyboard = this.replyMarkup;
+          for (let _rowIndex = 0; _rowIndex < _markup.inlineKeyboard.length; _rowIndex++) {
+            let _row = _markup.inlineKeyboard[_rowIndex];
+            for (let _colIndex = 0; _colIndex < _row.length; _colIndex++) {
+              if (await cb(_row[_colIndex], _rowIndex, _colIndex)) {
+                row = _rowIndex;
+                col = _colIndex;
+                return true;
+              }
+            }
+          }
+        }
+        if ('keyboard' in this.replyMarkup) {
+          let _markup: ReplyMarkup.replyKeyboard = this.replyMarkup;
+          for (let _rowIndex = 0; _rowIndex < _markup.keyboard.length; _rowIndex++) {
+            let _row = _markup.keyboard[_rowIndex];
+            for (let _colIndex = 0; _colIndex < _row.length; _colIndex++) {
+              if (await cb(_row[_colIndex], _rowIndex, _colIndex)) {
+                row = _rowIndex;
+                col = _colIndex;
+                return true;
+              }
+            }
+          }
+        }
+      }
+      return false;
+    };
+    if (text) {
+      let isTrue = await _filter(async (btn, row, col) => {
+        let _text = typeof btn === 'string' ? btn : btn.text;
+        if (typeof text === 'string') {
+          return text === _text;
+        }
+        if (typeof text === 'function') {
+          return text(_text, row, col);
+        }
+        return false;
+      });
+      if (!isTrue) return;
+    }
+    if (filter) {
+      let isTrue = await _filter(filter);
+      if (!isTrue) return;
+    }
+    if (callbackData) {
+      let isTrue = await _filter(async (btn, row, col) => {
+        let _cb = typeof btn !== 'string' && 'callbackData' in btn ? btn.callbackData : '';
+        return callbackData === _cb;
+      });
+      if (!isTrue) return;
+    }
+    if (row !== undefined || col !== undefined) {
+      if (this.replyMarkup) {
+        if ('inlineKeyboard' in this.replyMarkup) {
+          let _markup: ReplyMarkup.inlineKeyboard = this.replyMarkup;
+          let keyboard: ReplyMarkup.inlineKeyboardButton | undefined =
+            _markup.inlineKeyboard[row ?? 0][col ?? 0];
+          /*if (keyboard && keyboard.url) {
+          if (String(keyboard.url).startsWith('tg://user?id=')) {
+            return await this.core.resolvePeer(
+              BigInt(String(keyboard.url).replace('tg://user?id=', ''))
+            );
+          }
+          return keyboard.url;
+        }*/
+          if (keyboard && 'callbackData' in keyboard) {
+            let encryptedPassword;
+            if (password !== undefined) {
+              let pwd = await this.api.invoke(new Raw.account.GetPassword());
+              encryptedPassword = await Cryptos.Password.computePasswordCheck(pwd, password);
+            }
+            let request = new Raw.messages.GetBotCallbackAnswer({
+              peer: this.chat
+                ? await this.core.resolvePeer(this.chat.id)
+                : new Raw.InputPeerEmpty(),
+              msgId: this.id,
+              //@ts-ignore
+              data: Buffer.from(keyboard.callbackData),
+              password: encryptedPassword,
+            });
+            return await this.api.invoke(request);
+          }
+          if (keyboard && 'callbackGame' in keyboard) {
+            let request = new Raw.messages.GetBotCallbackAnswer({
+              peer: this.chat
+                ? await this.core.resolvePeer(this.chat.id)
+                : new Raw.InputPeerEmpty(),
+              msgId: this.id,
+              game: true,
+            });
+            return await this.api.invoke(request);
+          }
+          if (keyboard && 'switchInlineQuery' in keyboard) {
+            let request = new Raw.messages.StartBot({
+              bot: this.from ? await this.core.resolvePeer(this.from.id) : new Raw.InputPeerEmpty(),
+              peer: this.chat
+                ? await this.core.resolvePeer(this.chat.id)
+                : new Raw.InputPeerEmpty(),
+              startParam: keyboard.switchInlineQuery ?? '',
+              randomId: this.client._rndMsgId.getMsgId(),
+            });
+            return await this.api.invoke(request);
+          }
+          if (keyboard && 'switchInlineQueryCurrentChat' in keyboard) {
+            let request = new Raw.messages.StartBot({
+              bot: this.from ? await this.core.resolvePeer(this.from.id) : new Raw.InputPeerEmpty(),
+              peer: this.chat
+                ? await this.core.resolvePeer(this.chat.id)
+                : new Raw.InputPeerEmpty(),
+              startParam: keyboard.switchInlineQueryCurrentChat ?? '',
+              randomId: this.client._rndMsgId.getMsgId(),
+            });
+            return await this.api.invoke(request);
+          }
+        }
+        /*if(this.replyMarkup.keyboard){
+          let keyboard: inlineKeyboard | undefined = this.replyMarkup.inlineKeyboard[row ?? 0][col ?? 0];
+          if (keyboard && typeof keyboard !== 'string') {
+          if (keyboard.requestContact) {
+            if (
+              sharePhone === true ||
+              typeof sharePhone === 'string' ||
+              sharePhone instanceof Medias.Contact
+            ) {
+              if (sharePhone instanceof Medias.Contact)
+                return this.telegram.sendContact(this.chat.id, sharePhone!, {
+                  replyToMsgId: this.id,
+                });
+              return this.telegram.sendContact(
+                this.chat.id,
+                {
+                  phoneNumber:
+                    (sharePhone === true ? this.SnakeClient.aboutMe.phone : sharePhone) ?? '',
+                  firstName: this.SnakeClient.aboutMe.firstName ?? 'unknown',
+                  lastName: this.SnakeClient.aboutMe.lastName ?? '',
+                  vcard: '',
+                },
+                {
+                  replyToMsgId: this.id,
+                }
+              );
+            }
+          }
+          if (keyboard.requestLocation) {
+            if (shareGeo) {
+              return this.telegram.sendLocation(this.chat.id, shareGeo!, {
+                replyToMsgId: this.id,
+              });
+            }
+          }
+        }
+        }*/
+      }
+    }
+    return;
+  }
+}
+
+export interface ClickButtonFn {
+  /**
+   * Row button position.
+   * Row index start with zero.
+   * [
+   *  row 0 : [ col 0 , col 1],
+   *  row 1 : [ col 0 , col 1]
+   * ]
+   */
+  row?: number;
+  /**
+   * column button position.
+   * column index start with zero.
+   * [
+   *  row 0 : [ col 0 , col 1],
+   *  row 1 : [ col 0 , col 1]
+   * ]
+   */
+  col?: number;
+  /**
+   * find one the button when text of button is matches
+   */
+  text?: string | { (text: string, row: number, col: number): boolean | Promise<boolean> };
+  /**
+   * Make a filter to get the row,col of button. it must be returned a boolean.
+   */
+  filter?: {
+    (
+      keyboard: ReplyMarkup.replyKeyboardButton | ReplyMarkup.inlineKeyboardButton | string,
+      row: number,
+      col: number,
+    ): boolean | Promise<boolean>;
+  };
+  /**
+   * find one the button when callbackData of button is matches
+   */
+  callbackData?: string;
+  /**
+   * Phone will be send when button clicked
+   */
+  sharePhone?: boolean | string | Medias.Contact;
+  /**
+   * Location will be send when button clicked
+   */
+  shareGeo?: { latitude: number; longitude: number } | Medias.Location;
+  /**
+   * Fill your 2fa password when button clicked.
+   */
+  password?: string;
 }

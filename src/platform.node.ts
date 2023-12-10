@@ -10,7 +10,17 @@
 import path from 'path';
 import fs from 'fs';
 import prompts from 'prompts';
-export { Raw, Helpers, Storages, Raws, Clients, Sessions, Client, Files } from '@tgsnake/core';
+export {
+  Raw,
+  Helpers,
+  Storages,
+  Raws,
+  Clients,
+  Sessions,
+  Client,
+  Files,
+  Cryptos,
+} from '@tgsnake/core';
 export {
   Writer,
   base64_url_encode,
