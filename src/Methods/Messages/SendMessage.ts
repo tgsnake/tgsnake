@@ -7,24 +7,64 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { Parser, type Entities, Raw, Helpers } from '../../platform.deno.ts';
-import { parseMessages } from '../../Utilities.ts';
+import { Parser, type Entities, Raw, Helpers, Errors } from '../../platform.deno.ts';
+import { parseMessages, parseArgObjAsStr } from '../../Utilities.ts';
 import * as ReplyMarkup from '../../TL/Messages/ReplyMarkup.ts';
 import type { Snake } from '../../Client/index.ts';
 import { Message } from '../../TL/Messages/index.ts';
 import { Chat } from '../../TL/Advanced/index.ts';
+import { Logger } from '../../Context/Logger.ts';
 
 export interface sendMessageParams {
+  /**
+   * Disables link previews for links in this message.
+   */
   disableWebPagePreview?: boolean;
+  /**
+   * Send a message silently.
+   */
   disableNotification?: boolean;
+  /**
+   * If the message is a reply, ID of the original message.
+   */
   replyToMessageId?: number;
+  /**
+   * Sent the message as a replied user's stories. ID of the story to reply.
+   */
+  replyToStoryId?: number;
+  /**
+   * Unique identifier for the target message thread (topic) of the forum; for forum supergroups only.
+   */
   messageThreadId?: number;
-  scheduleDate?: number;
+  /**
+   * Date when the message will be automatically sent.
+   */
+  scheduleDate?: Date;
+  /**
+   * Send the message as a channel. You must be an owner of that channel first and Your account must subscribe to Telegram Premium.
+   * The channel id, must be known in cache.
+   */
   sendAsChannel?: bigint | string;
+  /**
+   * Protects the contents of the sent message from forwarding and saving.
+   */
   protectContent?: boolean;
+  /**
+   * Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
+   */
   replyMarkup?: ReplyMarkup.TypeReplyMarkup;
+  /**
+   * A JSON-serialized list of special entities that appear in the text, which can be specified instead of parseMode.
+   */
   entities?: Array<Entities>;
+  /**
+   * Mode for parsing entities in the video caption. See @tgsnake/parse for formatting options and more details.
+   */
   parseMode?: 'html' | 'markdown';
+  /**
+   * If set, any eventual webpage preview will be shown on top of the message instead of at the bottom.
+   */
+  invertMedia?: boolean;
 }
 export async function sendMessage(
   client: Snake,
@@ -32,10 +72,16 @@ export async function sendMessage(
   text: string,
   more: sendMessageParams = {},
 ) {
+  Logger.debug(
+    `exec: send_message chat ${typeof chatId} (${chatId}) text_length ${
+      text.length
+    } ${parseArgObjAsStr(more)}`,
+  );
   var {
     disableWebPagePreview,
     disableNotification,
     replyToMessageId,
+    replyToStoryId,
     messageThreadId,
     scheduleDate,
     sendAsChannel,
@@ -43,13 +89,12 @@ export async function sendMessage(
     replyMarkup,
     entities,
     parseMode,
+    invertMedia,
   } = more;
   const peer = await client._client.resolvePeer(chatId);
-  if (parseMode) {
+  if (parseMode && !entities) {
     const [t, e] = await Parser.parse(text, parseMode);
-    if (!entities) {
-      entities = e;
-    }
+    entities = e;
     text = t;
   }
   const res = await client._client.invoke(
@@ -64,15 +109,22 @@ export async function sendMessage(
             replyToMsgId: replyToMessageId,
             topMsgId: messageThreadId,
           })
-        : undefined,
+        : replyToStoryId
+          ? new Raw.InputReplyToStory({
+              userId: peer,
+              storyId: replyToStoryId,
+            })
+          : undefined,
       message: text,
       randomId: client._rndMsgId.getMsgId(),
       replyMarkup: replyMarkup
         ? await ReplyMarkup.buildReplyMarkup(replyMarkup!, client)
         : undefined,
       entities: entities ? await Parser.toRaw(client._client, entities!) : undefined,
-      scheduleDate: scheduleDate,
+      scheduleDate: scheduleDate ? scheduleDate.getTime() / 1000 : undefined,
       sendAs: sendAsChannel ? await client._client.resolvePeer(sendAsChannel!) : undefined,
+      updateStickersetsOrder: true,
+      invertMedia: invertMedia,
     }),
   );
   if (res instanceof Raw.UpdateShortSentMessage) {

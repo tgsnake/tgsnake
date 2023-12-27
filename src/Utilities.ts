@@ -161,3 +161,23 @@ export function uploadThumbnail(client: Snake, thumb: string | Buffer | Readable
     source: fs.createReadStream(thumb),
   });
 }
+export function parseArgObjAsStr(arg: { [key: string]: any }) {
+  let res = '';
+  for (let [key, value] of Object.entries(arg)) {
+    if (typeof value === 'object') {
+      if (Array.isArray(value)) {
+        value = '[array]';
+      } else if (Buffer.isBuffer(value)) {
+        value = '[buffer]';
+      } else {
+        value = '[object]';
+      }
+    } else if (typeof value !== 'undefined' && typeof value !== 'boolean') {
+      value = `${typeof value}[${String(value).length}](${
+        String(value).length >= 10 ? `${String(value).slice(0, 5)}...` : value
+      })`;
+    }
+    res += `${key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`)} ${value} `;
+  }
+  return res.trim();
+}

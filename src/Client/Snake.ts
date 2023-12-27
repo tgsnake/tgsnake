@@ -66,7 +66,7 @@ export class Snake<T = {}> extends MainContext<T> {
       // assign field of _options.
       this._options = Object.assign(
         {
-          logLevel: ['debug'],
+          logLevel: [process.env.LOGLEVEL || 'debug'],
         },
         options,
       );

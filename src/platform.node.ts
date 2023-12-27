@@ -20,6 +20,7 @@ export {
   Client,
   Files,
   Cryptos,
+  Errors,
 } from '@tgsnake/core';
 export {
   Writer,

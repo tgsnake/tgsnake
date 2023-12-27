@@ -11,6 +11,9 @@ import { Logger, TypeLogLevel } from '../platform.deno.ts';
 const log = new Logger({
   name: 'tgsnake',
   level: ['debug'] as Array<TypeLogLevel>,
+  customColor: {
+    name: '#f0ffff',
+  },
 });
 
 export { log as Logger };

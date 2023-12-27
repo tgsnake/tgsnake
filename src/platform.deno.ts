@@ -18,7 +18,8 @@ export {
   Client,
   Files,
   Cryptos,
-} from 'https://deno.land/x/tgsnake_core@1.10.4/src/index.ts';
+  Errors,
+} from 'https://raw.githubusercontent.com/tgsnake/core/master/src/index.ts';
 export {
   Writer,
   base64_url_encode,
@@ -30,7 +31,7 @@ export {
   DOCUMENT_TYPES,
 } from 'https://deno.land/x/tgsnake_fileid@2.1.0/src/index.ts';
 export { Parser, type Entities } from 'https://deno.land/x/tgsnake_parser@2.0.2/src/index.ts';
-export { Logger, type TypeLogLevel } from 'https://deno.land/x/tgsnake_log@1.4.1/src/index.ts';
+export { Logger, type TypeLogLevel } from 'https://deno.land/x/tgsnake_log/src/index.ts';
 import { lookup as mimetypes } from 'https://deno.land/x/mrmime@v1.0.1/mod.ts';
 import * as path from 'https://deno.land/std@0.182.0/path/mod.ts';
 import * as fs from 'node:fs';

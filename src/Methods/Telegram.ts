@@ -13,11 +13,13 @@ import type { Snake } from '../Client/index.ts';
 import {
   getMessages,
   sendMessage,
-  sendMessageParams,
+  type sendMessageParams,
   sendDocument,
-  sendDocumentParams,
+  type sendDocumentParams,
+  sendVideo,
+  type sendVideoParams,
 } from './Messages/index.ts';
-import { getParticipants, getParticipantsParams } from './Chats/index.ts';
+import { getParticipants, type getParticipantsParams } from './Chats/index.ts';
 
 export class Telegram extends TLObject {
   constructor(client: Snake) {
@@ -51,6 +53,7 @@ export class Telegram extends TLObject {
    * Sending a text message.
    * > [message].respond
    * > [message].reply
+   *
    * @param { bigint | string } chatId - Destination.
    * @param { string } text - Message which will sending.
    * @param { sendMessageParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
@@ -62,6 +65,9 @@ export class Telegram extends TLObject {
    * Sending a document message.
    * > Shorthand :
    * > [document].resend
+   * > [message].replyWithDoc
+   * > [message].rwd
+   *
    * @param { bigint | string } chatId - Destination.
    * @param { string | Buffer | Readable | Files.File } document - File to be sent. The file can be a fileId or path where the file is located or a buffer of the file or streamable which can be piped.
    * @param { sendDocumentParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
@@ -72,6 +78,24 @@ export class Telegram extends TLObject {
     more?: sendDocumentParams,
   ) {
     return sendDocument(this.client!, chatId, document, more);
+  }
+  /**
+   * Use this method to send video files.
+   * > Shorthand :
+   * > [video].resend
+   * > [message].replyWithVideo
+   * > [message].rwv
+   *
+   * @param { bigint | string } chatId - Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+   * @param { string | Buffer | Readable | Files.File } video - File to be sent. The file can be a fileId or path where the file is located or a buffer of the file or streamable which can be piped.
+   * @param { sendVideoParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   */
+  sendVideo(
+    chatId: bigint | string,
+    video: string | Buffer | Readable | Files.File,
+    more?: sendVideoParams,
+  ) {
+    return sendVideo(this.client!, chatId, video, more);
   }
   getParticipants(chatId: bigint | string, more?: getParticipantsParams) {
     return getParticipants(this.client, chatId, more);

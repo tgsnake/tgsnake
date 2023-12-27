@@ -8,14 +8,26 @@
  * it under the terms of the MIT License as published.
  */
 import { TLObject } from '../TL.ts';
-import { Raw, Helpers, Parser, Cryptos, type Entities } from '../../platform.deno.ts';
+import {
+  Raw,
+  Helpers,
+  Parser,
+  Cryptos,
+  type Entities,
+  type Readable,
+  type Files,
+} from '../../platform.deno.ts';
 import * as Advanceds from '../Advanced/index.ts';
 import * as Medias from './Medias/index.ts';
 import * as ReplyMarkup from './ReplyMarkup.ts';
 import { getId, getPeerId } from '../../Utilities.ts';
 import { Logger } from '../../Context/Logger.ts';
 import type { Snake } from '../../Client/index.ts';
-import type { sendMessageParams } from '../../Methods/Messages/index.ts';
+import type {
+  sendMessageParams,
+  sendDocumentParams,
+  sendVideoParams,
+} from '../../Methods/Messages/index.ts';
 
 export interface TypeMessage {
   id: number;
@@ -748,7 +760,14 @@ export class Message extends TLObject {
   }
 
   // bound method
-  reply(text: string, more: sendMessageParams = {}) {
+  /**
+   * Sending a message to current chat with reply to current msg id.
+   * > Shorthand from api.sendMessage
+   *
+   * @param { string } text - Message which will sending.
+   * @param { sendMessageParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   */
+  reply(text: string, more?: sendMessageParams) {
     if (this.chat) {
       return this.api.sendMessage(
         this.chat.id!,
@@ -762,10 +781,70 @@ export class Message extends TLObject {
       );
     }
   }
-  respond(text: string, more: sendMessageParams = {}) {
+  /**
+   * Sending a message to current chat without reply to current msg id.
+   * > Shorthand from api.sendMessage
+   *
+   * @param { string } text - Message which will sending.
+   * @param { sendMessageParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   */
+  respond(text: string, more?: sendMessageParams) {
     if (this.chat) {
       return this.api.sendMessage(this.chat.id!, text, more);
     }
+  }
+  /**
+   * Sending a document message.
+   * > Shorthand from api.sendDocument 
+   *    
+   * @param { string | Buffer | Readable | Files.File } file - File to be sent. The file can be a fileId or path where the file is located or a buffer of the file or streamable which can be piped.
+
+   * @param { sendDocumentParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+  */
+  replyWithDoc(file: string | Buffer | Readable | Files.File, more?: sendDocumentParams) {
+    if (this.chat) {
+      return this.api.sendDocument(this.chat.id, file, more);
+    }
+    throw new Error('Chat not found');
+  }
+  /**
+   * Sending a document message.
+   * > Shorthand from api.sendDocument
+   *
+   * @param { string | Buffer | Readable | Files.File } file - File to be sent. The file can be a fileId or path where the file is located or a buffer of the file or streamable which can be piped.
+   * @param { sendDocumentParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   */
+  rwd(file: string | Buffer | Readable | Files.File, more?: sendDocumentParams) {
+    if (this.chat) {
+      return this.api.sendDocument(this.chat.id, file, more);
+    }
+    throw new Error('Chat not found');
+  }
+  /**
+   * Use this method to send video files.
+   * > Shorthand from api.sendDocument
+   *
+   * @param { string | Buffer | Readable | Files.File } file - File to be sent. The file can be a fileId or path where the file is located or a buffer of the file or streamable which can be piped.
+   * @param { sendVideoParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   */
+  replyWithVideo(file: string | Buffer | Readable | Files.File, more?: sendVideoParams) {
+    if (this.chat) {
+      return this.api.sendVideo(this.chat.id, file, more);
+    }
+    throw new Error('Chat not found');
+  }
+  /**
+   * Use this method to send video files.
+   * > Shorthand from api.sendDocument
+   *
+   * @param { string | Buffer | Readable | Files.File } file - File to be sent. The file can be a fileId or path where the file is located or a buffer of the file or streamable which can be piped.
+   * @param { sendVideoParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   */
+  rwv(file: string | Buffer | Readable | Files.File, more?: sendVideoParams) {
+    if (this.chat) {
+      return this.api.sendVideo(this.chat.id, file, more);
+    }
+    throw new Error('Chat not found');
   }
   /***/
   async click({

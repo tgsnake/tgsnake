@@ -18,14 +18,35 @@ import {
   fs,
   path,
 } from '../../platform.deno.ts';
-import { findMimeType, uploadThumbnail } from '../../Utilities.ts';
+import { findMimeType, uploadThumbnail, parseArgObjAsStr } from '../../Utilities.ts';
 import type { Snake } from '../../Client/index.ts';
+import { Logger } from '../../Context/Logger.ts';
 export interface sendDocumentParams extends sendMediaParams {
+  /**
+   * The name of the file that will be uploaded to Telegram.
+   */
   filename?: string;
+  /**
+   * Callback function.
+   * This function will be called when uploading a file to Telegram.
+   */
   progress?: Files.Progress;
+  /**
+   * Thumbnail of uploaded file.
+   * The thumbnail must be a string (file path) or a Buffer or Readable stream.
+   */
   thumbnail?: string | Buffer | Readable | Files.File;
+  /**
+   * Mime-type of a file to be sent to Telegram. This only applies when not using file_id as a file parameter.
+   */
   mimetype?: string;
+  /**
+   * Force send a file as documents.
+   */
   forceDocument?: boolean;
+  /**
+   * Whether files are using spoilers.
+   */
   hasSpoiler?: boolean;
 }
 export async function sendDocument(
@@ -34,6 +55,11 @@ export async function sendDocument(
   file: string | Buffer | Readable | Files.File,
   more: sendDocumentParams = {},
 ) {
+  Logger.debug(
+    `exec: send_document chat ${typeof chatId} (${chatId}) ${parseArgObjAsStr({
+      file,
+    })} ${parseArgObjAsStr(more)}`,
+  );
   var {
     disableNotification,
     replyToMessageId,
