@@ -136,7 +136,7 @@ export class VideoNote extends TLObject {
     );
   }
   /**
-   * Resend this video to a different chat.
+   * Resend this video note to a different chat.
    * @param { bigint | string } chatId - Destination.
    * @param { sendVideoNoteParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
    */

@@ -873,6 +873,32 @@ export class Message extends TLObject {
     }
     throw new Error('Chat not found');
   }
+  /**
+   * Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound).
+   * > Shorthand from api.sendAnimation
+   *
+   * @param { string | Buffer | Readable | Files.File } file - File to be sent. The file can be a fileId or path where the file is located or a buffer of the file or streamable which can be piped.
+   * @param { sendVideoParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   */
+  replyWithAnimation(file: string | Buffer | Readable | Files.File, more?: sendVideoParams) {
+    if (this.chat) {
+      return this.api.sendAnimation(this.chat.id, file, more);
+    }
+    throw new Error('Chat not found');
+  }
+  /**
+   * Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound).
+   * > Shorthand from api.sendAnimation
+   *
+   * @param { string | Buffer | Readable | Files.File } file - File to be sent. The file can be a fileId or path where the file is located or a buffer of the file or streamable which can be piped.
+   * @param { sendVideoParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   */
+  rwa(file: string | Buffer | Readable | Files.File, more?: sendVideoParams) {
+    if (this.chat) {
+      return this.api.sendAnimation(this.chat.id, file, more);
+    }
+    throw new Error('Chat not found');
+  }
   /***/
   async click({
     row,

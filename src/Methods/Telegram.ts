@@ -20,6 +20,7 @@ import {
   type sendVideoParams,
   sendVideoNote,
   type sendVideoNoteParams,
+  sendAnimation,
 } from './Messages/index.ts';
 import { getParticipants, type getParticipantsParams } from './Chats/index.ts';
 
@@ -116,6 +117,24 @@ export class Telegram extends TLObject {
     more?: sendVideoNoteParams,
   ) {
     return sendVideoNote(this.client!, chatId, video, more);
+  }
+  /**
+   * Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound).
+   * > Shorthand :
+   * > [animation].resend
+   * > [message].replyWithAnimation
+   * > [message].rwa
+   *
+   * @param { bigint | string } chatId - Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+   * @param { string | Buffer | Readable | Files.File } video - File to be sent. The file can be a fileId or path where the file is located or a buffer of the file or streamable which can be piped.
+   * @param { sendVideoParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   */
+  sendAnimation(
+    chatId: bigint | string,
+    video: string | Buffer | Readable | Files.File,
+    more?: sendVideoParams,
+  ) {
+    return sendAnimation(this.client!, chatId, video, more);
   }
   getParticipants(chatId: bigint | string, more?: getParticipantsParams) {
     return getParticipants(this.client, chatId, more);

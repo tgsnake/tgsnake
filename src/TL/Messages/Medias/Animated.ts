@@ -17,6 +17,7 @@ import {
   FileTypeUniqueId,
 } from '../../../platform.deno.ts';
 import type { Snake } from '../../../Client/index.ts';
+import { type sendVideoParams } from '../../../Methods/Messages/SendVideo.ts';
 import { PhotoSize } from './PhotoSize.ts';
 
 // https://core.telegram.org/bots/api#animation
@@ -146,5 +147,13 @@ export class Animation extends TLObject {
       },
       client,
     );
+  }
+  /**
+   * Resend this animation to a different chat.
+   * @param { bigint | string } chatId - Destination.
+   * @param { sendVideoParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   */
+  resend(chatId: bigint | string, more: sendVideoParams) {
+    return this.api.sendAnimation(chatId, this.fileId, more);
   }
 }
