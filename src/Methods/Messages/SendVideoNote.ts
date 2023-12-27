@@ -7,7 +7,7 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { sendMedia, type sendMediaParams } from './SendMedia.ts';
+import { sendMedia } from './SendMedia.ts';
 import {
   FileId,
   FileType,
@@ -20,43 +20,38 @@ import {
 } from '../../platform.deno.ts';
 import { findMimeType, uploadThumbnail, parseArgObjAsStr } from '../../Utilities.ts';
 import type { Snake } from '../../Client/index.ts';
+import type { sendDocumentParams } from './SendDocument.ts';
 import { Logger } from '../../Context/Logger.ts';
-export interface sendDocumentParams extends sendMediaParams {
+export interface sendVideoNoteParams extends sendDocumentParams {
   /**
-   * The name of the file that will be uploaded to Telegram.
+   * The duration of a video.
    */
-  filename?: string;
+  duration?: number;
   /**
-   * Callback function.
-   * This function will be called when uploading a file to Telegram.
+   * Video width and height, i.e. diameter of the video message.
    */
-  progress?: Files.Progress;
+  length?: number;
   /**
-   * Thumbnail of uploaded file.
-   * The thumbnail must be a string (file path) or a Buffer or Readable stream.
+   * Whether the video supports streaming or not, if it does, users don't have to wait until the file has finished downloading to watch it.
    */
-  thumbnail?: string | Buffer | Readable | Files.File;
+  supportsStreaming?: boolean;
   /**
-   * Mime-type of a file to be sent to Telegram. This only applies when not using file_id as a file parameter.
+   * Whether the sound from video is muted or not.
    */
-  mimetype?: string;
+  muted?: boolean;
   /**
-   * Force send a file as documents.
+   * Number of bytes to preload when preloading videos (particularly video stories).
    */
-  forceDocument?: boolean;
-  /**
-   * Whether files are using spoilers.
-   */
-  hasSpoiler?: boolean;
+  preloadPrefixSize?: number;
 }
-export async function sendDocument(
+export async function sendVideoNote(
   client: Snake,
   chatId: bigint | string,
   file: string | Buffer | Readable | Files.File,
-  more: sendDocumentParams = {},
+  more: sendVideoNoteParams = {},
 ) {
   Logger.debug(
-    `exec: send_document chat ${typeof chatId} (${chatId}) ${parseArgObjAsStr({
+    `exec: send_video_note chat ${typeof chatId} (${chatId}) ${parseArgObjAsStr({
       file,
     })} ${parseArgObjAsStr(more)}`,
   );
@@ -79,6 +74,11 @@ export async function sendDocument(
     mimetype,
     forceDocument,
     hasSpoiler,
+    duration,
+    length,
+    supportsStreaming,
+    muted,
+    preloadPrefixSize,
   } = more;
   if (typeof file === 'string') {
     file as string;
@@ -94,20 +94,28 @@ export async function sendDocument(
           fileName: filename ?? path.basename(file),
           progress: progress,
         }))!,
-        mimeType:
-          mimetype ?? findMimeType(filename ?? path.basename(file) ?? '') ?? 'application/zip',
+        mimeType: mimetype ?? findMimeType(filename ?? path.basename(file) ?? '') ?? 'video/mp4',
         forceFile: forceDocument,
         spoiler: hasSpoiler,
         attributes: [
           new Raw.DocumentAttributeFilename({
             fileName: filename ?? path.basename(file) ?? `tg-${Date.now()}`,
           }),
+          new Raw.DocumentAttributeVideo({
+            roundMessage: true,
+            supportsStreaming: supportsStreaming,
+            nosound: muted,
+            duration: duration ?? 0,
+            w: length ?? 0,
+            h: length ?? 0,
+            preloadPrefixSize,
+          }),
         ],
         thumb: thumbnail ? await uploadThumbnail(client, thumbnail) : undefined,
       });
     } else {
       const media = FileId.decodeFileId(file);
-      if (DOCUMENT_TYPES.includes(media.fileType)) {
+      if (media.fileType === FileType.VIDEO) {
         var savedFile: Raw.TypeInputMedia = new Raw.InputMediaDocument({
           spoiler: hasSpoiler,
           id: new Raw.InputDocument({
@@ -128,12 +136,21 @@ export async function sendDocument(
         fileName: filename,
         progress: progress,
       }))!,
-      mimeType: mimetype ?? findMimeType(filename ?? '') ?? 'application/zip',
+      mimeType: mimetype ?? findMimeType(filename ?? '') ?? 'video/mp4',
       forceFile: forceDocument,
       spoiler: hasSpoiler,
       attributes: [
         new Raw.DocumentAttributeFilename({
           fileName: filename ?? `tg-${Date.now()}`,
+        }),
+        new Raw.DocumentAttributeVideo({
+          roundMessage: true,
+          supportsStreaming: supportsStreaming,
+          nosound: muted,
+          duration: duration ?? 0,
+          w: length ?? 0,
+          h: length ?? 0,
+          preloadPrefixSize,
         }),
       ],
       thumb: thumbnail ? await uploadThumbnail(client, thumbnail) : undefined,
@@ -145,12 +162,21 @@ export async function sendDocument(
         fileName: filename,
         progress: progress,
       }))!,
-      mimeType: mimetype ?? findMimeType(filename ?? '') ?? 'application/zip',
+      mimeType: mimetype ?? findMimeType(filename ?? '') ?? 'video/mp4',
       forceFile: forceDocument,
       spoiler: hasSpoiler,
       attributes: [
         new Raw.DocumentAttributeFilename({
           fileName: filename ?? `tg-${Date.now()}`,
+        }),
+        new Raw.DocumentAttributeVideo({
+          roundMessage: true,
+          supportsStreaming: supportsStreaming,
+          nosound: muted,
+          duration: duration ?? 0,
+          w: length ?? 0,
+          h: length ?? 0,
+          preloadPrefixSize,
         }),
       ],
       thumb: thumbnail ? await uploadThumbnail(client, thumbnail) : undefined,
@@ -161,7 +187,6 @@ export async function sendDocument(
   return sendMedia(client, chatId, savedFile, {
     disableNotification,
     replyToMessageId,
-    replyToStoryId,
     messageThreadId,
     scheduleDate,
     sendAsChannel,

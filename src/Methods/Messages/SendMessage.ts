@@ -58,7 +58,7 @@ export interface sendMessageParams {
    */
   entities?: Array<Entities>;
   /**
-   * Mode for parsing entities in the video caption. See @tgsnake/parse for formatting options and more details.
+   * Mode for parsing entities in the text. See @tgsnake/parse for formatting options and more details.
    */
   parseMode?: 'html' | 'markdown';
   /**

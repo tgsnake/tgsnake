@@ -17,6 +17,7 @@ import {
   FileTypeUniqueId,
 } from '../../../platform.deno.ts';
 import type { Snake } from '../../../Client/index.ts';
+import { type sendVideoNoteParams } from '../../../Methods/Messages/SendVideoNote.ts';
 import { PhotoSize } from './PhotoSize.ts';
 
 // https://core.telegram.org/bots/api#videonote
@@ -133,5 +134,13 @@ export class VideoNote extends TLObject {
       },
       client,
     );
+  }
+  /**
+   * Resend this video to a different chat.
+   * @param { bigint | string } chatId - Destination.
+   * @param { sendVideoNoteParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   */
+  resend(chatId: bigint | string, more: sendVideoNoteParams) {
+    return this.api.sendVideoNote(chatId, this.fileId, more);
   }
 }

@@ -18,6 +18,8 @@ import {
   type sendDocumentParams,
   sendVideo,
   type sendVideoParams,
+  sendVideoNote,
+  type sendVideoNoteParams,
 } from './Messages/index.ts';
 import { getParticipants, type getParticipantsParams } from './Chats/index.ts';
 
@@ -96,6 +98,24 @@ export class Telegram extends TLObject {
     more?: sendVideoParams,
   ) {
     return sendVideo(this.client!, chatId, video, more);
+  }
+  /**
+   * As of v.4.0, Telegram clients support rounded square MPEG4 videos of up to 1 minute long.
+   * > Shorthand :
+   * > [video note].resend
+   * > [message].replyWithVideoNote
+   * > [message].rwvn
+   *
+   * @param { bigint | string } chatId - Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+   * @param { string | Buffer | Readable | Files.File } video - File to be sent. The file can be a fileId or path where the file is located or a buffer of the file or streamable which can be piped.
+   * @param { sendVideoNoteParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   */
+  sendVideoNote(
+    chatId: bigint | string,
+    video: string | Buffer | Readable | Files.File,
+    more?: sendVideoNoteParams,
+  ) {
+    return sendVideoNote(this.client!, chatId, video, more);
   }
   getParticipants(chatId: bigint | string, more?: getParticipantsParams) {
     return getParticipants(this.client, chatId, more);

@@ -27,6 +27,7 @@ import type {
   sendMessageParams,
   sendDocumentParams,
   sendVideoParams,
+  sendVideoNoteParams,
 } from '../../Methods/Messages/index.ts';
 
 export interface TypeMessage {
@@ -822,7 +823,7 @@ export class Message extends TLObject {
   }
   /**
    * Use this method to send video files.
-   * > Shorthand from api.sendDocument
+   * > Shorthand from api.sendVideo
    *
    * @param { string | Buffer | Readable | Files.File } file - File to be sent. The file can be a fileId or path where the file is located or a buffer of the file or streamable which can be piped.
    * @param { sendVideoParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
@@ -835,7 +836,7 @@ export class Message extends TLObject {
   }
   /**
    * Use this method to send video files.
-   * > Shorthand from api.sendDocument
+   * > Shorthand from api.sendVideo
    *
    * @param { string | Buffer | Readable | Files.File } file - File to be sent. The file can be a fileId or path where the file is located or a buffer of the file or streamable which can be piped.
    * @param { sendVideoParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
@@ -843,6 +844,32 @@ export class Message extends TLObject {
   rwv(file: string | Buffer | Readable | Files.File, more?: sendVideoParams) {
     if (this.chat) {
       return this.api.sendVideo(this.chat.id, file, more);
+    }
+    throw new Error('Chat not found');
+  }
+  /**
+   * As of v.4.0, Telegram clients support rounded square MPEG4 videos of up to 1 minute long.
+   * > Shorthand from api.sendVideoNote
+   *
+   * @param { string | Buffer | Readable | Files.File } file - File to be sent. The file can be a fileId or path where the file is located or a buffer of the file or streamable which can be piped.
+   * @param { sendVideoNoteParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   */
+  replyWithVideoNote(file: string | Buffer | Readable | Files.File, more?: sendVideoNoteParams) {
+    if (this.chat) {
+      return this.api.sendVideoNote(this.chat.id, file, more);
+    }
+    throw new Error('Chat not found');
+  }
+  /**
+   * As of v.4.0, Telegram clients support rounded square MPEG4 videos of up to 1 minute long.
+   * > Shorthand from api.sendVideoNote
+   *
+   * @param { string | Buffer | Readable | Files.File } file - File to be sent. The file can be a fileId or path where the file is located or a buffer of the file or streamable which can be piped.
+   * @param { sendVideoNoteParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   */
+  rwvn(file: string | Buffer | Readable | Files.File, more?: sendVideoNoteParams) {
+    if (this.chat) {
+      return this.api.sendVideoNote(this.chat.id, file, more);
     }
     throw new Error('Chat not found');
   }
