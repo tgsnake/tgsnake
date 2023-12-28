@@ -18,6 +18,7 @@ import {
 } from '../../../platform.deno.ts';
 import type { Snake } from '../../../Client/index.ts';
 import { PhotoSize } from './PhotoSize.ts';
+import { type sendStickerParams } from '../../../Methods/Messages/SendSticker.ts';
 
 export class Sticker extends TLObject {
   fileId!: string;
@@ -141,5 +142,13 @@ export class Sticker extends TLObject {
       },
       client,
     );
+  }
+  /**
+   * Resend this sticker to a different chat.
+   * @param { bigint | string } chatId - Destination.
+   * @param { sendStickerParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   */
+  resend(chatId: bigint | string, more: sendStickerParams) {
+    return this.api.sendSticker(chatId, this.fileId, more);
   }
 }

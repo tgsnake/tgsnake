@@ -7,8 +7,9 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import path from 'path';
-import fs from 'fs';
+import * as path from 'node:path';
+import * as fs from 'node:fs';
+import * as process from 'node:process';
 import prompts from 'prompts';
 export {
   Raw,
@@ -35,8 +36,9 @@ export {
 export { Parser, type Entities } from '@tgsnake/parser';
 export { Logger, TypeLogLevel } from '@tgsnake/log';
 export { lookup as mimetypes } from 'mime-types';
-export { Readable, Writable, Duplex } from 'stream';
-export { path, prompts, fs };
+export { Readable, Writable, Duplex } from 'node:stream';
+export { Buffer } from 'node:buffer';
+export { path, prompts, fs, process };
 export const { cwd } = process;
 export const isBrowser = typeof window !== 'undefined';
 export const isDeno = false;

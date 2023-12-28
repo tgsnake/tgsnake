@@ -17,6 +17,7 @@ import {
   type Readable,
   type Files,
   fs,
+  Buffer,
 } from './platform.deno.ts';
 import { Message } from './TL/Messages/Message.ts';
 import type { Snake } from './Client/Snake.ts';

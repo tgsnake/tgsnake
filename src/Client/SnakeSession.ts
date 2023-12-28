@@ -7,7 +7,7 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { Storages, Raws, Helpers, path, cwd } from '../platform.deno.ts';
+import { Storages, Raws, Helpers, path, cwd, Buffer } from '../platform.deno.ts';
 import fs from 'node:fs';
 import { Logger } from '../Context/Logger.ts';
 

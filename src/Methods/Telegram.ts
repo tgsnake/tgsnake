@@ -8,7 +8,7 @@
  * it under the terms of the MIT License as published.
  */
 import { TLObject } from '../TL/TL.ts';
-import { Raw, Helpers, type Readable, type Files } from '../platform.deno.ts';
+import { Raw, type Readable, type Files, Buffer } from '../platform.deno.ts';
 import type { Snake } from '../Client/index.ts';
 import {
   getMessages,
@@ -21,6 +21,9 @@ import {
   sendVideoNote,
   type sendVideoNoteParams,
   sendAnimation,
+  type sendAnimationParams,
+  sendSticker,
+  type sendStickerParams,
 } from './Messages/index.ts';
 import { getParticipants, type getParticipantsParams } from './Chats/index.ts';
 
@@ -127,14 +130,32 @@ export class Telegram extends TLObject {
    *
    * @param { bigint | string } chatId - Unique identifier for the target chat or username of the target channel (in the format @channelusername)
    * @param { string | Buffer | Readable | Files.File } video - File to be sent. The file can be a fileId or path where the file is located or a buffer of the file or streamable which can be piped.
-   * @param { sendVideoParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   * @param { sendAnimationParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
    */
   sendAnimation(
     chatId: bigint | string,
     video: string | Buffer | Readable | Files.File,
-    more?: sendVideoParams,
+    more?: sendAnimationParams,
   ) {
     return sendAnimation(this.client!, chatId, video, more);
+  }
+  /**
+   * Use this method to send static .WEBP, animated .TGS, or video .WEBM stickers.
+   * > Shorthand :
+   * > [sticker].resend
+   * > [message].replyWithSticker
+   * > [message].rws
+   *
+   * @param { bigint | string } chatId - Destination.
+   * @param { string | Buffer | Readable | Files.File } sticker - Sticker to be sent. The file can be a fileId or path where the file is located or a buffer of the file or streamable which can be piped.
+   * @param { sendStickerParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   */
+  sendSticker(
+    chatId: bigint | string,
+    sticker: string | Buffer | Readable | Files.File,
+    more?: sendStickerParams,
+  ) {
+    return sendSticker(this.client!, chatId, sticker, more);
   }
   getParticipants(chatId: bigint | string, more?: getParticipantsParams) {
     return getParticipants(this.client, chatId, more);

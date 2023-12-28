@@ -11,23 +11,31 @@ import { sendMedia } from './SendMedia.ts';
 import {
   FileId,
   FileType,
-  DOCUMENT_TYPES,
   Raw,
   type Readable,
   type Files,
   fs,
   path,
+  Buffer,
 } from '../../platform.deno.ts';
 import { findMimeType, uploadThumbnail, parseArgObjAsStr } from '../../Utilities.ts';
 import type { Snake } from '../../Client/index.ts';
 import type { sendVideoParams } from './SendVideo.ts';
 import { Logger } from '../../Context/Logger.ts';
+export type sendAnimationParams = Omit<
+  sendVideoParams,
+  keyof {
+    muted?: boolean;
+    supportsStreaming?: boolean;
+    preloadPrefixSize?: number;
+  }
+>;
 
 export async function sendAnimation(
   client: Snake,
   chatId: bigint | string,
   file: string | Buffer | Readable | Files.File,
-  more: sendVideoParams = {},
+  more: sendAnimationParams = {},
 ) {
   Logger.debug(
     `exec: send_animation chat ${typeof chatId} (${chatId}) ${parseArgObjAsStr({
@@ -56,8 +64,6 @@ export async function sendAnimation(
     duration,
     width,
     height,
-    supportsStreaming,
-    preloadPrefixSize,
   } = more;
   if (typeof file === 'string') {
     file as string;
@@ -82,12 +88,11 @@ export async function sendAnimation(
           }),
           new Raw.DocumentAttributeVideo({
             roundMessage: false,
-            supportsStreaming: supportsStreaming,
+            supportsStreaming: true,
             nosound: true,
             duration: duration ?? 0,
-            w: length ?? 0,
-            h: length ?? 0,
-            preloadPrefixSize,
+            w: width ?? 0,
+            h: height ?? 0,
           }),
           new Raw.DocumentAttributeAnimated(),
         ],
@@ -95,7 +100,7 @@ export async function sendAnimation(
       });
     } else {
       const media = FileId.decodeFileId(file);
-      if (media.fileType === FileType.VIDEO) {
+      if (media.fileType === FileType.ANIMATION) {
         var savedFile: Raw.TypeInputMedia = new Raw.InputMediaDocument({
           spoiler: hasSpoiler,
           id: new Raw.InputDocument({
@@ -125,12 +130,11 @@ export async function sendAnimation(
         }),
         new Raw.DocumentAttributeVideo({
           roundMessage: true,
-          supportsStreaming: supportsStreaming,
+          supportsStreaming: true,
           nosound: true,
           duration: duration ?? 0,
-          w: length ?? 0,
-          h: length ?? 0,
-          preloadPrefixSize,
+          w: width ?? 0,
+          h: height ?? 0,
         }),
         new Raw.DocumentAttributeAnimated(),
       ],
@@ -152,12 +156,11 @@ export async function sendAnimation(
         }),
         new Raw.DocumentAttributeVideo({
           roundMessage: false,
-          supportsStreaming: supportsStreaming,
+          supportsStreaming: true,
           nosound: true,
           duration: duration ?? 0,
-          w: length ?? 0,
-          h: length ?? 0,
-          preloadPrefixSize,
+          w: width ?? 0,
+          h: height ?? 0,
         }),
         new Raw.DocumentAttributeAnimated(),
       ],
@@ -169,6 +172,7 @@ export async function sendAnimation(
   return sendMedia(client, chatId, savedFile, {
     disableNotification,
     replyToMessageId,
+    replyToStoryId,
     messageThreadId,
     scheduleDate,
     sendAsChannel,

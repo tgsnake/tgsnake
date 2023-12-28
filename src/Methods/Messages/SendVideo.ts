@@ -17,6 +17,7 @@ import {
   type Files,
   fs,
   path,
+  Buffer,
 } from '../../platform.deno.ts';
 import { findMimeType, uploadThumbnail, parseArgObjAsStr } from '../../Utilities.ts';
 import type { Snake } from '../../Client/index.ts';

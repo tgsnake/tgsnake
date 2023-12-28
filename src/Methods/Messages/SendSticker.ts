@@ -11,39 +11,39 @@ import { sendMedia } from './SendMedia.ts';
 import {
   FileId,
   FileType,
-  DOCUMENT_TYPES,
   Raw,
   type Readable,
   type Files,
+  type Entities,
   fs,
   path,
   Buffer,
 } from '../../platform.deno.ts';
-import { findMimeType, uploadThumbnail, parseArgObjAsStr } from '../../Utilities.ts';
+import { findMimeType, parseArgObjAsStr } from '../../Utilities.ts';
 import type { Snake } from '../../Client/index.ts';
-import type { sendVideoParams } from './SendVideo.ts';
 import { Logger } from '../../Context/Logger.ts';
-export interface sendVideoNoteParams
-  extends Omit<
-    sendVideoParams,
-    keyof {
-      height?: number;
-      weight?: number;
-    }
-  > {
-  /**
-   * Video width and height, i.e. diameter of the video message.
-   */
-  length?: number;
-}
-export async function sendVideoNote(
+import type { TypeReplyMarkup } from '../../TL/Messages/ReplyMarkup.ts';
+import type { sendDocumentParams } from './SendDocument.ts';
+export type sendStickerParams = Omit<
+  sendDocumentParams,
+  keyof {
+    replyMarkup?: TypeReplyMarkup;
+    entities?: Array<Entities>;
+    parseMode?: 'html' | 'markdown';
+    caption?: string;
+    invertMedia?: boolean;
+    thumbnail?: string | Buffer | Readable | Files.File;
+    forceDocument?: boolean;
+  }
+>;
+export async function sendSticker(
   client: Snake,
   chatId: bigint | string,
   file: string | Buffer | Readable | Files.File,
-  more: sendVideoNoteParams = {},
+  more: sendStickerParams = {},
 ) {
   Logger.debug(
-    `exec: send_video_note chat ${typeof chatId} (${chatId}) ${parseArgObjAsStr({
+    `exec: send_sticker chat ${typeof chatId} (${chatId}) ${parseArgObjAsStr({
       file,
     })} ${parseArgObjAsStr(more)}`,
   );
@@ -55,22 +55,10 @@ export async function sendVideoNote(
     scheduleDate,
     sendAsChannel,
     protectContent,
-    replyMarkup,
-    entities,
-    parseMode,
-    caption,
-    invertMedia,
     filename,
     progress,
-    thumbnail,
     mimetype,
-    forceDocument,
     hasSpoiler,
-    duration,
-    length,
-    supportsStreaming,
-    muted,
-    preloadPrefixSize,
   } = more;
   if (typeof file === 'string') {
     file as string;
@@ -86,28 +74,18 @@ export async function sendVideoNote(
           fileName: filename ?? path.basename(file),
           progress: progress,
         }))!,
-        mimeType: mimetype ?? findMimeType(filename ?? path.basename(file) ?? '') ?? 'video/mp4',
-        forceFile: forceDocument,
+        mimeType: mimetype ?? findMimeType(filename ?? path.basename(file) ?? '') ?? 'image/webp',
+        forceFile: false,
         spoiler: hasSpoiler,
         attributes: [
           new Raw.DocumentAttributeFilename({
             fileName: filename ?? path.basename(file) ?? `tg-${Date.now()}`,
           }),
-          new Raw.DocumentAttributeVideo({
-            roundMessage: true,
-            supportsStreaming: supportsStreaming,
-            nosound: muted,
-            duration: duration ?? 0,
-            w: length ?? 0,
-            h: length ?? 0,
-            preloadPrefixSize,
-          }),
         ],
-        thumb: thumbnail ? await uploadThumbnail(client, thumbnail) : undefined,
       });
     } else {
       const media = FileId.decodeFileId(file);
-      if (media.fileType === FileType.VIDEO_NOTE) {
+      if (media.fileType === FileType.STICKER) {
         var savedFile: Raw.TypeInputMedia = new Raw.InputMediaDocument({
           spoiler: hasSpoiler,
           id: new Raw.InputDocument({
@@ -128,24 +106,14 @@ export async function sendVideoNote(
         fileName: filename,
         progress: progress,
       }))!,
-      mimeType: mimetype ?? findMimeType(filename ?? '') ?? 'video/mp4',
-      forceFile: forceDocument,
+      mimeType: mimetype ?? findMimeType(filename ?? '') ?? 'image/webp',
+      forceFile: false,
       spoiler: hasSpoiler,
       attributes: [
         new Raw.DocumentAttributeFilename({
           fileName: filename ?? `tg-${Date.now()}`,
         }),
-        new Raw.DocumentAttributeVideo({
-          roundMessage: true,
-          supportsStreaming: supportsStreaming,
-          nosound: muted,
-          duration: duration ?? 0,
-          w: length ?? 0,
-          h: length ?? 0,
-          preloadPrefixSize,
-        }),
       ],
-      thumb: thumbnail ? await uploadThumbnail(client, thumbnail) : undefined,
     });
   } else if ('pipe' in file) {
     var savedFile: Raw.TypeInputMedia = new Raw.InputMediaUploadedDocument({
@@ -154,24 +122,14 @@ export async function sendVideoNote(
         fileName: filename,
         progress: progress,
       }))!,
-      mimeType: mimetype ?? findMimeType(filename ?? '') ?? 'video/mp4',
-      forceFile: forceDocument,
+      mimeType: mimetype ?? findMimeType(filename ?? '') ?? 'image/webp',
+      forceFile: false,
       spoiler: hasSpoiler,
       attributes: [
         new Raw.DocumentAttributeFilename({
           fileName: filename ?? `tg-${Date.now()}`,
         }),
-        new Raw.DocumentAttributeVideo({
-          roundMessage: true,
-          supportsStreaming: supportsStreaming,
-          nosound: muted,
-          duration: duration ?? 0,
-          w: length ?? 0,
-          h: length ?? 0,
-          preloadPrefixSize,
-        }),
       ],
-      thumb: thumbnail ? await uploadThumbnail(client, thumbnail) : undefined,
     });
   } else {
     throw new Error('unknown file');
@@ -179,14 +137,10 @@ export async function sendVideoNote(
   return sendMedia(client, chatId, savedFile, {
     disableNotification,
     replyToMessageId,
+    replyToStoryId,
     messageThreadId,
     scheduleDate,
     sendAsChannel,
     protectContent,
-    replyMarkup,
-    entities,
-    parseMode,
-    caption,
-    invertMedia,
   });
 }

@@ -37,16 +37,11 @@ import * as path from 'https://deno.land/std@0.182.0/path/mod.ts';
 import * as fs from 'node:fs';
 import prompts from 'https://esm.sh/prompts@2.4.2';
 export { Readable, Writable, Duplex } from 'node:stream';
-export { path, prompts, fs };
+export { Buffer } from 'node:buffer';
+export { path, prompts, fs, mimetypes };
 export const { cwd } = Deno;
 export const isBrowser = false;
 export const isDeno = true;
-
-import * as buffer from 'node:buffer';
-declare var Buffer: buffer.Buffer;
-Object.defineProperty(globalThis, 'Buffer', {
-  enumerable: false,
-  configurable: false,
-  writable: true,
-  value: buffer.Buffer,
-});
+export const process = {
+  exit: Deno.exit,
+};

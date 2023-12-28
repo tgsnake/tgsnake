@@ -8,15 +8,15 @@
  * it under the terms of the MIT License as published.
  */
 import type { Snake } from '../Snake.ts';
-import type { Options } from '../Options.ts';
 import { Logger } from '../../Context/Logger.ts';
 import { Client, Raw, Clients, prompts, isDeno } from '../../platform.deno.ts';
-const onCancel = (prompt) => {
+const onCancel = () => {
   Logger.info('Aborting prompt!!');
   if (isDeno) {
     // @ts-ignore
     Deno.exit(1);
   } else {
+    // @ts-ignore
     process.exit(1);
   }
   return false;
@@ -105,7 +105,7 @@ async function AskApiId(snake: Snake): Promise<string> {
       type: 'number',
       name: 'value',
       message: 'Input your api id!',
-      validate: (value) => (value ? true : false),
+      validate: (value: string) => (value ? true : false),
     },
     { onCancel },
   );
@@ -119,7 +119,7 @@ async function AskApiHash(snake: Snake): Promise<string> {
       type: 'text',
       name: 'value',
       message: 'Input your api hash!',
-      validate: (value) => (value ? true : false),
+      validate: (value: string) => (value ? true : false),
     },
     { onCancel },
   );
@@ -157,7 +157,7 @@ async function AskBotToken(snake: Snake): Promise<string> {
       type: 'text',
       name: 'value',
       message: 'Input your bot token!',
-      validate: (value) => (value ? true : false),
+      validate: (value: string) => (value ? true : false),
     },
     { onCancel },
   );
@@ -175,7 +175,7 @@ async function AskPhoneNumber(): Promise<string> {
       type: 'number',
       name: 'value',
       message: 'Input your international phone number!',
-      validate: (value) => (value ? true : false),
+      validate: (value: string) => (value ? true : false),
     },
     { onCancel },
   );
@@ -187,7 +187,7 @@ async function AskPassword(hint: string): Promise<string> {
       type: 'password',
       name: 'value',
       message: `Input your two factor authentication password!\n\nHint : ${hint}`,
-      validate: (value) => (value ? true : false),
+      validate: (value: string) => (value ? true : false),
     },
     { onCancel },
   );
@@ -199,7 +199,7 @@ async function AskRecoveryCode(): Promise<string> {
       type: 'number',
       name: 'value',
       message: 'Input your recovery code from your email address!',
-      validate: (value) => (value ? true : false),
+      validate: (value: string) => (value ? true : false),
     },
     { onCancel },
   );
@@ -211,7 +211,7 @@ async function AskOTPCode(): Promise<string> {
       type: 'number',
       name: 'value',
       message: 'Input your otp code from telegram application or sms!',
-      validate: (value) => (value ? true : false),
+      validate: (value: string) => (value ? true : false),
     },
     { onCancel },
   );
@@ -223,7 +223,7 @@ async function AskFirstName(): Promise<string> {
       type: 'text',
       name: 'value',
       message: 'Input your first name!',
-      validate: (value) => (value ? true : false),
+      validate: (value: string) => (value ? true : false),
     },
     { onCancel },
   );
@@ -235,7 +235,7 @@ async function AskLastName(): Promise<string> {
       type: 'text',
       name: 'value',
       message: 'Input your last name!',
-      validate: (value) => (value ? true : false),
+      validate: (value: string) => (value ? true : false),
     },
     { onCancel },
   );

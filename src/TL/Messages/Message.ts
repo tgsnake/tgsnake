@@ -13,6 +13,7 @@ import {
   Helpers,
   Parser,
   Cryptos,
+  Buffer,
   type Entities,
   type Readable,
   type Files,
@@ -28,6 +29,8 @@ import type {
   sendDocumentParams,
   sendVideoParams,
   sendVideoNoteParams,
+  sendAnimationParams,
+  sendStickerParams,
 } from '../../Methods/Messages/index.ts';
 
 export interface TypeMessage {
@@ -878,9 +881,9 @@ export class Message extends TLObject {
    * > Shorthand from api.sendAnimation
    *
    * @param { string | Buffer | Readable | Files.File } file - File to be sent. The file can be a fileId or path where the file is located or a buffer of the file or streamable which can be piped.
-   * @param { sendVideoParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   * @param { sendAnimationParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
    */
-  replyWithAnimation(file: string | Buffer | Readable | Files.File, more?: sendVideoParams) {
+  replyWithAnimation(file: string | Buffer | Readable | Files.File, more?: sendAnimationParams) {
     if (this.chat) {
       return this.api.sendAnimation(this.chat.id, file, more);
     }
@@ -891,11 +894,37 @@ export class Message extends TLObject {
    * > Shorthand from api.sendAnimation
    *
    * @param { string | Buffer | Readable | Files.File } file - File to be sent. The file can be a fileId or path where the file is located or a buffer of the file or streamable which can be piped.
-   * @param { sendVideoParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   * @param { sendAnimationParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
    */
-  rwa(file: string | Buffer | Readable | Files.File, more?: sendVideoParams) {
+  rwa(file: string | Buffer | Readable | Files.File, more?: sendAnimationParams) {
     if (this.chat) {
       return this.api.sendAnimation(this.chat.id, file, more);
+    }
+    throw new Error('Chat not found');
+  }
+  /**
+   * Use this method to send static .WEBP, animated .TGS, or video .WEBM stickers.
+   * > Shorthand from api.sendSticker
+   *
+   * @param { string | Buffer | Readable | Files.File } sticker - Sticker to be sent. The file can be a fileId or path where the file is located or a buffer of the file or streamable which can be piped.
+   * @param { sendStickerParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   */
+  replyWithSticker(sticker: string | Buffer | Readable | Files.File, more?: sendStickerParams) {
+    if (this.chat) {
+      return this.api.sendSticker(this.chat.id, sticker, more);
+    }
+    throw new Error('Chat not found');
+  }
+  /**
+   * Use this method to send static .WEBP, animated .TGS, or video .WEBM stickers.
+   * > Shorthand from api.sendSticker
+   *
+   * @param { string | Buffer | Readable | Files.File } sticker - Sticker to be sent. The file can be a fileId or path where the file is located or a buffer of the file or streamable which can be piped.
+   * @param { sendStickerParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   */
+  rws(sticker: string | Buffer | Readable | Files.File, more?: sendStickerParams) {
+    if (this.chat) {
+      return this.api.sendSticker(this.chat.id, sticker, more);
     }
     throw new Error('Chat not found');
   }
