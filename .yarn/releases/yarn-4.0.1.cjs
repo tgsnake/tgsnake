@@ -749,7 +749,7 @@ object-assign
 /*!
  * fill-range <https://github.com/jonschlinkert/fill-range>
  *
- * Copyright (c) 2014-present, Jon Schlinkert.
+ * Copyright (c) 2024-present, Jon Schlinkert.
  * Licensed under the MIT License.
  */
 /*!

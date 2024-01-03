@@ -1,6 +1,6 @@
 /**
  * tgsnake - Telegram MTProto framework for nodejs.
- * Copyright (C) 2023 butthx <https://github.com/butthx>
+ * Copyright (C) 2024 butthx <https://github.com/butthx>
  *
  * THIS FILE IS PART OF TGSNAKE
  *
@@ -18,6 +18,7 @@ import {
   cwd,
   isDeno,
   isBrowser,
+  process,
 } from '../platform.deno.ts';
 import fs from 'node:fs';
 import { SnakeSession, generateName } from './SnakeSession.ts';
@@ -54,6 +55,7 @@ export class Snake<T = {}> extends MainContext<T> {
           if (isDeno) {
             options = (await import(path.join(cwd(), 'tgsnake.config.js'))).default;
           } else {
+            // @ts-ignore
             options = require(path.join(cwd(), 'tgsnake.config.js'));
           }
         }
@@ -138,37 +140,18 @@ export class Snake<T = {}> extends MainContext<T> {
   }
   async run() {
     await this._init();
-    if (isDeno) {
+    process.on('SIGINT', async () => {
+      Logger.info('Saving session before killed.');
       // @ts-ignore
-      Deno.addSignalListener('SIGINT', async () => {
-        Logger.info('Saving session before killed.');
-        // @ts-ignore
-        await this._options.login.session.save();
-        // @ts-ignore
-        return Deno.exit();
-      });
+      await this._options.login.session.save();
+      return process.exit();
+    });
+    process.on('SIGTERM', async () => {
+      Logger.info('Saving session before killed.');
       // @ts-ignore
-      Deno.addSignalListener('SIGTERM', async () => {
-        Logger.info('Saving session before killed.');
-        // @ts-ignore
-        await this._options.login.session.save();
-        // @ts-ignore
-        return Deno.exit();
-      });
-    } else if (!isBrowser) {
-      process.on('SIGINT', async () => {
-        Logger.info('Saving session before killed.');
-        // @ts-ignore
-        await this._options.login.session.save();
-        return process.exit();
-      });
-      process.on('SIGTERM', async () => {
-        Logger.info('Saving session before killed.');
-        // @ts-ignore
-        await this._options.login.session.save();
-        return process.exit();
-      });
-    }
+      await this._options.login.session.save();
+      return process.exit();
+    });
     let hasLoginPlugin = false;
     if (this._options.plugins && this._options.plugins?.length) {
       for (const plugin of this._options.plugins) {

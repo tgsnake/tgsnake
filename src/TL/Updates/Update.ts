@@ -1,6 +1,6 @@
 /**
  * tgsnake - Telegram MTProto framework for nodejs.
- * Copyright (C) 2023 butthx <https://github.com/butthx>
+ * Copyright (C) 2024 butthx <https://github.com/butthx>
  *
  * THIS FILE IS PART OF TGSNAKE
  *
@@ -46,6 +46,8 @@ export interface ContextUpdate {
   client: Snake;
   api: Telegram;
   msg?: Message;
+  match?: Array<RegExpExecArray>;
+  _me: Raws.Raw.User;
 }
 export class Update extends TLObject {
   message?: Message;
@@ -285,5 +287,8 @@ export class Update extends TLObject {
     if (this.message) return this.message;
     if (this.callbackQuery?.message) return this.callbackQuery.message;
     return;
+  }
+  get _me(): Raws.Raw.User {
+    return this.client._me;
   }
 }

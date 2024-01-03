@@ -1,6 +1,6 @@
 /**
  * tgsnake - Telegram MTProto framework for nodejs.
- * Copyright (C) 2023 butthx <https://github.com/butthx>
+ * Copyright (C) 2024 butthx <https://github.com/butthx>
  *
  * THIS FILE IS PART OF TGSNAKE
  *
@@ -9,16 +9,10 @@
  */
 import type { Snake } from '../Snake.ts';
 import { Logger } from '../../Context/Logger.ts';
-import { Client, Raw, Clients, prompts, isDeno } from '../../platform.deno.ts';
+import { Client, Raw, Clients, prompts, process } from '../../platform.deno.ts';
 const onCancel = () => {
   Logger.info('Aborting prompt!!');
-  if (isDeno) {
-    // @ts-ignore
-    Deno.exit(1);
-  } else {
-    // @ts-ignore
-    process.exit(1);
-  }
+  process.exit(1);
   return false;
 };
 export async function LoginWithCLI(snake: Snake): Promise<Raw.users.UserFull | undefined> {

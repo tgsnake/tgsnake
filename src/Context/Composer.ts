@@ -1,10 +1,12 @@
-// Tgsnake - Telegram MTProto framework developed based on gram.js.
-// Copyright (C) 2023 Butthx <https://github.com/butthx>
-//
-// This file is part of Tgsnake
-//
-// Tgsnake is a free software : you can redistribute it and/or modify
-//  it under the terms of the MIT License as published.
+/**
+ * tgsnake - Telegram MTProto framework for nodejs.
+ * Copyright (C) 2024 butthx <https://github.com/butthx>
+ *
+ * THIS FILE IS PART OF TGSNAKE
+ *
+ * tgsnake is a free software : you can redistribute it and/or modify
+ * it under the terms of the MIT License as published.
+ */
 import { Raw } from '../platform.deno.ts';
 import { FilterContext, filter } from './Filters.ts';
 import { TypeUpdate, ContextUpdate } from '../TL/Updates/index.ts';
@@ -23,11 +25,11 @@ export type ErrorHandler<T> = (
 export type Middleware<C> = MiddlewareFn<C> | MiddlewareObj<C>;
 export type Combine<T, U> = T & Partial<U>;
 
-function flatten<C>(mw: Middleware<C>) {
-  return typeof mw === 'function' ? mw : (ctx, next) => mw.middleware()(ctx, next);
+function flatten<C>(mw: Middleware<C>): MiddlewareFn<C> {
+  return typeof mw === 'function' ? mw : (ctx: C, next: NextFn) => mw.middleware()(ctx, next);
 }
-function concat(first, andThen) {
-  return async (ctx, next) => {
+function concat<C>(first: MiddlewareFn<C>, andThen: MiddlewareFn<C>) {
+  return async (ctx: C, next: NextFn) => {
     let nextCalled = false;
     await first(ctx, async () => {
       if (nextCalled) throw new Error('`next` already called before!');
@@ -40,13 +42,18 @@ function pass<C>(_ctx: C, next: NextFn) {
   return next();
 }
 const leaf = () => Promise.resolve();
-function triggerFn(trigger) {
-  return toArray(trigger).map((t) =>
-    typeof t === 'string' ? (txt) => (txt === t ? t : null) : (txt) => t.exec(txt),
+function triggerFn(
+  trigger: MaybeArray<string | RegExp>,
+): Array<(content: string) => RegExpExecArray | string | null> {
+  return toArray<string | RegExp>(trigger).map((t) =>
+    typeof t === 'string' ? (txt) => (txt === t ? t : null) : (txt) => (t as RegExp).exec(txt),
   );
 }
-function match(ctx, content, triggers) {
-  let match: any[] = [];
+function match<C>(
+  content: string,
+  triggers: Array<(content: string) => RegExpExecArray | string | null>,
+) {
+  const match: any[] = [];
   for (const t of triggers) {
     const res = t(content);
     if (res) {
@@ -55,12 +62,18 @@ function match(ctx, content, triggers) {
   }
   return Boolean(match.length);
 }
-function toArray(e) {
+function toArray<T>(e: MaybeArray<T>): Array<T> {
   return Array.isArray(e) ? e : [e];
 }
 export async function run<C>(middleware: MiddlewareFn<C>, ctx: C) {
   await middleware(ctx, leaf);
 }
+
+/**
+ * Composer is an event handler implemented by tgsnake.
+ * Which is the grandfather of the 'Snake' class.
+ * Composer has handlers such as 'command', 'hear', 'action' and many more.
+ */
 export class Composer<T = {}>
   implements
     MiddlewareObj<Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>>
@@ -71,7 +84,10 @@ export class Composer<T = {}>
   >;
   /** @ignore */
   context: Partial<T> = {};
-  prefix: string = '.!/';
+  /**
+   * The prefix that marks a text message is included in the command.
+   */
+  prefix = '.!/';
   constructor(
     ...middleware: Array<
       Middleware<Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>>
@@ -79,11 +95,24 @@ export class Composer<T = {}>
   ) {
     this.handler = middleware.length === 0 ? pass : middleware.map(flatten).reduce(concat);
   }
+  /**
+   * Running composer as a middleware.
+   */
   middleware(): MiddlewareFn<
     Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>
   > {
     return this.handler;
   }
+  /**
+   * Add a middleware function to the composer class.
+   * @example
+   * ```ts
+   * bot.use((ctx,next) => {
+   *   // do something
+   *   return next()
+   * })
+   * ```
+   */
   use(
     ...middleware: Array<
       Middleware<Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>>
@@ -93,37 +122,87 @@ export class Composer<T = {}>
     this.handler = concat(this.handler, flatten(composer));
     return composer;
   }
+  /**
+   * Add event listener on event.
+   * @example
+   * ```ts
+   * bot.on('msg.text',(ctx) => {
+   *   // do something
+   * })
+   * ```
+   */
   on<K extends keyof FilterContext>(
     filters: MaybeArray<K>,
     ...middleware: Array<Middleware<Combine<Combine<FilterContext[K], ContextUpdate>, T>>>
   ): Composer<T> {
-    return this.filter((ctx) => filter(filters, ctx), ...middleware);
+    return this.filter<Combine<Combine<FilterContext[K], ContextUpdate>, T>>(
+      (ctx) => filter(filters, ctx),
+      ...middleware,
+    );
   }
-  filter(predicate, ...middleware): Composer<T> {
+  filter<K>(
+    predicate: (ctx: K) => MaybePromise<boolean>,
+    ...middleware: Array<Middleware<K>>
+  ): Composer<T>;
+  filter(
+    predicate: (
+      ctx: Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>,
+    ) => MaybePromise<boolean>,
+    ...middleware: Array<
+      Middleware<Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>>
+    >
+  ): Composer<T> {
     const composer = new Composer(...middleware);
     this.branch(predicate, composer, pass);
     return composer;
   }
-  drop(predicate, ...middleware): Composer<T> {
+  drop(
+    predicate: (
+      ctx: Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>,
+    ) => MaybePromise<boolean>,
+    ...middleware: Array<
+      Middleware<Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>>
+    >
+  ): Composer<T> {
     return this.filter(async (ctx) => !(await predicate(ctx)), ...middleware);
   }
-  fork(...middleware): Composer<T> {
+  fork(
+    ...middleware: Array<
+      Middleware<Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>>
+    >
+  ): Composer<T> {
     const composer = new Composer(...middleware);
     const fork = flatten(composer);
-    //@ts-ignore
     this.use((ctx, next) => Promise.all([next(), run(fork, ctx)]));
     return composer;
   }
-  lazy(middlewareFactory): Composer<T> {
+  lazy(
+    middlewareFactory: (
+      ctx: Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>,
+    ) => MaybePromise<any>,
+  ): Composer<T> {
     return this.use(async (context, next) => {
       const middleware = await middlewareFactory(context);
       const arr = toArray(middleware);
       await flatten(new Composer(...arr))(Object.assign(context, this.context), next);
     });
   }
-  route(router, routeHandlers, fallback = pass): Composer<T> {
+  route<
+    R extends Record<
+      PropertyKey,
+      Middleware<Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>>
+    >,
+  >(
+    router: (
+      ctx: Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>,
+    ) => MaybePromise<string | undefined>,
+    routeHandlers: R,
+    fallback: Middleware<
+      Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>
+    > = pass,
+  ): Composer<T> {
     return this.lazy(async (ctx) => {
-      var _a;
+      let _a;
       const route = await router(ctx);
       return route === undefined
         ? []
@@ -132,7 +211,17 @@ export class Composer<T = {}>
           : fallback;
     });
   }
-  branch(predicate, trueMiddleware, falseMiddleware): Composer<T> {
+  branch(
+    predicate: (
+      ctx: Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>,
+    ) => MaybePromise<boolean>,
+    trueMiddleware: Middleware<
+      Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>
+    >,
+    falseMiddleware: Middleware<
+      Combine<Combine<Combine<TypeUpdate, ContextUpdate>, Raw.TypeUpdates>, T>
+    >,
+  ): Composer<T> {
     return this.lazy(async (ctx) => ((await predicate(ctx)) ? trueMiddleware : falseMiddleware));
   }
   /** @ignore */
@@ -169,20 +258,35 @@ export class Composer<T = {}>
   toString() {
     return `[constructor of ${this.constructor.name}] ${JSON.stringify(this, null, 2)}`;
   }
+  /**
+   * Listen any message text as a command.
+   * This function is sensitive with new message text.
+   * All text that begins with the specified prefix will be considered a command message.
+   * @example
+   * ```ts
+   * bot.command('start',(ctx) => {
+   *   ctx.message.reply('**Wohoho**',{
+   *     parseMode : 'markdown'
+   *   });
+   * });
+   * ```
+   * @param trigger - text or regex which will be matched with incoming messages text.
+   * @param middleware - the handler function when trigger is matched with incoming messages text.
+   */
   command(
     trigger: MaybeArray<string | RegExp>,
     ...middleware: Array<Middleware<Combine<Combine<FilterContext['msg.text'], ContextUpdate>, T>>>
   ): Composer<T> {
-    let key = toArray(trigger);
-    let filterCmd = (ctx) => {
+    const key = toArray(trigger);
+    const filterCmd = (ctx: Combine<Combine<FilterContext['msg.text'], ContextUpdate>, T>) => {
       const text = ctx.editedMessage ? ctx.editedMessage.text : ctx.message.text;
-      const { _me } = ctx.client;
-      let s = text.split(' ');
-      let passed: RegExpExecArray[] = [];
-      for (let cmd of key) {
+      const { _me } = ctx;
+      const s = text.split(' ');
+      const passed: RegExpExecArray[] = [];
+      for (const cmd of key) {
         if (typeof cmd == 'string') {
           cmd as string;
-          let r = new RegExp(
+          const r = new RegExp(
             `^[${this.prefix}](${cmd})${_me?.username ? `(@${_me?.username})?` : ``}$`,
             'i',
           );
@@ -200,42 +304,97 @@ export class Composer<T = {}>
       ctx.match = passed;
       return Boolean(passed.length);
     };
-    return this.on(['msg.text', 'editMsg.text']).filter(filterCmd, ...middleware);
+
+    return this.on('msg.text').filter<
+      Combine<Combine<FilterContext['msg.text'], ContextUpdate>, T>
+    >(filterCmd, ...middleware);
   }
+  /**
+   * Listen any message text as a command.
+   * This function is sensitive with new message text.
+   * All text that begins with the specified prefix will be considered a command message.
+   * @example
+   * ```ts
+   * bot.cmd('start',(ctx) => {
+   *   ctx.message.reply('**Wohoho**',{
+   *     parseMode : 'markdown'
+   *   });
+   * });
+   * ```
+   * @param trigger - text or regex which will be matched with incoming messages text.
+   * @param middleware - the handler function when trigger is matched with incoming messages text.
+   */
   cmd(
     trigger: MaybeArray<string | RegExp>,
     ...middleware: Array<Middleware<Combine<Combine<FilterContext['msg.text'], ContextUpdate>, T>>>
   ): Composer<T> {
     return this.command(trigger, ...middleware);
   }
+  /**
+   * Listen any new message text which is match with given filter.
+   * For the trigger parameters, you can provide a regex as a filter for text messages.
+   * @example
+   * ```ts
+   * // Any text with 'hello' inside will be responded.
+   * bot.hears(/hello/, (ctx) => {
+   *   ctx.message.reply('Wohoho')
+   * })
+   * ```
+   * @param trigger - text or regex which will be matched with incoming messages text.
+   * @param middleware - the handler function when trigger is matched with incoming messages text.
+   */
   hears(
     trigger: MaybeArray<string | RegExp>,
     ...middleware: Array<Middleware<Combine<Combine<FilterContext['msg.text'], ContextUpdate>, T>>>
   ): Composer<T> {
-    let tgr = triggerFn(trigger);
-    return this.on(['msg.text', 'editMsg.text']).filter(
-      (ctx) => {
+    const tgr = triggerFn(trigger);
+    return this.on('msg.text').filter(
+      (ctx: Combine<FilterContext['msg.text'], ContextUpdate>) => {
         const text = ctx.editedMessage ? ctx.editedMessage.text : ctx.message.text;
-        return match(ctx, String(text), tgr);
+        return match(String(text), tgr);
       },
       ...middleware,
     );
   }
+  /**
+   * Listen any new message text which is match with given filter.
+   * For the trigger parameters, you can provide a regex as a filter for text messages.
+   * @example
+   * ```ts
+   * // Any text with 'hello' inside will be responded.
+   * bot.hear(/hello/, (ctx) => {
+   *   ctx.message.reply('Wohoho')
+   * })
+   * ```
+   * @param trigger - text or regex which will be matched with incoming messages text.
+   * @param middleware - the handler function when trigger is matched with incoming messages text.
+   */
   hear(
     trigger: MaybeArray<string | RegExp>,
     ...middleware: Array<Middleware<Combine<Combine<FilterContext['msg.text'], ContextUpdate>, T>>>
   ): Composer<T> {
     return this.hears(trigger, ...middleware);
   }
+  /**
+   * Listen any clicked inline keyboard (callback data) which is matched with given trigger.
+   * @param trigger - text or regex which will be matched with callback data.
+   * @param middleware - the handler function when trigger is matched with incoming messages text.
+   * @example
+   * ```ts
+   * bot.action('hello', (ctx) => {
+   *   // do something
+   * })
+   * ```
+   */
   action(
     trigger: MaybeArray<string | RegExp>,
     ...middleware: Array<Middleware<Combine<Combine<FilterContext['cb.data'], ContextUpdate>, T>>>
   ): Composer<T> {
-    let key = toArray(trigger);
-    let filterCmd = (ctx) => {
+    const key = toArray(trigger);
+    const filterCmd = (ctx: Combine<Combine<FilterContext['cb.data'], ContextUpdate>, T>) => {
       const { data } = ctx.callbackQuery;
-      let passed: any[] = [];
-      for (let cmd of key) {
+      const passed: any[] = [];
+      for (const cmd of key) {
         if (typeof cmd == 'string') {
           cmd as string;
           if (cmd == data) passed.push(cmd);
@@ -247,19 +406,35 @@ export class Composer<T = {}>
       }
       return Boolean(passed.length);
     };
-    return this.on('cb.data').filter(filterCmd, ...middleware);
+    return this.on('cb.data').filter<Combine<Combine<FilterContext['cb.data'], ContextUpdate>, T>>(
+      filterCmd,
+      ...middleware,
+    );
   }
+  /**
+   * Listen any query submitted by users. For example @botname <query>. <query> will be matched with the trigger.
+   * @param trigger - text or regex which will be matched with query.
+   * @param middleware - the handler function when trigger is matched with query.
+   * @example
+   * ```ts
+   * bot.inlineQuery('some query', (ctx) => {
+   *   // do something
+   * })
+   * ```
+   */
   inlineQuery(
     trigger: MaybeArray<string | RegExp>,
     ...middleware: Array<
       Middleware<Combine<Combine<FilterContext['inlineQuery.from'], ContextUpdate>, T>>
     >
   ): Composer<T> {
-    let key = toArray(trigger);
-    let filterCmd = (ctx) => {
+    const key = toArray(trigger);
+    const filterCmd = (
+      ctx: Combine<Combine<FilterContext['inlineQuery.from'], ContextUpdate>, T>,
+    ) => {
       const { query } = ctx.inlineQuery;
-      let passed: any[] = [];
-      for (let cmd of key) {
+      const passed: any[] = [];
+      for (const cmd of key) {
         if (typeof cmd == 'string') {
           cmd as string;
           if (cmd == query) passed.push(cmd);
@@ -271,6 +446,8 @@ export class Composer<T = {}>
       }
       return Boolean(passed.length);
     };
-    return this.on('inlineQuery.from').filter(filterCmd, ...middleware);
+    return this.on('inlineQuery.from').filter<
+      Combine<Combine<FilterContext['inlineQuery.from'], ContextUpdate>, T>
+    >(filterCmd, ...middleware);
   }
 }

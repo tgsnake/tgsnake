@@ -1,6 +1,6 @@
 /**
  * tgsnake - Telegram MTProto framework for nodejs.
- * Copyright (C) 2023 butthx <https://github.com/butthx>
+ * Copyright (C) 2024 butthx <https://github.com/butthx>
  *
  * THIS FILE IS PART OF TGSNAKE
  *
@@ -19,7 +19,7 @@ export {
   Files,
   Cryptos,
   Errors,
-} from 'https://raw.githubusercontent.com/tgsnake/core/master/src/index.ts';
+} from 'https://deno.land/x/tgsnake_core@1.10.6/src/index.ts';
 export {
   Writer,
   base64_url_encode,
@@ -30,7 +30,7 @@ export {
   PHOTO_TYPES,
   DOCUMENT_TYPES,
 } from 'https://deno.land/x/tgsnake_fileid@2.1.0/src/index.ts';
-export { Parser, type Entities } from 'https://deno.land/x/tgsnake_parser@2.0.2/src/index.ts';
+export { Parser, type Entities } from 'https://deno.land/x/tgsnake_parser@2.0.3/src/index.ts';
 export { Logger, type TypeLogLevel } from 'https://deno.land/x/tgsnake_log/src/index.ts';
 import { lookup as mimetypes } from 'https://deno.land/x/mrmime@v1.0.1/mod.ts';
 import * as path from 'https://deno.land/std@0.182.0/path/mod.ts';
@@ -44,4 +44,6 @@ export const isBrowser = false;
 export const isDeno = true;
 export const process = {
   exit: Deno.exit,
+  env: Deno.env.toObject(),
+  on: Deno.addSignalListener,
 };
