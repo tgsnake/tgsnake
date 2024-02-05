@@ -19,7 +19,7 @@ export {
   Files,
   Cryptos,
   Errors,
-} from 'https://deno.land/x/tgsnake_core@1.10.6/src/index.ts';
+} from 'https://deno.land/x/tgsnake_core@1.10.8/src/index.ts';
 export {
   Writer,
   base64_url_encode,
@@ -42,7 +42,7 @@ export { path, prompts, fs, mimetypes };
 export const { cwd } = Deno;
 export const isBrowser = false;
 export const isDeno = true;
-export const process = {
+export const sysprc = {
   exit: Deno.exit,
   env: Deno.env.toObject(),
   on: Deno.addSignalListener,

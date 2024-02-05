@@ -24,27 +24,77 @@ export class MainContext<T> extends Composer<T> {
     Logger.error(update);
     throw error;
   };
-  _plugin: TgsnakeApi<T> = new TgsnakeApi<T>();
+  protected _plugin: TgsnakeApi = new TgsnakeApi();
   constructor() {
     super();
   }
   async handleUpdate(update: Raw.TypeUpdates, client: Snake) {
     if (!update) return false;
+    // Plugin: beforeParseUpdate
+    if (this._plugin.getEventHandler('beforeParseUpdate').length) {
+      Logger.debug(
+        `Running ${this._plugin.getEventHandler('beforeParseUpdate').length} before parse update handler plugin.`,
+      );
+      this._plugin.getEventHandler('beforeParseUpdate').forEach((plugin) => {
+        try {
+          return plugin({ client, update });
+        } catch (error: any) {
+          Logger.error(`Failed to running plug-in (beforeParseUpdate) ${plugin.name}`, error);
+        }
+      });
+    }
     Logger.debug(`Receive update: ${update.className}`);
     this.use = () => {
       throw new Error(
         `bot.use is unavailable when bot running. so kill bot first then add bot.use in your source code then running again.`,
       );
     };
-    const parsed = await this.parseUpdate(update, client);
-    for (const _update of parsed) {
-      try {
-        // @ts-ignore
-        await run<Update>(this.middleware(), _update);
-      } catch (error: any) {
-        // @ts-ignore
-        return this._errorHandler(error, _update);
+    // Plugin: onParseUpdate
+    if (this._plugin.getEventHandler('onParseUpdate').length) {
+      Logger.debug(
+        `Running ${this._plugin.getEventHandler('onParseUpdate').length} on parse update handler plugin, it will replace the default update parser.`,
+      );
+      const parsed: Array<Update | Raw.TypeUpdates> = [];
+      this._plugin.getEventHandler('onParseUpdate').forEach(async (plugin) => {
+        try {
+          return parsed.push(...(await plugin({ client, update })));
+        } catch (error: any) {
+          Logger.error(`Failed to running plug-in (onParseUpdate) ${plugin.name}`, error);
+        }
+      });
+      for (const _update of parsed) {
+        try {
+          // @ts-ignore
+          await run<Update>(this.middleware(), _update);
+        } catch (error: any) {
+          // @ts-ignore
+          return this._errorHandler(error, _update);
+        }
       }
+    } else {
+      const parsed = await this.parseUpdate(update, client);
+      for (const _update of parsed) {
+        try {
+          // @ts-ignore
+          await run<Update>(this.middleware(), _update);
+        } catch (error: any) {
+          // @ts-ignore
+          return this._errorHandler(error, _update);
+        }
+      }
+    }
+    // Plugin: afterParseUpdate
+    if (this._plugin.getEventHandler('afterParseUpdate').length) {
+      Logger.debug(
+        `Running ${this._plugin.getEventHandler('afterParseUpdate').length} after parse update handler plugin.`,
+      );
+      this._plugin.getEventHandler('afterParseUpdate').forEach((plugin) => {
+        try {
+          return plugin({ client, update });
+        } catch (error: any) {
+          Logger.error(`Failed to running plug-in (afterParseUpdate) ${plugin.name}`, error);
+        }
+      });
     }
   }
   async parseUpdate(update: Raw.TypeUpdates, client: Snake): Promise<Array<object>> {

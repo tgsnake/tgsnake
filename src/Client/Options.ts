@@ -9,6 +9,7 @@
  */
 import { Clients, Storages, TypeLogLevel } from '../platform.deno.ts';
 import type { Snake } from './Snake.ts';
+import type { PluginApiFn, PluginApiObj } from '../Plugins/index.ts';
 export interface Options {
   /**
    * App id, you can create one from my.telegram.org
@@ -33,9 +34,9 @@ export interface Options {
    */
   clientOptions?: Clients.Client.ClientOptions;
   /**
-   * Use a special plugin. The plugin must be a function that returns a boolean. For session, it won't work if you put it here, put at login options.
+   * Use a special plugin.
    */
-  plugins?: Array<{ (snake: Snake): any | Promise<any> }>;
+  plugins?: Array<PluginApiFn | PluginApiObj>;
 }
 export interface LoginWithSession {
   /**

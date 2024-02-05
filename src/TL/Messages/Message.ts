@@ -483,10 +483,12 @@ export class Message extends TLObject {
           if (message.replyTo instanceof Raw.MessageReplyHeader) {
             parsedMessage.isTopicMessage =
               (message.replyTo as Raw.MessageReplyHeader)?.forumTopic ?? false;
-            parsedMessage.replyToMessageId = (message.replyTo as Raw.MessageReplyHeader)
-              ?.replyToMsgId;
-            parsedMessage.replyToTopMessageId = (message.replyTo as Raw.MessageReplyHeader)
-              ?.replyToTopId;
+            parsedMessage.replyToMessageId = (
+              message.replyTo as Raw.MessageReplyHeader
+            )?.replyToMsgId;
+            parsedMessage.replyToTopMessageId = (
+              message.replyTo as Raw.MessageReplyHeader
+            )?.replyToTopId;
             if (replies) {
               let cchat = client._cacheMessage.get(parsedMessage.chat?.id!);
               if (cchat) {
@@ -696,10 +698,12 @@ export class Message extends TLObject {
           if (message.replyTo instanceof Raw.MessageReplyHeader) {
             parsedMessage.isTopicMessage =
               (message.replyTo as Raw.MessageReplyHeader)?.forumTopic ?? false;
-            parsedMessage.replyToMessageId = (message.replyTo as Raw.MessageReplyHeader)
-              ?.replyToMsgId;
-            parsedMessage.replyToTopMessageId = (message.replyTo as Raw.MessageReplyHeader)
-              ?.replyToTopId;
+            parsedMessage.replyToMessageId = (
+              message.replyTo as Raw.MessageReplyHeader
+            )?.replyToMsgId;
+            parsedMessage.replyToTopMessageId = (
+              message.replyTo as Raw.MessageReplyHeader
+            )?.replyToTopId;
             if (replies) {
               let cchat = client._cacheMessage.get(parsedMessage.chat?.id!);
               if (cchat) {

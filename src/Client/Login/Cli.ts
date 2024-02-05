@@ -9,10 +9,10 @@
  */
 import type { Snake } from '../Snake.ts';
 import { Logger } from '../../Context/Logger.ts';
-import { Client, Raw, Clients, prompts, process } from '../../platform.deno.ts';
+import { Client, Raw, Clients, prompts, sysprc } from '../../platform.deno.ts';
 const onCancel = () => {
   Logger.info('Aborting prompt!!');
-  process.exit(1);
+  sysprc.exit(1);
   return false;
 };
 export async function LoginWithCLI(snake: Snake): Promise<Raw.users.UserFull | undefined> {

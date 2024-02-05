@@ -8,4 +8,13 @@
  * it under the terms of the MIT License as published.
  */
 
-export { TgsnakeApi } from './Api.ts';
+export {
+  TgsnakeApi,
+  type CallbackFn,
+  type PluginApiFn,
+  type PluginApiObj,
+  type ListSetterEventHandler,
+  type ListGetterEventHandler,
+  type CallbackFnLogin,
+  type CallbackFnUpdate,
+} from './Api.ts';

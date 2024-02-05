@@ -18,7 +18,7 @@ import {
   cwd,
   isDeno,
   isBrowser,
-  process,
+  sysprc,
 } from '../platform.deno.ts';
 import fs from 'node:fs';
 import { SnakeSession, generateName } from './SnakeSession.ts';
@@ -68,14 +68,17 @@ export class Snake<T = {}> extends MainContext<T> {
       // assign field of _options.
       this._options = Object.assign(
         {
-          logLevel: [process.env.LOGLEVEL || 'debug'],
+          logLevel: [sysprc.env.LOGLEVEL || 'debug'],
         },
         options,
       );
       // assign default app version.
       this._options.clientOptions = Object.assign(
         {
-          appVersion: '3.0.0',
+          appVersion: Version.version.replace(
+            /(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/gm,
+            '',
+          ),
         },
         this._options.clientOptions,
       );
@@ -137,49 +140,78 @@ export class Snake<T = {}> extends MainContext<T> {
     this._cacheMessage = new Map();
     this.api = new Telegram(this);
     this._rndMsgId = new Sessions.MsgId();
-  }
-  async run() {
-    await this._init();
-    process.on('SIGINT', async () => {
-      Logger.info('Saving session before killed.');
-      // @ts-ignore
-      await this._options.login.session.save();
-      return process.exit();
-    });
-    process.on('SIGTERM', async () => {
-      Logger.info('Saving session before killed.');
-      // @ts-ignore
-      await this._options.login.session.save();
-      return process.exit();
-    });
-    let hasLoginPlugin = false;
     if (this._options.plugins && this._options.plugins?.length) {
+      Logger.debug('Registering plugin.');
       for (const plugin of this._options.plugins) {
         if (typeof plugin === 'function') {
-          if (/^Login/.test(plugin.name)) {
-            if (!hasLoginPlugin) {
-              // prevent multiple plugin with same function
-              hasLoginPlugin = true;
-              try {
-                let user = await plugin(this);
-                if (user) {
-                  this._me = (user as unknown as Raw.users.UserFull).users[0] as Raw.User;
-                }
-              } catch (error: any) {
-                Logger.error(`Failed to running ${plugin.name}`, error);
-              }
-            }
-          } else {
-            try {
-              await plugin(this);
-            } catch (error: any) {
-              Logger.error(`Failed to running ${plugin.name}`, error);
-            }
+          try {
+            await plugin(this._plugin);
+          } catch (error: any) {
+            Logger.error(`Failed to initialize plug-in: ${plugin.name}`, error);
+          }
+        } else if (typeof plugin === 'object' && 'init' in plugin) {
+          try {
+            await plugin.init(this._plugin);
+          } catch (error: any) {
+            Logger.error(`Failed to initialize plug-in: ${plugin.constructor.name}`, error);
           }
         }
       }
     }
-    if (!hasLoginPlugin) {
+  }
+  private async _gracefulStop() {
+    Logger.info('Gracefully Stop.');
+    if (this._options.login?.session && typeof this._options.login.session !== 'string') {
+      Logger.info('Saving session before killed.');
+      await this._options.login.session.save();
+    }
+    if (this._plugin.getEventHandler('gracefullyStop').length) {
+      Logger.debug(
+        `Running ${this._plugin.getEventHandler('gracefullyStop').length} gracefully stop handler plugin.`,
+      );
+      for (const plugin of this._plugin.getEventHandler('gracefullyStop')) {
+        try {
+          await plugin({ client: this });
+        } catch (error: any) {
+          Logger.error(`Failed to running plug-in (gracefullyStop) ${plugin.name}`, error);
+        }
+      }
+    }
+    return sysprc.exit();
+  }
+  async run() {
+    await this._init();
+    if (this._plugin.getEventHandler('beforeStart').length) {
+      Logger.debug(
+        `Running ${this._plugin.getEventHandler('beforeStart').length} before start handler plugin.`,
+      );
+      for (const plugin of this._plugin.getEventHandler('beforeStart')) {
+        try {
+          await plugin({ client: this });
+        } catch (error: any) {
+          Logger.error(`Failed to running plug-in (beforeStart) ${plugin.name}`, error);
+        }
+      }
+    }
+    sysprc.on('SIGINT', () => this._gracefulStop());
+    sysprc.on('SIGTERM', () => this._gracefulStop());
+    if (this._plugin.getEventHandler('onLogin').length) {
+      if (this._plugin.getEventHandler('onLogin').length > 1) {
+        Logger.info(
+          `The plug-in of login handler is more than one, to prevent several undesirable things, only the last plug-in will be used. {${this._plugin.getEventHandler('onLogin').length}}`,
+        );
+      }
+      const plugin =
+        this._plugin.getEventHandler('onLogin')[this._plugin.getEventHandler('onLogin').length - 1];
+      try {
+        let user = await plugin({ client: this });
+        if (user) {
+          this._me = (user as unknown as Raw.users.UserFull).users[0] as Raw.User;
+        }
+      } catch (error: any) {
+        Logger.error(`Failed to running plug-in (onLogin) ${plugin.name}`, error);
+      }
+    } else {
       let user = await LoginWithCLI(this);
       if (user) {
         this._me = (user as Raw.users.UserFull).users[0] as Raw.User;
@@ -193,6 +225,18 @@ export class Snake<T = {}> extends MainContext<T> {
           this._me.lastName ? `${this._me.firstName} ${this._me.lastName}` : this._me.firstName
         } - ${this._me.id}`,
       );
+    }
+    if (this._plugin.getEventHandler('afterStart').length) {
+      Logger.debug(
+        `Running ${this._plugin.getEventHandler('afterStart').length} after start handler plugin.`,
+      );
+      for (const plugin of this._plugin.getEventHandler('afterStart')) {
+        try {
+          await plugin({ client: this });
+        } catch (error: any) {
+          Logger.error(`Failed to running plug-in (afterStart) ${plugin.name}`, error);
+        }
+      }
     }
     return true;
   }
