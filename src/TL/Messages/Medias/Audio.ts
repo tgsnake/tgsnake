@@ -18,6 +18,7 @@ import {
 } from '../../../platform.deno.ts';
 import type { Snake } from '../../../Client/index.ts';
 import { PhotoSize } from './PhotoSize.ts';
+import { type sendAudioParams } from '../../../Methods/Messages/SendAudio.ts';
 
 // https://core.telegram.org/bots/api#audio
 export class Audio extends TLObject {
@@ -135,5 +136,13 @@ export class Audio extends TLObject {
       },
       client,
     );
+  }
+  /**
+   * Resend this audio to a different chat.
+   * @param { bigint | string } chatId - Destination.
+   * @param { sendAudioParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   */
+  resend(chatId: bigint | string, more: sendAudioParams) {
+    return this.api.sendAudio(chatId, this.fileId, more);
   }
 }

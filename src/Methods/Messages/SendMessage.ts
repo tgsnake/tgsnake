@@ -8,7 +8,7 @@
  * it under the terms of the MIT License as published.
  */
 import { Parser, type Entities, Raw, Helpers, Errors } from '../../platform.deno.ts';
-import { parseMessages, parseArgObjAsStr } from '../../Utilities.ts';
+import { parseMessages, parseArgObjAsStr, ReplyParameters, buildReply } from '../../Utilities.ts';
 import * as ReplyMarkup from '../../TL/Messages/ReplyMarkup.ts';
 import type { Snake } from '../../Client/index.ts';
 import { Message } from '../../TL/Messages/index.ts';
@@ -32,6 +32,10 @@ export interface sendMessageParams {
    * Sent the message as a replied user's stories. ID of the story to reply.
    */
   replyToStoryId?: number;
+  /**
+   * Describes reply parameters for the message that is being sent.
+   */
+  replyParameters?: ReplyParameters;
   /**
    * Unique identifier for the target message thread (topic) of the forum; for forum supergroups only.
    */
@@ -82,6 +86,7 @@ export async function sendMessage(
     disableNotification,
     replyToMessageId,
     replyToStoryId,
+    replyParameters,
     messageThreadId,
     scheduleDate,
     sendAsChannel,
@@ -104,17 +109,19 @@ export async function sendMessage(
       clearDraft: true,
       noforwards: protectContent,
       peer: peer,
-      replyTo: replyToMessageId
-        ? new Raw.InputReplyToMessage({
-            replyToMsgId: replyToMessageId,
-            topMsgId: messageThreadId,
-          })
-        : replyToStoryId
-          ? new Raw.InputReplyToStory({
-              userId: peer,
-              storyId: replyToStoryId,
-            })
-          : undefined,
+      replyTo:
+        replyToMessageId || replyParameters
+          ? await buildReply(
+              client,
+              replyParameters ? replyParameters : { messageId: replyToMessageId },
+              messageThreadId,
+            )
+          : replyToStoryId
+            ? new Raw.InputReplyToStory({
+                userId: peer,
+                storyId: replyToStoryId,
+              })
+            : undefined,
       message: text,
       randomId: client._rndMsgId.getMsgId(),
       replyMarkup: replyMarkup

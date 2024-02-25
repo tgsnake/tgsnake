@@ -18,6 +18,8 @@ import {
   type Files,
   fs,
   Buffer,
+  Parser,
+  type Entities,
 } from './platform.deno.ts';
 import { Message } from './TL/Messages/Message.ts';
 import type { Snake } from './Client/Snake.ts';
@@ -181,4 +183,57 @@ export function parseArgObjAsStr(arg: { [key: string]: any }) {
     res += `${key.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`)} ${value} `;
   }
   return res.trim();
+}
+
+export interface ReplyParameters {
+  /**
+   * Identifier of the message that will be replied to in the current chat, or in the chat chat_id if it is specified
+   */
+  messageId: number;
+  /**
+   * If the message to be replied to is from a different chat, unique identifier for the chat or username of the channel (in the format @channelusername)
+   */
+  chatId?: bigint | string;
+  /**
+   * Quoted part of the message to be replied to; 0-1024 characters after entities parsing. The quote must be an exact substring of the message to be replied to, including bold, italic, underline, strikethrough, spoiler, and custom_emoji entities. The message will fail to send if the quote isn't found in the original message.
+   */
+  quote?: string;
+  /**
+   * Mode for parsing entities in the quote.
+   */
+  quoteParseMode?: string;
+  /**
+   * A JSON-serialized list of special entities that appear in the quote. It can be specified instead of quoteParseMode.
+   */
+  quoteEntities?: Array<Entities>;
+  /**
+   * Position of the quote in the original message in UTF-16 code units.
+   */
+  quotePosition?: number;
+}
+export async function buildReply(
+  client: Snake,
+  replyParameters: ReplyParameters,
+  messageThreadId?: number,
+): Promise<Raw.InputReplyToMessage> {
+  if (
+    'quoteParseMode' in replyParameters &&
+    !('quoteEntities' in replyParameters) &&
+    'quote' in replyParameters
+  ) {
+    const [t, e] = await Parser.parse(replyParameters.quote, replyParameters.quoteParseMode);
+    replyParameters.quoteEntities = e;
+    replyParameters.quote = t;
+  }
+  const peer = 'chatId' in replyParameters ? await client._client.resolvePeer(chatId) : undefined;
+  return new Raw.InputReplyToMessage({
+    replyToMsgId: replyParameters.messageId,
+    topMsgId: messageThreadId,
+    replyToPeerId: peer,
+    quoteText: replyParameters.quote,
+    quoteEntities: replyParameters.quoteEntities
+      ? await Parser.toRaw(client._client, replyParameters.quoteEntities!)
+      : undefined,
+    quoteOffset: replyParameters.position,
+  });
 }

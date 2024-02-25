@@ -24,6 +24,8 @@ import {
   type sendAnimationParams,
   sendSticker,
   type sendStickerParams,
+  sendAudio,
+  type sendAudioParams,
 } from './Messages/index.ts';
 import { getParticipants, type getParticipantsParams } from './Chats/index.ts';
 
@@ -156,6 +158,24 @@ export class Telegram extends TLObject {
     more?: sendStickerParams,
   ) {
     return sendSticker(this.client!, chatId, sticker, more);
+  }
+  /**
+   * Use this method to send audio file.
+   * > Shorthand :
+   * > [audio].resend
+   * > [message].replyWithAudio
+   * > [message].rwa
+   *
+   * @param { bigint | string } chatId - Destination.
+   * @param { string | Buffer | Readable | Files.File } audio- Audio file to be sent. The file can be a fileId or path where the file is located or a buffer of the file or streamable which can be piped.
+   * @param { sendAudioParams } more - Extra param for sending message, like parseMode, replyToMsgId, etc..
+   */
+  sendAudio(
+    chatId: bigint | string,
+    audio: string | Buffer | Readable | Files.File,
+    more?: sendAudioParams,
+  ) {
+    return sendAudio(this.client!, chatId, audio, more);
   }
   getParticipants(chatId: bigint | string, more?: getParticipantsParams) {
     return getParticipants(this.client, chatId, more);
