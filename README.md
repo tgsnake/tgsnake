@@ -16,7 +16,7 @@ npx create-tgsnake-app myapp
 - Simple Hello World :
 
 ```javascript
-const { Snake } = require('tgsnake');
+const { Snake, shutdown } = require('tgsnake');
 // import {Snake} from "tgsnake"
 const bot = new Snake({
   apiHash: 'abcde', //your api hash
@@ -29,6 +29,9 @@ bot.on('msg.text', (ctx) => {
   ctx.msg.reply('Hello World'); // reply with "Hello World"
   //console.log(ctx) // see json of message.
 });
+// Mandatory
+// Before the program stops, the client will be turned off first. This is to ensure that the entire process has stopped completely.
+shutdown(bot);
 ```
 
 More example you can found in our website.

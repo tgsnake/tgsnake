@@ -8,7 +8,7 @@
  * it under the terms of the MIT License as published.
  */
 
-export { Snake } from './Snake.ts';
+export { Snake, shutdown } from './Snake.ts';
 export { SnakeSession } from './SnakeSession.ts';
 export { BrowserSession } from './BrowserSession.ts';
 export { LoginWithCLI } from './Login/Cli.ts';

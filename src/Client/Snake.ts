@@ -159,7 +159,7 @@ export class Snake<T = {}> extends MainContext<T> {
       }
     }
   }
-  private async _gracefulStop() {
+  async stop() {
     Logger.info('Gracefully Stop.');
     if (this._options.login?.session && typeof this._options.login.session !== 'string') {
       Logger.info('Saving session before killed.');
@@ -177,7 +177,7 @@ export class Snake<T = {}> extends MainContext<T> {
         }
       }
     }
-    return sysprc.exit();
+    await this._client._session.stop();
   }
   async run() {
     await this._init();
@@ -193,8 +193,6 @@ export class Snake<T = {}> extends MainContext<T> {
         }
       }
     }
-    sysprc.on('SIGINT', () => this._gracefulStop());
-    sysprc.on('SIGTERM', () => this._gracefulStop());
     if (this._plugin.getEventHandler('onLogin').length) {
       if (this._plugin.getEventHandler('onLogin').length > 1) {
         Logger.info(
@@ -243,4 +241,18 @@ export class Snake<T = {}> extends MainContext<T> {
   get core(): Client {
     return this._client;
   }
+}
+/**
+ * Function to deactivate the client when the program is killed by SIGTERM or SIGINT.
+ * @param {Array<Snake>} clients - client to be shutting down.
+ */
+export function shutdown(...clients: Array<Snake>) {
+  const handler = async () => {
+    for (const client of clients) {
+      await client.stop();
+    }
+    return sysprc.exit();
+  };
+  sysprc.on('SIGINT', () => handler);
+  sysprc.on('SIGTERM', () => handler);
 }

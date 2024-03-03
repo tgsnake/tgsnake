@@ -7,7 +7,7 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-export { Snake } from './Client/Snake.ts';
+export { Snake, shutdown } from './Client/Snake.ts';
 export { SnakeSession } from './Client/SnakeSession.ts';
 export { Composer } from './Context/Composer.ts';
 export { Raw } from './platform.deno.ts';
