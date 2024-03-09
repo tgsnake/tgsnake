@@ -113,12 +113,12 @@ export async function sendMessage(
         replyToMessageId || replyParameters
           ? await buildReply(
               client,
-              replyParameters ? replyParameters : { messageId: replyToMessageId },
+              replyParameters ? replyParameters : { messageId: replyToMessageId as number },
               messageThreadId,
             )
           : replyToStoryId
             ? new Raw.InputReplyToStory({
-                userId: peer,
+                peer: peer,
                 storyId: replyToStoryId,
               })
             : undefined,

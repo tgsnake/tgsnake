@@ -32,15 +32,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tgsnake/core@npm:1.10.8":
-  version: 1.10.8
-  resolution: "@tgsnake/core@npm:1.10.8"
+"@tgsnake/core@npm:1.10.9":
+  version: 1.10.9
+  resolution: "@tgsnake/core@npm:1.10.9"
   dependencies:
     "@tgsnake/log": "npm:latest"
     async-mutex: "npm:0.4.1"
     big-integer: "npm:1.6.52"
-    socks: "npm:2.7.1"
-  checksum: 47fac710791417681ac623fe8581fdc04093ab5d989d7317217781a0e99d5a3ae2ca4c372b2b0c0fa5c0b6f0d60b7f937a2968ab5c4c2fbe7477184420ae1722
+    socks: "npm:2.8.1"
+  checksum: cd0c5b097daedaf7a1e3b53926244078ec965c50802b4d622c1245a72fb5da484bea93b3798232ac6be44a70044abc8d88cc9a5a077b8a779f18c2a6daabc1a7
   languageName: node
   linkType: hard
 
@@ -81,12 +81,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:20.11.17":
-  version: 20.11.17
-  resolution: "@types/node@npm:20.11.17"
+"@types/node@npm:20.11.25":
+  version: 20.11.25
+  resolution: "@types/node@npm:20.11.25"
   dependencies:
     undici-types: "npm:~5.26.4"
-  checksum: 3342df87258d1c56154bcd4b85180f48675427b235971e6e6e2e037353f5a2ae9aaa05ba5df0fe1e2d2f1022c8d856fd39056b9d7f50ea30c0ca3214137cae1d
+  checksum: 861265f1bbb151404bd8842b595f027a4ff067c61ecff9a37b9f7f53922c18dd532c8e795e8e7675dd8dba056645623fd2b9848d5ef72863ec3609096cd2923e
   languageName: node
   linkType: hard
 
@@ -222,13 +222,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:16.4.4":
-  version: 16.4.4
-  resolution: "dotenv@npm:16.4.4"
-  checksum: ddf43ede209d5f54c9da688e93326162eb0fc367ad1869909568cb15571ab8c87a0fab4e1d4af9860be0571c707a8b4aefa060a4f1b0bb14298a81e0ccf0017d
-  languageName: node
-  linkType: hard
-
 "entities@npm:^4.2.0":
   version: 4.4.0
   resolution: "entities@npm:4.4.0"
@@ -302,10 +295,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ip@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "ip@npm:2.0.0"
-  checksum: 1270b11e534a466fb4cf4426cbcc3a907c429389f7f4e4e3b288b42823562e88d6a509ceda8141a507de147ca506141f745005c0aa144569d94cf24a54eb52bc
+"ip-address@npm:^9.0.5":
+  version: 9.0.5
+  resolution: "ip-address@npm:9.0.5"
+  dependencies:
+    jsbn: "npm:1.1.0"
+    sprintf-js: "npm:^1.1.3"
+  checksum: 1ed81e06721af012306329b31f532b5e24e00cb537be18ddc905a84f19fe8f83a09a1699862bf3a1ec4b9dea93c55a3fa5faf8b5ea380431469df540f38b092c
   languageName: node
   linkType: hard
 
@@ -329,6 +325,13 @@ __metadata:
   version: 7.0.0
   resolution: "is-number@npm:7.0.0"
   checksum: 6a6c3383f68afa1e05b286af866017c78f1226d43ac8cb064e115ff9ed85eb33f5c4f7216c96a71e4dfea289ef52c5da3aef5bbfade8ffe47a0465d70c0c8e86
+  languageName: node
+  linkType: hard
+
+"jsbn@npm:1.1.0":
+  version: 1.1.0
+  resolution: "jsbn@npm:1.1.0"
+  checksum: bebe7ae829bbd586ce8cbe83501dd8cb8c282c8902a8aeeed0a073a89dc37e8103b1244f3c6acd60278bcbfe12d93a3f83c9ac396868a3b3bbc3c5e5e3b648ef
   languageName: node
   linkType: hard
 
@@ -460,13 +463,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"socks@npm:2.7.1":
-  version: 2.7.1
-  resolution: "socks@npm:2.7.1"
+"socks@npm:2.8.1":
+  version: 2.8.1
+  resolution: "socks@npm:2.8.1"
   dependencies:
-    ip: "npm:^2.0.0"
+    ip-address: "npm:^9.0.5"
     smart-buffer: "npm:^4.2.0"
-  checksum: 5074f7d6a13b3155fa655191df1c7e7a48ce3234b8ccf99afa2ccb56591c195e75e8bb78486f8e9ea8168e95a29573cbaad55b2b5e195160ae4d2ea6811ba833
+  checksum: a3cc38e0716ab53a2db3fa00c703ca682ad54dbbc9ed4c7461624a999be6fa7cdc79fc904c411618e698d5eff55a55aa6d9329169a7db11636d0200814a2b5aa
+  languageName: node
+  linkType: hard
+
+"sprintf-js@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "sprintf-js@npm:1.1.3"
+  checksum: e7587128c423f7e43cc625fe2f87e6affdf5ca51c1cc468e910d8aaca46bb44a7fbcfa552f787b1d3987f7043aeb4527d1b99559e6621e01b42b3f45e5a24cbb
   languageName: node
   linkType: hard
 
@@ -483,13 +493,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tgsnake@workspace:."
   dependencies:
-    "@tgsnake/core": "npm:1.10.8"
+    "@tgsnake/core": "npm:1.10.9"
     "@tgsnake/fileid": "npm:2.1.0"
     "@tgsnake/log": "npm:latest"
     "@tgsnake/parser": "npm:2.0.3"
-    "@types/node": "npm:20.11.17"
+    "@types/node": "npm:20.11.25"
     deno2node: "npm:1.11.0"
-    dotenv: "npm:16.4.4"
     mime-types: "npm:2.1.35"
     prettier: "npm:3.2.5"
     prompts: "npm:2.4.2"

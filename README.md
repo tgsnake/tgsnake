@@ -1,6 +1,6 @@
 ![tgsnakeicon](https://tgsnake.js.org/images/tgsnake.jpg)  
 tgsnake is a modern MTProto framework for javascript or typescript.  
-[![github-repo](https://img.shields.io/badge/Github-butthx-blue.svg?style=for-the-badge&logo=github)](https://github.com/tgsnake/tgsnake) [![telegram-chat](https://img.shields.io/badge/Telegram-Chat-blue.svg?style=for-the-badge&logo=telegram)](https://t.me/tgsnakechat)  
+[![github-repo](https://img.shields.io/badge/Github-tgsnake-blue.svg?style=for-the-badge&logo=github)](https://github.com/tgsnake/tgsnake) [![telegram-chat](https://img.shields.io/badge/Telegram-Chat-blue.svg?style=for-the-badge&logo=telegram)](https://t.me/tgsnakechat)  
 [![telegram-channel](https://img.shields.io/badge/Telegram-Channel-blue.svg?style=for-the-badge&logo=telegram)](https://t.me/tgsnake)
 
 Don't forget to read our FAQ in our site!!

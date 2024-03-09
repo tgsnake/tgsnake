@@ -201,7 +201,7 @@ export interface ReplyParameters {
   /**
    * Mode for parsing entities in the quote.
    */
-  quoteParseMode?: string;
+  quoteParseMode?: 'markdown' | 'html';
   /**
    * A JSON-serialized list of special entities that appear in the quote. It can be specified instead of quoteParseMode.
    */
@@ -221,19 +221,35 @@ export async function buildReply(
     !('quoteEntities' in replyParameters) &&
     'quote' in replyParameters
   ) {
-    const [t, e] = await Parser.parse(replyParameters.quote, replyParameters.quoteParseMode);
+    const [t, e] = await Parser.parse(replyParameters.quote ?? '', replyParameters.quoteParseMode!);
     replyParameters.quoteEntities = e;
     replyParameters.quote = t;
   }
-  const peer = 'chatId' in replyParameters ? await client._client.resolvePeer(chatId) : undefined;
+  const peer =
+    'chatId' in replyParameters
+      ? await client._client.resolvePeer(replyParameters.chatId!)
+      : undefined;
   return new Raw.InputReplyToMessage({
     replyToMsgId: replyParameters.messageId,
     topMsgId: messageThreadId,
     replyToPeerId: peer,
-    quoteText: replyParameters.quote,
+    quoteText: replyParameters.quote ?? '',
     quoteEntities: replyParameters.quoteEntities
       ? await Parser.toRaw(client._client, replyParameters.quoteEntities!)
       : undefined,
-    quoteOffset: replyParameters.position,
+    quoteOffset: replyParameters.quotePosition,
   });
+}
+
+export function getChannelId(update: Raw.TypeUpdate): bigint {
+  if ('channelId' in update && 'pts' in update) {
+    return BigInt(Helpers.getChannelId(update.channelId));
+  }
+  if (
+    update instanceof Raw.UpdateNewChannelMessage ||
+    update instanceof Raw.UpdateEditChannelMessage
+  ) {
+    return getPeerId(update.message.peerId!) ?? BigInt(0);
+  }
+  return BigInt(0);
 }

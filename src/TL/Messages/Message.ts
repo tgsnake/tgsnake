@@ -110,7 +110,7 @@ export interface TypeMessage {
   screenshot?: boolean;
   ttl?: number;
   replyToStoryId?: number;
-  repliedStoryUser?: Advanceds.User;
+  repliedStoryFrom?: Advanceds.Chat;
 }
 export class Message extends TLObject {
   id!: number;
@@ -189,7 +189,7 @@ export class Message extends TLObject {
   screenshot?: boolean;
   ttl?: number;
   replyToStoryId?: number;
-  repliedStoryUser?: Advanceds.User;
+  repliedStoryFrom?: Advanceds.Chat;
   constructor(
     {
       id,
@@ -268,7 +268,7 @@ export class Message extends TLObject {
       screenshot,
       ttl,
       replyToStoryId,
-      repliedStoryUser,
+      repliedStoryFrom,
     }: TypeMessage,
     client: Snake,
   ) {
@@ -349,7 +349,7 @@ export class Message extends TLObject {
     this.screenshot = screenshot;
     this.ttl = ttl;
     this.replyToStoryId = replyToStoryId;
-    this.repliedStoryUser = repliedStoryUser;
+    this.repliedStoryFrom = repliedStoryFrom;
   }
   static async parse(
     client: Snake,
@@ -726,11 +726,11 @@ export class Message extends TLObject {
           }
           if (message.replyTo instanceof Raw.MessageReplyStoryHeader) {
             parsedMessage.replyToStoryId = (message.replyTo as Raw.MessageReplyStoryHeader).storyId;
-            parsedMessage.repliedStoryUser = Advanceds.User.parse(
+            parsedMessage.repliedStoryFrom = Advanceds.Chat.parseDialog(
               client,
-              users.find(
-                (user) => user.id === (message.replyTo as Raw.MessageReplyStoryHeader).userId,
-              ),
+              message.replyTo.peer,
+              users,
+              chats,
             );
           }
         }
