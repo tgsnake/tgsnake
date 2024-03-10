@@ -253,6 +253,7 @@ export function shutdown(...clients: Array<Snake>) {
     }
     return sysprc.exit();
   };
-  sysprc.on('SIGINT', () => handler);
-  sysprc.on('SIGTERM', () => handler);
+  sysprc.on('SIGINT', handler);
+  sysprc.on('SIGTERM', handler);
+  Logger.info(`Gracefull Stop enable for ${clients.length} clients`);
 }
