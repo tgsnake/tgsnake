@@ -7,8 +7,7 @@
  * tgsnake is a free software : you can redistribute it and/or modify
  * it under the terms of the MIT License as published.
  */
-import { Storages, Raws, Helpers, path, Buffer } from '../platform.deno.ts';
-import fs from 'node:fs';
+import { Storages, Raws, Helpers, path, Buffer, fs } from '../platform.deno.ts';
 import { Logger } from '../Context/Logger.ts';
 
 export class SnakeSession extends Storages.BaseSession {
@@ -161,7 +160,7 @@ export class SnakeSession extends Storages.BaseSession {
       const content = await buildBytesFromPeer(value);
       bytes.write(Buffer.concat([Raws.Primitive.Int.write(content.length), content]));
     }
-    let e2e = Buffer.alloc(0);
+    let e2e: Buffer = Buffer.alloc(0);
     if (this._secretChats.size) {
       e2e = await this._makeE2E();
     }
@@ -272,6 +271,7 @@ export async function buildPeerFromBytes(
   if (flags & (1 << 4)) {
     results.push([await Raws.Primitive.String.read(b)]);
   } else if (flags & (1 << 6)) {
+    await Raws.Primitive.Int.read(b, false) // remove the vector id
     results.push(await Raws.Primitive.Vector.read(b, Raws.Primitive.String));
   }
   if (flags & (1 << 5)) {

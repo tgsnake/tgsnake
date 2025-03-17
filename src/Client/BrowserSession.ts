@@ -147,7 +147,7 @@ export class BrowserSession extends Storages.BaseSession {
       const content = await buildBytesFromPeer(value);
       bytes.write(Buffer.concat([Raws.Primitive.Int.write(content.length), content]));
     }
-    let e2e = Buffer.alloc(0);
+    let e2e: Buffer = Buffer.alloc(0);
     if (this._secretChats.size) {
       e2e = await this._makeE2E();
     }

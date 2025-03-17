@@ -1,6 +1,6 @@
 {
   "name": "tgsnake",
-  "version": "3.3.3-hotfix.1",
+  "version": "3.3.3-hotfix.2",
   "description": "Telegram MTProto framework for nodejs.",
   "main": "./lib/src/index.js",
   "scripts": {
@@ -32,9 +32,9 @@
     "prompts": "2.4.2"
   },
   "devDependencies": {
-    "@types/node": "22.10.5",
-    "deno2node": "1.14.0",
-    "prettier": "3.4.2"
+    "@types/node": "22.13.10",
+    "deno2node": "1.15.0",
+    "prettier": "3.5.3"
   },
   "engineStrict": true,
   "engines": {

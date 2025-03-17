@@ -9,7 +9,7 @@
  */
 
 import { lookup as mimetypes } from 'https://deno.land/x/mrmime@v1.0.1/mod.ts';
-import * as path from 'https://deno.land/std@0.182.0/path/mod.ts';
+import * as path from 'jsr:@std/path';
 import * as fs from 'node:fs';
 import prompts from 'https://esm.sh/prompts@2.4.2?no-dts';
 
